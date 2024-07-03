@@ -1,0 +1,16 @@
+pyautogui
+numpy
+pygame
+gtts
+requests
+Pillow
+bs4
+pygetwindow
+screeninfo
+ctypes
+pynput
+pyshortcuts
+pytube
+re
+pyperclip
+tkinter

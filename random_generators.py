@@ -1,79 +1,76 @@
 
-from . import List, Union, Tuple , Any
+from typing import List, Union, Tuple , Any
 from uuid import uuid4
 from random import randint, choice, shuffle, uniform, getrandbits
 from string import ascii_letters as string_ascii_letters, digits as string_digits, ascii_lowercase
 
-from . import REQUESTS
-if REQUESTS:
-    from requests import get as requests_get
+from requests import get as requests_get
 
 from .codec import decode_html_character
 
-if REQUESTS:
-    def generate_name(gen: int, ) -> str:
-        """
-        Generate a random name based on the specified gender or unisex option.
+def generate_name(gen: int, ) -> str:
+    """
+    Generate a random name based on the specified gender or unisex option.
 
-        Args:
-            gen (int): An integer representing the desired gender or option for the name.
-                    0: Male (can also be represented as "m" or "male")
-                    1: Female (can also be represented as "f" or "female")
-                    2: Unisex (can also be represented as "u", "unisex", or "unidentified")
-                    3: Both (can also be represented as "both" or "b")
+    Args:
+        gen (int): An integer representing the desired gender or option for the name.
+                0: Male (can also be represented as "m" or "male")
+                1: Female (can also be represented as "f" or "female")
+                2: Unisex (can also be represented as "u", "unisex", or "unidentified")
+                3: Both (can also be represented as "both" or "b")
 
-        Returns:
-            str: A randomly generated name based on the specified gender or option.
-                Returns an empty string if the input is invalid.
+    Returns:
+        str: A randomly generated name based on the specified gender or option.
+            Returns an empty string if the input is invalid.
 
-        Note:
-            This function uses the "https://www.behindthename.com/random/random.php" endpoint to
-            generate random names.
+    Note:
+        This function uses the "https://www.behindthename.com/random/random.php" endpoint to
+        generate random names.
 
-        Example:
-            >>> generate_name(0)
-            'John'
-            >>> generate_name(1)
-            'Emily'
-            >>> generate_name(2)
-            'Alex'
-            >>> generate_name(3)
-            'Jordan'
-        """
+    Example:
+        >>> generate_name(0)
+        'John'
+        >>> generate_name(1)
+        'Emily'
+        >>> generate_name(2)
+        'Alex'
+        >>> generate_name(3)
+        'Jordan'
+    """
 
-        if gen == 0 or "m" or "male":
-            gender = "m"
-        elif gen == 1 or "f" or "female":
-            gender = "f"
-        elif gen == 2 or "u" or "unisex" or "unidentified":
-            gender = "u"
-        elif gen == 3 or "both" or "b":
-            gender = "both"
-        else:
-            return ""
-        url = "https://www.behindthename.com/random/random.php"
-        params = {
-            "gender": gender,
-            "number": "1",
-            "sets": "1",
-            "surname": "",
-            "all": "yes"
-        }
-        response = requests_get(url, params=params)
-        name_text = str(response.text.split("\n")[165])
-        idx = name_text.find('class="plain">') + 14
-        name_text = name_text[idx:]
-        idx2 = name_text.find('<')
+    if gen == 0 or "m" or "male":
+        gender = "m"
+    elif gen == 1 or "f" or "female":
+        gender = "f"
+    elif gen == 2 or "u" or "unisex" or "unidentified":
+        gender = "u"
+    elif gen == 3 or "both" or "b":
+        gender = "both"
+    else:
+        return ""
+    url = "https://www.behindthename.com/random/random.php"
+    params = {
+        "gender": gender,
+        "number": "1",
+        "sets": "1",
+        "surname": "",
+        "all": "yes"
+    }
+    response = requests_get(url, params=params)
+    name_text = str(response.text.split("\n")[165])
+    idx = name_text.find('class="plain">') + 14
+    name_text = name_text[idx:]
+    idx2 = name_text.find('<')
 
-        # middle_name = name_text[:idx2]
-        # middle_name = decode_html_character(middle_name)
-        # idx = name_text.find('class="plain">') + 14
-        # name_text = name_text[idx:]
-        # idx2 = name_text.find('<')
+    # middle_name = name_text[:idx2]
+    # middle_name = decode_html_character(middle_name)
+    # idx = name_text.find('class="plain">') + 14
+    # name_text = name_text[idx:]
+    # idx2 = name_text.find('<')
 
-        name = name_text[:idx2]
-        name = decode_html_character(name)
-        return (name)
+    name = name_text[:idx2]
+    name = decode_html_character(name)
+    return (name)
 
 def generate_uuid() -> str:
     """

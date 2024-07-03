@@ -1,7 +1,6 @@
 from math import sqrt, factorial as math_factorial, modf
 from typing import List, Union, Tuple , Any
 
-from tge.manipulation.list_utils import list_min
 
 
 
@@ -37,23 +36,6 @@ def exponent(base: int, exponent: int) -> int:
 
     return result
 
-def tetration(base, exponent):
-    """
-    Compute the tetration of a given base to a given exponent.
-
-    Tetration is a mathematical operation that iteratively raises a base to the power of itself.
-    For example, tetration of base 2 and exponent 3 is 2^2^2, which is 16.
-
-    Parameters:
-    base (int or float): The base for tetration.
-    exponent (int): The exponent to which the base is tetrated.
-
-    Returns:
-    int or float: The result of tetration, i.e., base raised to the power of itself exponent times.
-    """
-    if exponent == 1:
-        return base
-    return base ** tetration(base, exponent - 1)
 
 def hypotenuse(a: float, b: float) -> float:
     """
@@ -308,7 +290,7 @@ def num_range(start: int, stop: int, step: int) -> Union[bool, List[float], Tupl
         return False, "Start cannot be greater than stop"
 
     if isinstance(step, float) or isinstance(start, float) or isinstance(stop, float):
-        x = list_min([start, stop, step])
+        x = min([start, stop, step])
         num_frac = modf(x)[0]
         y = 10 ** (len(str(num_frac)) - 2)
         step *= y
@@ -412,12 +394,30 @@ def fast_inverse_sqrt(x):
     Returns:
     - Inverse square root of x.
     """
-    threehalfs = 1.5
+    one_and_a_half = 1.5
     y = x  # initial guess
     packed_y = struct.pack('f', y)  # interpret y as a 32-bit floating-point number
     i = struct.unpack('i', packed_y)[0]  # extract the 32-bit integer representation of y
     i = 0x5f3759df - (i >> 1)  # apply the fast inverse square root algorithm
     packed_i = struct.pack('i', i)  # convert the modified integer back to bytes
     y = struct.unpack('f', packed_i)[0]  # interpret the result as a floating-point number
-    y = y * (threehalfs - (0.5 * x * y * y))  # refine the result with one iteration
+    y = y * (one_and_a_half - (0.5 * x * y * y))  # refine the result with one iteration
     return y
+
+def tetration(base: int, exponent: int) -> int:
+    if exponent == 0:
+        return 1
+    temp = base
+    while exponent > 1:
+        temp = base**temp
+        exponent -= 1
+    return temp
+
+def hexation(base: int, exponent: int) -> int:
+    if exponent == 0:
+        return 1
+    temp = base
+    while exponent > 1:
+        temp = tetration(base, temp)
+        exponent -= 1
+    return temp

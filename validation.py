@@ -1,11 +1,9 @@
 
-from . import RE, REQUESTS
 
-if RE:
-    import re
+import re
 
-if REQUESTS:
-    import requests
+
+import requests
 
 from ipaddress import IPv4Address, IPv6Address, AddressValueError
 
@@ -92,89 +90,61 @@ def is_odd(number: int) -> bool:
     """
     return not is_even(number)
 
-if RE:
-    def is_url(url: str) -> bool:
-        """
-        Check if a given string is a valid URL.
 
-        This function uses regular expressions to determine whether the input string
-        follows the typical pattern of a URL. It checks for patterns starting with
-        'http://' or 'https://' followed by a valid domain name, and optional
-        paths or query parameters.
+def is_url(url: str) -> bool:
+    """
+    Check if a given string is a valid URL.
 
-        Args:
-            url (str): The string to be checked as a potential URL.
+    This function uses regular expressions to determine whether the input string
+    follows the typical pattern of a URL. It checks for patterns starting with
+    'http://' or 'https://' followed by a valid domain name, and optional
+    paths or query parameters.
 
-        Returns:
-            bool: True if the input string appears to be a valid URL, False otherwise.
-        """
-        pattern = re.compile(
-            r'^(?:http|https)://'
-            r'(?:[\w-]+\.)*[\w-]+'
-            r'(?:\.[a-zA-Z]{2,})'
-            r'(?:/?|(?:/[^\s]+)+)?$'
-        )
-
-        return bool(re.match(pattern, url))
-else:
-    def is_url(url: str) -> bool:
-        """
-        Check if a given URL is valid and reachable.
-
-        This function takes a URL as input and determines by 
-        checking if it can be reached with an URL check.
-
-        If the 're' library is installed this function will change and check if the url is valid without needing to 
-        
-        Args:
-            url (str): The URL to be checked.
-
-        Returns:
-            bool: True if the URL is considered valid and reachable, False otherwise.
-        """
-        if REQUESTS:
-            return is_url_available(url=url, check_url=False)
-        else:
-            return None
-
-
-if REQUESTS:
-    def is_url_available(url: str, check_url: bool = True) -> bool:
-        """
-        Check the availability of a URL by sending a GET request and evaluating the response status code.
-
-        Parameters:
-        url (str): The URL to be checked for availability.
-        check_url (bool, optional): If True, performs a basic URL format check before proceeding (default: True).
-
-        Returns:
-        bool: True if the URL is available and returns a status code of 200, False otherwise.
-        """
-        if check_url:
-            check_url = not is_url(url)
-
-        if not check_url:
-            return False
-
-        try:
-            r = requests.get(url)
-            if r.status_code == 200:
-                return True
-            else:
-                return False
-        except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout:
-            return None
-        
-
-else:
-    def is_url_available(url: str, check_url: bool = True) -> False:
-        """
-    This is a Fallback function if the 'requests' module isn't installed.
+    Args:
+        url (str): The string to be checked as a potential URL.
 
     Returns:
-        bool: False
+        bool: True if the input string appears to be a valid URL, False otherwise.
     """
+    pattern = re.compile(
+        r'^(?:http|https)://'
+        r'(?:[\w-]+\.)*[\w-]+'
+        r'(?:\.[a-zA-Z]{2,})'
+        r'(?:/?|(?:/[^\s]+)+)?$'
+    )
+
+    return bool(re.match(pattern, url))
+
+
+
+def is_url_available(url: str, check_url: bool = True) -> bool:
+    """
+    Check the availability of a URL by sending a GET request and evaluating the response status code.
+
+    Parameters:
+    url (str): The URL to be checked for availability.
+    check_url (bool, optional): If True, performs a basic URL format check before proceeding (default: True).
+
+    Returns:
+    bool: True if the URL is available and returns a status code of 200, False otherwise.
+    """
+    if check_url:
+        check_url = not is_url(url)
+
+    if not check_url:
         return False
+
+    try:
+        r = requests.get(url)
+        if r.status_code == 200:
+            return True
+        else:
+            return False
+    except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout:
+        return None
+        
+
+
     
 def validate_email(email: str) -> bool:
     """

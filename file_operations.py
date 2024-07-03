@@ -1,18 +1,15 @@
-from . import os
+import os
 import shutil
 from filecmp import dircmp as file_dircmp, cmp as file_cmp
 from ast import parse as ast_parse, walk as ast_walk, FunctionDef as ast_FunctionDef
 import zipfile 
 
 from pathlib import Path as pathlib_path
-from . import List, Union, Tuple , Any
-from . import REQUESTS, TKINTER, PYSHORTCUTS
+from typing import List, Union, Tuple , Any
 
 
-if TKINTER:
-    import tkinter as tk
-if PYSHORTCUTS:
-    import pyshortcuts
+import tkinter as tk
+import pyshortcuts
 
 from .codec import decode, b64decode, b64encode
 
@@ -677,81 +674,81 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
 
     return total_function_count, function_counts, error_files
 
-if REQUESTS:
 
-    def init_url_functions():
-        """
-    Initializes URL-related functions for downloading files.
 
-    This function imports the 'requests' library and defines a function 'download_from_url_to_dir'
-    for downloading a file from a given URL and saving it to a specified directory.
-
-    Functions:
-        download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
-            Downloads a file from the given URL and saves it to the specified directory.
-
-            Args:
-                url (str): The URL of the file to be downloaded.
-                dir (str): The directory where the downloaded file will be saved.
-                create (bool): If True, creates the directory if it doesn't exist.
-
-            Returns:
-                None
-
-            Raises:
-                Any exceptions raised during the download and file write process are caught,
-                and the function returns False if an exception occurs.
-
-            Note:
-                This function uses the 'requests' library to download the file. If 'create' is
-                set to True, it creates the missing directory structure before saving the file.
-                The file is saved with the same name as the last part of the URL.
-
-            Example:
-                download_from_url_to_dir(
-                    'https://example.com/file.txt', '/path/to/directory/', create=True
-                )
+def init_url_functions():
     """
-        import requests
-        def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
-            """
-            Downloads a file from the given URL and saves it to the specified directory.
+Initializes URL-related functions for downloading files.
 
-            Args:
-                url (str): The URL of the file to be downloaded.
-                dir (str): The directory where the downloaded file will be saved.
-                create (bool): If True, creates the directory if it doesn't exist.
+This function imports the 'requests' library and defines a function 'download_from_url_to_dir'
+for downloading a file from a given URL and saving it to a specified directory.
 
-            Returns:
-                None
+Functions:
+    download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
+        Downloads a file from the given URL and saves it to the specified directory.
 
-            Raises:
-                Any exceptions raised during the download and file write process are caught,
-                and the function returns False if an exception occurs.
+        Args:
+            url (str): The URL of the file to be downloaded.
+            dir (str): The directory where the downloaded file will be saved.
+            create (bool): If True, creates the directory if it doesn't exist.
 
-            Note:
-                This function uses the 'requests' library to download the file. If 'create' is
-                set to True, it creates the missing directory structure before saving the file.
-                The file is saved with the same name as the last part of the URL.
+        Returns:
+            None
 
-            Example:
-                download_from_url_to_dir(
-                    'https://example.com/file.txt', '/path/to/directory/', create=True
-                )
-            """
-            r = requests.get(url)
-            try:
-                if create:
-                    create_missing_directory(dir)
-                    with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
-                        f.write(r.content)
-                    return True
-                else:
-                    with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
-                        f.write(r.content)
-                    return True
-            except:
-                return False
+        Raises:
+            Any exceptions raised during the download and file write process are caught,
+            and the function returns False if an exception occurs.
+
+        Note:
+            This function uses the 'requests' library to download the file. If 'create' is
+            set to True, it creates the missing directory structure before saving the file.
+            The file is saved with the same name as the last part of the URL.
+
+        Example:
+            download_from_url_to_dir(
+                'https://example.com/file.txt', '/path/to/directory/', create=True
+            )
+"""
+    import requests
+    def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
+        """
+        Downloads a file from the given URL and saves it to the specified directory.
+
+        Args:
+            url (str): The URL of the file to be downloaded.
+            dir (str): The directory where the downloaded file will be saved.
+            create (bool): If True, creates the directory if it doesn't exist.
+
+        Returns:
+            None
+
+        Raises:
+            Any exceptions raised during the download and file write process are caught,
+            and the function returns False if an exception occurs.
+
+        Note:
+            This function uses the 'requests' library to download the file. If 'create' is
+            set to True, it creates the missing directory structure before saving the file.
+            The file is saved with the same name as the last part of the URL.
+
+        Example:
+            download_from_url_to_dir(
+                'https://example.com/file.txt', '/path/to/directory/', create=True
+            )
+        """
+        r = requests.get(url)
+        try:
+            if create:
+                create_missing_directory(dir)
+                with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
+                    f.write(r.content)
+                return True
+            else:
+                with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
+                    f.write(r.content)
+                return True
+        except:
+            return False
     
 def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
     """
@@ -815,48 +812,48 @@ def save_counted_function_names_from_directory(directory_path: str, file_name: s
     except:
         return False
     
-if TKINTER:
-    def input_file_path(extension: str = None) -> str:
-        """
-        Prompts the user to select a file path for saving a file.
 
-        This function opens a file dialog that allows the user to specify a file path
-        for saving a file. The 'extension' parameter can be used to suggest a default
-        file extension for the saved file.
+def input_file_path(extension: str = None) -> str:
+    """
+    Prompts the user to select a file path for saving a file.
 
-        Parameters:
-            extension (str, optional): A suggested file extension for the saved file.
-                If provided, the file dialog will include this extension in the suggested
-                file name and in the file type dropdown filter. Defaults to None.
+    This function opens a file dialog that allows the user to specify a file path
+    for saving a file. The 'extension' parameter can be used to suggest a default
+    file extension for the saved file.
 
-        Returns:
-            str: The selected file path for saving the file, including the chosen file name
-            and extension.
+    Parameters:
+        extension (str, optional): A suggested file extension for the saved file.
+            If provided, the file dialog will include this extension in the suggested
+            file name and in the file type dropdown filter. Defaults to None.
 
-        Note:
-            This function requires the 'tkinter.filedialog' module to be imported in
-            order to work properly.
+    Returns:
+        str: The selected file path for saving the file, including the chosen file name
+        and extension.
 
-        Example:
-            >>> input_file_path(extension=".txt")
-            '/path/to/save/file.txt'
-        """
-        return tk.filedialog.asksaveasfilename(defaultextension=extension)
+    Note:
+        This function requires the 'tkinter.filedialog' module to be imported in
+        order to work properly.
 
-    
+    Example:
+        >>> input_file_path(extension=".txt")
+        '/path/to/save/file.txt'
+    """
+    return tk.filedialog.asksaveasfilename(defaultextension=extension)
 
-    def input_directory_path() -> str:
-        """
-        Prompt user to select a directory using a file dialog.
 
-        This function opens a file dialog window that allows the user to choose a directory.
-        The selected directory's path is returned as a string.
 
-        Returns:
-            str: The path of the selected directory.
-        """
-        save_path = tk.filedialog.askdirectory()
-        return save_path
+def input_directory_path() -> str:
+    """
+    Prompt user to select a directory using a file dialog.
+
+    This function opens a file dialog window that allows the user to choose a directory.
+    The selected directory's path is returned as a string.
+
+    Returns:
+        str: The path of the selected directory.
+    """
+    save_path = tk.filedialog.askdirectory()
+    return save_path
 
 
 
@@ -925,33 +922,53 @@ def get_appdata_path() -> str:
     return os.path.expanduser("~\AppData")
 
 
-if PYSHORTCUTS:
-    def create_shortcut(name: str, target_path: str, shortcut_path: str, description: str = "") -> None:
-        """
-        Creates a shortcut to a target file or script.
 
-        This function generates a shortcut (or symbolic link) to a specified target file or script
-        at the specified shortcut path location. Additional properties like the working directory,
-        description, and execution settings can be customized for the shortcut.
+def create_shortcut(name: str, target_path: str, shortcut_path: str, description: str = "") -> None:
+    """
+    Creates a shortcut to a target file or script.
 
-        Args:
-            name (str): The name of the shortcut (without the file extension).
-            target_path (str): The path to the target file or script that the shortcut points to.
-            shortcut_path (str): The path where the shortcut should be created.
-            description (str, optional): An optional description for the shortcut (default is "").
+    This function generates a shortcut (or symbolic link) to a specified target file or script
+    at the specified shortcut path location. Additional properties like the working directory,
+    description, and execution settings can be customized for the shortcut.
 
-        Returns:
-            None
+    Args:
+        name (str): The name of the shortcut (without the file extension).
+        target_path (str): The path to the target file or script that the shortcut points to.
+        shortcut_path (str): The path where the shortcut should be created.
+        description (str, optional): An optional description for the shortcut (default is "").
 
-        Note:
-            - The 'pyshortcuts' library is used to create the shortcut. Make sure it is installed.
-            - The 'executable' parameter is set to 'target_path', indicating the executable to run
-            when the shortcut is activated.
+    Returns:
+        None
 
-        Example:
-            create_shortcut("MyScriptShortcut", "/path/to/myscript.py", "/desktop/shortcuts/",
-                            "Shortcut to run my custom script.")
-        """
-        target_parent_folder = os.path.dirname(target_path)
-        pyshortcuts.make_shortcut(name=name, script=target_path, working_dir=target_parent_folder, folder=shortcut_path, description=description, executable=target_path)
+    Note:
+        - The 'pyshortcuts' library is used to create the shortcut. Make sure it is installed.
+        - The 'executable' parameter is set to 'target_path', indicating the executable to run
+        when the shortcut is activated.
 
+    Example:
+        create_shortcut("MyScriptShortcut", "/path/to/myscript.py", "/desktop/shortcuts/",
+                        "Shortcut to run my custom script.")
+    """
+    target_parent_folder = os.path.dirname(target_path)
+    pyshortcuts.make_shortcut(name=name, script=target_path, working_dir=target_parent_folder, folder=shortcut_path, description=description, executable=target_path)
+
+def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path: str):
+    files = os.listdir(path)  # Get a list of files in the specified directory
+    max_num = -1
+    latest_file = None
+
+    for file in files:
+        if os.path.isfile(os.path.join(path, file)):
+            filename, file_extension = os.path.splitext(file)
+            try:
+                file_number = int(filename)
+                if file_number > max_num:
+                    max_num = file_number
+                    latest_file = file
+            except ValueError:
+                continue  # Skip files that don't have a valid numeric name
+
+    if latest_file is not None:
+        return latest_file
+    else:
+        return None  # No valid files found in the directory

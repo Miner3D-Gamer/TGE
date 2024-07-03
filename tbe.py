@@ -40,7 +40,7 @@
 
 #from pytz import timezone as pytz_timezone
 #from math import sqrt, log, log2, modf, ceil, floor, factorial
-from . import List, Union, Tuple , Any
+from typing import List, Union, Tuple , Any
 
 
 

@@ -1,12 +1,8 @@
-from . import RE, PYTUBE, REQUESTS
-from . import List, Union, Tuple , Any, Tuple, Dict, Optional
-if RE:
-    import re
-if PYTUBE:
-    from pytube import YouTube
+from typing import List, Union, Tuple , Any, Tuple, Dict, Optional
+import re
+from pytube import YouTube
 
-if RE:
-    def remove_html_tags(string: str) -> str:
+def remove_html_tags(string: str) -> str:
         """
         Removes HTML tags from the given string.
 
@@ -24,8 +20,7 @@ if RE:
         """
         return re.sub(r'<.*?>', '', string)
 
-if PYTUBE and RE:
-    def download_youtube_video(url: str, save_path: str, file_name: str) -> Tuple[bool, str]:#
+def download_youtube_video(url: str, save_path: str, file_name: str) -> Tuple[bool, str]:#
         """
         Download a YouTube video as audio from the given URL and save it to the specified location.
 
@@ -72,10 +67,9 @@ if PYTUBE and RE:
 
 
 
-if REQUESTS:
-    import requests
+import requests
 
-    def post_to_discord_webhook(message_content: str, webhook: str, name: str, avatar_url: str = None, mention: bool = True, activate_voice: bool = False) -> Any:
+def post_to_discord_webhook(message_content: str, webhook: str, name: str, avatar_url: str = None, mention: bool = True, activate_voice: bool = False) -> Any:
         """
         Posts a message to a Discord webhook. Returns the response code and the content of the message.
         """

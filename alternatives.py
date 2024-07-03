@@ -2,12 +2,11 @@
 
 from time import sleep  
 from math import sqrt, log, ceil, floor
-from . import List, Union, Tuple , Any
-from . import sys
+from typing import List, Union, Tuple , Any
+import sys
 
-from . import PYGAME
-if PYGAME:
-    from pygame import quit as pygame_quit
+
+from pygame import quit as pygame_quit
 
 
 
@@ -53,20 +52,20 @@ def ceiling(num: Union[int, float]) -> int:
     """
     return ceil(num)
 
-if PYGAME:
-    def safe_exit() -> None:
-        """
-        Safely exits the program if pygame is still running.
-        """
-        pygame_quit()
-        sys.exit()
 
-    def safe_quit() -> None:
-        """
-        Safely exits the program if pygame is still running.
-        """
-        pygame_quit()
-        sys.exit()
+def safe_exit() -> None:
+    """
+    Safely exits the program if pygame is still running.
+    """
+    pygame_quit()
+    sys.exit()
+
+def safe_quit() -> None:
+    """
+    Safely exits the program if pygame is still running.
+    """
+    pygame_quit()
+    sys.exit()
 
 def force_exit() -> None:
     """

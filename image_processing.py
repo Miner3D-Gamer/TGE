@@ -1,8 +1,8 @@
 from PIL import Image
 from typing import List, Union, Tuple , Any
 
-from . import NUMPY
-from tge.file_operations import doesDirectoryFileExist
+
+from .file_operations import doesDirectoryFileExist
 
 def rotate_image(image_path: str, angle: int) -> bool:
     """
@@ -233,54 +233,54 @@ def convert_image(file_path: str, extension: str, output_path: str = None) -> bo
     else:
         return False
 
-if NUMPY:
-    from PIL import Image
-    import numpy as np
 
-    def image_to_ascii(image_path: str = "", image=None, width: int = None, unicode: bool = False, ascii_chars: str = "") -> str:
-        """
-        Convert an image into ASCII art.
+from PIL import Image
+import numpy as np
 
-        Parameters:
-            image_path (str, optional): Path to the image file.
-            image (PIL.Image.Image, optional): PIL image object.
-            width (int, optional): Desired width of the ASCII art. If not specified, the width of the original image is used.
-            unicode (bool, optional): Use Unicode characters for the ASCII art. If False, regular ASCII characters are used.
-            ascii_chars (str, optional): Custom set of characters to be used for the ASCII art. If not specified, default characters are used based on the `unicode` flag.
+def image_to_ascii(image_path: str = "", image=None, width: int = None, unicode: bool = False, ascii_chars: str = "") -> str:
+    """
+    Convert an image into ASCII art.
 
-        Returns:
-            str: ASCII art representation of the image.
+    Parameters:
+        image_path (str, optional): Path to the image file.
+        image (PIL.Image.Image, optional): PIL image object.
+        width (int, optional): Desired width of the ASCII art. If not specified, the width of the original image is used.
+        unicode (bool, optional): Use Unicode characters for the ASCII art. If False, regular ASCII characters are used.
+        ascii_chars (str, optional): Custom set of characters to be used for the ASCII art. If not specified, default characters are used based on the `unicode` flag.
 
-        Notes:
-            - Provide either `image_path` or `image` parameter to specify the image source.
-            - If `width` is not provided, the original image width is used.
-            - The `unicode` flag determines whether to use Unicode or regular ASCII characters.
-            - If `ascii_chars` is empty, a default set of characters is used based on the `unicode` flag.
-            - Brighter pixels in the image correspond to darker characters in the ASCII art.
-        """
-        Image.MAX_IMAGE_PIXELS = None
-        if image_path:
-            if not image:
-                image = Image.open(image_path)
-        elif not image:
-            return ""
+    Returns:
+        str: ASCII art representation of the image.
 
-        aspect_ratio = image.height / image.width
-        if width is None:
-            width = image.width
-        height = int(width * aspect_ratio)
-        image = image.resize((width, height)).convert('L')  # Resize and convert to grayscale
-        image_array = np.array(image)
+    Notes:
+        - Provide either `image_path` or `image` parameter to specify the image source.
+        - If `width` is not provided, the original image width is used.
+        - The `unicode` flag determines whether to use Unicode or regular ASCII characters.
+        - If `ascii_chars` is empty, a default set of characters is used based on the `unicode` flag.
+        - Brighter pixels in the image correspond to darker characters in the ASCII art.
+    """
+    Image.MAX_IMAGE_PIXELS = None
+    if image_path:
+        if not image:
+            image = Image.open(image_path)
+    elif not image:
+        return ""
 
-        if ascii_chars == "":
-            if unicode:
-                ascii_chars = "█▮■▩▦▣▤@#$+=□:▫-. "
-            else:
-                ascii_chars = "@%#$*+=-:. "
+    aspect_ratio = image.height / image.width
+    if width is None:
+        width = image.width
+    height = int(width * aspect_ratio)
+    image = image.resize((width, height)).convert('L')  # Resize and convert to grayscale
+    image_array = np.array(image)
 
-        pixel_intensity = 255 - image_array
-        ascii_chars_indices = (pixel_intensity / 255 * (len(ascii_chars) - 1)).astype(int)
-        ascii_art_array = np.array(list(ascii_chars))[ascii_chars_indices]
-        ascii_art = '\n'.join(''.join(row) for row in ascii_art_array)
+    if ascii_chars == "":
+        if unicode:
+            ascii_chars = "█▮■▩▦▣▤@#$+=□:▫-. "
+        else:
+            ascii_chars = "@%#$*+=-:. "
 
-        return ascii_art
+    pixel_intensity = 255 - image_array
+    ascii_chars_indices = (pixel_intensity / 255 * (len(ascii_chars) - 1)).astype(int)
+    ascii_art_array = np.array(list(ascii_chars))[ascii_chars_indices]
+    ascii_art = '\n'.join(''.join(row) for row in ascii_art_array)
+
+    return ascii_art

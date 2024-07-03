@@ -1,9 +1,9 @@
 
 import time
-from . import os
-from sys import stdout as sys_stdout
-from . import List, Union, Tuple , Any
+import os
+from typing import List, Union, Tuple , Any
 from random import random, choice
+import sys
 
 from .tbe import determine_affirmative#, pass_func
 
@@ -35,8 +35,8 @@ def typingPrint(text: str, delay: float) -> None:
     if not delay > 0:
         delay = 0.05
     for character in text:
-        sys_stdout.write(character)
-        sys_stdout.flush()
+        sys.stdout.write(character)
+        sys.stdout.flush()
         time.sleep(delay)
 
 def typingInput(text: str, delay: float = 0) -> str:
@@ -58,8 +58,8 @@ def typingInput(text: str, delay: float = 0) -> str:
     if not delay > 0:
         delay = 0.05
     for character in text:
-        sys_stdout.write(character)
-        sys_stdout.flush()
+        sys.stdout.write(character)
+        sys.stdout.flush()
         time.sleep(delay)
     value = input("")  
     return value
@@ -234,11 +234,11 @@ def progress_bar(progress_name: str, current: int, total: int, length, show_floa
 
     bar = f'{full_tile}' * filled_length + f'{empty_tile}' * (length - filled_length)
     if progress_name == "":
-        sys_stdout.write(f'\r[{bar}] {percent}%')
-        sys_stdout.flush()
+        sys.stdout.write(f'\r[{bar}] {percent}%')
+        sys.stdout.flush()
     else:
-        sys_stdout.write(f'\r{progress_name}: [{bar}] {percent}%')
-        sys_stdout.flush()
+        sys.stdout.write(f'\r{progress_name}: [{bar}] {percent}%')
+        sys.stdout.flush()
 
 def colorize_text(text: str, color: str) -> str:
     """
@@ -381,11 +381,11 @@ def clear_lines(num_lines: int, move_front: bool = False) -> None:
     clear_lines(3)
     This will move the cursor up 3 lines and clear the current line, effectively clearing 3 lines on the console screen.
     """
-    sys_stdout.write('\033[F' * num_lines) # Move the cursor up `num_lines` lines
-    sys_stdout.write('\033[K') # Clear the current line and move the cursor to the beginning
+    sys.stdout.write('\033[F' * num_lines) # Move the cursor up `num_lines` lines
+    sys.stdout.write('\033[K') # Clear the current line and move the cursor to the beginning
     #if move_front is true, the cursor should be moved by 1 character
     if move_front:
-        sys_stdout.write('\033[F')
+        sys.stdout.write('\033[F')
         
     
 
@@ -535,7 +535,7 @@ def matrix_rain(rows: int, columns: int, speed: float=0.1, density: float=0.2, d
 
 
 
-from . import sys
+
 from io import StringIO
 
 class ConsoleCapture:

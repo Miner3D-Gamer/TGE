@@ -8,7 +8,7 @@ import sys
 
 from pygame import quit as pygame_quit
 
-
+# Why did I make this? For what reason would anyone ever need this?
 
 def wait(seconds: int) -> None:
     """

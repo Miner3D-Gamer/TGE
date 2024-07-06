@@ -5,6 +5,49 @@ from typing import List, Union, Tuple , Any
 import re
 
 
+class msy:
+    # Miner3D's Simplified YAML
+    def _parse_msy(data:str)->dict:
+        parsed_data = {}
+        current_list_name = None
+        
+        lines = data.split('\n')
+        for line in lines:
+            line = line.strip()
+            if line.startswith('#'):
+                current_list_name = line[1:].strip()
+                parsed_data[current_list_name] = []
+            elif line:
+                if current_list_name is not None:
+                    parsed_data[current_list_name].append(line)
+                else:
+                    raise ValueError("Data format error: Item found before list name.")
+        
+        return parsed_data
+
+    def _format_msy(data:dict)->str:
+        formatted_text = ""
+        
+        for list_name, items in data.items():
+            formatted_text += f"#{list_name}\n"
+            for item in items:
+                formatted_text += f"{item}\n"
+            formatted_text += "\n"
+        
+        return formatted_text
+
+    def load(self,text:str)->dict:
+        """
+            Returns a dictionary based on the inputted string (msy format)
+        """
+        return self._parse_msy(data=text)
+        
+    def format(self,dict:dict)->str:
+        """
+            Returns a a str (msy formatted) from the inputted dictionary
+        """
+        return self._parse_msy(data=dict)
+
 
 def encode(x: str) -> Tuple[bool, str]: 
     """

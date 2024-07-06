@@ -146,7 +146,7 @@ def java_ver(release='', vendor='', vminfo=('', '', ''), osinfo=('', '', '')):
     """
     # Import the needed APIs
     try:
-        import java.lang
+        import java.lang # type: ignore
     except ImportError:
         return release, vendor, vminfo, osinfo
 
@@ -202,7 +202,7 @@ def win32_ver(release='', version='', csd='', ptype=''):
         try:
             import winreg
         except ImportError:
-            import _winreg as winreg
+            import _winreg as winreg # type: ignore
     except ImportError:
         pass
     else:
@@ -218,7 +218,7 @@ def win32_ver(release='', version='', csd='', ptype=''):
 
 def _java_getprop(name, default):
 
-    from java.lang import System
+    from java.lang import System # type: ignore
     try:
         value = System.getProperty(name)
         if value is None:
@@ -368,7 +368,7 @@ class _Processor:
 
     def get_OpenVMS():
         try:
-            import vms_lib
+            import vms_lib # type: ignore
         except ImportError:
             pass
         else:

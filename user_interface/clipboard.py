@@ -1,6 +1,6 @@
-from .cursor_operations import WINDOWS, CTYPES, USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
+from .cursor_operations import WINDOWS, USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
 
-if WINDOWS and CTYPES:
+if WINDOWS:
     def get_clipboard(user32 = USER32, kernel32 = KERNEL32) -> str: # About 20% faster on Windows than with pyperclip
         """
         Retrieve the current content of the system clipboard.

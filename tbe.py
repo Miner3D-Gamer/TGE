@@ -11,7 +11,6 @@
 
 #from pytz import timezone as pytz_timezone
 #from math import sqrt, log, log2, modf, ceil, floor, factorial
-from typing import List, Union, Tuple , Any
 
 
 
@@ -86,6 +85,22 @@ from typing import List, Union, Tuple , Any
 #             return -1
 
 
+
+
+from typing import List, Union, Tuple , Any, get_type_hints
+import ast
+import os
+import sys
+import importlib
+from difflib import get_close_matches
+
+import inspect
+
+
+
+
+
+
 def pass_func(*args: Any) -> None:
     """
     This function does nothing and has no side effects.
@@ -130,7 +145,6 @@ def execute_function(func=pass_func, *args: Any, **kwargs: Any) -> Any:
 
 
 
-from difflib import get_close_matches
 
 def determine_affirmative(text: str) -> bool:
     """
@@ -273,7 +287,7 @@ def get_available_variables() -> Tuple:
 
 #hi = "post_to_discord_webhook"
 
-import inspect
+
 def get_docstring(obj: object) -> str:
     """
     Retrieve the docstring of a given object.
@@ -452,8 +466,7 @@ def number_to_words(number) -> str:
 
 
 
-import ast
-import os
+
 
 def find_undocumented_functions(file_path):
     undocumented_functions = []
@@ -779,7 +792,6 @@ def get_function_id_by_name(func_name:str):
 
 
 
-from typing import get_type_hints
 
 
 def get_function_inputs(func)->list[dict]:
@@ -989,8 +1001,6 @@ def get_return_type(func):
 
 
 
-import inspect
-import importlib
 
 
 def count_functions_in_module(module, library_name)->int:
@@ -1016,9 +1026,26 @@ def count_functions_in_library(library_name)->int:
 
 
 
+class ArgumentHandler:
+    def __init__(self, arguments: None | list = None, is_unordered:bool|None=True) -> None:
+        if arguments is None:
+            arguments = sys.argv[1:]
+        self.arguments: list = arguments
+        self.is_unordered = is_unordered
 
+    def get_argument(self, argument: str, is_unordered: bool|None = None) -> str | None:
+        if not argument in self.arguments:
+            return None
+        value_id = self.arguments.index(argument)
+        value = self.arguments.__getitem__(value_id)
+        if is_unordered is None:
+            is_unordered = self.is_unordered
+        if is_unordered:
+            value = self.arguments.__getitem__(value_id)
+        return value
 
-
+    def is_empty(self)->bool:
+        return len(self.arguments) == 0
 
 
 

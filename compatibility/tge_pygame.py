@@ -1,4 +1,4 @@
-from .. import os
+import os
 from importlib import import_module as importlib_import_module
 
 import pygame
@@ -7,9 +7,7 @@ from ..random_generators import generate_random_string
 
 from ..tbe import pass_func
 
-from .. import PIL
-if PIL:
-    from ..image_processing import count_gif_frames
+from ..image_processing import count_gif_frames
 
 
 def update_screen(clock: pygame.time.Clock, fps: int = 0) -> None:
@@ -45,61 +43,58 @@ def render_text(screen: pygame.Surface, text: str, font_name: str, size: int, co
     rendered_text = font.render(text, True, color)
     screen.blit(rendered_text, position)
 
-if PIL:
-    def load_images_from_directory(directory_path: str) -> None:
-        """
-        Loads all images in the specified directory to pygame.
 
-        Args:
-            directory_path (str): The path of the directory.
-        """
+def load_images_from_directory(directory_path: str) -> None:
+    """
+    Loads all images in the specified directory to pygame.
 
-        supported_extensions = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tga", ".lbm", ".pbm", ".ppm", ".svg", ".tiff", ".webp", ".xbm", ".xpm", ".tif"]
-        skipped = []
-        files = {}
-        
-        for file in os.listdir(directory_path):
-            file_name, file_extension = os.path.splitext(file)
-            if file_extension in supported_extensions:
-                try:
-                    if file_extension == ".gif":
-                        if count_gif_frames(directory_path + "/" + file)[1] == 1:
-                            pass
-                        else: 
-                            skipped.append(file)
-                            continue
-                    files[file_name] = file
-                except:
-                    skipped.append(file)
-                    continue
-        if len(files) == 0:
-            return False
-        successful_files = 0
-        temp_file_name = generate_random_string(20)
-        with open(f"{temp_file_name}.py", "w") as f:
-            f.write("from pygame import image\n")
-            f.write("def pygame_load_images_from_directory_temp_file():\n")
-            f.write("\tsuccessful_files = 0\n")
-            for file in files:
-                f.write(f"\tglobal {file}\n")
-                f.write(f"\t{file} = image.load('{directory_path}/{files[file]}')\n")
-                f.write("\tsuccessful_files += 1\n")
-            f.write("\treturn successful_files")
-        try:
-            generated_module = importlib_import_module(temp_file_name)
-            successful_files = generated_module.pygame_load_images_from_directory_temp_file()
-        except:
-            return skipped, successful_files, False
-        os.remove(f"{temp_file_name}.py")
+    Args:
+        directory_path (str): The path of the directory.
+    """
 
-        if len(skipped) == 0:
-            return skipped, successful_files, True
-        else:
-            return skipped, successful_files, False
-else:
-    def load_images_from_directory(directory_path: str) -> None:
-        "A fallback function if Pillow is not installed"
-        return [], 0, False
+    supported_extensions = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tga", ".lbm", ".pbm", ".ppm", ".svg", ".tiff", ".webp", ".xbm", ".xpm", ".tif"]
+    skipped = []
+    files = {}
+    
+    for file in os.listdir(directory_path):
+        file_name, file_extension = os.path.splitext(file)
+        if file_extension in supported_extensions:
+            try:
+                if file_extension == ".gif":
+                    if count_gif_frames(directory_path + "/" + file)[1] == 1:
+                        pass
+                    else: 
+                        skipped.append(file)
+                        continue
+                files[file_name] = file
+            except:
+                skipped.append(file)
+                continue
+    if len(files) == 0:
+        return False
+    successful_files = 0
+    temp_file_name = generate_random_string(20)
+    with open(f"{temp_file_name}.py", "w") as f:
+        f.write("from pygame import image\n")
+        f.write("def pygame_load_images_from_directory_temp_file():\n")
+        f.write("\tsuccessful_files = 0\n")
+        for file in files:
+            f.write(f"\tglobal {file}\n")
+            f.write(f"\t{file} = image.load('{directory_path}/{files[file]}')\n")
+            f.write("\tsuccessful_files += 1\n")
+        f.write("\treturn successful_files")
+    try:
+        generated_module = importlib_import_module(temp_file_name)
+        successful_files = generated_module.pygame_load_images_from_directory_temp_file()
+    except:
+        return skipped, successful_files, False
+    os.remove(f"{temp_file_name}.py")
+
+    if len(skipped) == 0:
+        return skipped, successful_files, True
+    else:
+        return skipped, successful_files, False
+
 
 def handle_input(quit_callback = exit, key_callback = pass_func, mouse_button_callback = pass_func):
     """

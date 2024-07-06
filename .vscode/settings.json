@@ -1,5 +1,30 @@
 {
     "cSpell.words": [
-        "getexif"
+        "aeiouäöü",
+        "ARCHITEW",
+        "autocloud",
+        "bcdfghjklmnpqrstvwxyz",
+        "bootstra",
+        "csid",
+        "cvkey",
+        "fixpoint",
+        "getexif",
+        "gethostname",
+        "getprop",
+        "getsyi",
+        "getwindowsversion",
+        "ispkg",
+        "lastexit",
+        "lastlaunch",
+        "localconfig",
+        "origname",
+        "osinfo",
+        "patchlevel",
+        "pkgdir",
+        "syscmd",
+        "userdata",
+        "vminfo",
+        "winver",
+        "youtu"
     ]
 }

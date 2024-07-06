@@ -1,6 +1,6 @@
 
 from typing import List, Union, Tuple , Any
-from uuid import uuid4
+import uuid
 from random import randint, choice, shuffle, uniform, getrandbits
 from string import ascii_letters as string_ascii_letters, digits as string_digits, ascii_lowercase
 
@@ -70,20 +70,43 @@ def generate_name(gen: int, ) -> str:
 
     name = name_text[:idx2]
     name = decode_html_character(name)
-    return (name)
+    return name
 
-def generate_uuid() -> str:
+def generate_uuid5() -> str:
     """
     Generate a Universally Unique Identifier (UUID) using the uuid4() function.
 
     Returns:
         str: A string representation of the generated UUID.
-
-    Example:
-        >>> generate_uuid()
-        '46c8b81f-e1b3-4d87-a4f3-f690d9b7e4b4'
     """
-    return str(uuid4())
+    return str(uuid.uuid5())
+
+def generate_uuid1() -> str:
+    """
+    Generate a Universally Unique Identifier (UUID) using the uuid4() function.
+
+    Returns:
+        str: A string representation of the generated UUID.
+    """
+    return str(uuid.uuid1())
+
+def generate_uuid3() -> str:
+    """
+    Generate a Universally Unique Identifier (UUID) using the uuid4() function.
+
+    Returns:
+        str: A string representation of the generated UUID.
+    """
+    return str(uuid.uuid3())
+
+def generate_uuid4() -> str:
+    """
+    Generate a Universally Unique Identifier (UUID) using the uuid4() function.
+
+    Returns:
+        str: A string representation of the generated UUID.
+    """
+    return str(uuid.uuid4())
 
 def generate_password(length: int) -> str:
     """

@@ -1,9 +1,6 @@
 from math import sqrt, log2
 
-from .. import NUMPY
-NUMPY = False
-if NUMPY:
-    from numpy import corrcoef as np_corrcoef
+from numpy import corrcoef as np_corrcoef
 
 
 def average_grade(grades: list) -> float:
@@ -87,23 +84,23 @@ def median_absolute_deviation(data):
     mad = median(deviations)
     return mad
 
-if NUMPY:
-    def correlation(data1, data2):
-        """
-        Calculate the correlation coefficient between two sets of data.
 
-        Parameters:
-        data1 (array-like): The first set of data.
-        data2 (array-like): The second set of data.
+def correlation(data1, data2):
+    """
+    Calculate the correlation coefficient between two sets of data.
 
-        Returns:
-        float: The correlation coefficient between data1 and data2.
-            The correlation coefficient ranges from -1 to 1, where:
-            - 1 indicates a perfect positive linear relationship,
-            0 indicates no linear relationship, and
-            1 indicates a perfect negative linear relationship.
-        """
-        return np_corrcoef(data1, data2)[0][1]
+    Parameters:
+    data1 (array-like): The first set of data.
+    data2 (array-like): The second set of data.
+
+    Returns:
+    float: The correlation coefficient between data1 and data2.
+        The correlation coefficient ranges from -1 to 1, where:
+        - 1 indicates a perfect positive linear relationship,
+        0 indicates no linear relationship, and
+        1 indicates a perfect negative linear relationship.
+    """
+    return np_corrcoef(data1, data2)[0][1]
 
 def calculate_entropy(grades: list) -> float:
     """

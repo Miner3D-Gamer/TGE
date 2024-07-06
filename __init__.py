@@ -42,27 +42,13 @@ else:
 import subprocess
 import os
 from typing import List, Union, Tuple , Any, Optional, Dict
+import subprocess
+import shlex
 
 import_times["build-in"] = tm.time() - start_importing
 
 
-def init_internet_connectivity():
-    """Initialize the internet connectivity tester."""
-    import urllib.request
-    global is_internet_connected
-    def is_internet_connected(max_timeout: int = 5, website: str = "https://www.google.com"):
-        """
-        The internet connectivity tester.
-        
-        Input:
-            >>> max_timeout = int(seconds)
-            >>> website = str("Website to test for")
-        """
-        try:
-            urllib.request.urlopen(website, timeout=max_timeout)
-            return True
-        except Exception as e:
-            return False
+
     
 
 
@@ -100,8 +86,8 @@ def test_for_library(library_name) -> bool:
     spec = import_lib_mini.find_spec(library_name)
     return spec is not None
 
-# Function to Download and Install Missing Libraries
-def download_library(library_name: str) -> Tuple[str, bool]:
+
+def download_library(library_name: str) -> Tuple[bool, str]:
     """
     Downloads and installs a Python library using pip.
 
@@ -111,13 +97,21 @@ def download_library(library_name: str) -> Tuple[str, bool]:
     Returns:
         tuple: A tuple containing a boolean indicating whether the installation was successful
         and a message string providing additional information in case of an error.
-        """
+    """
+    
+    command = ['pip', 'install', library_name]
     
     try:
-        subprocess.check_call(['pip', 'install', library_name])
+        result = subprocess.run(command, check=True, capture_output=True, text=True)
         return True, ""
     except subprocess.CalledProcessError as e:
-        return False, str(e)
+        error_message = (
+            f"Failed to install {library_name}. "
+            f"Return code: {e.returncode}. "
+            f"Output: {e.output}. "
+            f"Error: {e.stderr}."
+        )
+        return False, error_message
 
 
 
@@ -159,22 +153,17 @@ from .manipulation import list_utils
 from .manipulation import dictionary_utils as dict_utils
 
 #   Import modules from "compatibility"
-def load_tge_pygame():
-    from .compatibility import tge_pygame
-    return tge_pygame
-
-def load_tge_tkinter():
-    from .compatibility import tge_tkinter
-    return tge_tkinter
+from .compatibility import tge_pygame
+from .compatibility import tge_tkinter
 
 
 
 #   Import modules from "conversion"
-from .conversion import convert_binary as binary
-from .conversion import convert_temperature as temperature
-from .conversion import convert_time as time
-from .conversion import convert_units as units
-from .conversion import data_conversion as data
+from .conversion import binary as binary
+from .conversion import temperature as temperature
+from .conversion import time as time
+from .conversion import units as units
+from .conversion import data as data
 
 
 #   Import modules from "math_functions"
@@ -185,30 +174,18 @@ from .math_functions import statistics_calculations
 
 
 #   Import modules from "user_interface"
-def load_system_interaction():
-    from .user_interface import system_interactions
-    from .user_interface import clipboard
-    return system_interactions, clipboard
+from .user_interface import system_interactions
+from .user_interface import clipboard
+
 
 
 #   Import modules from root directory
-def load_tge_alternative_functions():
-    from . import alternatives
-    return alternatives
-def load_tge_audio():
-    from . import audio
-def load_console_utils():
-    from . import console_utils
-    return console_utils
-def load_random():
-    from . import random_generators as tge_random
-    return tge_random
-def load_validation():
-    from . import validation
-    return validation
-def load_internet():
-    from . import internet
-    return internet
+
+from . import audio
+from . import console_utils
+from . import random_generators as random
+from . import validation
+from . import internet
 
 from . import tbe
 from . import codec

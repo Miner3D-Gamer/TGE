@@ -1446,589 +1446,27 @@ def nand_three(a: bool, b: bool, c: bool) -> bool:
     return not (a and b and c)
 
 
-def nand_four(a: bool, b: bool, c: bool, d: bool) -> bool:
+def nand(*args: bool) -> bool:
     """
-    Compute the NAND (NOT-AND) logic operation on four boolean inputs.
+    Calculates the result of a NAND logic function with a variable number of inputs.
 
-    This function takes four boolean inputs (a, b, c, d) and calculates the result
-    of the NAND logic operation on them. The NAND operation returns True if and only
-    if all the input values (a, b, c, d) are False; otherwise, it returns False.
-
-    Parameters:
-    a (bool): The first boolean input.
-    b (bool): The second boolean input.
-    c (bool): The third boolean input.
-    d (bool): The fourth boolean input.
-
-    Returns:
-    bool: The result of the NAND operation on the input values.
-    """
-    return not (a and b and c and d)
-
-
-def nand_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    """
-    Computes the logical NAND operation on five boolean values.
-
-    This function takes five boolean inputs (a, b, c, d, e) and returns
-    the result of applying the logical NAND operation on them. The logical
-    NAND operation returns True if and only if all of the input values are
-    False; otherwise, it returns False.
+    This function takes a variable number of boolean inputs and calculates the result of the NAND logic operation.
+    The NAND operation returns True if at least one input is False, and False only if all inputs are True.
 
     Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
+        *args (bool): Input boolean values.
 
     Returns:
-        bool: The result of the logical NAND operation on the input values.
-    """
-    return not (a and b and c and d and e)
-
-
-def nand_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    """
-    Perform a 6-input NAND operation on the given boolean inputs.
-
-    This function calculates the logical NAND operation on six boolean inputs: a, b, c, d, e, and f.
-    It returns True if all inputs are False, and False if at least one input is True.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-
-    Returns:
-        bool: The result of the NAND operation on the inputs.
-    """
-    return not (a and b and c and d and e and f)
-
-
-def nand_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    """
-    Performs a 7-input NAND operation on the given boolean inputs.
-
-    This function takes seven boolean inputs (a, b, c, d, e, f, g) and returns
-    the result of applying a NAND (NOT-AND) operation on all of them. It returns
-    True if the logical AND of all inputs evaluates to False, and False otherwise.
-
-    Parameters:
-    a (bool): The first boolean input.
-    b (bool): The second boolean input.
-    c (bool): The third boolean input.
-    d (bool): The fourth boolean input.
-    e (bool): The fifth boolean input.
-    f (bool): The sixth boolean input.
-    g (bool): The seventh boolean input.
-
-    Returns:
-    bool: The result of the 7-input NAND operation.
-    """
-    return not (a and b and c and d and e and f and g)
-
-
-def nand_eight(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool) -> bool:
-    """
-    Perform an eight-input NAND operation on the given boolean values.
-
-    This function calculates the NAND (NOT-AND) logic operation on eight input boolean values
-    (a, b, c, d, e, f, g, h) and returns the resulting boolean value.
-
-    Parameters:
-    a (bool): First input boolean value.
-    b (bool): Second input boolean value.
-    c (bool): Third input boolean value.
-    d (bool): Fourth input boolean value.
-    e (bool): Fifth input boolean value.
-    f (bool): Sixth input boolean value.
-    g (bool): Seventh input boolean value.
-    h (bool): Eighth input boolean value.
-
-    Returns:
-    bool: The result of the eight-input NAND operation.
-    """
-    return not (a and b and c and d and e and f and g and h)
-
-
-def nand_nine(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool) -> bool:
-    """
-    Calculates the result of a 9-input NAND gate operation.
-
-    This function takes nine boolean inputs (a, b, c, d, e, f, g, h, i) and computes
-    the logical NOT-AND (NAND) operation on all inputs. It returns True if the result
-    of the NAND operation is False (i.e., all inputs are True), and False if the result
-    is True (at least one input is False).
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-
-    Returns:
-        bool: The result of the 9-input NAND gate operation. True if all inputs are True,
-        False if at least one input is False.
-    """
-    return not (a and b and c and d and e and f and g and h and i)
-
-
-def nand_ten(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool, j: bool) -> bool:
-    """
-    Computes the NAND (NOT-AND) logic operation on ten boolean inputs.
-
-    This function takes ten boolean inputs (a-j) and returns the result of applying the NAND operation
-    on all inputs. The NAND operation returns True if and only if all inputs are False; otherwise, it
-    returns False.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-        j (bool): The tenth boolean input.
-
-    Returns:
-        bool: The result of the NAND operation on the ten input booleans.
-    """
-    return not (a and b and c and d and e and f and g and h and i and j)
-
-
-
-
-# nor
-def nor(a: bool, b: bool) -> bool:
-    """
-    Compute the NOR (NOT OR) logical operation between two boolean values.
-
-    This function takes two boolean inputs, 'a' and 'b', and returns the result
-    of applying the NOR operation to them. The NOR operation returns True if
-    both 'a' and 'b' are False; otherwise, it returns False.
-
-    Parameters:
-    a (bool): The first boolean operand.
-    b (bool): The second boolean operand.
-
-    Returns:
-    bool: The result of the NOR operation between 'a' and 'b'.
-    """
-    return not (a or b)
-
-
-def nor_three(a: bool, b: bool, c: bool) -> bool:
-    """
-    Perform NOR operation on three input boolean values.
-
-    This function takes three boolean values as input (a, b, c) and returns
-    the result of applying the NOR (NOT OR) logical operation on them. It
-    calculates the negation of the logical OR operation between the input
-    values, resulting in True only if all input values (a, b, c) are False,
-    and False otherwise.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-
-    Returns:
-        bool: The result of the NOR operation on the input values.
-    """
-    return not (a or b or c)
-
-
-def nor_four(a: bool, b: bool, c: bool, d: bool) -> bool:
-    """
-    Computes the NOR (NOT OR) logic operation on four boolean inputs.
-
-    This function takes four boolean values as input (a, b, c, d) and returns
-    the result of applying the NOR logic operation on them. The NOR operation
-    yields True if all input booleans are False; otherwise, it returns False.
-
-    Parameters:
-    a (bool): The first boolean input.
-    b (bool): The second boolean input.
-    c (bool): The third boolean input.
-    d (bool): The fourth boolean input.
-
-    Returns:
-    bool: The result of the NOR operation on the input booleans.
-    """
-    return not (a or b or c or d)
-
-
-def nor_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    """
-    Calculate the NOR (NOT OR) operation on five boolean values.
-
-    This function takes five boolean inputs (a, b, c, d, e) and returns the
-    result of applying the NOR operation on them. The NOR operation returns
-    True if none of the input booleans are True, and False if at least one of
-    the input booleans is True.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-
-    Returns:
-        bool: The result of the NOR operation on the input booleans.
-    """
-    return not (a or b or c or d or e)
-
-
-def nor_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    """
-    Computes the NOR (NOT OR) operation on six boolean values.
-
-    This function takes six boolean values as input and returns the result of applying
-    the NOR operation to them. The NOR operation returns True if all input values are
-    False, and False otherwise.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-
-    Returns:
-        bool: The result of the NOR operation on the input boolean values.
-    """
-    return not (a or b or c or d or e or f)
-
-
-def nor_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    """
-    Perform a logical NOR operation on seven input boolean values.
-
-    This function takes seven boolean input values (a, b, c, d, e, f, g) and
-    returns the result of applying a logical NOR operation to them. It computes
-    the negation of the logical OR operation between all the input values, which
-    means the output will be True if all input values are False, and False if
-    at least one input value is True.
-
-    Args:
-        a (bool): The first boolean input value.
-        b (bool): The second boolean input value.
-        c (bool): The third boolean input value.
-        d (bool): The fourth boolean input value.
-        e (bool): The fifth boolean input value.
-        f (bool): The sixth boolean input value.
-        g (bool): The seventh boolean input value.
-
-    Returns:
-        bool: The result of the logical NOR operation on the input values.
-    """
-    return not (a or b or c or d or e or f or g)
-
-
-def nor_eight(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool) -> bool:
-    """
-    Computes the logical NOR (NOT OR) operation on eight boolean values.
-
-    This function takes eight boolean values as input and returns the result of
-    applying the NOR operation to them. The NOR operation returns True if all the
-    input values are False, otherwise, it returns False.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-
-    Returns:
-        bool: The result of the NOR operation on the input boolean values.
+        bool: Result of the NAND logic operation performed on the input boolean values.
 
     Example:
-        nor_result = nor_eight(False, True, False, True, False, False, True, False)
-        # nor_result will be False since at least one of the input values is True.
+        nand(True, True, True)
+        # Returns: False
+
+        nand(True, True, False)
+        # Returns: True
     """
-    return not (a or b or c or d or e or f or g or h)
-
-
-def nor_nine(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool) -> bool:
-    """
-    Computes the NOR operation on nine boolean inputs.
-
-    This function takes nine boolean inputs (a, b, c, d, e, f, g, h, i) and calculates
-    the logical NOR (NOT OR) operation on them. It returns True if none of the inputs are
-    True (i.e., all inputs are False), and False if at least one input is True.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-
-    Returns:
-        bool: The result of the NOR operation on the nine input booleans.
-    """
-    return not (a or b or c or d or e or f or g or h or i)
-
-
-def nor_ten(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool, j: bool) -> bool:
-    """
-    Performs a NOR operation on ten input boolean values.
-
-    This function takes ten boolean input values (a, b, c, d, e, f, g, h, i, j) and returns the result
-    of applying a NOR (NOT OR) operation on them. It returns True if all input values are False, and False
-    otherwise. In other words, if none of the input values is True, the output will be True; otherwise,
-    the output will be False.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-        j (bool): The tenth boolean input.
-
-    Returns:
-        bool: The result of the NOR operation on the input boolean values.
-    """
-    return not (a or b or c or d or e or f or g or h or i or j)
-
-
-
-# nxor
-def nxor(a: bool, b: bool) -> bool:
-    """
-    Calculate the logical 'NXOR' (Negated Exclusive OR) of two boolean values.
-
-    The function takes two boolean inputs, 'a' and 'b', and returns the result
-    of the NXOR operation, which is the negation of the exclusive OR (XOR) operation.
-    In other words, it returns True if both 'a' and 'b' are either both True or both False,
-    and False otherwise.
-
-    :param a: The first boolean input.
-    :param b: The second boolean input.
-    :return: The result of the NXOR operation between 'a' and 'b'.
-    :rtype: bool
-    """
-    return not (a ^ b)
-
-
-def xnor_three(a: bool, b: bool, c: bool) -> bool:
-    """
-    Perform a 3-input XNOR (exclusive NOR) operation on three boolean values.
-
-    This function takes three boolean inputs (a, b, and c) and returns the result
-    of applying the XNOR operation to them. The XNOR operation returns True if
-    all inputs are equal (either all True or all False), and False otherwise.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-
-    Returns:
-        bool: The result of the XNOR operation on the three inputs.
-    """
-    return not (a ^ b ^ c)
-
-
-def xnor_four(a: bool, b: bool, c: bool, d: bool) -> bool:
-    """
-    Calculate the XNOR (exclusive NOR) of four boolean values.
-
-    This function takes four boolean input values (a, b, c, d) and returns
-    the XNOR operation result of these values. The XNOR operation returns
-    True if all input values are either all True or all False; otherwise,
-    it returns False.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-
-    Returns:
-        bool: The XNOR result of the input boolean values.
-    """
-    return not (a ^ b ^ c ^ d)
-
-
-def xnor_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    """
-    Calculate the XNOR (logical equivalence) of five boolean values.
-
-    This function takes five boolean values (a, b, c, d, e) as input and returns
-    the result of applying the XNOR operation on these values. The XNOR operation
-    returns True if all the input values are equal, either all True or all False;
-    otherwise, it returns False.
-
-    Args:
-    a (bool): The first boolean input.
-    b (bool): The second boolean input.
-    c (bool): The third boolean input.
-    d (bool): The fourth boolean input.
-    e (bool): The fifth boolean input.
-
-    Returns:
-    bool: The result of applying the XNOR operation on the input boolean values.
-          Returns True if all values are equal (either all True or all False),
-          otherwise returns False.
-    """
-    return not (a ^ b ^ c ^ d ^ e)
-
-
-def xnor_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    """
-    Calculate the XNOR (exclusive NOR) operation for six boolean inputs.
-
-    This function takes six boolean inputs (a, b, c, d, e, f) and performs the XNOR operation
-    on them, returning True if an even number of True values are given as input, and False
-    otherwise.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-
-    Returns:
-        bool: The result of the XNOR operation on the input booleans.
-
-    Example:
-        >>> xnor_six(True, False, True, False, True, False)
-        True
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f)
-
-
-def xnor_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    """
-    Calculate the XNOR (logical equivalence) of seven boolean values.
-
-    This function takes seven boolean input values (a, b, c, d, e, f, g) and
-    computes the logical equivalence (XNOR) of these values. The XNOR operation
-    returns True if an odd number of inputs are True, and False if an even number
-    of inputs are True. The result of the XNOR operation is then returned.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-
-    Returns:
-        bool: The result of the XNOR operation on the input boolean values.
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g)
-
-
-def xnor_eight(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool) -> bool:
-    """
-    Perform XNOR operation on eight boolean inputs.
-
-    This function calculates the XNOR (exclusive NOR) logical operation on eight boolean inputs
-    and returns the result as a boolean value.
-
-    Args:
-        a (bool): First boolean input.
-        b (bool): Second boolean input.
-        c (bool): Third boolean input.
-        d (bool): Fourth boolean input.
-        e (bool): Fifth boolean input.
-        f (bool): Sixth boolean input.
-        g (bool): Seventh boolean input.
-        h (bool): Eighth boolean input.
-
-    Returns:
-        bool: Result of the XNOR operation on the inputs.
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g ^ h)
-
-
-def xnor_nine(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool) -> bool:
-    """
-    Calculate the XNOR (logical equivalence) of nine boolean values.
-
-    This function takes nine boolean values as input and calculates their XNOR operation,
-    which returns True if an odd number of inputs are True, and False otherwise.
-    In other words, it checks if an even number of inputs are False.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-
-    Returns:
-        bool: The XNOR result of the nine boolean inputs.
-
-    Example:
-        >>> xnor_nine(True, False, True, False, True, True, False, False, True)
-        False
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g ^ h ^ i)
-
-
-def xnor_ten(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool, j: bool) -> bool:
-    """
-    Calculates the XNOR (exclusive NOR) operation for ten boolean inputs.
-
-    This function takes ten boolean inputs (a-j) and returns the result of the XNOR operation applied to all inputs.
-    The XNOR operation returns True if an even number of inputs are True or if all inputs are False; otherwise, it returns False.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-        j (bool): The tenth boolean input.
-
-    Returns:
-        bool: The result of the XNOR operation on the input booleans.
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g ^ h ^ i ^ j)
-
-
+    return not all(args)
 
 # xor
 def xor(a: bool, b: bool) -> bool:
@@ -2077,169 +1515,24 @@ def xor_three(a: bool, b: bool, c: bool) -> bool:
     return a ^ b ^ c
 
 
-def xor_four(a: bool, b: bool, c: bool, d: bool) -> bool:
+def xor(*args: bool) -> bool:
     """
-    Perform XOR (exclusive OR) operation on four boolean values.
+    Calculates the result of an XOR logic function with a variable number of inputs.
 
-    This function takes four boolean values as input and returns the result
-    of applying the XOR operation to them. XOR returns True if an odd number
-    of inputs are True, and False if an even number of inputs are True.
+    This function takes a variable number of boolean inputs and calculates the result of the XOR logic operation.
+    The XOR (exclusive OR) operation returns True if an odd number of inputs are True, and False otherwise.
 
     Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
+        *args (bool): Input boolean values.
 
     Returns:
-        bool: The result of XOR operation on the input boolean values.
-    """
-    return a ^ b ^ c ^ d
-
-
-def xor_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    """
-    Perform XOR (exclusive OR) operation on five boolean values.
-
-    This function takes five boolean values as input and returns the result
-    of performing the XOR operation (^) on them. The XOR operation returns
-    True if an odd number of inputs are True, and False if an even number
-    of inputs are True.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-
-    Returns:
-        bool: The result of performing XOR operation on the input booleans.
-    """
-    return a ^ b ^ c ^ d ^ e
-
-
-def xor_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    """
-    Perform XOR (exclusive OR) operation on six boolean values.
-
-    This function takes six boolean values as input and performs an XOR operation
-    on them, returning the result as a boolean value.
-
-    Args:
-        a (bool): The first boolean operand.
-        b (bool): The second boolean operand.
-        c (bool): The third boolean operand.
-        d (bool): The fourth boolean operand.
-        e (bool): The fifth boolean operand.
-        f (bool): The sixth boolean operand.
-
-    Returns:
-        bool: The result of the XOR operation on the input boolean values.
-    """
-    return a ^ b ^ c ^ d ^ e ^ f
-
-
-def xor_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    """
-    Perform a bitwise XOR (^) operation on seven boolean inputs.
-
-    This function takes seven boolean values as input and performs a bitwise XOR operation
-    on them, returning the result as a boolean value. Each input is treated as a single
-    binary bit, and the XOR operation is applied to the corresponding bits of the inputs.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-
-    Returns:
-        bool: The result of the bitwise XOR operation on the input booleans.
-    """
-    return a ^ b ^ c ^ d ^ e ^ f ^ g
-
-
-def xor_eight(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool) -> bool:
-    """
-    Perform XOR (exclusive OR) operation on eight boolean inputs.
-
-    This function takes eight boolean values as input and returns the result
-    of applying the XOR operation (^) successively on all the inputs. The XOR
-    operation returns True if an odd number of inputs are True, and False if
-    an even number of inputs are True.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-
-    Returns:
-        bool: The result of the XOR operation applied to all input booleans.
-    """
-    return a ^ b ^ c ^ d ^ e ^ f ^ g ^ h
-
-
-def xor_nine(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool) -> bool:
-    """
-    Perform XOR operation on nine boolean inputs.
-
-    This function takes nine boolean inputs and applies the XOR (^) operation
-    sequentially to all the inputs, returning the final boolean result.
-
-    Args:
-        a (bool): First boolean input.
-        b (bool): Second boolean input.
-        c (bool): Third boolean input.
-        d (bool): Fourth boolean input.
-        e (bool): Fifth boolean input.
-        f (bool): Sixth boolean input.
-        g (bool): Seventh boolean input.
-        h (bool): Eighth boolean input.
-        i (bool): Ninth boolean input.
-
-    Returns:
-        bool: Result of XOR operation applied to all inputs.
+        bool: Result of the XOR logic operation performed on the input boolean values.
 
     Example:
-        xor_result = xor_nine(True, False, True, False, True, True, False, False, True)
-        # xor_result should be True
+        xor(True, False, True, False, False, True, False, True, False, True)
+        # Returns: False
     """
-    return a ^ b ^ c ^ d ^ e ^ f ^ g ^ h ^ i
-
-
-def xor_ten(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool, j: bool) -> bool:
-    """
-    Perform XOR (exclusive OR) operation on ten boolean inputs.
-
-    This function takes ten boolean inputs and performs the XOR operation on them.
-    It returns True if an odd number of inputs are True, and False if an even number
-    of inputs are True.
-
-    Args:
-        a (bool): First boolean input.
-        b (bool): Second boolean input.
-        c (bool): Third boolean input.
-        d (bool): Fourth boolean input.
-        e (bool): Fifth boolean input.
-        f (bool): Sixth boolean input.
-        g (bool): Seventh boolean input.
-        h (bool): Eighth boolean input.
-        i (bool): Ninth boolean input.
-        j (bool): Tenth boolean input.
-
-    Returns:
-        bool: The result of the XOR operation on the input boolean values.
-    """
-    return a ^ b ^ c ^ d ^ e ^ f ^ g ^ h ^ i ^ j
+    return sum(args) % 2 == 1
 
 
 
@@ -2280,186 +1573,24 @@ def xnor_three(a: bool, b: bool, c: bool) -> bool:
     """
     return not (a ^ b ^ c)
 
-
-def xnor_four(a: bool, b: bool, c: bool, d: bool) -> bool:
+def xnor(*args: bool) -> bool:
     """
-    Perform a four-input XNOR (exclusive NOR) operation on boolean inputs.
+    Calculates the result of an XNOR logic function with a variable number of inputs.
 
-    This function takes four boolean inputs (a, b, c, d) and returns True if all inputs
-    are the same (either all True or all False), effectively implementing a four-input
-    XNOR logic operation. It returns False if the inputs are not all the same.
+    This function takes a variable number of boolean inputs and calculates the result of the XNOR logic operation.
+    The XNOR (exclusive NOR) operation returns True if an even number of inputs are True, and False otherwise.
 
     Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
+        *args (bool): Input boolean values.
 
     Returns:
-        bool: True if all inputs are the same, False otherwise.
-    """
-    return not (a ^ b ^ c ^ d)
-
-
-def xnor_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    """
-    Perform a 5-input XNOR operation on the given boolean inputs.
-
-    This function calculates the XNOR (exclusive NOR) operation on five boolean inputs,
-    which returns True if an odd number of inputs are True, and False if an even number
-    of inputs are True.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-
-    Returns:
-        bool: The result of the XNOR operation on the inputs.
+        bool: Result of the XNOR logic operation performed on the input boolean values.
 
     Example:
-        >>> xnor_five(True, False, True, False, True)
-        False
-        >>> xnor_five(True, True, True, False, False)
-        True
+        xnor(True, False, True, False, False, True, False, True, False, True)
+        # Returns: True
     """
-    return not (a ^ b ^ c ^ d ^ e)
-
-
-def xnor_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    """
-    Calculate the XNOR (exclusive NOR) of six boolean values.
-
-    This function takes six boolean inputs and returns the XNOR operation's result, which
-    is True if an even number of inputs are True or an even number of inputs are False,
-    and False otherwise.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-
-    Returns:
-        bool: The result of the XNOR operation on the input boolean values.
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f)
-
-
-def xnor_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    """
-    Calculate the XNOR (exclusive NOR) logic operation for seven input boolean values.
-
-    This function takes seven boolean inputs and returns the result of the XNOR operation
-    performed on all the inputs. The XNOR operation returns True if an even number of
-    inputs are True, and False otherwise.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-
-    Returns:
-        bool: The result of the XNOR operation on the input boolean values.
-
-    Example:
-        >>> xnor_seven(True, False, True, False, False, True, True)
-        False
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g)
-
-
-def xnor_eight(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool) -> bool:
-    """
-    Perform an XNOR operation on eight boolean values.
-
-    This function takes eight boolean inputs (a, b, c, d, e, f, g, h) and computes the XNOR (exclusive NOR) operation
-    on them. The XNOR operation returns True if all the inputs are either True or False, and False if the inputs are
-    mixed (some True and some False).
-
-    Args:
-    a (bool): The first boolean input.
-    b (bool): The second boolean input.
-    c (bool): The third boolean input.
-    d (bool): The fourth boolean input.
-    e (bool): The fifth boolean input.
-    f (bool): The sixth boolean input.
-    g (bool): The seventh boolean input.
-    h (bool): The eighth boolean input.
-
-    Returns:
-    bool: The result of the XNOR operation on the input booleans. True if all inputs are the same (True or False),
-    False if the inputs are mixed.
-
-    Example:
-    >>> xnor_eight(True, True, True, True, True, True, True, True)
-    True
-    >>> xnor_eight(True, False, True, False, True, False, True, False)
-    True
-    >>> xnor_eight(True, True, False, False, True, True, False, False)
-    False
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g ^ h)
-
-
-def xnor_nine(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool) -> bool:
-    """
-    Perform XNOR operation on nine boolean values.
-
-    This function calculates the XNOR (exclusive NOR) operation on nine boolean inputs.
-    It returns True if an odd number of inputs are True or if all inputs are False;
-    otherwise, it returns False.
-
-    Args:
-    a (bool): The first boolean input.
-    b (bool): The second boolean input.
-    c (bool): The third boolean input.
-    d (bool): The fourth boolean input.
-    e (bool): The fifth boolean input.
-    f (bool): The sixth boolean input.
-    g (bool): The seventh boolean input.
-    h (bool): The eighth boolean input.
-    i (bool): The ninth boolean input.
-
-    Returns:
-    bool: The result of the XNOR operation on the input boolean values.
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g ^ h ^ i)
-
-
-def xnor_ten(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool, j: bool) -> bool:
-    """
-    Calculates the XNOR (logical equivalence) of ten input boolean values.
-
-    This function takes ten boolean values as input (a, b, c, d, e, f, g, h, i, j) and calculates
-    the XNOR (logical equivalence) of these values. It returns True if an even number of inputs
-    are True or if all inputs are False; otherwise, it returns False.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-        j (bool): The tenth boolean input.
-
-    Returns:
-        bool: The XNOR result of the ten boolean inputs.
-    """
-    return not (a ^ b ^ c ^ d ^ e ^ f ^ g ^ h ^ i ^ j)
-
+    return sum(args) % 2 == 0
 
 
 # mux
@@ -2482,176 +1613,37 @@ def mux(a: bool, b: bool, c: bool) -> bool:
     return a if c else b
 
 
+from typing import List
+
 def mux_four(a: bool, b: bool, c: bool, d: bool, sel_1: bool, sel_0: bool) -> bool:
-    """
-    4-to-1 Multiplexer (MUX) Function
-    
-    This function emulates a 4-to-1 multiplexer, which selects one of the four input values (a, b, c, d) based on the
-    two selector bits (sel_1, sel_0). The selector bits determine the output of the multiplexer as follows:
-    
-    - If sel_1 is True:
-        - If sel_0 is True: Output is d
-        - If sel_0 is False: Output is c
-    - If sel_1 is False:
-        - If sel_0 is True: Output is b
-        - If sel_0 is False: Output is a
-    
-    Parameters:
-    a (bool): The first input value to the multiplexer.
-    b (bool): The second input value to the multiplexer.
-    c (bool): The third input value to the multiplexer.
-    d (bool): The fourth input value to the multiplexer.
-    sel_1 (bool): The most significant selector bit.
-    sel_0 (bool): The least significant selector bit.
-    
-    Returns:
-    bool: The selected output value based on the selector bits. The value will be one of the input values (a, b, c, d).
-    """
-    if sel_1:
-        if sel_0:
-            return d
-        else:
-            return c
-    else:
-        if sel_0:
-            return b
-        else:
-            return a
+    inputs = [a, b, c, d]
+    index = (sel_1 << 1) | sel_0
+    return inputs[index]
 
 
 def mux_eight(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, sel_2: bool, sel_1: bool, sel_0: bool) -> bool:
-    """
-    Multiplexer (MUX) function with eight inputs and three selection bits.
-
-    This function implements an 8-to-1 multiplexer, which selects one of the eight input values (a, b, c, d, e, f, g, h)
-    based on the values of the three selection bits (sel_2, sel_1, sel_0).
-
-    Args:
-        a (bool): Input value for selection index 000.
-        b (bool): Input value for selection index 001.
-        c (bool): Input value for selection index 010.
-        d (bool): Input value for selection index 011.
-        e (bool): Input value for selection index 100.
-        f (bool): Input value for selection index 101.
-        g (bool): Input value for selection index 110.
-        h (bool): Input value for selection index 111.
-        sel_2 (bool): Selection bit 2.
-        sel_1 (bool): Selection bit 1.
-        sel_0 (bool): Selection bit 0.
-
-    Returns:
-        bool: The selected input value based on the provided selection bits.
-    """
-    if sel_2:
-        if sel_1:
-            if sel_0:
-                return g
-            else:
-                return h
-        else:
-            if sel_0:
-                return f
-            else:
-                return e
-    else:
-        if sel_1:
-            if sel_0:
-                return c
-            else:
-                return d
-        else:
-            if sel_0:
-                return b
-            else:
-                return a
+    inputs = [a, b, c, d, e, f, g, h]
+    index = (sel_2 << 2) | (sel_1 << 1) | sel_0
+    return inputs[index]
 
 
-def mux_sixteen(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool, j: bool, k: bool, l: bool, m: bool, n: bool, o: bool, p: bool, sel_3: bool, sel_2: bool, sel_1: bool, sel_0: bool) -> bool:
-    """
-    Implements a 16-to-1 multiplexer (MUX) function.
-
-    This function takes 16 boolean input values (a to p) representing data inputs and 4 boolean selector inputs (sel_3 to sel_0) representing the selection lines of the multiplexer. Based on the combination of selector inputs, the function returns the corresponding data input value.
-
-    Args:
-        a (bool): Input data bit a
-        b (bool): Input data bit b
-        c (bool): Input data bit c
-        d (bool): Input data bit d
-        e (bool): Input data bit e
-        f (bool): Input data bit f
-        g (bool): Input data bit g
-        h (bool): Input data bit h
-        i (bool): Input data bit i
-        j (bool): Input data bit j
-        k (bool): Input data bit k
-        l (bool): Input data bit l
-        m (bool): Input data bit m
-        n (bool): Input data bit n
-        o (bool): Input data bit o
-        p (bool): Input data bit p
-        sel_3 (bool): Selector bit 3
-        sel_2 (bool): Selector bit 2
-        sel_1 (bool): Selector bit 1
-        sel_0 (bool): Selector bit 0
-
-    Returns:
-        bool: The selected data bit based on the selector inputs
-    """
-    if sel_3:
-        if sel_2:
-            if sel_1:
-                if sel_0:
-                    return o
-                else:
-                    return p
-            else:
-                if sel_0:
-                    return n
-                else:
-                    return m
-        else:
-            if sel_1:
-                if sel_0:
-                    return k
-                else:
-                    return l
-            else:
-                if sel_0:
-                    return j
-                else:
-                    return i
-    else:
-        if sel_2:
-            if sel_1:
-                if sel_0:
-                    return g
-                else:
-                    return h
-            else:
-                if sel_0:
-                    return f
-                else:
-                    return e
-        else:
-            if sel_1:
-                if sel_0:
-                    return c
-                else:
-                    return d
-            else:
-                if sel_0:
-                    return b
-                else:
-                    return a
-
+def mux_any(inputs: List[bool], selectors: List[bool]) -> bool:
+    if len(inputs) != 2 ** len(selectors):
+        raise ValueError("Number of inputs must be 2^n where n is the number of selectors.")
+    
+    index = 0
+    for i, sel in enumerate(reversed(selectors)):
+        index |= (sel << i)
+    
+    return inputs[index]
                 
 
-# aoi
-def aoi(a: bool, b: bool, c: bool) -> bool:
+# nor
+def nor(a: bool, b: bool, c: bool) -> bool:
     """
-    Computes the AND-OR-INVERT (AOI) logic operation on three boolean inputs.
+    Computes the AND-OR-INVERT (nor) logic operation on three boolean inputs.
 
-    The AOI operation evaluates to True if both 'a' and 'b' are False,
+    The nor operation evaluates to True if both 'a' and 'b' are False,
     and returns False otherwise. The third input 'c' is not used in the computation,
     but is provided to match the function signature for consistency.
 
@@ -2661,18 +1653,18 @@ def aoi(a: bool, b: bool, c: bool) -> bool:
     c (bool): The third boolean input (not used in the computation).
 
     Returns:
-    bool: The result of the AOI logic operation, which is True if both 'a' and 'b' are False,
+    bool: The result of the nor logic operation, which is True if both 'a' and 'b' are False,
           and False otherwise.
     """
     return not (a or b)
 
 
-def aoi_three(a: bool, b: bool, c: bool) -> bool:
+def nor_three(a: bool, b: bool, c: bool) -> bool:
     """
-    Compute the AND-OR-INVERT (AOI) three-input logic operation.
+    Compute the AND-OR-INVERT (nor) three-input logic operation.
 
     This function takes three boolean inputs (a, b, and c) and returns the result of
-    the AOI logic operation. AOI logic computes the logical NOT of the OR operation
+    the nor logic operation. nor logic computes the logical NOT of the OR operation
     between the inputs (a, b, c). In other words, it returns True if none of the inputs
     (a, b, c) are True; otherwise, it returns False.
 
@@ -2682,191 +1674,30 @@ def aoi_three(a: bool, b: bool, c: bool) -> bool:
         c (bool): The third boolean input.
 
     Returns:
-        bool: The result of the AOI three-input logic operation.
+        bool: The result of the nor three-input logic operation.
     """
     return not (a or b or c)
 
 
-def aoi_four(a: bool, b: bool, c: bool, d: bool) -> bool:
+def nor_any(*args: bool) -> bool:
     """
-    Implements the AOI-4 (AND-OR-INVERT-4) logic function.
+    Calculates the result of an AND-OR-INVERT (nor) logic function with a variable number of inputs.
 
-    This function takes four boolean inputs (a, b, c, d) and returns the result of
-    applying the AOI-4 logic operation. AOI-4 operation involves performing a logical
-    AND operation on the inputs and then negating the result.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-
-    Returns:
-        bool: The result of the AOI-4 logic operation, which is the negation of the
-        logical OR operation applied to the input booleans (a, b, c, d).
-    """
-    return not (a or b or c or d)
-
-
-def aoi_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    """
-    Implements the AOI-5 (AND-OR-INVERT-5) logic function.
-
-    This function takes five boolean inputs (a, b, c, d, e) and returns the result
-    of applying the AOI-5 logic operation. AOI-5 stands for "AND-OR-INVERT-5," and
-    it is a digital logic gate that performs the following operation:
-    
-    result = NOT (a OR b OR c OR d OR e)
-
-    In other words, the function returns True if none of the input values (a, b, c, d, e)
-    are True; otherwise, it returns False.
-
-    Parameters:
-    a (bool): The first boolean input.
-    b (bool): The second boolean input.
-    c (bool): The third boolean input.
-    d (bool): The fourth boolean input.
-    e (bool): The fifth boolean input.
-
-    Returns:
-    bool: The result of applying the AOI-5 logic operation to the input values.
-    """
-    return not (a or b or c or d or e)
-
-
-def aoi_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    """
-    Calculates the output of a 6-input AND-NOT (AOI) gate.
-
-    This function takes six boolean inputs (a, b, c, d, e, f) and computes the logical
-    operation NOT((a OR b OR c OR d OR e OR f)), effectively implementing a 6-input
-    AND-NOT (AOI) gate.
-
-    Args:
-        a (bool): The value of the first input.
-        b (bool): The value of the second input.
-        c (bool): The value of the third input.
-        d (bool): The value of the fourth input.
-        e (bool): The value of the fifth input.
-        f (bool): The value of the sixth input.
-
-    Returns:
-        bool: The output of the 6-input AND-NOT gate, which is the negation of the result
-        of the logical OR operation among the input values.
-
-    Example:
-        >>> aoi_six(True, False, True, False, True, False)
-        False
-        >>> aoi_six(False, False, False, True, True, False)
-        True
-    """
-    return not (a or b or c or d or e or f)
-
-
-def aoi_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    """
-    Computes the result of the AND-OR-INVERT (AOI) logic operation on seven boolean inputs.
-
-    This function takes seven boolean inputs (a, b, c, d, e, f, g) and returns the result
-    of the AOI logic operation, which is equivalent to the logical NOT of the OR operation
-    performed on all seven inputs.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-
-    Returns:
-        bool: The result of the AOI logic operation.
-
-    Example:
-        >>> aoi_seven(True, False, True, False, True, True, False)
-        False
-    """
-    return not (a or b or c or d or e or f or g)
-
-
-def aoi_eight(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool) -> bool:
-    """
-    Computes the AND-OR-INVERT (AOI) logic operation for eight boolean inputs.
-
-    This function calculates the result of the AOI operation on eight boolean inputs (a, b, c, d, e, f, g, h),
-    which involves evaluating the conjunction of all inputs and then inverting the result.
-    
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-    
-    Returns:
-        bool: The result of the AOI operation, which is True if all inputs are False, and False otherwise.
-    """
-    return not (a or b or c or d or e or f or g or h)
-
-
-def aoi_nine(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool) -> bool:
-    """
-    Computes the result of a 9-input AND-OR-INVERT (AOI) logic gate.
-
-    This function takes nine boolean inputs (a to i) and calculates the logical NOT
-    of the OR operation performed on all inputs. In other words, it returns True
-    if all inputs are False, and False if at least one input is True.
-
-    Args:
-        a (bool): The first boolean input.
-        b (bool): The second boolean input.
-        c (bool): The third boolean input.
-        d (bool): The fourth boolean input.
-        e (bool): The fifth boolean input.
-        f (bool): The sixth boolean input.
-        g (bool): The seventh boolean input.
-        h (bool): The eighth boolean input.
-        i (bool): The ninth boolean input.
-
-    Returns:
-        bool: The result of the AOI logic gate operation (NOT-OR).
-              True if all inputs are False, and False if at least one input is True.
-    """
-    return not (a or b or c or d or e or f or g or h or i)
-
-
-def aoi_ten(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool, j: bool) -> bool:
-    """
-    Calculates the result of an AND-OR-INVERT (AOI) logic function with ten inputs.
-
-    This function takes ten boolean inputs (a to j) and calculates the result of the AOI logic operation.
-    In AOI logic, multiple inputs are combined using OR gates, then the result of the OR operation is inverted,
+    This function takes a variable number of boolean inputs and calculates the result of the nor logic operation.
+    In nor logic, multiple inputs are combined using OR gates, then the result of the OR operation is inverted,
     and finally, the inverted result is combined with other inputs using an AND gate.
 
     Args:
-        a (bool): Input boolean value for the first operand.
-        b (bool): Input boolean value for the second operand.
-        c (bool): Input boolean value for the third operand.
-        d (bool): Input boolean value for the fourth operand.
-        e (bool): Input boolean value for the fifth operand.
-        f (bool): Input boolean value for the sixth operand.
-        g (bool): Input boolean value for the seventh operand.
-        h (bool): Input boolean value for the eighth operand.
-        i (bool): Input boolean value for the ninth operand.
-        j (bool): Input boolean value for the tenth operand.
+        *args (bool): Input boolean values.
 
     Returns:
-        bool: Result of the AOI logic operation performed on the input boolean values.
+        bool: Result of the nor logic operation performed on the input boolean values.
 
     Example:
-        aoi_ten(True, False, True, False, False, True, False, True, False, True)
+        nor(True, False, True, False, False, True, False, True, False, True)
         # Returns: False
     """
-    return not (a or b or c or d or e or f or g or h or i or j)
+    return not any(args)
 
 def half_adder(a: bool, b: bool) -> tuple[bool, bool]:
     """

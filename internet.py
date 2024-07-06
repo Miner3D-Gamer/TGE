@@ -1,6 +1,8 @@
 from typing import List, Union, Tuple , Any, Tuple, Dict, Optional
 import re
-from pytube import YouTube
+import pytube
+
+
 
 def remove_html_tags(string: str) -> str:
         """
@@ -20,12 +22,51 @@ def remove_html_tags(string: str) -> str:
         """
         return re.sub(r'<.*?>', '', string)
 
-def download_youtube_video(url: str, save_path: str, file_name: str) -> Tuple[bool, str]:#
+
+def get_youtube_video_id(input_string):
+    # Regex pattern to match YouTube video IDs
+    video_id_pattern = r'^[a-zA-Z0-9_-]{11}$'
+    
+    # Regex pattern to match YouTube URLs and extract the video ID
+    url_patterns = [
+        r'(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})',
+        r'(?:https?://)?(?:www\.)?youtube\.com/.*[?&]v=([a-zA-Z0-9_-]{11})',
+        r'(?:https?://)?(?:www\.)?youtube\.com/.*[&?]vi?=([a-zA-Z0-9_-]{11})'
+    ]
+    
+    # Check if the input string is a video ID
+    if re.match(video_id_pattern, input_string):
+        return input_string
+    
+    # Check if the input string is a YouTube URL and extract the video ID
+    for pattern in url_patterns:
+        match = re.search(pattern, input_string)
+        if match:
+            return match.group(1)
+    
+    return ""
+
+import urllib.request
+def is_internet_connected(max_timeout: int = 5, website: str = "https://www.google.com"):
+    """
+    The internet connectivity tester.
+    
+    Input:
+        >>> max_timeout = int(seconds)
+        >>> website = str("Website to test for")
+    """
+    try:
+        urllib.request.urlopen(website, timeout=max_timeout)
+        return True
+    except Exception as e:
+        return False
+
+def download_youtube_video(url_or_id: str, save_path: str, file_name: str, quality:str, audio_type:str|None=None) -> Tuple[bool, str]:
         """
         Download a YouTube video as audio from the given URL and save it to the specified location.
 
         Args:
-            url (str): The YouTube video URL or video ID. If a video ID is provided, it should be exactly 11 characters long.
+            url_or_id (str): The YouTube video URL or video ID. If a video ID is provided, it should be exactly 11 characters long.
                     If a URL is provided, the function handles short URLs and non-standard formats.
             save_path (str): The directory path where the downloaded video will be saved.
             file_name (str): The desired name for the downloaded video file. If no file extension is provided, '.mp4' will be added.
@@ -45,20 +86,24 @@ def download_youtube_video(url: str, save_path: str, file_name: str) -> Tuple[bo
             else:
                 print("Download failed:", message)
         """
-        if not len(url) == 11:
-            if url.__contains__("/shorts/"):
-                url = url.replace("/shorts/", "/watch?v=")
-            if url.__contains__("watch?v="):
-                pass
-            else:
-                return False, "False"
-        else:
-            url = f"https://www.youtube.com/watch?v={url}"
+        id = get_youtube_video_id(url_or_id)
         if not re.search(r'.\..', file_name):
             file_name += ".mp4"
         try:
-            yt = YouTube(url)
-            video = yt.streams.get_audio_only()  # You can choose a different stream based on your preferences
+            yt = pytube.YouTube(id)
+            if quality[-1] == "p":
+                video = yt.streams.get_by_resolution(quality)
+            elif quality == "audio":
+                if audio_type == None:
+                    audio_type = "mp4"
+                video = yt.streams.get_audio_only(audio_type)
+            elif quality ==  "highest":
+                video = yt.streams.get_highest_resolution()
+            elif quality ==  "lowest":
+                video = yt.streams.get_lowest_resolution()
+                        
+            
+            
             video.download(output_path=save_path, filename=file_name)
             return True, "True"
         except Exception as e:

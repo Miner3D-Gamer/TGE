@@ -1,6 +1,6 @@
 from math import sqrt
 
-from tge.math_functions.math_functions import get_pi
+from .math_functions import get_pi
 
 def volume_of_cuboid(length: int, width: int, height: int) -> int:
     return length * width * height

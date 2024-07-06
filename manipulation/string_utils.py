@@ -1,6 +1,14 @@
 
 
 
+def chop(string: str, substring: str, rem: bool = True) -> str:
+    if rem:
+        if string.startswith(substring) and string.endswith(substring):
+            return string[len(substring):-len(substring)]
+        else: return string
+    else:
+        return lchop(rchop(string, substring), substring)
+
 
 def truncate_string(string: str, length: int) -> str:
     """
@@ -44,7 +52,7 @@ def check_anagram(word1: str, word2: str) -> bool:
     """
     return sorted(word1) == sorted(word2)
 
-def remove_duplicates_from_string(string: str) -> str:
+def remove_duplicate_characters_from_string(string: str) -> str:
     """
     Remove duplicate characters from a given string.
 
@@ -84,7 +92,7 @@ def find_longest_word(string: str) -> str:
     """
     return max(string.split(), key=len)
 
-def get_length_of_longest_substring(s: str) -> int:
+def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
     """
     Find the length of the longest substring without repeating characters.
 
@@ -132,14 +140,6 @@ def find_first_non_repeating_character(string: str) -> str:
 
     Returns:
         str: The first non-repeating character found in the string, or None if no such character is found.
-
-    Examples:
-        >>> find_first_non_repeating_character("aabbc")
-        'c'
-        >>> find_first_non_repeating_character("hello")
-        'h'
-        >>> find_first_non_repeating_character("aabbcc")
-        None
     """
     char_count = {}
 
@@ -183,7 +183,7 @@ def capitalize_sentences(paragraph):
 def count_vowels(string: str) -> int:
     count = 0
     for char in string:
-        if char in "aeiou":
+        if char in "aeiouäöü":
             count += 1
     return count
 

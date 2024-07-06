@@ -10,8 +10,7 @@ def convert_meters_to_miles(meters: float) -> float:
     Returns:
     float: Distance in miles.
     """
-    miles = meters * 0.000621371192237334
-    return miles
+    return meters * 0.000621371192237334
 
 def convert_miles_to_meters(miles: float) -> int:
     """
@@ -23,8 +22,7 @@ def convert_miles_to_meters(miles: float) -> int:
     Returns:
     int: The equivalent distance in meters.
     """
-    meters = miles / 0.000621371192237334 
-    return meters
+    return miles * 1609.344
 
 def convert_pounds_to_kilograms(pounds: float) -> float:
     """
@@ -36,8 +34,7 @@ def convert_pounds_to_kilograms(pounds: float) -> float:
     Returns:
     float: The equivalent weight in kilograms.
     """
-    kilograms = pounds * 0.45359237
-    return kilograms
+    return pounds * 0.45359237
 
 def convert_kilograms_to_pounds(kilograms: float) -> float:
     """
@@ -49,5 +46,4 @@ def convert_kilograms_to_pounds(kilograms: float) -> float:
     Returns:
         float: The converted weight in pounds.
     """
-    pounds = kilograms / 0.45359237
-    return pounds
+    return kilograms / 0.45359237

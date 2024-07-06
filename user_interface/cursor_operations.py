@@ -1,6 +1,3 @@
-from .. import CTYPES
-from .. import PYNPUT
-from .. import PYAUTOGUI
 from .. import SYSTEM_NAME
 
 
@@ -10,9 +7,7 @@ else:
     WINDOWS = False
 
 
-
-
-if CTYPES:
+if WINDOWS:
     import ctypes
 
     class POINT(ctypes.Structure):
@@ -47,21 +42,11 @@ if CTYPES:
     
 
 
-elif PYNPUT:
-    ...
-    
 
 
 
 
-if CTYPES:
-    ...
-        
-elif PYNPUT:
-    ...
-
-elif PYAUTOGUI:
-    import pyautogui as pygui
+import pyautogui as pygui
 
 
 
@@ -69,50 +54,11 @@ elif PYAUTOGUI:
 
 
 
-if WINDOWS and CTYPES:
+if WINDOWS:
     from .cursor.cursor_operations_ctypes import *
-
-elif PYNPUT:
-    from .cursor.cursor_operations_pynput import *
-    
-elif PYAUTOGUI: 
-    from .cursor.cursor_operations_pyautogui import *
 else:
-    def mouseTo(x: int, y: int) -> tuple[int, int]:
-        pass
+    from .cursor.cursor_operations_pynput import *
 
-    def mouseGet() -> tuple[int, int]:
-        return (-1, -1)
-    
-    def Click() -> None:
-        pass
-
-    def RightClick() -> None:
-        pass
-
-    def MiddleClick() -> None:
-        pass
-
-    def Scroll(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
-        pass
-    
-    def LeftMouseDown() -> None:
-        pass
-    
-    def RightMouseDown() -> None:
-        pass
-
-    def MiddleMouseDown() -> None:
-        pass
-
-    def LeftMouseUp() -> None:
-        pass
-
-    def RightMouseUp() -> None:
-        pass
-
-    def MiddleMouseUp() -> None:
-        pass
 
 
 

@@ -15,12 +15,11 @@ __doc__ = """
     This library provides a wide range of functions and utilities for text-based game development, console operations,
     data manipulation, conversions, math calculations, user interfaces, file operations, and more.
 
-    With a collection of over 700 functions, tge tries to simplify the development process and offers capabilities for
+    With a collection of over 800 functions, tge tries to simplify the development process and offers capabilities for
     building text-based games, console applications, file manipulation, and various quality of life functions. (yep)
     """
 
-"747 Functions"
-"46 Files"
+"Over 840 Functions"
 "Yep"
 "That's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
 "I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear them (well not actually since they are bugs and bugs are usually not good in these situations)"

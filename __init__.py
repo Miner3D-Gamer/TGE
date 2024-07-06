@@ -196,15 +196,9 @@ from . import bitwise
 #from .file_system import SimDirFilSystem
 
 
+from . import image_processing
+from . import steam_scrapper
 
-def load_image_processing():
-    from . import image_processing
-    return image_processing
-
-    
-def load_game_scrapper():
-    from . import steam_scrapper
-    return steam_scrapper
 
 
 

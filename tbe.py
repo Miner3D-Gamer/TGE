@@ -1,36 +1,7 @@
-# The original tge file with every single function in one big mess before splitting them across multiple files
-# What a true beauty of random comments, miscellaneous code, and unfinished/discarded functions
+# TODO: The original tge file with every single function in one big mess before splitting them across multiple files
+# TODO: What a true beauty of random comments, miscellaneous code, and unfinished/discarded functions
+# TODO: Anyways, what are you doing here? Idk why you would be here but hi :<
 
-# """
-# This script imports various Python libraries and modules for performing different operations such as generating random numbers, 
-# manipulating files and directories, playing audio files, handling errors, working with dates and times, 
-# performing mathematical operations, and defining data types.
-
-# Summary of operations:
-# - Random: generate random numbers and shuffle sequences
-# - Time: handle time-related operations
-# - OS and pathlib: work with the operating system, including manipulating files and directories
-# - Base64 and binascii: encode and decode binary data
-# - Pygame.mixer: play audio files
-# - Datetime: work with dates and times
-# - Math: perform mathematical operations
-# - Shutil: work with file and directory operations at a higher level of abstraction
-
-# Modules:
-# - random: for generating random numbers and shuffling sequences
-# - time: for handling time-related operations
-# - os, pathlib: for working with the operating system, including manipulating files and directories
-# - base64, binascii: for encoding and decoding binary data
-# - pygame.mixer: for playing audio files
-# - datetime: for working with dates and times
-# - math: for performing mathematical operations
-# - shutil: for working with file and directory operations at a higher level of abstraction
-
-# Defined data types:
-# - List[T]: for defining a list of values of type T
-# - Tuple[T, ...]: for defining an ordered, immutable sequence of values of type T
-# - Union[T1, T2, ...]: for defining a variable that can have one of several types T1, T2, etc.
-# """
 
 
 # from time import sleep, timezone
@@ -210,7 +181,7 @@ def determine_affirmative(text: str) -> bool:
     closest_negative_match = get_close_matches(text, negatives, n=1, cutoff=0.8)
 
     # Handling positive and negative matches
-    if closest_positive_match and text not in negatives:
+    if closest_positive_match:
         return True
     if closest_negative_match:
         return False
@@ -243,14 +214,7 @@ def categorize_responses(text_list: List[str]) -> List[str]:
     response_list = []
 
     for text in text_list:
-        response = determine_affirmative(text)
-        if response is True:
-            response_list.append(True)
-        elif response is False:
-            response_list.append(False)
-        else:
-            response_list.append(None)
-
+        response_list.append(determine_affirmative(text))
     return response_list
 
 def get_available_variables() -> Tuple:
@@ -763,8 +727,23 @@ def autocomplete(prefix, word_list):
 
 
 
+def get_function_id_by_name(func_name:str):
+    """
+    Retrieve the function object (ID) from its name.
 
+    Parameters:
+    func_name (str): The name of the function to retrieve.
 
+    Returns:
+    callable or None: The function object if found, None if not found.
+    """
+    # Check if the function name exists in the global namespace
+    if func_name in globals():
+        func_obj = globals()[func_name]
+        # Ensure the retrieved object is callable (a function or method)
+        if callable(func_obj):
+            return func_obj
+    return None
 
 
 
@@ -800,21 +779,79 @@ def autocomplete(prefix, word_list):
 
 
 
+from typing import get_type_hints
 
 
+def get_function_inputs(func)->list[dict]:
+    """
+    Retrieve all input parameters of a given function along with their types and default values.
 
+    Parameters:
+    func (callable): The function to analyze.
 
+    Returns:
+    list: A list of dictionaries containing {'name': parameter_name, 'type': parameter_type, 'default': default_value}.
+    """
+    # Get the signature of the function
+    signature = inspect.signature(func)
+    
+    # Get type hints (annotations) for the function parameters
+    type_hints = get_type_hints(func)
+    
+    # Extract parameter names, types, and default values from the signature
+    input_parameters = []
+    for param_name, param in signature.parameters.items():
+        param_type = type_hints.get(param_name, None)
+        
+        if param.default is not inspect.Parameter.empty:
+            default_value = param.default
+            
+            input_parameters.append({
+            'name': param_name,
+            'type': param_type,
+            'default': default_value
+        })
+        else:
+            input_parameters.append({
+            'name': param_name,
+            'type': param_type
+        })
+        
+        
+    
+    return input_parameters
 
 
 
 
+class NoReturnType:
+    """Custom class to indicate that no return type annotation is specified."""
+    pass
 
 
 
 
 
+def get_return_type(func):
+    """
+    Retrieve the return type annotation of a given function.
 
+    Parameters:
+    func (callable): The function to analyze.
 
+    Returns:
+    type: The return type of the function. Returns `NoReturnType` if no type annotation is specified.
+    """
+    # Get the signature of the function
+    signature = inspect.signature(func)
+    
+    # Get the return type annotation
+    return_type = signature.return_annotation
+    
+    if return_type == inspect.Signature.empty:
+        return NoReturnType
+    else:
+        return return_type
 
 
 
@@ -952,11 +989,27 @@ def autocomplete(prefix, word_list):
 
 
 
+import inspect
+import importlib
 
 
+def count_functions_in_module(module, library_name)->int:
+    function_count = 0
+    for name, obj in inspect.getmembers(module):
+        if inspect.isfunction(obj):
+            function_count += 1
+        elif inspect.ismodule(obj) and obj.__package__.startswith(library_name):
+            function_count+=count_functions_in_module(obj)
+    return function_count
 
-
-
+def count_functions_in_library(library_name)->int:
+    try:
+        module = importlib.import_module(library_name)
+    except ModuleNotFoundError:
+        return -1
+    function_count = count_functions_in_module(module,library_name)
+    
+    return function_count
 
 
 

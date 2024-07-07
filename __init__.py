@@ -32,13 +32,11 @@ start_importing = tm.time()
 import sys
 
 if importing: # These mini libs take way less time to import
-    from .mini_lib import import_lib_mini
     from .mini_lib import platform_mini
 else:
-    import importlib.util as import_lib_mini
     import platform as platform_mini
 
-import subprocess
+
 import os
 from typing import List, Union, Tuple , Any, Optional, Dict
 import subprocess
@@ -71,48 +69,6 @@ SYSTEM_NAME = get_system()
 
 # Hide Pygame Support Prompt
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'hide'
-
-
-
-# Function to Test for Library Existence
-def test_for_library(library_name) -> bool:
-    """
-    Tests for the accessability of a library using a custom mini 
-    version of "import_lib" mostly only using the essential 
-    functions needed for existence a library.
-    """
-
-    spec = import_lib_mini.find_spec(library_name)
-    return spec is not None
-
-
-def download_library(library_name: str) -> Tuple[bool, str]:
-    """
-    Downloads and installs a Python library using pip.
-
-    Parameters:
-        library_name (str): The name of the library to be installed.
-
-    Returns:
-        tuple: A tuple containing a boolean indicating whether the installation was successful
-        and a message string providing additional information in case of an error.
-    """
-    
-    command = ['pip', 'install', library_name]
-    
-    try:
-        result = subprocess.run(command, check=True, capture_output=True, text=True)
-        return True, ""
-    except subprocess.CalledProcessError as e:
-        error_message = (
-            f"Failed to install {library_name}. "
-            f"Return code: {e.returncode}. "
-            f"Output: {e.output}. "
-            f"Error: {e.stderr}."
-        )
-        return False, error_message
-
-
 
 
 
@@ -179,7 +135,7 @@ from .user_interface import clipboard
 
 
 #   Import modules from root directory
-
+from . import library
 from . import audio
 from . import console_utils
 from . import random_generators as random

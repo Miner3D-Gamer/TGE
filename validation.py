@@ -1,8 +1,4 @@
-
-
 import re
-
-
 import requests
 
 from ipaddress import IPv4Address, IPv6Address, AddressValueError
@@ -88,7 +84,7 @@ def is_odd(number: int) -> bool:
     Returns:
         bool: True if the input integer is odd, False if it's even.
     """
-    return not is_even(number)
+    return number % 2 == 1 # not is_even(number)
 
 
 def is_url(url: str) -> bool:

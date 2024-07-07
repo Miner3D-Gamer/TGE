@@ -23,7 +23,7 @@ def remove_html_tags(string: str) -> str:
         return re.sub(r'<.*?>', '', string)
 
 
-def get_youtube_video_id(input_string):
+def get_youtube_video_id(input_string:str)->str:
     # Regex pattern to match YouTube video IDs
     video_id_pattern = r'^[a-zA-Z0-9_-]{11}$'
     
@@ -47,7 +47,7 @@ def get_youtube_video_id(input_string):
     return ""
 
 import urllib.request
-def is_internet_connected(max_timeout: int = 5, website: str = "https://www.google.com"):
+def is_internet_connected(max_timeout: int = 5, website: str = "https://www.google.com")->bool:
     """
     The internet connectivity tester.
     
@@ -170,3 +170,43 @@ def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
         'video_id': video_id,
         'params': other_params,
     }
+from .file_operations import create_missing_directory
+def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
+    """
+    Downloads a file from the given URL and saves it to the specified directory.
+
+    Args:
+        url (str): The URL of the file to be downloaded.
+        dir (str): The directory where the downloaded file will be saved.
+        create (bool): If True, creates the directory if it doesn't exist.
+
+    Returns:
+        None
+
+    Raises:
+        Any exceptions raised during the download and file write process are caught,
+        and the function returns False if an exception occurs.
+
+    Note:
+        This function uses the 'requests' library to download the file. If 'create' is
+        set to True, it creates the missing directory structure before saving the file.
+        The file is saved with the same name as the last part of the URL.
+
+    Example:
+        download_from_url_to_dir(
+            'https://example.com/file.txt', '/path/to/directory/', create=True
+        )
+    """
+    r = requests.get(url)
+    try:
+        if create:
+            create_missing_directory(dir)
+            with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
+                f.write(r.content)
+            return True
+        else:
+            with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
+                f.write(r.content)
+            return True
+    except:
+        return False

@@ -51,7 +51,7 @@ import_times["build-in"] = tm.time() - start_importing
     
 
 
-def get_system():
+def get_system()->str:
     """Returns the current user system"""
     if sys.platform.startswith("java"):
         return "jython"

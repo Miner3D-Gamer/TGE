@@ -1,7 +1,7 @@
 
 
 
-def b_lshift(a, b):
+def b_lshift(a:int, b:int)->int:
     """
     Performs a bitwise left shift operation on the given byte 'a'.
     
@@ -15,7 +15,7 @@ def b_lshift(a, b):
     return a << b
 
 
-def b_rshift(a, b):
+def b_rshift(a:int, b:int)->int:
     """
     Perform bitwise right shift operation on the given byte 'a'.
 
@@ -29,7 +29,7 @@ def b_rshift(a, b):
     return a >> b
 
 
-def b_and(a, b):
+def b_and(a:int, b:int)->int:
     """
     Performs a bitwise AND operation between two bytes.
 
@@ -49,7 +49,7 @@ def b_and(a, b):
     return a & b
 
 
-def b_or(a, b):
+def b_or(a:int, b:int)->int:
     """
     Perform a bitwise OR operation between two bytes.
 
@@ -68,7 +68,7 @@ def b_or(a, b):
     return a | b
 
 
-def b_xor(a, b):
+def b_xor(a:int, b:int)->int:
     """
     Perform a bitwise XOR (exclusive OR) operation between two bytes.
     
@@ -85,7 +85,7 @@ def b_xor(a, b):
     return a ^ b
 
 
-def b_not(a):
+def b_not(a:int)->int:
     """
     Perform bitwise NOT operation on the given byte 'a'.
 
@@ -101,7 +101,7 @@ def b_not(a):
     return ~a
 
 
-def b_nand(a, b):
+def b_nand(a:int, b:int)->int:
     """
     Computes the bitwise NAND (NOT AND) operation between two binary inputs.
 
@@ -119,7 +119,7 @@ def b_nand(a, b):
     return ~(a & b)
 
 
-def b_nor(a, b):
+def b_nor(a:int, b:int)->int:
     """
     Performs bitwise NOR (NOT OR) operation between two input bytes, 'a' and 'b'.
 
@@ -137,7 +137,7 @@ def b_nor(a, b):
     return ~(a | b)
 
 
-def b_nxor(a, b):
+def b_nxor(a:int, b:int)->int:
     """
     Perform bitwise negated XOR (b_nxor) operation between two bytes, 'a' and 'b'.
 
@@ -155,7 +155,7 @@ def b_nxor(a, b):
     return ~(a ^ b)
 
 
-def b_three_nand(a, b, c):
+def b_three_nand(a:int, b:int, c:int)->int:
     """
     Compute the 3-input NAND gate result.
 
@@ -172,7 +172,7 @@ def b_three_nand(a, b, c):
     return ~(a & b & c) & 1
 
 
-def b_three_nor(a, b, c):
+def b_three_nor(a:int, b:int, c:int)->int:
     """
     Performs a three-input NOR operation on the given inputs.
 
@@ -192,7 +192,7 @@ def b_three_nor(a, b, c):
     return ~(a | b | c) & 1
 
 
-def b_three_nxor(a, b, c):
+def b_three_nxor(a:int, b:int, c:int)->int:
     """
     Calculate the three-input negated exclusive OR (NXOR) operation.
 
@@ -212,7 +212,7 @@ def b_three_nxor(a, b, c):
     return ~(a ^ b ^ c) & 1
 
 
-def b_three_xor(a, b, c):
+def b_three_xor(a:int, b:int, c:int)->int:
     """
     Calculate the bitwise three-way XOR operation with negation.
 

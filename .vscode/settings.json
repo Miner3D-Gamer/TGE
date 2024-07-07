@@ -17,6 +17,7 @@
         "lastexit",
         "lastlaunch",
         "localconfig",
+        "ndarray",
         "origname",
         "osinfo",
         "patchlevel",

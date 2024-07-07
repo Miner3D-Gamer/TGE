@@ -96,7 +96,7 @@ def load_images_from_directory(directory_path: str) -> None:
         return skipped, successful_files, False
 
 
-def handle_input(quit_callback = exit, key_callback = pass_func, mouse_button_callback = pass_func):
+def handle_input(quit_callback = exit, key_callback = pass_func, mouse_button_callback = pass_func)->None:
     """
     Handles various input events in a Pygame application.
 
@@ -234,8 +234,8 @@ def draw_texture_at(surface: pygame.Surface, texture: pygame.Surface, position: 
     """
     surface.blit(texture, position)
 
-
-def exit():
+from typing import NoReturn
+def exit()->NoReturn:
     """
     Exit the program safely and without errors just with one line
     >>> pygame.quit()

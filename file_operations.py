@@ -676,79 +676,8 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
 
 
 
-def init_url_functions():
-    """
-Initializes URL-related functions for downloading files.
 
-This function imports the 'requests' library and defines a function 'download_from_url_to_dir'
-for downloading a file from a given URL and saving it to a specified directory.
 
-Functions:
-    download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
-        Downloads a file from the given URL and saves it to the specified directory.
-
-        Args:
-            url (str): The URL of the file to be downloaded.
-            dir (str): The directory where the downloaded file will be saved.
-            create (bool): If True, creates the directory if it doesn't exist.
-
-        Returns:
-            None
-
-        Raises:
-            Any exceptions raised during the download and file write process are caught,
-            and the function returns False if an exception occurs.
-
-        Note:
-            This function uses the 'requests' library to download the file. If 'create' is
-            set to True, it creates the missing directory structure before saving the file.
-            The file is saved with the same name as the last part of the URL.
-
-        Example:
-            download_from_url_to_dir(
-                'https://example.com/file.txt', '/path/to/directory/', create=True
-            )
-"""
-    import requests
-    def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
-        """
-        Downloads a file from the given URL and saves it to the specified directory.
-
-        Args:
-            url (str): The URL of the file to be downloaded.
-            dir (str): The directory where the downloaded file will be saved.
-            create (bool): If True, creates the directory if it doesn't exist.
-
-        Returns:
-            None
-
-        Raises:
-            Any exceptions raised during the download and file write process are caught,
-            and the function returns False if an exception occurs.
-
-        Note:
-            This function uses the 'requests' library to download the file. If 'create' is
-            set to True, it creates the missing directory structure before saving the file.
-            The file is saved with the same name as the last part of the URL.
-
-        Example:
-            download_from_url_to_dir(
-                'https://example.com/file.txt', '/path/to/directory/', create=True
-            )
-        """
-        r = requests.get(url)
-        try:
-            if create:
-                create_missing_directory(dir)
-                with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
-                    f.write(r.content)
-                return True
-            else:
-                with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
-                    f.write(r.content)
-                return True
-        except:
-            return False
     
 def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
     """
@@ -952,7 +881,7 @@ def create_shortcut(name: str, target_path: str, shortcut_path: str, description
     target_parent_folder = os.path.dirname(target_path)
     pyshortcuts.make_shortcut(name=name, script=target_path, working_dir=target_parent_folder, folder=shortcut_path, description=description, executable=target_path)
 
-def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path: str):
+def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path: str)->str|None:
     files = os.listdir(path)  # Get a list of files in the specified directory
     max_num = -1
     latest_file = None

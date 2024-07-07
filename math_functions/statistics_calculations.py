@@ -1,6 +1,6 @@
 from math import sqrt, log2
 
-from numpy import corrcoef as np_corrcoef
+import numpy as np
 
 
 def average_grade(grades: list) -> float:
@@ -66,7 +66,7 @@ def median(grades: list) -> float:
     """
     return sorted(grades)[len(grades) // 2]
 
-def median_absolute_deviation(data):
+def median_absolute_deviation(data:list)->float:
     """
     Calculate the Median Absolute Deviation (MAD) of a given dataset.
 
@@ -85,7 +85,7 @@ def median_absolute_deviation(data):
     return mad
 
 
-def correlation(data1, data2):
+def correlation(data1:float, data2:float)->np.ndarray:
     """
     Calculate the correlation coefficient between two sets of data.
 
@@ -100,7 +100,7 @@ def correlation(data1, data2):
         0 indicates no linear relationship, and
         1 indicates a perfect negative linear relationship.
     """
-    return np_corrcoef(data1, data2)[0][1]
+    return np.corrcoef(data1, data2)[0][1]
 
 def calculate_entropy(grades: list) -> float:
     """

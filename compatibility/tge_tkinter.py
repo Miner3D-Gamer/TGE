@@ -3,7 +3,7 @@
 #import tkinter
 from tkinter import messagebox
 
-def show_message(message_level, user_feedback_level=0, title=None, message=None, **options):
+def show_message(message_level, user_feedback_level=0, title=None, message=None, **options)->str:
     """
     Display a message box to the user with customizable parameters.
 

@@ -8,7 +8,7 @@ import datetime
 
 
 
-def get_game_name(session, game_id):
+def get_game_name(session:requests.Session, game_id:int)->str:
     """
     Fetches the name of a game from Steam's website using its game ID.
 
@@ -54,7 +54,7 @@ def get_game_name(session, game_id):
         pass
     return None
 
-def check_game_ids_with_names(game_ids, results = {}):
+def check_game_ids_with_names(game_ids:list, results:dict = {})->dict:
     """
     Retrieves game names associated with the provided game IDs using multi-threading.
     
@@ -86,7 +86,7 @@ def check_game_ids_with_names(game_ids, results = {}):
 
     return results
 
-def get_valid_game_ids_with_names():
+def get_valid_game_ids_with_names()->list:
     """
     Retrieves a list of valid game IDs along with their corresponding names from Steam.
 
@@ -101,7 +101,7 @@ def get_valid_game_ids_with_names():
     valid_game_ids_with_names = check_game_ids_with_names(game_ids, result)
     return valid_game_ids_with_names
 
-def get_response(session, game_id):
+def get_response(session:requests.Session, game_id:int)->bytes|None:
     """
     Retrieve the HTTP response content for a specific game on Steam Community.
 
@@ -135,7 +135,7 @@ def get_response(session, game_id):
     except requests.exceptions.RequestException:
         return None
 
-def is_valid_game_id(session, game_id):
+def is_valid_game_id(session:requests.Session, game_id:int)->bool:
     """
     Check the validity of a game ID by retrieving the response content
     for the provided game ID using the given session object.
@@ -162,7 +162,7 @@ def is_valid_game_id(session, game_id):
     
     return False
 
-def check_game_ids(game_ids):
+def check_game_ids(game_ids:list)->dict[bool|None]:
     """
     Check the validity of a list of game IDs using multi-threading.
     
@@ -197,7 +197,7 @@ def check_game_ids(game_ids):
 
 
 
-def get_steam_folders():
+def get_steam_folders()->list:
     """
     Retrieves a list of Steam library folders from the configuration file.
 
@@ -228,7 +228,7 @@ def get_steam_folders():
 
     return steam_folders
 
-def get_steam_accounts():
+def get_steam_accounts()->dict:
     """
     Retrieves Steam account information from the 'loginusers.vdf' file located in the Steam configuration directory.
 
@@ -275,7 +275,7 @@ def get_steam_accounts():
                 account[elements[1]] = boolean
     return account
 
-def get_steam_games(result={}):
+def get_steam_games(result:dict={})->tuple:
     """
     Retrieves Steam game information from the localconfig.vdf file.
 
@@ -430,7 +430,7 @@ def get_steam_games(result={}):
 
     return game_ids, result
 
-def get_steam_friends(): 
+def get_steam_friends()->tuple: 
     """
     Retrieve Steam friends and groups information from the localconfig.vdf file.
 
@@ -512,7 +512,7 @@ def get_steam_friends():
     
     return friends, groups
 
-def get_steam_data():
+def get_steam_data()->dict:
     """
     Retrieve Steam-related data for folders, accounts, games, and social connections.
 
@@ -538,7 +538,7 @@ def get_steam_data():
 
 
 
-def convert_to_datetime(timestamp):
+def convert_to_datetime(timestamp:float|int)->datetime.datetime:
     """
     Converts a Unix timestamp to a datetime object.
 

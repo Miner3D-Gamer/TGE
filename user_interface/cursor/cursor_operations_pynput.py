@@ -34,7 +34,7 @@ else:
                     monitor_height += monitor.height
                 return monitor_width, monitor_height
         else:
-            def getScreenDimensions() -> tuple[int, int]:
+            def getScreenDimensions()->tuple[int, int]:
                 return -1, -1
         
 

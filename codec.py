@@ -115,7 +115,7 @@ def decode_base64(string: str) -> str:
     return b64decode(string.encode()).decode()
 
 
-def decode_html_character(text: str):
+def decode_html_character(text: str)->str:
     """
     Decode HTML-encoded characters in the given text.
 

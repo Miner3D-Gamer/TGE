@@ -88,6 +88,7 @@
 
 
 from typing import List, Union, Tuple , Any, get_type_hints
+import types
 import ast
 import os
 import sys
@@ -352,7 +353,7 @@ def convert_number_to_words_less_than_thousand(n:str, dash:bool = True) -> str:
         else:
             return TINY_NUMBERS[n]
 
-def number_to_words(number) -> str:
+def number_to_words(number:int) -> str:
     """
     Converts a given integer into its English word representation.
     
@@ -468,7 +469,7 @@ def number_to_words(number) -> str:
 
 
 
-def find_undocumented_functions(file_path):
+def find_undocumented_functions(file_path:str)->list:
     undocumented_functions = []
 
     with open(file_path, 'r', encoding="utf8") as file:
@@ -481,7 +482,7 @@ def find_undocumented_functions(file_path):
 
     return undocumented_functions
 
-def check_directory_for_undocumented_functions(directory_path):
+def check_directory_for_undocumented_functions(directory_path:str)->dict:
     undocumented_functions_dict = {}
 
     for filename in os.listdir(directory_path):
@@ -493,10 +494,10 @@ def check_directory_for_undocumented_functions(directory_path):
 
     return undocumented_functions_dict
 
-def check_directory_and_sub_directory_for_undocumented_functions(directory_path):
+def check_directory_and_sub_directory_for_undocumented_functions(directory_path:str)->dict:
     undocumented_functions_dict = {}
 
-    def _check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(current_path):
+    def _check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(current_path:str)->None:
         for item in os.listdir(current_path):
             item_path = os.path.join(current_path, item)
 
@@ -534,7 +535,7 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path)
 
 
 
-def autocomplete(prefix, word_list):
+def autocomplete(prefix:str, word_list:list[str])->list[str]:
     return [word for word in word_list if word.startswith(prefix)]
 
 
@@ -712,6 +713,30 @@ def autocomplete(prefix, word_list):
 
 
 
+def check_library_functions(library_module: types.ModuleType) -> List[dict]:
+    """
+    Check all functions in a given library module for missing input type or return type annotations.
+    Parameters:
+    library_module (module): The library module to analyze.
+    Returns:
+    list: A list of dictionaries containing information about functions with missing type annotations.
+    """
+    functions_with_missing_annotations = []
+
+    for name, obj in inspect.getmembers(library_module):
+        if isinstance(obj, types.FunctionType):
+            input_parameters = get_function_inputs(obj)
+            missing_input_types = [param for param in input_parameters if param['type'] is NoInputType]
+
+            return_type = get_return_type(obj)
+            if missing_input_types or return_type is NoReturnType:
+                functions_with_missing_annotations.append({
+                    'function_name': name,
+                    'missing_input_types': missing_input_types,
+                    'return_type': return_type
+                })
+
+    return functions_with_missing_annotations
 
 
 
@@ -739,8 +764,7 @@ def autocomplete(prefix, word_list):
 
 
 
-
-def get_function_id_by_name(func_name:str):
+def get_function_id_by_name(func_name:str)->None|types.ModuleType:
     """
     Retrieve the function object (ID) from its name.
 
@@ -792,9 +816,11 @@ def get_function_id_by_name(func_name:str):
 
 
 
+class NoInputType:
+    """Custom class to indicate that no input type annotation is specified."""
+    pass
 
-
-def get_function_inputs(func)->list[dict]:
+def get_function_inputs(func:types.MethodType)->list[dict]:
     """
     Retrieve all input parameters of a given function along with their types and default values.
 
@@ -826,14 +852,13 @@ def get_function_inputs(func)->list[dict]:
         else:
             input_parameters.append({
             'name': param_name,
-            'type': param_type
+            'type': param_type,
+            'default':NoInputType
         })
         
         
     
     return input_parameters
-
-
 
 
 class NoReturnType:
@@ -842,9 +867,7 @@ class NoReturnType:
 
 
 
-
-
-def get_return_type(func):
+def get_return_type(func:types.MethodType)->Any:
     """
     Retrieve the return type annotation of a given function.
 
@@ -1003,7 +1026,7 @@ def get_return_type(func):
 
 
 
-def count_functions_in_module(module, library_name)->int:
+def count_functions_in_module(module:types.ModuleType, library_name:str)->int:
     function_count = 0
     for name, obj in inspect.getmembers(module):
         if inspect.isfunction(obj):
@@ -1012,7 +1035,7 @@ def count_functions_in_module(module, library_name)->int:
             function_count+=count_functions_in_module(obj)
     return function_count
 
-def count_functions_in_library(library_name)->int:
+def count_functions_in_library(library_name:str)->int:
     try:
         module = importlib.import_module(library_name)
     except ModuleNotFoundError:
@@ -1021,7 +1044,7 @@ def count_functions_in_library(library_name)->int:
     
     return function_count
 
-
+count_functions_in_library("sys")
 
 
 

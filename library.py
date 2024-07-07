@@ -44,25 +44,32 @@ def download_library(library_name: str) -> Tuple[bool, str]:
 
 import os
 
-def get_installed_python_versions()->list:
+def get_installed_python_versions() -> list:
     """Get a list of installed Python executables in the system PATH."""
     paths = os.getenv('PATH').split(os.pathsep)
     python_versions = []
     for path in paths:
         try:
             for entry in os.listdir(path):
-                if entry.startswith('python'):
+                if entry.startswith('python') and (entry.endswith('.exe') or entry.endswith('.bat')):
                     full_path = os.path.join(path, entry)
                     if os.access(full_path, os.X_OK):
-                        python_versions.append(full_path)
+                        try:
+                            # Ensure the file is a Python executable by checking the version
+                            version_info = subprocess.check_output([full_path, '--version'], stderr=subprocess.STDOUT).decode().strip()
+                            if "Python" in version_info:
+                                python_versions.append(full_path)
+                        except subprocess.SubprocessError:
+                            continue
         except FileNotFoundError:
             continue
     return python_versions
 
-def install_library_from_github(github_repo_url:str)->None:
+def install_library_from_github(github_repo_url: str) -> None:
     """Install the library from the given GitHub repository URL to all installed Python versions."""
     python_versions = get_installed_python_versions()
     for python in python_versions:
+        print(f'Python executable: {python}')
         try:
             version_info = subprocess.check_output([python, '--version'], stderr=subprocess.STDOUT).decode().strip()
             print(f"Installing for {version_info} ({python})")

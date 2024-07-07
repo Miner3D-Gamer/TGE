@@ -44,6 +44,8 @@ def download_library(library_name: str) -> Tuple[bool, str]:
 
 import os
 
+
+# Honestly no idea what these functions do and I'm way too tired to try and figure out
 def get_installed_python_versions() -> list:
     """Get a list of installed Python executables in the system PATH."""
     paths = os.getenv('PATH').split(os.pathsep)

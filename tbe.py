@@ -476,9 +476,10 @@ def find_undocumented_functions(file_path:str)->list:
         tree = ast.parse(file.read())
 
     for node in ast.walk(tree):
+        
         if isinstance(node, ast.FunctionDef):
             if not ast.get_docstring(node):
-                undocumented_functions.append(node.name)
+                undocumented_functions.append([node.name,node.end_lineno])
 
     return undocumented_functions
 
@@ -1142,7 +1143,16 @@ class ArgumentHandler:
 
 
 
+def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__file__)):
+    undocumented = check_directory_and_sub_directory_for_undocumented_functions(directory)
 
+    amount = 0
+    for i in undocumented:
+        print("\n"+i)
+        for j in undocumented[i]:
+            amount += 1
+            print(f'\t{j[0]} ("{directory}/{i}", line {j[1]})')
+    print("\nA total of %s functions are undocumented"%amount)
 
 
 

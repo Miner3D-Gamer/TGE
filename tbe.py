@@ -1072,6 +1072,8 @@ class ArgumentHandler:
         value_id = self.get_id(flag)
         if value_id < 0:
             return default
+        if value_id+1 == len(self.arguments): # We're outside the list, abort!
+            return default
         
         if delete:
             self.arguments.pop(value_id)
@@ -1088,8 +1090,7 @@ class ArgumentHandler:
         
         
         value_id = self.arguments.index(item)
-        if value_id+1 == len(self.arguments):
-            return -1
+        
         return value_id
 
     def is_empty(self)->bool:

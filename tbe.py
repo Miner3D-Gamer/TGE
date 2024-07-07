@@ -1044,31 +1044,57 @@ def count_functions_in_library(library_name:str)->int:
     
     return function_count
 
-count_functions_in_library("sys")
 
 
 
 
 class ArgumentHandler:
-    def __init__(self, arguments: None | list = None, is_unordered:bool|None=True) -> None:
+    def __init__(self, arguments: None | list = None) -> None:
         if arguments is None:
             arguments = sys.argv[1:]
         self.arguments: list = arguments
-        self.is_unordered = is_unordered
+        self.argument_list_length = len(arguments)
 
-    def get_argument(self, argument: str, is_unordered: bool|None = None) -> str | None:
-        if not argument in self.arguments:
-            return None
-        value_id = self.arguments.index(argument)
-        value = self.arguments.__getitem__(value_id)
-        if is_unordered is None:
-            is_unordered = self.is_unordered
-        if is_unordered:
+    def get_argument(self, argument: str, delete:bool=False, default:Any=None) -> str | None:
+        value_id = self.get_id(argument)
+        if value_id < 0:
+            return default
+        
+        if delete:
+            value = self.arguments.pop(value_id)
+            self.argument_list_length-=1
+        else:
             value = self.arguments.__getitem__(value_id)
+            
         return value
+    
+    def get_argument_by_flag(self, flag: str, delete:bool=False, default:Any=None) -> str | None:
+        value_id = self.get_id(flag)
+        if value_id < 0:
+            return default
+        
+        if delete:
+            self.arguments.pop(value_id)
+            value = self.arguments.pop(value_id)
+            self.argument_list_length-=2
+        
+        else:
+            value = self.arguments.__getitem__(value_id+1)
+        return value
+    
+    def get_id(self, item:str)->int:
+        if not item in self.arguments:
+            return -1
+        
+        
+        value_id = self.arguments.index(item)
+        if value_id+1 == len(self.arguments):
+            return -1
+        return value_id
 
     def is_empty(self)->bool:
-        return len(self.arguments) == 0
+        return self.argument_list_length == 0
+    
 
 
 

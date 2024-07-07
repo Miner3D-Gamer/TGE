@@ -9,8 +9,8 @@ data manipulation, conversions, math calculations, user interfaces, file operati
 With a collection of over 800 functions, tge tries to simplify the development process and offers capabilities for
 building text-based games, console applications, file manipulation, and various quality of life functions. (yay)
 
-# Temporary steps to installment until I make it easier somehow:
+## Temporary steps to installment until I make it easier <sup>somehow</sup>:
 1. Download the library as .zip (The green button at the top of the page -> 'Download ZIP')
 
 2. Unzip the .zip into C:\Users\{your username}\AppData\Local\Programs\Python\{your python version}\Lib\site-packages
-   For me as example it would look like this when installed: C:\Users\Miner3D\AppData\Local\Programs\Python\Python311\Lib\site-packages\tge
+\n   For me as example it would look like this when installed: C:\Users\Miner3D\AppData\Local\Programs\Python\Python311\Lib\site-packages\tge

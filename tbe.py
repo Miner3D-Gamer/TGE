@@ -1032,7 +1032,7 @@ def count_functions_in_module(module:types.ModuleType, library_name:str)->int:
         if inspect.isfunction(obj):
             function_count += 1
         elif inspect.ismodule(obj) and obj.__package__.startswith(library_name):
-            function_count+=count_functions_in_module(obj)
+            function_count+=count_functions_in_module(obj, library_name)
     return function_count
 
 def count_functions_in_library(library_name:str)->int:

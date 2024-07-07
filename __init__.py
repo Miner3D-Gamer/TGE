@@ -15,6 +15,7 @@ with open(os.path.dirname(__file__)+"/README.md", "r", encoding="utf-8") as f:
 
 
 "Yep"
+"At this point that python takes about a whole 0.1 seconds to skip over all the documentation/docstrings (tested using compile function with consistent results)"
 "That's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
 "I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear them (well not actually since they are bugs and bugs are usually not good in these situations)"
 

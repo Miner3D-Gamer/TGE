@@ -284,3 +284,58 @@ def image_to_ascii(image_path: str = "", image=None, width: int = None, unicode:
     ascii_art = '\n'.join(''.join(row) for row in ascii_art_array)
 
     return ascii_art
+
+def _load_image(image_path, alpha = True):
+    image = Image.open(image_path)
+
+    # Access pixels using load()
+    pixel_data = image.load()
+
+    if not alpha:
+        image = image.convert('RGB')
+
+    # Get image dimensions
+    width, height = image.size
+
+    # Close the image
+    image.close()
+    return pixel_data, width, height
+
+def count_image_colors(image=None, image_path=None):
+    if image is None and image_path is None:
+        return []
+
+    if image is None:
+        loaded_image, width, height = _load_image(image_path)
+    else:
+        if isinstance(image, tuple) and len(image) == 3:
+            loaded_image, width, height = image
+        else:
+            return []
+
+    unique_colors = set()
+
+    for x in range(width):
+        for y in range(height):
+            pixel_value = loaded_image[x, y]
+            unique_colors.add(pixel_value)
+
+    return list(unique_colors)
+
+def hex_to_rgb(hex_color):
+    # Remove the '#' if present
+    hex_color = hex_color.lstrip('#')
+    
+    # Convert hex to RGB
+    red = int(hex_color[0:2], 16)
+    green = int(hex_color[2:4], 16)
+    blue = int(hex_color[4:6], 16)
+    
+    return (red, green, blue) 
+
+def hex_list_to_rgb_list(hex_list):
+    rgb_list = []
+    for i in hex_list:
+        rgb_list.append(hex_to_rgb(i))
+    
+    return rgb_list

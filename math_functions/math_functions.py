@@ -421,3 +421,18 @@ def hexation(base: int, exponent: int) -> int:
         temp = tetration(base, temp)
         exponent -= 1
     return temp
+
+def round_with_precision(number, digits=0):
+    """
+    Custom round function that rounds a number to a specified number of decimal digits.
+
+    Parameters:
+        number (float): The number to be rounded.
+        digits (int): Number of decimal digits to round to (default is 0).
+
+    Returns:
+        float: The rounded number.
+    """
+    factor = 10 ** digits
+    rounded_number = int(number * factor) / factor
+    return rounded_number

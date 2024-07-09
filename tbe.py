@@ -540,18 +540,78 @@ def autocomplete(prefix:str, word_list:list[str])->list[str]:
     return [word for word in word_list if word.startswith(prefix)]
 
 
+def is_iterable(thing:Any)->True|False:
+    return hasattr(thing,"__iter__")
+
+
+
+def split_with_list(string: str, separators: list|tuple, limit: None | int = None) -> list[str]:
+    for separator in separators:
+        string = string.replace(separator, "𘚟")
+    return string.split("𘚟")
+
+
+
+def analyze_text(text:str)->dict[str:str|list]:
+    text = text.replace("...", "…").replace("\n", "").strip()
+
+    legacy_sentences = split_with_list(text, [". ", "! ", "? "])
+
+    sentences = []
+    word_amounts = []
+    comma_amounts = []
+
+    for i in range(len(legacy_sentences)):
+        commas = legacy_sentences[i].count(",")
+        words = legacy_sentences[i].split(" ")
+        deleted = 0
+        for j in range(len(words)):
+            words[j] = words[j].replace(",", "")
+            if words[j].strip() == "":
+                words.pop(j)
+                deleted += 1
+            if len(words) <= j+deleted:
+                break
+            #print(words[j])
+        if not len(words) == 0:
+            word_amounts.append(len(words))
+        sentences.append(words)
+        comma_amounts.append(commas)
 
 
 
 
 
+    total_word_count = 0
+    for word_amount in word_amounts:
+        total_word_count += word_amount
 
-
-
-
-
-
-
+    total_comma_count = 0
+    for comma_amount in comma_amounts:
+        total_comma_count += comma_amount
+    return {
+        "sentence_amount":len(sentences),
+        "total_word_count":total_word_count,
+        "average_word_count_per_sentence":total_word_count/len(word_amounts),
+        "max_words_per_sentence":max(word_amounts),
+        "min_words_per_sentence":min(word_amounts),
+        "total_comma_count":total_comma_count,
+        "average_commas_count_per_sentence":total_comma_count/len(comma_amounts),
+        "min_commas_per_sentence":max(comma_amounts),
+        "min_commas_per_sentence":min(comma_amounts),
+        "word_amount_list":word_amounts,
+        "comma_amount_list":comma_amounts,
+    }
+    # print("Amount of Sentences: ", len(sentences))
+    # print("Total word count: ", total_word_count)
+    # print("Average word count per sentence: ", total_word_count/len(word_amounts))
+    # print("Maximum word count in a sentence: ", max(word_amounts))
+    # print("Minimum word count in a sentence: ", min(word_amounts))
+    # print()
+    # print("Total comma count: ", total_comma_count)
+    # print("Average comma count per sentence: ", total_comma_count/len(comma_amounts))
+    # print("Maximum comma count in a sentence: ", max(comma_amounts))
+    # print("Minimum comma count in a sentence: ", min(comma_amounts))
 
 
 

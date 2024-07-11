@@ -3,7 +3,7 @@ from typing import List, Union, Tuple , Any, Optional, Dict
 import subprocess
 
 # Function to Test for Library Existence
-def test_for_library(library_name:str) -> bool:
+def is_library_installed(library_name:str) -> bool:
     """
     Tests for the accessability of a library using a custom mini 
     version of "import_lib" mostly only using the essential 
@@ -78,3 +78,14 @@ def install_library_from_github(github_repo_url: str) -> None:
             subprocess.check_call([python, '-m', 'pip', 'install', 'git+' + github_repo_url])
         except subprocess.CalledProcessError as e:
             print(f"Failed to install for {python}: {e}")
+
+
+
+def install_all_libraries(libs:list|tuple)->list[tuple[bool, str]]:
+    output = []
+    for lib in libs:
+        if is_library_installed(lib):
+            continue
+        output.append(download_library(lib))
+        
+    return output

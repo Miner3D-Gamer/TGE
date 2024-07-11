@@ -38,12 +38,12 @@ import_time_build_in = tm.time() - start_importing
 
 from . import library as library_utils
 
-def are_all_required_libraries_installed():
-    with open("requirements.txt", "r") as f:
-        libs = f.readlines()
-    for lib in libs:
-        if not library_utils.test_for_library(lib):
-            ModuleNotFoundError(lib)
+# def are_all_required_libraries_installed():
+#     with open("requirements.txt", "r") as f:
+#         libs = f.readlines()
+#     for lib in libs:
+#         if not library_utils.test_for_library(lib):
+#             ModuleNotFoundError(lib)
             
     
 

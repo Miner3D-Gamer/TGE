@@ -39,7 +39,7 @@ for file_id in range(len(urls)):
     try:
         file.raise_for_status()
     except requests.HTTPError:
-        print("Error while downloading %s")
+        print("Error while downloading %s", file_name)
     
     for installation_directory in dirs:
         path = os.path.join(installation_directory, file_name)

@@ -17,6 +17,7 @@
         "ispkg",
         "lastexit",
         "lastlaunch",
+        "LOCALAPPDATA",
         "localconfig",
         "minifier",
         "ndarray",
@@ -25,8 +26,10 @@
         "patchlevel",
         "pkgdir",
         "syscmd",
+        "tkinter",
         "userdata",
         "vminfo",
+        "Welp",
         "winver",
         "youtu"
     ]

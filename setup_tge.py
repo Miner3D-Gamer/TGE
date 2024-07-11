@@ -7,7 +7,7 @@ import os, json
 directories = []
 
 dir = f"{os.getcwd()}/tge"
-for root, dirs, files in os.walk(dir, toyon=False):
+for root, dirs, files in os.walk(dir, topdown=False):
     root = root[len(dir):].lstrip("\\")
     for name in files:
         file = os.path.join(root, name).replace("\\", "/")

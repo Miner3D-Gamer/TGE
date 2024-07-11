@@ -27,6 +27,7 @@
         "pkgdir",
         "syscmd",
         "tkinter",
+        "topdown",
         "userdata",
         "vminfo",
         "Welp",

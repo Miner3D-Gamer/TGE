@@ -10,7 +10,7 @@ __author__ = "Miner3D"
 __license__ = "LGPL, GNU Lesser General Public License"
 __url__  = 'https://github.com/Miner3DGaming/TGE'
 
-__doc__ = 'https://github.com/Miner3DGaming/TGE/README.md'
+__doc__ = 'https://github.com/Miner3DGaming/TGE/blob/main/README.md'
 
 
 "Yep"

@@ -18,6 +18,7 @@
         "lastexit",
         "lastlaunch",
         "localconfig",
+        "minifier",
         "ndarray",
         "origname",
         "osinfo",

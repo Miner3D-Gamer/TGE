@@ -51,11 +51,16 @@
 
 # generate_truth_table(and_three)
 
-
+import python_minifier
+def minify_python_file(file_path, output_file):
+    minified =  python_minifier.minify(file_path)
+    print(minified)
+    
+minify_python_file("hello.py", "")
 
 
 # Get import time of tge
 import os, sys, time
 sys.path.append(os.path.dirname(os.getcwd()))
 import tge # type: ignore
-print(tge.INIT_TIME)
+print(tge.)

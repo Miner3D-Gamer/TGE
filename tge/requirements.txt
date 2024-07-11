@@ -15,3 +15,4 @@ re
 pyperclip
 tkinter
 pathlib_path
+python-minifier

@@ -89,3 +89,11 @@ def install_all_libraries(libs:list|tuple)->list[tuple[bool, str]]:
         output.append(download_library(lib))
         
     return output
+
+
+def are_all_required_libraries_installed():
+    with open("requirements.txt", "r") as f:
+        libs = f.readlines()
+    for lib in libs:
+        if not is_library_installed(lib):
+            ModuleNotFoundError(lib)

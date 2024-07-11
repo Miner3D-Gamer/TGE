@@ -37,3 +37,7 @@ def install_all_libraries(libs):
 		if is_library_installed(B):continue
 		A.append(download_library(B))
 	return A
+def are_all_required_libraries_installed():
+	with open('requirements.txt','r')as B:C=B.readlines()
+	for A in C:
+		if not is_library_installed(A):ModuleNotFoundError(A)

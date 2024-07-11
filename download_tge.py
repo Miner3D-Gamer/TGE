@@ -33,8 +33,8 @@ while True:
         else:
             print("'%s' could not be found" % path)
             quit()
-
-
+print()
+base_github_url = "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/"
 while True:
     inp = (
         input(
@@ -44,12 +44,12 @@ while True:
         .lower()
     )
     if inp == "n" or inp == "1":
-        github_url = "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/tge/"
+        github_url = f"{base_github_url}tge/"
         break
 
     elif inp == "y":
         github_url = (
-            "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/minified_tge/"
+            f"{base_github_url}minified_tge/"
         )
         break
 
@@ -57,7 +57,7 @@ while True:
 import requests, json
 
 response = requests.get(
-    "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/directory.json"
+    f"{base_github_url}directory.json"
 )
 
 response.raise_for_status()

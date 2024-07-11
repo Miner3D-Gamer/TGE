@@ -265,3 +265,50 @@ def right_pad(string, length, char=' '):
     str: The right-padded string.
     """
     return string.ljust(length, char)
+
+
+def left_replace(s, chars, replacement):
+    """
+    Replace leading characters in `chars` with `replacement` in the string `s`.
+    
+    Parameters:
+    s (str): The original string.
+    chars (str): A string of characters to be replaced.
+    replacement (str): The character to replace with.
+    
+    Returns:
+    str: The modified string with leading characters replaced.
+    """
+    # Find the first character that is not in `chars`
+    index = 0
+    while index < len(s) and s[index] in chars:
+        index += 1
+
+    # Create the replaced string
+    replaced_part = replacement * index
+    remaining_part = s[index:]
+    
+    return replaced_part + remaining_part
+
+def replace_rstrip(s, chars, replacement):
+    """
+    Replace trailing characters in `chars` with `replacement` in the string `s`.
+    
+    Parameters:
+    s (str): The original string.
+    chars (str): A string of characters to be replaced.
+    replacement (str): The character to replace with.
+    
+    Returns:
+    str: The modified string with trailing characters replaced.
+    """
+    # Find the last character that is not in `chars`
+    index = len(s) - 1
+    while index >= 0 and s[index] in chars:
+        index -= 1
+
+    # Create the replaced string
+    replaced_part = replacement * (len(s) - index - 1)
+    remaining_part = s[:index + 1]
+    
+    return remaining_part + replaced_part

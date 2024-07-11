@@ -28,16 +28,19 @@ output = rf"{cwd}/minified_tge/"
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root.replace("\\", "/")
     for file in files:
-        if not file.endswith(".py"):
-            continue
+        
         file = file.replace("\\", "/")
         file_path = os.path.join(root[len(dir):].lstrip("/"), file)
         total_file_path = os.path.join(root, file)
-        print(total_file_path)
         with open(total_file_path, "r", encoding="utf8") as f:
+            if file.endswith(".pyc"):
+                continue
             os.makedirs(os.path.dirname(output+file_path),exist_ok=True)
             with open(output+file_path, "w", encoding="utf8") as o:
-                minified = python_minifier.minify(f.read(),rename_globals=False)
-                o.write(minified)
+                if file.endswith(".py"):
+                    data = python_minifier.minify(f.read(),rename_globals=False)
+                else:
+                    data = f.read()
+                o.write(data)
 
 

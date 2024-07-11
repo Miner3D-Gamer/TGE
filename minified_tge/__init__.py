@@ -17,7 +17,6 @@ import sys
 if importing:from.mini_lib import platform_mini
 else:import platform as platform_mini
 import_time_build_in=tm.time()-start_importing
-from.import library as library_utils
 def get_system():
 	'Returns the current user system';A='darwin'
 	if sys.platform.startswith('java'):return'jython'
@@ -29,9 +28,7 @@ SYSTEM_NAME=get_system()
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']='hide'
 if not importing:INIT_TIME=tm.time()-start_import;library_importing_time=import_time_build_in;print(f"\nTotal loading time: {INIT_TIME}");print(f"Library importing time: {import_time_build_in}");print(f"Total loading time without library importing time: {INIT_TIME-import_time_build_in}");quit()
 INIT_TIME_BEFORE_IMPORTING=tm.time()-start_import
-from.manipulation import string_utils
-from.manipulation import list_utils
-from.manipulation import dictionary_utils as dict_utils
+from.manipulation import string_utils,list_utils,dictionary_utils as dict_utils
 from.compatibility import tge_pygame
 from.compatibility import tge_tkinter
 from.conversion import binary as binary
@@ -46,7 +43,21 @@ from.math_functions import statistics_calculations
 from.math_functions.vector_calculation import Vector
 from.user_interface import system_interactions
 from.user_interface import clipboard
-from.import audio,console_utils as console,random_generators as random,validation,internet,tbe,codec,time_utils,file_operations,formatting_utils as formatting,bool_operations,bitwise,image_processing,steam_scrapper
+from.import audio
+from.import console_utils as console
+from.import random_generators as random
+from.import validation
+from.import internet
+from.import library as library_utils
+from.import tbe
+from.import codec
+from.import time_utils
+from.import file_operations
+from.import formatting_utils as formatting
+from.import bool_operations
+from.import bitwise
+from.import image_processing
+from.import steam_scrapper
 tim=tm.time()
 IMPORT_TIME=tim-INIT_TIME_BEFORE_IMPORTING
 INIT_TIME=tim-start_import

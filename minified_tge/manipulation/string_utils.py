@@ -64,3 +64,11 @@ def rchop(string,substring):
 	else:return A
 def left_pad(string,length,char=' '):'\n    Pads the given string on the left with the specified character to the desired length.\n    \n    Parameters:\n    string (str): The original string.\n    length (int): The desired length after padding.\n    char (str): The character to pad with (default is a space).\n    \n    Returns:\n    str: The left-padded string.\n    ';return string.rjust(length,char)
 def right_pad(string,length,char=' '):'\n    Pads the given string on the right with the specified character to the desired length.\n    \n    Parameters:\n    string (str): The original string.\n    length (int): The desired length after padding.\n    char (str): The character to pad with (default is a space).\n    \n    Returns:\n    str: The right-padded string.\n    ';return string.ljust(length,char)
+def left_replace(s,chars,replacement):
+	'\n    Replace leading characters in `chars` with `replacement` in the string `s`.\n    \n    Parameters:\n    s (str): The original string.\n    chars (str): A string of characters to be replaced.\n    replacement (str): The character to replace with.\n    \n    Returns:\n    str: The modified string with leading characters replaced.\n    ';A=0
+	while A<len(s)and s[A]in chars:A+=1
+	B=replacement*A;C=s[A:];return B+C
+def replace_rstrip(s,chars,replacement):
+	'\n    Replace trailing characters in `chars` with `replacement` in the string `s`.\n    \n    Parameters:\n    s (str): The original string.\n    chars (str): A string of characters to be replaced.\n    replacement (str): The character to replace with.\n    \n    Returns:\n    str: The modified string with trailing characters replaced.\n    ';A=len(s)-1
+	while A>=0 and s[A]in chars:A-=1
+	B=replacement*(len(s)-A-1);C=s[:A+1];return C+B

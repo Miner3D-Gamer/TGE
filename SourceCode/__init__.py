@@ -10,8 +10,7 @@ __author__ = "Miner3D"
 __license__ = "LGPL, GNU Lesser General Public License"
 __url__  = 'https://github.com/Miner3DGaming/TGE'
 
-with open(os.path.dirname(__file__)+"/README.md", "r", encoding="utf-8") as f: 
-    __doc__ = f.read()
+__doc__ = 'https://github.com/Miner3DGaming/TGE/README.md'
 
 
 "Yep"

@@ -15,12 +15,11 @@ with open(os.path.dirname(__file__)+"/README.md", "r", encoding="utf-8") as f:
 
 
 "Yep"
-"At this point that python takes about a whole 0.1 seconds to skip over all the documentation/docstrings (tested using compile function with consistent results)"
+"At this point that python takes about a whole 0.1 seconds to skip over all the documentation/docstring (tested using compile function with consistent results)"
 "That's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
 "I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear them (well not actually since they are bugs and bugs are usually not good in these situations)"
 
-# Import Times Dictionary
-import_times = {}
+
 
 
 start_importing = tm.time()
@@ -35,7 +34,7 @@ else:
 
 #from typing import List, Union, Tuple , Any, Optional, Dict
 
-import_times["build-in"] = tm.time() - start_importing
+import_time_build_in = tm.time() - start_importing
 
 
 
@@ -68,25 +67,12 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'hide'
 
 # Printing Timing Information (if not importing as a module)
 if not importing:
+    # This was once more impressive but a lot of stuff got cut for performance reason
     INIT_TIME = tm.time() - start_import
-    library_importing_time = 0
-    for i in import_times:
-        library_importing_time += import_times[i]
-    
-    
-    import_times = sorted(import_times.items(), key=lambda x: x[1])
-    idx = 0
-    sorted_import_times = {}
-    for i in import_times:
-        sorted_import_times[import_times[idx][0]] = import_times[idx][1]
-        idx += 1
-    import_times = dict(reversed(list(sorted_import_times.items())))
-
-
-
+    library_importing_time = import_time_build_in
     print(f"\nTotal loading time: {INIT_TIME}")
-    print(f"Library importing time: {library_importing_time}")
-    print(f"Total loading time without library importing time: {INIT_TIME - library_importing_time}")
+    print(f"Library importing time: {import_time_build_in}")
+    print(f"Total loading time without library importing time: {INIT_TIME - import_time_build_in}")
     quit()
 
 INIT_TIME_BEFORE_IMPORTING = tm.time() - start_import

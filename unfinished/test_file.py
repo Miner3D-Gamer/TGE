@@ -63,4 +63,4 @@ minify_python_file("hello.py", "")
 import os, sys, time
 sys.path.append(os.path.dirname(os.getcwd()))
 import tge # type: ignore
-print(tge.)
+print(tge.INIT_TIME)

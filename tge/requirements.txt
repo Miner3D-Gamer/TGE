@@ -14,5 +14,5 @@ pytube
 re
 pyperclip
 tkinter
-pathlib_path
+pathlib
 python-minifier

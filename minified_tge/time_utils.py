@@ -1,0 +1,6 @@
+from typing import List,Union,Tuple,Any
+from datetime import datetime
+from time import sleep,timezone
+def get_date():'\n    Get the current date and time.\n\n    Returns:\n        Tuple[int, int, int, int, int, int, int]: A tuple containing year, month, day, \n        hour, minute, second, and day of the week (as an integer, where Monday is 0 and Sunday is 6).\n    ';B=' ';A=datetime.now();C=datetime.weekday(A);A=str(A).replace('-',B).replace(':',B).replace('.',B).split(B);return int(A[0]),int(A[1]),int(A[2]),int(A[3]),int(A[4]),int(A[5]),int(C)
+def get_timezone_offset():'\n    Get the timezone offset in hours from UTC (Coordinated Universal Time).\n\n    Returns:\n        int: The timezone offset, where positive values indicate time ahead of UTC,\n             and negative values indicate time behind UTC.\n    ';return int(timezone/3600)
+def unix_converter(time):'\n    Converts a Unix timestamp to a formatted string representing the date and time.\n\n    Args:\n        time (int): A Unix timestamp, representing the number of seconds since the epoch.\n\n    Returns:\n        str: A formatted string in the format "YYYY MM DD HH MM SS".\n\n    Example:\n        >>> unix_converter(1628784000)\n        \'2021 08 13 00 00 00\'\n    ';return datetime.fromtimestamp(time).strftime('%Y %m %d %H %M %S')

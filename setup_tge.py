@@ -3,7 +3,7 @@ import os, json, python_minifier
 # Welp, TODO: Instead of using an array, use a dictionary for a greater compression. 
 
 
-
+import tge
 directories = []
 
 dir = f"{os.getcwd()}/tge/"
@@ -38,7 +38,7 @@ for root, dirs, files in os.walk(dir, topdown=False):
             os.makedirs(os.path.dirname(output+file_path),exist_ok=True)
             with open(output+file_path, "w", encoding="utf8") as o:
                 if file.endswith(".py"):
-                    data = python_minifier.minify(f.read(),rename_globals=False)
+                    data = tge.manipulation.string_utils.left_replace(python_minifier.minify(f.read(),rename_globals=False,remove_literal_statements=True), "	", " ")
                 else:
                     data = f.read()
                 o.write(data)

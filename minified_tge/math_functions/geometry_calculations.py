@@ -28,9 +28,9 @@ def area_of_ellipse(radius,height):return 3.14159*radius*height
 def area_of_ellipse_with_accuracy(radius,height,accuracy):return get_pi(accuracy)*radius*height
 def area_of_oval(width,height):B=width;A=height;C=B*A;D=(B-A)*A/2;E=C+D;return E
 def area_of_triangle(base,height):return .5*base*height
-def calculate_distance_between_two_points(x,y):'\n    Calculate the distance between two points using the Euclidean formula.\n    \n    :param x: An integer representing the x-coordinate of the first point.\n    :param y: An integer representing the y-coordinate of the second point.\n    :return: An integer representing the distance between the two points.\n    ';return((x-y)**2)**.5
-def calculate_distance_between_three_points(x,y,z):'\n    Calculate the distance between three points in a 3D space.\n    \n    :param x: An integer representing the x-coordinate of the first point.\n    :param y: An integer representing the y-coordinate of the second point.\n    :param z: An integer representing the z-coordinate of the third point.\n    \n    :return: An integer representing the distance between the three points.\n    ';return((x-z)**2+(y-z)**2)**.5
-def calculate_distance_between_four_points(x,y,z,a):'\n    Calculates the distance between four points represented by their x, y, and z coordinates.\n    \n    :param x: An integer representing the first point.\n    :param y: An integer representing the second point.\n    :param z: An integer representing the third point.\n    :param a: An integer representing the fourth point.\n    \n    :return: A float representing the distance between the four points.\n    ';return((x-a)**2+(y-a)**2+(z-a)**2)**.5
+def calculate_distance_between_two_points(x,y):return((x-y)**2)**.5
+def calculate_distance_between_three_points(x,y,z):return((x-z)**2+(y-z)**2)**.5
+def calculate_distance_between_four_points(x,y,z,a):return((x-a)**2+(y-a)**2+(z-a)**2)**.5
 def calculate_distance_between_five_points(x,y,z,a,b):return((x-a)**2+(y-b)**2+(z-a)**2)**.5
 def calculate_distance_between_six_points(x,y,z,a,b,c):return((x-a)**2+(y-b)**2+(z-c)**2)**.5
 def calculate_distance_between_seven_points(x,y,z,a,b,c,d):return((x-a)**2+(y-b)**2+(z-c)**2+(d-a)**2)**.5

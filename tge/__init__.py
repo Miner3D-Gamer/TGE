@@ -132,7 +132,7 @@ from . import bitwise
 
 
 from . import image_processing
-from . import steam_scrapper
+from . import steam_utils
 
 
 

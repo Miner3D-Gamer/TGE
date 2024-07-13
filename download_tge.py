@@ -1,25 +1,59 @@
 import os, tkinter, time
-import tkinter.filedialog
+import tkinter.filedialog as filedialog
 
+import sys
+
+
+class ArgumentHandler:
+    def __init__(C, arguments=None):
+        B = arguments
+        if B is None:
+            B = sys.argv[1:]
+        C.a = B
+
+    def get_argument_by_flag(A, flag, delete=False, default=None):
+        C = default
+        if not flag in A.a:
+            B =  -1
+        else:
+            B = A.a.index(flag)
+        if B < 0:
+            return default
+        if B + 1 == len(A.a):
+            return default
+        if delete:
+            A.a.pop(B)
+            D = A.a.pop(B)
+        else:
+            D = A.a.__getitem__(B + 1)
+        return D
+argument_handler = ArgumentHandler()
 
 def is_directory_empty(directory_path):
     return not os.listdir(directory_path)
 
+sl = argument_handler.get_argument_by_flag("-suppression_level",delete=True, default="0")
+if sl.isdigit():
+    give_feedback  =  int(sl)
+else:
+    give_feedback  =  0
 
 default_python_installation = f"{os.getenv('LOCALAPPDATA')}\Programs\Python"
 while True:
-    inp = input(
-        f"""Choose how to install TGE (Enter Number):
-    1. Install TGE for all installed python installations in the default python installation ({default_python_installation})
-                
-    2. Select a file (.exe) in the python folder you wanna install TGE in
-    
-    3. Select a folder to install TGE into
-    
-    Your Input: """
-    ).strip()
-    if inp.startswith("&"):
-        quit()
+    inp = argument_handler.get_argument_by_flag("-install_option",delete=True, default=False)
+    if not inp:
+        inp = input(
+            f"""Choose how to install TGE (Enter Number):
+        1. Install TGE for all installed python installations in the default python installation ({default_python_installation})
+                    
+        2. Select a file (.exe) in the python folder you wanna install TGE in
+        
+        3. Select a folder to install TGE into
+        
+        Your Input: """
+        ).strip()
+        if inp.startswith("&"):
+            quit()
 
     if inp == "1":
         dirs = {
@@ -30,18 +64,24 @@ while True:
 
         break
     elif inp == "2":
-        path = tkinter.filedialog.askopenfilename()
+        path =  argument_handler.get_argument_by_flag("-path",delete=True, default=False)
+        if not path:
+            path = filedialog.askopenfilename()
         path = os.path.dirname(path) + "/Lib/site-packages"
         if os.path.exists(path):
             dirs = [path + "/tge"]
             break
         else:
-            print("'%s' could not be found" % path)
-            quit()
+            if give_feedback < 1:
+                print("'%s' could not be found\n" % path)
+            continue
     elif inp == "3":
-        path = tkinter.filedialog.askdirectory()
+        path =  argument_handler.get_argument_by_flag("-path",delete=True, default=False)
+        if not path:
+            path = filedialog.askdirectory()
         if not os.path.exists(path):
-            print("Path not found.")
+            if give_feedback <1:
+                print("Path not found.")
             continue
         if is_directory_empty(path):
             dirs = [path]
@@ -49,22 +89,25 @@ while True:
         dirs = [path + "/tge"]
         break
 
-
-print()
+if give_feedback < 1:
+    print()
 base_github_url = "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/"
 while True:
-    inp = (
-        input(
-            f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will be faster to download and require less space (~300kb instead of ~1mb) but manually editing it for whatever reason will be annoying\nYour Input: "
+    
+    inp = argument_handler.get_argument_by_flag("-install_minified",delete=True, default=None)
+    if inp is None:
+        inp = (
+            input(
+                f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will be faster to download and require less space (~100kb instead of ~1.1mb) but manually editing it for whatever reason will be annoying\nYour Input: "
+            )
+            .strip()
+            .lower()
         )
-        .strip()
-        .lower()
-    )
-    if inp == "n" or inp == "2":
+    if inp in ["n", "2", "nope"]:
         github_url = f"{base_github_url}tge/"
         break
 
-    elif inp == "y" or inp == "1":
+    elif inp in ["y", "1", "sure"]:
         github_url = f"{base_github_url}minified_tge/"
         break
 
@@ -87,13 +130,15 @@ start = time.time()
 for file_id in range(len(urls)):
     url = urls[file_id]
     file_name = files[file_id]
-    print("Downloading %s" % url)
+    if give_feedback < 1:
+        print("Downloading %s" % url)
 
     file = requests.get(url)
     try:
         file.raise_for_status()
     except requests.HTTPError:
-        print("Error while downloading %s" % file_name)
+        if give_feedback < 3:
+            print("Error while downloading %s" % file_name)
         continue
 
     if url.endswith("/requirements.txt"):
@@ -107,10 +152,11 @@ for file_id in range(len(urls)):
         path = os.path.join(installation_directory, file_name)
         parent_dir = os.path.dirname(path)
         if not os.path.exists(parent_dir):
-            print(
-                "Directory '%s' cannot be found anymore, maybe it has been moved or deleted."
-                % parent_dir
-            )
+            if give_feedback < 2:
+                print(
+                    "Directory '%s' cannot be found anymore, maybe it has been moved or deleted."
+                    % parent_dir
+                )
             dirs.pop(idx)
             continue
         os.makedirs(parent_dir, exist_ok=True)
@@ -118,25 +164,23 @@ for file_id in range(len(urls)):
             f.write(file.text)
 end = time.time()
 
-import sys
 
 for dir in dirs:
     sys.path.append(dir)
 
 try:
     import tge.library as library
-
-    print("Done downloading TGE in %s seconds!" % (end - start))
+    if give_feedback < 1:
+        print("Done downloading TGE in %s seconds!" % (end - start))
 except:
-    print("Well, this didn't quit work out. Wasted about %s seconds" % (end - start))
+    if give_feedback < 2:
+        print("Well, this didn't quit work out. Wasted about %s seconds" % (end - start))
     quit()
-
-
-
 
 
 output = library.install_all_libraries(requirements)
 
 for successful, error in output:
     if not successful:
-        print("Error while downloading dependency:", error)
+        if give_feedback < 3:
+            print("Error while downloading dependency:", error)

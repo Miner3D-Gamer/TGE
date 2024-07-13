@@ -8,17 +8,13 @@ __author__='Miner3D'
 __license__='LGPL, GNU Lesser General Public License'
 __url__='https://github.com/Miner3DGaming/TGE'
 __doc__='https://github.com/Miner3DGaming/TGE/blob/main/README.md'
-'Yep'
-'At this point that python takes about a whole 0.1 seconds to skip over all the documentation/docstring (tested using compile function with consistent results)'
-"That's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
-"I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear them (well not actually since they are bugs and bugs are usually not good in these situations)"
 start_importing=tm.time()
 import sys
 if importing:from.mini_lib import platform_mini
 else:import platform as platform_mini
 import_time_build_in=tm.time()-start_importing
 def get_system():
-	'Returns the current user system';A='darwin'
+	A='darwin'
 	if sys.platform.startswith('java'):return'jython'
 	elif sys.platform==A:return A
 	elif sys.platform=='win32':return'windows'

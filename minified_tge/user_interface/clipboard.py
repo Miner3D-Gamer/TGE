@@ -1,24 +1,22 @@
 _A=None
 from.cursor_operations import WINDOWS,USER32,KERNEL32,ctypes,CF_UNICODETEXT,GHND
 if WINDOWS:
-	def get_clipboard(user32=USER32,kernel32=KERNEL32):'\n        Retrieve the current content of the system clipboard.\n\n        Returns:\n            str: The text content currently stored in the clipboard.\n        ';B=kernel32;A=user32;A.OpenClipboard(0);C=A.GetClipboardData(CF_UNICODETEXT);D=B.GlobalLock(C);E=ctypes.c_wchar_p(D).value;B.GlobalUnlock(C);A.CloseClipboard();return E
-	def copy_to_clipboard(text,user32=USER32,kernel32=KERNEL32):'\n        Copy text to the system clipboard.\n\n        Args:\n            text (str): The text to be copied to the clipboard.\n        ';C=kernel32;B=text;A=user32;A.OpenClipboard(0);A.EmptyClipboard();D=C.GlobalAlloc(GHND,(len(B)+1)*ctypes.sizeof(ctypes.c_wchar));E=C.GlobalLock(D);ctypes.memmove(E,B.encode('utf-16le'),(len(B)+1)*ctypes.sizeof(ctypes.c_wchar));C.GlobalUnlock(D);A.SetClipboardData(CF_UNICODETEXT,D);A.CloseClipboard()
-	def clear_clipboard(user32=USER32):"\n        Clear the contents of the clipboard.\n\n        This function utilizes the 'pyperclip' library to copy an empty string to the clipboard,\n        effectively clearing its contents.\n\n        Returns:\n            None: This function does not return any value.\n        ";A=user32;A.OpenClipboard(0);A.EmptyClipboard();A.CloseClipboard()
+	def get_clipboard(user32=USER32,kernel32=KERNEL32):B=kernel32;A=user32;A.OpenClipboard(0);C=A.GetClipboardData(CF_UNICODETEXT);D=B.GlobalLock(C);E=ctypes.c_wchar_p(D).value;B.GlobalUnlock(C);A.CloseClipboard();return E
+	def copy_to_clipboard(text,user32=USER32,kernel32=KERNEL32):C=kernel32;B=text;A=user32;A.OpenClipboard(0);A.EmptyClipboard();D=C.GlobalAlloc(GHND,(len(B)+1)*ctypes.sizeof(ctypes.c_wchar));E=C.GlobalLock(D);ctypes.memmove(E,B.encode('utf-16le'),(len(B)+1)*ctypes.sizeof(ctypes.c_wchar));C.GlobalUnlock(D);A.SetClipboardData(CF_UNICODETEXT,D);A.CloseClipboard()
+	def clear_clipboard(user32=USER32):A=user32;A.OpenClipboard(0);A.EmptyClipboard();A.CloseClipboard()
 else:
 	import pyperclip
-	def copy_to_clipboard(text,user32=_A,kernel32=_A):'\n        Copy text to the system clipboard.\n\n        Args:\n            text (str): The text to be copied to the clipboard.\n        ';pyperclip.copy(text)
-	def get_clipboard(user32=_A,kernel32=_A):'\n        Retrieve the current content of the system clipboard.\n\n        Returns:\n            str: The text content currently stored in the clipboard.\n        ';return pyperclip.paste()
-	def clear_clipboard(user32=_A):"\n        Clear the contents of the clipboard.\n\n        This function utilizes the 'pyperclip' library to copy an empty string to the clipboard,\n        effectively clearing its contents.\n\n        Returns:\n            None: This function does not return any value.\n        ";pyperclip.copy('')
+	def copy_to_clipboard(text,user32=_A,kernel32=_A):pyperclip.copy(text)
+	def get_clipboard(user32=_A,kernel32=_A):return pyperclip.paste()
+	def clear_clipboard(user32=_A):pyperclip.copy('')
 from..file_operations import get_file_extension
 def save_clipboard_to_file(file_path):
-	"\n    Saves the current contents of the clipboard to a specified file.\n\n    This function attempts to open the specified file in write mode and writes the content\n    currently stored in the clipboard to it. It uses the 'utf-8' encoding for writing the file.\n    \n    Args:\n        file_path (str): The path to the file where the clipboard content will be saved.\n        \n    Returns:\n        bool: Returns True if the clipboard content was successfully saved to the file,\n            otherwise returns False if an error occurs during the process.\n    "
 	try:A=open(file_path,'w',encoding='utf-8');A.write(get_clipboard());A.close();return True
 	except:return False
 def load_clipboard_from_file(file_path):
-	"\n    Loads text content from a file and copies it to the clipboard.\n\n    This function reads the content of a file located at the given 'file_path',\n    assuming it is encoded in UTF-8. The file's text content is then copied to\n    the clipboard using the 'copy_to_clipboard' function. If the operation is\n    successful, the function returns True. If any errors occur during file\n    reading or clipboard copying, it returns False.\n\n    Args:\n        file_path (str): The path to the file from which content will be read.\n\n    Returns:\n        bool: True if the text was successfully copied to the clipboard, False otherwise.\n    "
 	try:A=open(file_path,'r',encoding='utf-8');B=A.read();A.close();copy_to_clipboard(B);return True
 	except:return False
-def append_to_clipboard(text):'\n    Appends the given text to the current content in the clipboard.\n\n    Parameters:\n    text (str): The text to be appended to the clipboard.\n\n    Returns:\n    None\n        This function does not return any value.\n\n    ';A=get_clipboard();A+=text;copy_to_clipboard(A)
-def prepend_to_clipboard(text):"\n    Prepends the provided text to the current clipboard content.\n\n    This function takes a string 'text' and retrieves the current content\n    of the clipboard using the 'get_clipboard()' function. It then prepends\n    the provided 'text' to the clipboard content and updates the clipboard\n    with the modified content using the 'copy_to_clipboard()' function.\n\n    Parameters:\n    text (str): The text to be prepended to the clipboard content.\n\n    Returns:\n    None: This function does not return any value, it directly modifies\n        the clipboard content.\n    ";A=get_clipboard();A=text+A;copy_to_clipboard(A)
-def get_clipboard_size():'\n    Get the size of the content currently stored in the clipboard.\n\n    Returns:\n        int: The size of the clipboard content in terms of the number of characters.\n    ';return len(get_clipboard())
-def get_clipboard_file_extension():"\n    Retrieves the file extension of the content currently stored in the clipboard.\n\n    This function extracts the file extension from the content present in the clipboard.\n    It first obtains the clipboard content using the 'get_clipboard()' function and then\n    extracts the file extension using the 'get_file_extension()' utility function.\n\n    Returns:\n    str: The file extension of the content in the clipboard, or an empty string if no\n        valid file extension is found.\n    ";return get_file_extension(get_clipboard())
+def append_to_clipboard(text):A=get_clipboard();A+=text;copy_to_clipboard(A)
+def prepend_to_clipboard(text):A=get_clipboard();A=text+A;copy_to_clipboard(A)
+def get_clipboard_size():return len(get_clipboard())
+def get_clipboard_file_extension():return get_file_extension(get_clipboard())

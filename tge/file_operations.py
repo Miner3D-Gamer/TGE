@@ -901,3 +901,6 @@ def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path: 
         return latest_file
     else:
         return None  # No valid files found in the directory
+
+def is_directory_empty(directory_path:str)->bool:
+    return not os.listdir(directory_path)

@@ -7,16 +7,16 @@ _uname_cache=_A
 _ver_output=re.compile('(?:([\\w ]+) ([\\w.]+) .*\\[.* ([\\d.]+)\\])')
 _WIN32_SERVER_RELEASES={(5,2):_D,(6,0):'2008Server',(6,1):'2008ServerR2',(6,2):'2012Server',(6,3):'2012ServerR2',(6,_A):'post2012ServerR2'}
 _WIN32_CLIENT_RELEASES={(5,0):'2000',(5,1):'XP',(5,2):_D,(5,_A):'post2003',(6,0):_C,(6,1):'7',(6,2):'8',(6,3):'8.1',(6,_A):'post8.1',(10,0):'10',(10,_A):'post10'}
-def system():" Returns the system/OS name, e.g. 'Linux', 'Windows' or 'Java'.\n\n        An empty string is returned if the value cannot be determined.\n\n    ";return uname().system
+def system():return uname().system
 def _unknown_as_blank(val):return''if val=='unknown'else val
 def _node(default=''):
-	' Helper to determine the node name of this machine.\n    ';A=default
+	A=default
 	try:import socket as B
 	except ImportError:return A
 	try:return B.gethostname()
 	except OSError:return A
 def _syscmd_ver(system='',release='',version='',supported_platforms=(_B,'win16','dos')):
-	' Tries to figure out the OS version used and returns\n        a tuple (system, release, version).\n\n        It uses the "ver" shell command for this which is known\n        to exists on Windows, DOS. XXX Others too ?\n\n        In case this fails, the given parameters are used as\n        defaults.\n\n    ';C=system;B=release;A=version
+	C=system;B=release;A=version
 	if sys.platform not in supported_platforms:return C,B,A
 	import subprocess as D
 	for G in('ver','command /c ver','cmd /c ver'):
@@ -32,13 +32,13 @@ def _syscmd_ver(system='',release='',version='',supported_platforms=(_B,'win16',
 		A=_norm_version(A)
 	return C,B,A
 def _norm_version(version,build=''):
-	' Normalize the version and build strings and return a single\n        version string using the format major.minor.build (or patchlevel).\n    ';C=build;A=version;B=A.split('.')
+	C=build;A=version;B=A.split('.')
 	if C:B.append(C)
 	try:D=list(map(str,map(int,B)))
 	except ValueError:D=B
 	A='.'.join(D[:3]);return A
 def java_ver(release='',vendor='',vminfo=('','',''),osinfo=('','','')):
-	" Version interface for Jython.\n\n        Returns a tuple (release, vendor, vminfo, osinfo) with vminfo being\n        a tuple (vm_name, vm_release, vm_vendor) and osinfo being a\n        tuple (os_name, os_version, os_arch).\n\n        Values which cannot be determined are set to the defaults\n        given as parameters (which all default to '').\n\n    ";D=osinfo;C=vminfo;B=vendor;A=release
+	D=osinfo;C=vminfo;B=vendor;A=release
 	try:import java.lang
 	except ImportError:return A,B,C,D
 	B=_java_getprop('java.vendor',B);A=_java_getprop('java.version',A);E,F,G=C;E=_java_getprop('java.vm.name',E);G=_java_getprop('java.vm.vendor',G);F=_java_getprop('java.vm.version',F);C=E,F,G;H,I,J=D;J=_java_getprop('java.os.arch',J);H=_java_getprop('java.os.name',H);I=_java_getprop('java.os.version',I);D=H,I,J;return A,B,C,D
@@ -73,7 +73,7 @@ def _java_getprop(name,default):
 		return B
 	except AttributeError:return A
 def uname():
-	" Fairly portable uname interface. Returns a tuple\n        of strings (system, node, release, version, machine, processor)\n        identifying the underlying platform.\n\n        Note that unlike the os.uname function this also returns\n        possible processor information as an additional tuple entry.\n\n        Entries which cannot be determined are set to ''.\n\n    ";H='Microsoft';D='Windows';global _uname_cache
+	H='Microsoft';D='Windows';global _uname_cache
 	if _uname_cache is not _A:return _uname_cache
 	try:A,F,B,C,E=G=os.uname()
 	except AttributeError:A=sys.platform;F=_node();B=C=E='';G=()
@@ -99,7 +99,7 @@ def uname():
 	if A==H and B==D:A=D;B=_C
 	K=A,F,B,C,E;_uname_cache=uname_result(*map(_unknown_as_blank,K));return _uname_cache
 class uname_result(collections.namedtuple('uname_result_base','system node release version machine')):
-	'\n    A uname_result that\'s largely compatible with a\n    simple namedtuple except that \'processor\' is\n    resolved late and cached to avoid calling "uname"\n    except when needed.\n    ';_fields='system','node','release','version','machine','processor'
+	_fields='system','node','release','version','machine','processor'
 	@functools.cached_property
 	def processor(self):return _unknown_as_blank(_Processor.get())
 	def __iter__(A):return itertools.chain(super().__iter__(),(A.processor,))
@@ -120,7 +120,6 @@ class _Processor:
 		except ImportError:pass
 		else:C,B=A.getsyi('SYI$_CPU',0);return'Alpha'if B>=128 else'VAX'
 	def from_subprocess():
-		'\n        Fall back to `uname -p`\n        '
 		try:import subprocess as A
 		except ImportError:return
 		try:return A.check_output(['uname','-p'],stderr=A.DEVNULL,text=True,encoding='utf8').strip()

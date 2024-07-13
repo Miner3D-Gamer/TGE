@@ -45,4 +45,5 @@ building text-based games, console applications, file manipulation, and various 
 
 ### -install_minified (Default:Asks user)
   Anything from this list: ["y", "1", "sure"]: Installs the minified version of TGE. The minified version is ~200kb instead of ~1.1mb (All notations and docstrings have been removed)
+  
   Anything from this list: ["n", "2", "nope"]: Will install the normal version of TGE

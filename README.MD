@@ -15,6 +15,8 @@ building text-based games, console applications, file manipulation, and various 
   2. Execute the downloaded file
 
 
+
+
 ## If you use the .py you can use additional inputs to predefine options:
   If something is inputted what isn't suspected, the default is used
 
@@ -29,14 +31,16 @@ building text-based games, console applications, file manipulation, and various 
   3: No completely quiet
 
 
-### -install_option (Default:Asks user)
-  1: Install TGE for all installed python installations in the default python installation ({default_python_installation})             
-  2: Select a file (.exe) in the python folder you wanna install TGE in (Or use what is inside -path)
-  3: Select a folder to install TGE into (Or use what is inside -path)
-
-
 ### -path (No Default)
   The directory to a file or folder depending on if the -install_option is set to 1 or 2
+
+
+### -install_option (Default:Asks user)
+  1: Install TGE for all installed python installations in the default python installation ({default_python_installation})
+
+  2: Select a file (.exe) in the python folder you wanna install TGE in (Or use what is inside -path)
+
+  3: Select a folder to install TGE into (Or use what is inside -path)
 
 
 ### -install_minified (Default:Asks user)

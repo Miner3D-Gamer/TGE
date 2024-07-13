@@ -60,11 +60,11 @@ while True:
         .strip()
         .lower()
     )
-    if inp == "n" or inp == "1":
+    if inp == "n" or inp == "2":
         github_url = f"{base_github_url}tge/"
         break
 
-    elif inp == "y":
+    elif inp == "y" or inp == "1":
         github_url = f"{base_github_url}minified_tge/"
         break
 

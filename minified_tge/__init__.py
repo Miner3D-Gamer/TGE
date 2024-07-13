@@ -53,7 +53,7 @@ from.import formatting_utils as formatting
 from.import bool_operations
 from.import bitwise
 from.import image_processing
-from.import steam_scrapper
+from.import steam_utils
 tim=tm.time()
 IMPORT_TIME=tim-INIT_TIME_BEFORE_IMPORTING
 INIT_TIME=tim-start_import

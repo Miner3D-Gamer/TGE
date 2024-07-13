@@ -1,6 +1,7 @@
-_C='type'
-_B=False
-_A=None
+_D='type'
+_C=True
+_B=None
+_A=False
 from typing import List,Union,Tuple,Any,get_type_hints
 import types,ast,os,sys,importlib
 from difflib import get_close_matches
@@ -9,11 +10,11 @@ def pass_func(*args):0
 def execute_function(func=pass_func,*args,**kwargs):return func(*args,**kwargs)
 def determine_affirmative(text):
 	B="i can't go along with that";A='not really';text=text.strip().lower();positives=['y','yes','yeah','yup','uh-huh','sure','affirmative','absolutely','indeed','certainly','of course','definitely','you bet','roger','right on','no doubt','by all means','most certainly','positively','without a doubt','naturally','indubitably','sure thing','yuppers','aye','ok','okey-dokey','all right','righto','very well','exactly','precisely','no problem','for sure','most assuredly','you got it',"that's right",'sure as shooting','all righty','of course, my dear',"couldn't agree more",'a thousand times, yes',"i'm in","it's a go","i'll go along with that",'count me in',"i'm on board",'without hesitation','undoubtedly','yeye'];negatives=['n','no','nope','nah','nuh-uh','negative','not at all','absolutely not','certainly not','no way','never','i disagree',"i'm afraid not","i can't agree with that",'i beg to differ',"i'm not convinced",A,"i'm not so sure",'i have my doubts',"that's not correct","that's incorrect","i don't think so","i'm not on board with that","i'm not buying it",B,"i can't support that","i'm opposed to that","i'm against it","i'm not in favor of that","that's a negative",'no chance','not a chance','no siree',"i can't see that happening","i'm not inclined to agree","i can't accept that","i'm not on the same page","i'm not feeling it",'i have reservations',"i can't endorse that","that's out of the question","i can't support that notion","i'm skeptical","that doesn't work for me","i don't agree with that assessment","i'm not persuaded","i'm not buying into that","i don't subscribe to that view",B,"i'm not swayed by that argument","i don't believe so","i'm not on board","i can't back that up","i'm not convinced of its validity","that's not my understanding","i'm not sold on that idea","i can't vouch for that","i don't really feel like it",A]
-	if text in positives:return True
-	if text in negatives:return _B
+	if text in positives:return _C
+	if text in negatives:return _A
 	closest_positive_match=get_close_matches(text,positives,n=1,cutoff=.8);closest_negative_match=get_close_matches(text,negatives,n=1,cutoff=.8)
-	if closest_positive_match:return True
-	if closest_negative_match:return _B
+	if closest_positive_match:return _C
+	if closest_negative_match:return _A
 def categorize_responses(text_list):
 	response_list=[]
 	for text in text_list:response_list.append(determine_affirmative(text))
@@ -27,7 +28,7 @@ def get_available_variables():
 def get_docstring(obj):
 	try:return inspect.getdoc(obj)
 	except:return''
-def convert_number_to_words_less_than_thousand(n,dash=True):
+def convert_number_to_words_less_than_thousand(n,dash=_C):
 	TINY_NUMBERS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];SMALL_NUMBERS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety']
 	if n>=100:
 		hundreds_digit=n//100;rest=n%100;result=TINY_NUMBERS[hundreds_digit]+' hundred'
@@ -76,7 +77,7 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path)
 	_check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(directory_path);return undocumented_functions_dict
 def autocomplete(prefix,word_list):return[word for word in word_list if word.startswith(prefix)]
 def is_iterable(thing):return hasattr(thing,'__iter__')
-def split_with_list(string,separators,limit=_A):
+def split_with_list(string,separators,limit=_B):
 	for separator in separators:string=string.replace(separator,'𘚟')
 	return string.split('𘚟')
 def analyze_text(text):
@@ -98,7 +99,7 @@ def check_library_functions(library_module):
 	functions_with_missing_annotations=[]
 	for(name,obj)in inspect.getmembers(library_module):
 		if isinstance(obj,types.FunctionType):
-			input_parameters=get_function_inputs(obj);missing_input_types=[param for param in input_parameters if param[_C]is NoInputType];return_type=get_return_type(obj)
+			input_parameters=get_function_inputs(obj);missing_input_types=[param for param in input_parameters if param[_D]is NoInputType];return_type=get_return_type(obj)
 			if missing_input_types or return_type is NoReturnType:functions_with_missing_annotations.append({'function_name':name,'missing_input_types':missing_input_types,'return_type':return_type})
 	return functions_with_missing_annotations
 def get_function_id_by_name(func_name):
@@ -109,9 +110,9 @@ class NoInputType:0
 def get_function_inputs(func):
 	B='default';A='name';signature=inspect.signature(func);type_hints=get_type_hints(func);input_parameters=[]
 	for(param_name,param)in signature.parameters.items():
-		param_type=type_hints.get(param_name,_A)
-		if param.default is not inspect.Parameter.empty:default_value=param.default;input_parameters.append({A:param_name,_C:param_type,B:default_value})
-		else:input_parameters.append({A:param_name,_C:param_type,B:NoInputType})
+		param_type=type_hints.get(param_name,_B)
+		if param.default is not inspect.Parameter.empty:default_value=param.default;input_parameters.append({A:param_name,_D:param_type,B:default_value})
+		else:input_parameters.append({A:param_name,_D:param_type,B:NoInputType})
 	return input_parameters
 class NoReturnType:0
 def get_return_type(func):
@@ -129,16 +130,16 @@ def count_functions_in_library(library_name):
 	except ModuleNotFoundError:return-1
 	function_count=count_functions_in_module(module,library_name);return function_count
 class ArgumentHandler:
-	def __init__(self,arguments=_A):
-		if arguments is _A:arguments=sys.argv[1:]
+	def __init__(self,arguments=_B):
+		if arguments is _B:arguments=sys.argv[1:]
 		self.arguments=arguments;self.argument_list_length=len(arguments)
-	def get_argument(self,argument,delete=_B,default=_A):
+	def get_argument(self,argument,delete=_A,default=_B):
 		value_id=self.get_id(argument)
 		if value_id<0:return default
 		if delete:value=self.arguments.pop(value_id);self.argument_list_length-=1
 		else:value=self.arguments.__getitem__(value_id)
 		return value
-	def get_argument_by_flag(self,flag,delete=_B,default=_A):
+	def get_argument_by_flag(self,flag,delete=_A,default=_B):
 		value_id=self.get_id(flag)
 		if value_id<0:return default
 		if value_id+1==len(self.arguments):return default
@@ -155,3 +156,38 @@ def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__
 		print('\n'+i)
 		for j in undocumented[i]:amount+=1;print(f'\t{j[0]} ("{directory}/{i}", line {j[1]})')
 	print('\nA total of %s functions are undocumented'%amount)
+from collections import defaultdict
+class TrieNode:
+	def __init__(self):self.children=defaultdict(TrieNode);self.is_end_of_path=_A
+def insert_path(root,path):
+	node=root
+	for part in path:node=node.children[part]
+	node.is_end_of_path=_C
+def build_trie(paths):
+	root=TrieNode()
+	for path in paths:insert_path(root,path.split('/'))
+	return root
+def serialize_trie(node):
+	if not node.children:return[]
+	if len(node.children)==1 and node.is_end_of_path==_A:
+		key,child=next(iter(node.children.items()));serialized_child=serialize_trie(child)
+		if isinstance(serialized_child,list)and not serialized_child:return key
+		if isinstance(serialized_child,str):return f"{key}/{serialized_child}"
+		return{key:serialized_child}
+	result={}
+	for(key,child)in node.children.items():
+		serialized_child=serialize_trie(child)
+		if isinstance(serialized_child,list)and not serialized_child:result.setdefault('files',[]).append(key)
+		else:result[key]=serialized_child
+	return result
+def compress_directory_list(paths):trie=build_trie(paths);compressed=serialize_trie(trie);return compressed
+def decompress_directory_list(compressed):
+	paths=[]
+	def dfs(node,current_path=''):
+		if isinstance(node,list):paths.append(f"{current_path}/{node[0]}".strip('/'));return
+		if isinstance(node,str):paths.append(node);return
+		for(key,value)in node.items():
+			if key=='files':
+				for file_path in value:paths.append(f"{current_path}/{file_path}".strip('/'))
+			else:dfs(value,f"{current_path}/{key}".strip('/'))
+	dfs(compressed);return paths

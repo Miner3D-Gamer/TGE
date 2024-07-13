@@ -1329,6 +1329,53 @@ def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__fi
 
 
 
+from collections import defaultdict
+
+
+class TrieNode:
+    def __init__(self):
+        self.children = defaultdict(TrieNode)
+        self.is_end_of_path = False
+
+def insert_path(root, path):
+    node = root
+    for part in path:
+        node = node.children[part]
+    node.is_end_of_path = True
+
+def build_trie(paths):
+    root = TrieNode()
+    for path in paths:
+        insert_path(root, path.split('/'))
+    return root
+
+def serialize_trie(node):
+    if not node.children:
+        return []
+
+    if len(node.children) == 1 and node.is_end_of_path == False:
+        key, child = next(iter(node.children.items()))
+        serialized_child = serialize_trie(child)
+        if isinstance(serialized_child, list) and not serialized_child:
+            return key
+        if isinstance(serialized_child, str):
+            return f"{key}/{serialized_child}"
+        return {key: serialized_child}
+
+    result = {}
+    for key, child in node.children.items():
+        serialized_child = serialize_trie(child)
+        if isinstance(serialized_child, list) and not serialized_child:
+            result.setdefault('files', []).append(key)
+        else:
+            result[key] = serialized_child
+
+    return result
+
+def compress_directory_list(paths):
+    trie = build_trie(paths)
+    compressed = serialize_trie(trie)
+    return compressed
 
 
 
@@ -1337,10 +1384,26 @@ def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__fi
 
 
 
+def decompress_directory_list(compressed):
+    paths = []
 
+    def dfs(node, current_path=""):
+        if isinstance(node, list):
+            paths.append(f"{current_path}/{node[0]}".strip('/'))
+            return
+        if isinstance(node, str):
+            paths.append(node)
+            return
 
+        for key, value in node.items():
+            if key == 'files':
+                for file_path in value:
+                    paths.append(f"{current_path}/{file_path}".strip('/'))
+            else:
+                dfs(value, f"{current_path}/{key}".strip('/'))
 
-
+    dfs(compressed)
+    return paths
 
 
 

@@ -118,9 +118,30 @@ response = requests.get(f"{base_github_url}directory.json")
 
 response.raise_for_status()
 
+def decompress_directory_list(compressed):
+    paths = []
+
+    def dfs(node, current_path=""):
+        if isinstance(node, list):
+            paths.append(f"{current_path}/{node[0]}".strip('/'))
+            return
+        if isinstance(node, str):
+            paths.append(node)
+            return
+
+        for key, value in node.items():
+            if key == 'files':
+                for file_path in value:
+                    paths.append(f"{current_path}/{file_path}".strip('/'))
+            else:
+                dfs(value, f"{current_path}/{key}".strip('/'))
+
+    dfs(compressed)
+    return paths
+
 
 files = [
-    (file + "py" if file.endswith(".") else file) for file in json.loads(response.text)
+    (file + "py" if file.endswith(".") else file) for file in decompress_directory_list(json.loads(response.text))
 ]
 
 urls = [github_url + file for file in files]

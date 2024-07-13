@@ -2,6 +2,10 @@ import os, tkinter, time
 import tkinter.filedialog
 
 
+def is_directory_empty(directory_path):
+    return not os.listdir(directory_path)
+
+
 default_python_installation = f"{os.getenv('LOCALAPPDATA')}\Programs\Python"
 while True:
     inp = input(
@@ -10,12 +14,13 @@ while True:
                 
     2. Select a file (.exe) in the python folder you wanna install TGE in
     
+    3. Select a folder to install TGE into
+    
     Your Input: """
     ).strip()
-    if not inp in ["1", "2"]:
-        if inp.startswith("&"):
-            quit()
-        continue
+    if inp.startswith("&"):
+        quit()
+
     if inp == "1":
         dirs = {
             f"{i.path}/Lib/site-packages/tge"
@@ -24,7 +29,7 @@ while True:
         }
 
         break
-    else:
+    elif inp == "2":
         path = tkinter.filedialog.askopenfilename()
         path = os.path.dirname(path) + "/Lib/site-packages"
         if os.path.exists(path):
@@ -33,12 +38,24 @@ while True:
         else:
             print("'%s' could not be found" % path)
             quit()
+    elif inp == "3":
+        path = tkinter.filedialog.askdirectory()
+        if not os.path.exists(path):
+            print("Path not found.")
+            continue
+        if is_directory_empty(path):
+            dirs = [path]
+            break
+        dirs = [path + "/tge"]
+        break
+
+
 print()
 base_github_url = "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/"
 while True:
     inp = (
         input(
-            f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will be faster to download but manually editing it for whatever reason will be annoying\nYour Input: "
+            f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will be faster to download and require less space (~400kb instead of ~1.1mb) but manually editing it for whatever reason will be annoying\nYour Input: "
         )
         .strip()
         .lower()
@@ -48,17 +65,13 @@ while True:
         break
 
     elif inp == "y":
-        github_url = (
-            f"{base_github_url}minified_tge/"
-        )
+        github_url = f"{base_github_url}minified_tge/"
         break
 
 
 import requests, json
 
-response = requests.get(
-    f"{base_github_url}directory.json"
-)
+response = requests.get(f"{base_github_url}directory.json")
 
 response.raise_for_status()
 
@@ -80,32 +93,44 @@ for file_id in range(len(urls)):
     try:
         file.raise_for_status()
     except requests.HTTPError:
-        print("Error while downloading %s"% file_name)
+        print("Error while downloading %s" % file_name)
         continue
 
     if url.endswith("/requirements.txt"):
         requirements = file.text.split("\n")
 
-    for installation_directory in dirs:
+    for idx in range(len(dirs)):
+        try:
+            installation_directory = dirs[idx]
+        except:
+            break
         path = os.path.join(installation_directory, file_name)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        parent_dir = os.path.dirname(path)
+        if not os.path.exists(parent_dir):
+            print(
+                "Directory '%s' cannot be found anymore, maybe it has been moved or deleted."
+                % parent_dir
+            )
+            dirs.pop(idx)
+            continue
+        os.makedirs(parent_dir, exist_ok=True)
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
 end = time.time()
-
-
-try:
-    import tge.library as library
-    print("Done downloading TGE in %s seconds!" % (end - start))
-except:
-    print("Well, this didn't quit work out. Wasted about %s seconds" % (end-start))
-    quit()
-
 
 import sys
 
 for dir in dirs:
     sys.path.append(dir)
+
+try:
+    import tge.library as library
+
+    print("Done downloading TGE in %s seconds!" % (end - start))
+except:
+    print("Well, this didn't quit work out. Wasted about %s seconds" % (end - start))
+    quit()
+
 
 
 

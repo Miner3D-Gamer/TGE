@@ -55,7 +55,7 @@ base_github_url = "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/"
 while True:
     inp = (
         input(
-            f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will be faster to download and require less space (~400kb instead of ~1.1mb) but manually editing it for whatever reason will be annoying\nYour Input: "
+            f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will be faster to download and require less space (~300kb instead of ~1mb) but manually editing it for whatever reason will be annoying\nYour Input: "
         )
         .strip()
         .lower()

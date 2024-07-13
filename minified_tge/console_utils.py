@@ -5,6 +5,7 @@ import time,os
 from typing import List,Union,Tuple,Any
 from random import random,choice
 import sys
+from collections.abc import Iterable
 from.tbe import determine_affirmative
 __all__=['typingPrint']
 if os.name=='nt':

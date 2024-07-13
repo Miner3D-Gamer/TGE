@@ -2,6 +2,7 @@ _D='type'
 _C=True
 _B=None
 _A=False
+from collections.abc import Iterable
 from typing import List,Union,Tuple,Any,get_type_hints
 import types,ast,os,sys,importlib
 from difflib import get_close_matches
@@ -191,3 +192,16 @@ def decompress_directory_list(compressed):
 				for file_path in value:paths.append(f"{current_path}/{file_path}".strip('/'))
 			else:dfs(value,f"{current_path}/{key}".strip('/'))
 	dfs(compressed);return paths
+import python_minifier
+def minify(text,rename_important_names=_A,remove_docstrings=_C):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
+def replace_with_list_as_replacement(string,replacer,replacements):
+	for replacement in replacements:string=string(replacer,replacement)
+	return string
+def replace(string,replacers,replacements):
+	if isinstance(replacers,str):
+		if isinstance(replacements,str):string=string.replace(replacers,replacements);return string
+		for replacement in replacements:string=string.replace(replacers,replacement);return string
+	if isinstance(replacements,str):
+		for replacement in replacers:string=string.replace(replacement,replacements);return string
+	if len(replacements)==len(replacers):
+		for(replacer,replacement)in(replacers,replacements):string=string.replace(replacer,replacement);return string

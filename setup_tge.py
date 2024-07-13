@@ -20,37 +20,32 @@ for root, dirs, files in os.walk(dir, topdown=False):
         directories.append(file)
 
 
-
 compressed = tge.tbe.compress_directory_list(directories)
 
 with open("directory.json", "w") as f:  #
     compressed = json.dumps(compressed)
     for replacer, replacement in [('", "', '","'), ('": ', '":'), (', "', ',"')]:
-        compressed  = compressed.replace(replacer, replacement)
+        compressed = compressed.replace(replacer, replacement)
     f.write(compressed)
 
 
-
-
-
-cwd = os.getcwd().replace("\\", "/")
+cwd = os.getcwd()
 output = rf"{cwd}/minified_tge/"
 for root, dirs, files in os.walk(dir, topdown=False):
-    root = root.replace("\\", "/")
+    root = root
     for file in files:
-
-        file = file.replace("\\", "/")
-        file_path = os.path.join(root[len(dir) :].lstrip("/"), file)
+        file_path = os.path.join(root[len(dir) :].lstrip("\\"), file)
         total_file_path = os.path.join(root, file)
         with open(total_file_path, "r", encoding="utf8") as f:
             if file.endswith(".pyc"):
                 continue
             os.makedirs(os.path.dirname(output + file_path), exist_ok=True)
             with open(output + file_path, "w", encoding="utf8") as o:
-                if file.endswith(".py"):
-                    data = python_minifier.minify(
-                        f.read(), rename_globals=False, remove_literal_statements=True
+                data = (
+                    tge.tbe.minify(
+                        f.read(), rename_important_names=False, remove_docstrings=True
                     )
-                else:
-                    data = f.read()
+                    if file.endswith(".py")
+                    else f.read()
+                )
                 o.write(data)

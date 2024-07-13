@@ -84,7 +84,7 @@
 #         except:
 #             return -1
 
-
+from collections.abc import Iterable
 
 
 from typing import List, Union, Tuple , Any, get_type_hints
@@ -204,7 +204,7 @@ def determine_affirmative(text: str) -> bool:
     # If no clear determination can be made
     return None
 
-def categorize_responses(text_list: List[str]) -> List[str]:
+def categorize_responses(text_list: Iterable[str]) -> List[str]:
     """
     Categorizes a list of text responses as affirmative, negative, or uncertain.
 
@@ -536,7 +536,7 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path:
 
 
 
-def autocomplete(prefix:str, word_list:list[str])->list[str]:
+def autocomplete(prefix:str, word_list:Iterable[str])->list[str]:
     return [word for word in word_list if word.startswith(prefix)]
 
 
@@ -545,7 +545,7 @@ def is_iterable(thing:Any)->True|False:
 
 
 
-def split_with_list(string: str, separators: list|tuple, limit: None | int = None) -> list[str]:
+def split_with_list(string: str, separators: Iterable, limit: None | int = None) -> list[str]:
     for separator in separators:
         string = string.replace(separator, "𘚟")
     return string.split("𘚟")
@@ -1113,7 +1113,7 @@ class ArgumentHandler:
     def __init__(self, arguments: None | list = None) -> None:
         if arguments is None:
             arguments = sys.argv[1:]
-        self.arguments: list = arguments
+        self.arguments: Iterable = arguments
         self.argument_list_length = len(arguments)
 
     def get_argument(self, argument: str, delete:bool=False, default:Any=None) -> str | None:
@@ -1406,14 +1406,35 @@ def decompress_directory_list(compressed):
     return paths
 
 
+import python_minifier
+
+def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True):
+    return python_minifier.minify(text, rename_globals=rename_important_names, remove_literal_statements=remove_docstrings)
 
 
+def replace_with_list_as_replacement(string:str, replacer:str, replacements:Iterable):
+    for replacement in replacements:
+        string = string(replacer, replacement)
+    return string
 
-
-
-
-
-
+def replace(string:str, replacers:str|Iterable, replacements:str|Iterable):
+    if isinstance(replacers, str):
+        if isinstance(replacements,str):
+            string = string.replace(replacers, replacements)
+            return string
+        for replacement in replacements:
+            string = string.replace(replacers, replacement)
+            return string
+    if isinstance(replacements,str):
+        for replacement in replacers:
+            string = string.replace(replacement, replacements)
+            return string
+    if len(replacements) == len(replacers):
+        for replacer, replacement in (replacers, replacements):
+                string = string.replace(replacer, replacement)
+                return string
+    # ????????????????????????????????????????????????????????????
+    
 
 
 
@@ -1458,7 +1479,7 @@ def decompress_directory_list(compressed):
 
 # types = {}
 
-# def create_type(name: str, weak_against_type: list, strong_against_type: list, against_self: int):
+# def create_type(name: str, weak_against_type: Iterable, strong_against_type: Iterable, against_self: int):
 #     name = name.lower()
 #     weak_against_type = [weak.lower() for weak in weak_against_type]
 #     strong_against_type = [strong.lower() for strong in strong_against_type]
@@ -1479,8 +1500,8 @@ def decompress_directory_list(compressed):
 #         "weak_against_type": weak_against_type,
 #         "strong_against_type": strong_against_type,
 #         "self": against_self,
-#         "strengths": list(set(strengths)),
-#         "weaknesses": list(set(weaknesses))
+#         "strengths": Iterable(set(strengths)),
+#         "weaknesses": Iterable(set(weaknesses))
 #     }
 
 
@@ -1510,7 +1531,7 @@ def decompress_directory_list(compressed):
 #     print_type_damage_to_self(type_stats["self"])
 
 
-# def print_type_attributes(attributes: list):
+# def print_type_attributes(attributes: Iterable):
 #     for attribute in attributes:
 #         print("\t\t" + attribute.title())
 
@@ -1568,7 +1589,7 @@ def decompress_directory_list(compressed):
 # print_type_stats("")
 # missing_types("")
 
-# def newEnemy(name: str, entity_type: str, health: int, attack: int, defense: int, speed: int, resistant: list, weakness: list, behavior: int, loot: list):
+# def newEnemy(name: str, entity_type: str, health: int, attack: int, defense: int, speed: int, resistant: Iterable, weakness: Iterable, behavior: int, loot: Iterable):
 #     if type(weakness) != list:
 #         try:
 #             weakness = list(weakness)

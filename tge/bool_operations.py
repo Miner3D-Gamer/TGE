@@ -1,7 +1,7 @@
 # TODO: Note to future self: Write a script to automatically generate the and truth table
 
 from typing import List
-
+from collections.abc import Iterable
 
 # and
 def and_three(a: bool, b: bool, c: bool) -> bool:
@@ -167,7 +167,7 @@ def mux_eight(
     return inputs[index]
 
 
-def mux_any(inputs: List[bool], selectors: List[bool]) -> bool:
+def mux_any(inputs: Iterable[bool], selectors: Iterable[bool]) -> bool:
     if len(inputs) != 2 ** len(selectors):
         raise ValueError(
             "Number of inputs must be 2^n where n is the number of selectors."
@@ -254,7 +254,7 @@ def four_bit_subtractor(
     result, carry_out = four_bit_adder(a, b_complement, borrow)
     return result + (carry_out,)
 
-def any_bit_adder(a: list[bool], b: list[bool], carry: bool = False) -> tuple[list[bool], bool]:
+def any_bit_adder(a: Iterable[bool], b: Iterable[bool], carry: bool = False) -> tuple[list[bool], bool]:
     if len(a) != len(b):
         raise ValueError("Input lists must have the same length")
 
@@ -283,7 +283,7 @@ def number_to_bools(num: int) -> list[bool]:
 
     return bool_list
 
-def bools_to_number(bools: list[bool]) -> int:
+def bools_to_number(bools: Iterable[bool]) -> int:
     num = 0
     bit_length = len(bools)
     for i in range(bit_length):

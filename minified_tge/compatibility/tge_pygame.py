@@ -2,6 +2,7 @@ _B=True
 _A=False
 import os
 from importlib import import_module as importlib_import_module
+from collections.abc import Iterable
 import pygame
 from..random_generators import generate_random_string
 from..tbe import pass_func

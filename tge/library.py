@@ -79,9 +79,9 @@ def install_library_from_github(github_repo_url: str) -> None:
         except subprocess.CalledProcessError as e:
             print(f"Failed to install for {python}: {e}")
 
+from collections.abc import Iterable
 
-
-def install_all_libraries(libs:list|tuple)->list[tuple[bool, str]]:
+def install_all_libraries(libs:Iterable)->list[tuple[bool, str]]:
     output = []
     for lib in libs:
         if is_library_installed(lib):

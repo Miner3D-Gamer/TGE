@@ -2,6 +2,7 @@ from typing import List,Union,Tuple,Any
 import uuid
 from random import randint,choice,shuffle,uniform,getrandbits
 from string import ascii_letters as string_ascii_letters,digits as string_digits,ascii_lowercase
+from collections.abc import Iterable
 from requests import get as requests_get
 from.codec import decode_html_character
 def generate_name(gen):

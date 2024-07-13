@@ -31,6 +31,7 @@ def install_library_from_github(github_repo_url):
 		print(f"Python executable: {A}")
 		try:C=subprocess.check_output([A,_C],stderr=subprocess.STDOUT).decode().strip();print(f"Installing for {C} ({A})");subprocess.check_call([A,'-m','pip',_B,'git+'+github_repo_url])
 		except subprocess.CalledProcessError as D:print(f"Failed to install for {A}: {D}")
+from collections.abc import Iterable
 def install_all_libraries(libs):
 	A=[]
 	for B in libs:

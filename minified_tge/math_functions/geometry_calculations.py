@@ -37,6 +37,7 @@ def calculate_distance_between_seven_points(x,y,z,a,b,c,d):return((x-a)**2+(y-b)
 def calculate_distance_between_eight_points(x,y,z,a,b,c,d,e):return((x-a)**2+(y-b)**2+(z-c)**2+(d-e)**2+(e-a)**2)**.5
 def calculate_distance_between_nine_points(x,y,z,a,b,c,d,e,f):return((x-a)**2+(y-b)**2+(z-c)**2+(d-e)**2+(e-f)**2+(f-a)**2)**.5
 def calculate_distance_between_ten_points(x,y,z,a,b,c,d,e,f,g):return((x-a)**2+(y-b)**2+(z-c)**2+(d-e)**2+(e-f)**2+(f-g)**2+(g-a)**2)**.5
+from collections.abc import Iterable
 def calculate_distance_between_points(*A):
 	if len(A)<2:return .0
 	B=.0

@@ -11,6 +11,7 @@ if __name__==_E:import time;very_start=time.time()
 import requests
 from bs4 import BeautifulSoup
 import concurrent.futures,datetime
+from collections.abc import Iterable
 def get_game_name(session,game_id):
 	D=f"https://steamcommunity.com/app/{game_id}/"
 	try:

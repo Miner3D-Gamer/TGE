@@ -1,5 +1,6 @@
 _A=False
 from typing import List
+from collections.abc import Iterable
 def and_three(a,b,c):return a and b and c
 def and_four(a,b,c,d):return a and b and c and d
 def and_five(a,b,c,d,e):return a and b and c and d and e

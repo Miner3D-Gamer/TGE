@@ -1,9 +1,9 @@
 from math import sqrt, log2
 
 import numpy as np
+from collections.abc import Iterable
 
-
-def average_grade(grades: list) -> float:
+def average_grade(grades: Iterable) -> float:
     """
     Calculate the average grade from a list of grades.
 
@@ -16,7 +16,7 @@ def average_grade(grades: list) -> float:
     return sum(grades) / len(grades)
 
 
-def median_grade(grades: list) -> float:
+def median_grade(grades: Iterable) -> float:
     """
     Calculate the median grade from a list of grades.
 
@@ -29,7 +29,7 @@ def median_grade(grades: list) -> float:
     return sorted(grades)[len(grades) // 2]
 
 
-def mode_grade(grades: list) -> float:
+def mode_grade(grades: Iterable) -> float:
     """
     Calculate the mode (most frequent grade) from a list of grades.
 
@@ -42,7 +42,7 @@ def mode_grade(grades: list) -> float:
     return max(set(grades), key=grades.count)
 
 
-def standard_deviation(grades: list) -> float:
+def standard_deviation(grades: Iterable) -> float:
     """
     Calculate the standard deviation of a list of grades.
 
@@ -54,7 +54,7 @@ def standard_deviation(grades: list) -> float:
     """
     return sqrt(sum([(x - average_grade(grades)) ** 2 for x in grades]) / len(grades))
 
-def median(grades: list) -> float:
+def median(grades: Iterable) -> float:
     """
     Calculate the median value of a list of grades.
 
@@ -65,8 +65,8 @@ def median(grades: list) -> float:
         float: The median grade of the given grades.
     """
     return sorted(grades)[len(grades) // 2]
-
-def median_absolute_deviation(data:list)->float:
+from collections.abc import Iterable
+def median_absolute_deviation(data:Iterable)->float:
     """
     Calculate the Median Absolute Deviation (MAD) of a given dataset.
 
@@ -102,7 +102,7 @@ def correlation(data1:float, data2:float)->np.ndarray:
     """
     return np.corrcoef(data1, data2)[0][1]
 
-def calculate_entropy(grades: list) -> float:
+def calculate_entropy(grades: Iterable) -> float:
     """
     Calculate the entropy of a given list of grades.
 
@@ -119,7 +119,7 @@ def calculate_entropy(grades: list) -> float:
     """
     return sum(x * log2(x) for x in grades)
 
-def median_absolute_error(grades: list) -> float:
+def median_absolute_error(grades: Iterable) -> float:
     """
     Calculate the Median Absolute Error (MedAE) for a set of grades.
 

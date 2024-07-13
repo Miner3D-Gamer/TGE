@@ -1,4 +1,5 @@
 from itertools import permutations as itertools_permutations
+from collections.abc import Iterable
 def list_max(lst):A=sorted(lst);return A[-1]
 def list_min(lst):A=sorted(lst);return A[0]
 def list_sum(lst):

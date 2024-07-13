@@ -1,8 +1,8 @@
 from itertools import permutations as itertools_permutations
+from collections.abc import Iterable
 
 
-
-def list_max(lst: list) -> int:
+def list_max(lst: Iterable) -> int:
     """Find and return the maximum value in a list.
 
     Args:
@@ -18,7 +18,7 @@ def list_max(lst: list) -> int:
     sorted_lst = sorted(lst)
     return sorted_lst[-1]
 
-def list_min(lst: list) -> int:
+def list_min(lst: Iterable) -> int:
     """
     Returns the minimum value in a list of numbers.
 
@@ -35,19 +35,19 @@ def list_min(lst: list) -> int:
     sorted_lst = sorted(lst)
     return sorted_lst[0]
 
-def list_sum(lst: list) -> int:
+def list_sum(lst: Iterable) -> int:
     total = 0
     for item in lst:
         if isinstance(item, (int, float)):
             total += item
     return total
 
-def list_mul(lst: list) -> tuple:
+def list_mul(lst: Iterable) -> tuple:
     """
     Multiply all the numbers in the given list and return the result along with a success message.
 
     :param lst: A list of numbers to multiply.
-    :type lst: list
+    :type lst: Iterable
     :return: A tuple containing the product of the numbers in the list and a success message.
     :rtype: tuple
     :raises TypeError: If the list contains non-numeric values.
@@ -61,14 +61,14 @@ def list_mul(lst: list) -> tuple:
     except TypeError:
         return 0
     
-def remove_duplicates(list: list) -> list:
+def remove_duplicates(list: Iterable) -> list:
     """
     Removes duplicates from a given list and returns it.
 
     :param list: A list of items.
-    :type list: list
+    :type list: Iterable
     :return: A new list containing no duplicates.
-    :rtype: list
+    :rtype: Iterable
     """
     result = []
     for item in list:
@@ -76,12 +76,12 @@ def remove_duplicates(list: list) -> list:
             result.append(item)
     return result
 
-def count_occurrences(list: list, item: str) -> int:
+def count_occurrences(list: Iterable, item: str) -> int:
     """
     Counts the number of occurrences of a given item in a list.
 
     :param list: The list to search for occurrences.
-    :type list: list
+    :type list: Iterable
     :param item: The item to count occurrences of.
     :type item: str
     :return: The number of occurrences of the given item in the list.
@@ -93,7 +93,7 @@ def count_occurrences(list: list, item: str) -> int:
             count += 1
     return count
 
-def calculate_average(lst: list) -> int:
+def calculate_average(lst: Iterable) -> int:
     total = list_sum(lst)
     length = len([item for item in lst if isinstance(item, (int, float))])
     
@@ -103,54 +103,54 @@ def calculate_average(lst: list) -> int:
     average = total / length
     return average
 
-def find_common_elements(lst1: list, lst2: list) -> list:
+def find_common_elements(lst1: Iterable, lst2: Iterable) -> list:
     result = []
     for item in lst1:
         if item in lst2:
             result.append(item)
     return result
 
-def median(lst: list) -> int:
+def median(lst: Iterable) -> int:
     lst.sort()
     if len(lst) % 2 == 0:
         return (lst[len(lst) // 2 - 1] + lst[len(lst) // 2]) / 2
     else:
         return lst[len(lst) // 2]
     
-def reverse_list(lst: list) -> list:
+def reverse_list(lst: Iterable) -> list:
     return lst[::-1]
 
-def find_max_min_difference(lst: list) -> int:
+def find_max_min_difference(lst: Iterable) -> int:
     return max(lst) - min(lst)
 
-def find_missing_number(lst: list) -> int:
+def find_missing_number(lst: Iterable) -> int:
     return sum(range(1, len(lst) + 1)) - sum(lst)
 
-def remove_whitespace_from_list(lst: list) -> list:
+def remove_whitespace_from_list(lst: Iterable) -> list:
     """
     Removes whitespace characters from all elements in a list of strings.
     
     Args:
-        lst (list): List of strings
+        lst (list): Iterable of strings
         
     Returns:
-        list: List with whitespace removed from all elements
+        list: Iterable with whitespace removed from all elements
     """
     return [string.replace(" ", "") for string in lst]
 
-def exponential_average(lst: list) -> float:
+def exponential_average(lst: Iterable) -> float:
     return sum(lst) / len(lst)
 
-def greatest_product(lst: list, lst2: list) -> int:
+def greatest_product(lst: Iterable, lst2: Iterable) -> int:
     return list_max(lst) * list_max(lst2)
 
-def permutations(lst: list) -> list:
+def permutations(lst: Iterable) -> list:
     return list(itertools_permutations(lst))
 
-def limit_list(list: list, limit: int) -> list:
+def limit_list(list: Iterable, limit: int) -> list:
     return list[:limit]
 
-def get_items_from_list(list: list, start: int, end: int) -> list:
+def get_items_from_list(list: Iterable, start: int, end: int) -> list:
     return list[start:end]
 
 def sort_list_of_dictionaries(lst, key: str) -> tuple:

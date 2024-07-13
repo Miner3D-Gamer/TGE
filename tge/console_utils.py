@@ -4,7 +4,7 @@ import os
 from typing import List, Union, Tuple , Any
 from random import random, choice
 import sys
-
+from collections.abc import Iterable
 from .tbe import determine_affirmative#, pass_func
 
 __all__ = ["typingPrint"]
@@ -110,12 +110,12 @@ def writeSentencesToConsole(punctuations, o_text: str, type_delay: float, line_d
         idx += 1
     return True
 
-def chooseFromTextMenu(text: list, prompt: str, ans_prompt: str) -> int:
+def chooseFromTextMenu(text: Iterable, prompt: str, ans_prompt: str) -> int:
     """
     Displays a text menu and prompts the user to choose an option.
 
     Args:
-        text (list): List of options to display in the menu.
+        text (list): Iterable of options to display in the menu.
         prompt (str): Prompt to display before the menu.
         ans_prompt (str): Prompt to display when asking for user input.
 
@@ -160,7 +160,7 @@ def skip_line() -> None:
     """Prints a newline character to skip to the next line."""
     print("\n")
 
-def print_table(data: List[List[str]]) -> Tuple[bool, str]:
+def print_table(data: Iterable[List[str]]) -> Tuple[bool, str]:
     """
     Prints a table representation of the provided data.
 
@@ -462,7 +462,7 @@ def prompt_number(question: str, min: int=None, max: int=None, incorrect=None, e
                 return error(input_ans)
 
 
-def matrix_rain(rows: int, columns: int, speed: float=0.1, density: float=0.2, duration: float = None, symbols: list = ['0', '1']) -> None:
+def matrix_rain(rows: int, columns: int, speed: float=0.1, density: float=0.2, duration: float = None, symbols: Iterable = ['0', '1']) -> None:
     """
     Displays a matrix rain animation on the console.
 

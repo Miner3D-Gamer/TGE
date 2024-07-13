@@ -1,6 +1,6 @@
 import os
 from importlib import import_module as importlib_import_module
-
+from collections.abc import Iterable
 import pygame
 
 from ..random_generators import generate_random_string
@@ -127,7 +127,7 @@ def handle_input(quit_callback = exit, key_callback = pass_func, mouse_button_ca
                 mouse_button_callback(event.button)
                 
 class SpriteAnimator:
-    def __init__(self, images: list, frame_delay: int) -> None:
+    def __init__(self, images: Iterable, frame_delay: int) -> None:
         """
         Initializes the SpriteAnimator.
 

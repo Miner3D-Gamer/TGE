@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import concurrent.futures
 import datetime
-
+from collections.abc import Iterable
 
 
 def get_game_name(session:requests.Session, game_id:int)->str:
@@ -54,7 +54,7 @@ def get_game_name(session:requests.Session, game_id:int)->str:
         pass
     return None
 
-def check_game_ids_with_names(game_ids:list, results:dict = {})->dict:
+def check_game_ids_with_names(game_ids:Iterable, results:dict = {})->dict:
     """
     Retrieves game names associated with the provided game IDs using multi-threading.
     
@@ -162,7 +162,7 @@ def is_valid_game_id(session:requests.Session, game_id:int)->bool:
     
     return False
 
-def check_game_ids(game_ids:list)->dict[bool|None]:
+def check_game_ids(game_ids:Iterable)->dict[bool|None]:
     """
     Check the validity of a list of game IDs using multi-threading.
     

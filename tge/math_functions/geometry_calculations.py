@@ -168,8 +168,8 @@ def calculate_distance_between_nine_points(x: int|float, y: int|float, z: int|fl
 
 def calculate_distance_between_ten_points(x: int|float, y: int|float, z: int|float, a: int|float, b: int|float, c: int|float, d: int|float, e: int|float, f: int|float, g: int|float) -> int|float:
     return ((x - a) ** 2 + (y - b) ** 2 + (z - c) ** 2 + (d - e) ** 2 + (e - f) ** 2 + (f - g) ** 2 + (g - a) ** 2) ** 0.5
-
-def calculate_distance_between_points(*points:list)->int:
+from collections.abc import Iterable
+def calculate_distance_between_points(*points:Iterable)->int:
     if len(points) < 2:
         return 0.0  # Return 0 if there are less than two points
     
@@ -183,7 +183,7 @@ def calculate_distance_between_points(*points:list)->int:
     
     return total_distance
 
-def vector_magnitude(vector: list) -> float:
+def vector_magnitude(vector: Iterable) -> float:
     return sqrt(vector[0]**2 + vector[1]**2)
 
 def hamming_distance(string1: str, string2: str) -> int|float:

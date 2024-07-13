@@ -3,7 +3,7 @@ from typing import List, Union, Tuple , Any
 import uuid
 from random import randint, choice, shuffle, uniform, getrandbits
 from string import ascii_letters as string_ascii_letters, digits as string_digits, ascii_lowercase
-
+from collections.abc import Iterable
 from requests import get as requests_get
 
 from .codec import decode_html_character
@@ -135,19 +135,19 @@ def randomBool() -> bool:
     """
     return bool(getrandbits(1))
 
-def randomStringFromList(input_list: list) -> str:
+def randomStringFromList(input_list: Iterable) -> str:
     """
     Returns a random item from the input list.
 
     Args:
-        input_list (list): List of items to choose from.
+        input_list (list): Iterable of items to choose from.
 
     Returns:
         str: A randomly selected item from input_list.
     """
     return choice(input_list)
 
-def shuffleList(input_list: list) -> list:
+def shuffleList(input_list: Iterable) -> list:
     """Shuffles the elements of the input list and returns the shuffled list.
 
     Args:

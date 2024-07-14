@@ -118,7 +118,7 @@ response = requests.get(f"{base_github_url}directory.json")
 
 response.raise_for_status()
 
-def decompress_directory_list(compressed):
+def decompress_directory_list(compressed): # FIXME: THIS IS BROKEN FOR PATHS WHERE THERE IS ONLY ONE FILE AND I HAVE NO IDEA HOW TO FIX IT
     paths = []
 
     def dfs(node, current_path=""):

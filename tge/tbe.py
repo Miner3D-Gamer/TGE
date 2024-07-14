@@ -774,7 +774,7 @@ def analyze_text(text:str)->dict[str:str|list]:
 
 
 
-def check_library_functions(library_module: types.ModuleType) -> List[dict]:
+def check_for_functions_in_module_with_missing_notations(library_module: types.ModuleType) -> List[dict]:
     """
     Check all functions in a given library module for missing input type or return type annotations.
     Parameters:
@@ -790,7 +790,7 @@ def check_library_functions(library_module: types.ModuleType) -> List[dict]:
             missing_input_types = [param for param in input_parameters if param['type'] is NoInputType]
 
             return_type = get_return_type(obj)
-            if missing_input_types or return_type is NoReturnType:
+            if missing_input_types or return_type is MissingReturnType:
                 functions_with_missing_annotations.append({
                     'function_name': name,
                     'missing_input_types': missing_input_types,
@@ -799,6 +799,10 @@ def check_library_functions(library_module: types.ModuleType) -> List[dict]:
 
     return functions_with_missing_annotations
 
+def print_check_for_functions_in_module_with_missing_notations(library_module: types.ModuleType)->None:
+    data = check_for_functions_in_module_with_missing_notations(library_module)
+    for i in data:
+        print(f"Function '{i['function_name']}' of type {'Missing Return' if i['function_name'] is MissingReturnType else 'Missing Input type'}")
 
 
 
@@ -824,8 +828,7 @@ def check_library_functions(library_module: types.ModuleType) -> List[dict]:
 
 
 
-
-def get_function_id_by_name(func_name:str)->None|types.ModuleType:
+def get_function_id_by_name(func_name)->None|types.ModuleType:
     """
     Retrieve the function object (ID) from its name.
 
@@ -922,7 +925,7 @@ def get_function_inputs(func:types.MethodType)->list[dict]:
     return input_parameters
 
 
-class NoReturnType:
+class MissingReturnType:
     """Custom class to indicate that no return type annotation is specified."""
     pass
 
@@ -945,7 +948,7 @@ def get_return_type(func:types.MethodType)->Any:
     return_type = signature.return_annotation
     
     if return_type == inspect.Signature.empty:
-        return NoReturnType
+        return MissingReturnType
     else:
         return return_type
 
@@ -1202,8 +1205,7 @@ class ArgumentHandler:
 
 
 
-
-def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__file__)):
+def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__file__))->None:
     undocumented = check_directory_and_sub_directory_for_undocumented_functions(directory)
 
     amount = 0
@@ -1343,13 +1345,13 @@ def insert_path(root, path):
         node = node.children[part]
     node.is_end_of_path = True
 
-def build_trie(paths):
+def build_trie(paths:Iterable)->TrieNode:
     root = TrieNode()
     for path in paths:
         insert_path(root, path.split('/'))
     return root
 
-def serialize_trie(node):
+def serialize_trie(node:TrieNode)->dict:
     if not node.children:
         return []
 
@@ -1372,7 +1374,7 @@ def serialize_trie(node):
 
     return result
 
-def compress_directory_list(paths):
+def compress_directory_list(paths:Iterable)->dict[list|str]:
     trie = build_trie(paths)
     compressed = serialize_trie(trie)
     return compressed
@@ -1384,7 +1386,7 @@ def compress_directory_list(paths):
 
 
 
-def decompress_directory_list(compressed):
+def decompress_directory_list(compressed)->list[str]:
     paths = []
 
     def dfs(node, current_path=""):
@@ -1408,31 +1410,37 @@ def decompress_directory_list(compressed):
 
 import python_minifier
 
-def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True):
+def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
     return python_minifier.minify(text, rename_globals=rename_important_names, remove_literal_statements=remove_docstrings)
 
 
-def replace_with_list_as_replacement(string:str, replacer:str, replacements:Iterable):
+def replace_with_list_as_replacement(string:str, replacer:str, replacements:Iterable)->str:
     for replacement in replacements:
         string = string(replacer, replacement)
     return string
 
-def replace(string:str, replacers:str|Iterable, replacements:str|Iterable):
-    if isinstance(replacers, str):
-        if isinstance(replacements,str):
-            string = string.replace(replacers, replacements)
-            return string
-        for replacement in replacements:
-            string = string.replace(replacers, replacement)
-            return string
-    if isinstance(replacements,str):
-        for replacement in replacers:
-            string = string.replace(replacement, replacements)
-            return string
+def replace_with_list_as_replacer(string:str, replacers:str, replacement:str)->str:
+    for replacer in replacers:
+        string = string(replacer, replacement)
+    return string
+
+def replace_list_with_list(string:str, replacers:Iterable, replacements:Iterable)->str|MissingReturnType:
     if len(replacements) == len(replacers):
         for replacer, replacement in (replacers, replacements):
                 string = string.replace(replacer, replacement)
                 return string
+    raise ValueError("List lengths don't match")
+
+def replace(string:str, replacers:str|Iterable, replacements:str|Iterable)->str:
+    if isinstance(replacers, str):
+        if isinstance(replacements,str):
+            return string.replace(replacers, replacements)
+        for replacement in replacements:
+            return replace_with_list_as_replacement(string, replacers, replacement)
+    if isinstance(replacements,str):
+        for replacement in replacers:
+            return replace_with_list_as_replacer(string, replacers, replacement)
+    return replace_list_with_list(string, replacers, replacement)
     # ????????????????????????????????????????????????????????????
     
 

@@ -1,3 +1,4 @@
+_E='function_name'
 _D='type'
 _C=True
 _B=None
@@ -96,13 +97,16 @@ def analyze_text(text):
 	total_comma_count=0
 	for comma_amount in comma_amounts:total_comma_count+=comma_amount
 	return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
-def check_library_functions(library_module):
+def check_for_functions_in_module_with_missing_notations(library_module):
 	functions_with_missing_annotations=[]
 	for(name,obj)in inspect.getmembers(library_module):
 		if isinstance(obj,types.FunctionType):
 			input_parameters=get_function_inputs(obj);missing_input_types=[param for param in input_parameters if param[_D]is NoInputType];return_type=get_return_type(obj)
-			if missing_input_types or return_type is NoReturnType:functions_with_missing_annotations.append({'function_name':name,'missing_input_types':missing_input_types,'return_type':return_type})
+			if missing_input_types or return_type is MissingReturnType:functions_with_missing_annotations.append({_E:name,'missing_input_types':missing_input_types,'return_type':return_type})
 	return functions_with_missing_annotations
+def print_check_for_functions_in_module_with_missing_notations(library_module):
+	data=check_for_functions_in_module_with_missing_notations(library_module)
+	for i in data:print(f"Function '{i[_E]}' of type {'Missing Return'if i[_E]is MissingReturnType else'Missing Input type'}")
 def get_function_id_by_name(func_name):
 	if func_name in globals():
 		func_obj=globals()[func_name]
@@ -115,10 +119,10 @@ def get_function_inputs(func):
 		if param.default is not inspect.Parameter.empty:default_value=param.default;input_parameters.append({A:param_name,_D:param_type,B:default_value})
 		else:input_parameters.append({A:param_name,_D:param_type,B:NoInputType})
 	return input_parameters
-class NoReturnType:0
+class MissingReturnType:0
 def get_return_type(func):
 	signature=inspect.signature(func);return_type=signature.return_annotation
-	if return_type==inspect.Signature.empty:return NoReturnType
+	if return_type==inspect.Signature.empty:return MissingReturnType
 	else:return return_type
 def count_functions_in_module(module,library_name):
 	function_count=0
@@ -197,11 +201,17 @@ def minify(text,rename_important_names=_A,remove_docstrings=_C):return python_mi
 def replace_with_list_as_replacement(string,replacer,replacements):
 	for replacement in replacements:string=string(replacer,replacement)
 	return string
-def replace(string,replacers,replacements):
-	if isinstance(replacers,str):
-		if isinstance(replacements,str):string=string.replace(replacers,replacements);return string
-		for replacement in replacements:string=string.replace(replacers,replacement);return string
-	if isinstance(replacements,str):
-		for replacement in replacers:string=string.replace(replacement,replacements);return string
+def replace_with_list_as_replacer(string,replacers,replacement):
+	for replacer in replacers:string=string(replacer,replacement)
+	return string
+def replace_list_with_list(string,replacers,replacements):
 	if len(replacements)==len(replacers):
 		for(replacer,replacement)in(replacers,replacements):string=string.replace(replacer,replacement);return string
+	raise ValueError("List lengths don't match")
+def replace(string,replacers,replacements):
+	if isinstance(replacers,str):
+		if isinstance(replacements,str):return string.replace(replacers,replacements)
+		for replacement in replacements:return replace_with_list_as_replacement(string,replacers,replacement)
+	if isinstance(replacements,str):
+		for replacement in replacers:return replace_with_list_as_replacer(string,replacers,replacement)
+	return replace_list_with_list(string,replacers,replacement)

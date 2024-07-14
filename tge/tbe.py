@@ -1270,7 +1270,7 @@ def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__fi
 
 
 
-def get_from_dict_by_list(data_dict, keys):
+def get_from_dict_by_list(data_dict:dict, keys:Iterable)->Any:
     """
     Access a nested dictionary with a list of keys.
     
@@ -1282,7 +1282,7 @@ def get_from_dict_by_list(data_dict, keys):
         data_dict = data_dict[key]
     return data_dict
 
-def set_in_dict_by_list(data_dict, keys, value):
+def set_in_dict_by_list(data_dict:dict, keys:Iterable, value:Any)->None:
     """
     Set a value in a nested dictionary with a list of keys.
     

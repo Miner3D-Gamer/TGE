@@ -128,6 +128,7 @@ from . import file_operations
 from . import formatting_utils as formatting
 from . import bool_operations
 from . import bitwise
+from . import hello_world
 #from .file_system import SimDirFilSystem
 
 

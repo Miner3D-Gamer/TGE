@@ -9,7 +9,7 @@ print(tge.manipulation.string_utils.check_anagram("Hell oWl!dor", "Hello World!"
 print("TGE has %s functions"%tge.tbe.count_functions_in_library("tge"))
 tge.tbe.print_undocumented_functions_in_directory()
 print()
-tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge.tbe)
+tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge)
 
 
 directories = []

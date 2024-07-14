@@ -157,9 +157,9 @@ for file_id in range(len(urls)):
     file = requests.get(url)
     try:
         file.raise_for_status()
-    except requests.HTTPError:
+    except requests.HTTPError as e:
         if give_feedback < 3:
-            print("Error while downloading %s" % file_name)
+            print("Error while downloading %s : %s" % (file_name, e))
         continue
 
     if url.endswith("/requirements.txt"):

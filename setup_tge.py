@@ -1,4 +1,4 @@
-import os, json, python_minifier
+import os, json
 
 # Nope, I've tried optimizing this crap for the last 4 hours. This version is good enough
 # Welp, TODO: Instead of using an array, use a dictionary for a greater compression.

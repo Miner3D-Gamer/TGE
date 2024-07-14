@@ -5,7 +5,7 @@ import os, json, python_minifier
 
 
 import tge
-
+print(tge.manipulation.string_utils.check_anagram("Hell oWl!dor", "Hello World!"))
 print("TGE has %s functions"%tge.tbe.count_functions_in_library("tge"))
 tge.tbe.print_undocumented_functions_in_directory()
 print()

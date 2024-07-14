@@ -1,5 +1,22 @@
 
+import random
 
+def scramble_word(word):
+    """
+    Scramble the letters of a given word.
+
+    Parameters:
+    word (str): The word to scramble.
+
+    Returns:
+    str: The scrambled word.
+    """
+    if not isinstance(word, str):
+        raise ValueError("Input must be a string")
+
+    word_list = list(word)
+    random.shuffle(word_list)
+    return ''.join(word_list)
 
 def chop(string: str, substring: str, rem: bool = True) -> str:
     if rem:

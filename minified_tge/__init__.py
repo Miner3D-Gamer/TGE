@@ -9,9 +9,7 @@ __license__='LGPL, GNU Lesser General Public License'
 __url__='https://github.com/Miner3DGaming/TGE'
 __doc__='https://github.com/Miner3DGaming/TGE/blob/main/README.md'
 start_importing=tm.time()
-import sys
-if importing:from.mini_lib import platform_mini
-else:import platform as platform_mini
+import sys,platform as platform_mini
 import_time_build_in=tm.time()-start_importing
 def get_system():
 	A='darwin'

@@ -161,6 +161,12 @@ def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__
 		print('\n'+i)
 		for j in undocumented[i]:amount+=1;print(f'\t{j[0]} ("{directory}/{i}", line {j[1]})')
 	print('\nA total of %s functions are undocumented'%amount)
+def get_from_dict_by_list(data_dict,keys):
+	for key in keys:data_dict=data_dict[key]
+	return data_dict
+def set_in_dict_by_list(data_dict,keys,value):
+	for key in keys[:-1]:data_dict=data_dict.setdefault(key,{})
+	data_dict[keys[-1]]=value
 from collections import defaultdict
 class TrieNode:
 	def __init__(self):self.children=defaultdict(TrieNode);self.is_end_of_path=_A

@@ -1,5 +1,5 @@
 # Miner3D's Simplified YAML
-def parse_msy(data: str) -> dict:
+def decode(data: str) -> dict:
     """
     Returns a dictionary based on the inputted string (msy format)
     """
@@ -21,7 +21,7 @@ def parse_msy(data: str) -> dict:
     return parsed_data
 
 
-def format_msy(data: dict) -> str:
+def encode(data: dict) -> str:
     """
     Returns a a str (msy formatted) from the inputted dictionary
     """

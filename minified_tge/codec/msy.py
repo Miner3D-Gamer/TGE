@@ -1,4 +1,4 @@
-def parse_msy(data):
+def decode(data):
 	C={};B=None;D=data.split('\n')
 	for A in D:
 		A=A.strip()
@@ -7,7 +7,7 @@ def parse_msy(data):
 			if B is not None:C[B].append(A)
 			else:raise ValueError('Data format error: Item found before list name.')
 	return C
-def format_msy(data):
+def encode(data):
 	A=''
 	for(B,C)in data.items():
 		A+=f"#{B}\n"

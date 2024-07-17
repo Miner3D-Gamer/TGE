@@ -16,6 +16,11 @@ generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
 
 with open("tge/update.hash", "w") as f:
     f.write(str(generated_uuid.bytes))
+    
+generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
+
+with open("tge/update.hash", "w") as f:
+    f.write(str(generated_uuid.bytes))
 
 directories = []
 

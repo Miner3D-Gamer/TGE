@@ -17,7 +17,7 @@ for i in range(2):
     generated_uuid = tge.tbe.generate_uuid_from_directory(dir, ["hashed"])
 
     with open("tge/update.hashed", "w") as f:
-        f.write(str(generated_uuid.bytes))
+        f.write(str(generated_uuid.bytes)[2:-1])
     
 
 

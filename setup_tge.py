@@ -11,10 +11,15 @@ tge.tbe.print_undocumented_functions_in_directory()
 print()
 tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge)
 
+dir = f"{os.getcwd()}/tge/"
+generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
+
+with open("tge/update.hash", "w") as f:
+    f.write(str(generated_uuid.bytes))
 
 directories = []
 
-dir = f"{os.getcwd()}/tge/"
+
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root[len(dir) :].lstrip("\\")
     for name in files:
@@ -65,11 +70,9 @@ for root, dirs, files in os.walk(dir, topdown=False):
                 )
                 o.write(data)
 
-import hashlib, uuid
 
-generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
-with open("update.hashed", "w") as f:
-    f.write(str(generated_uuid.bytes))
+
+
 
 
 print(tge.is_tge_outdated())

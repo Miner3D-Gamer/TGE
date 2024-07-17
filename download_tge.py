@@ -1,6 +1,6 @@
 import os, tkinter, time
 import tkinter.filedialog as filedialog
-
+import shutil
 import sys
 
 
@@ -98,7 +98,7 @@ while True:
     if inp is None:
         inp = (
             input(
-                f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will be faster to download and require less space (~100kb instead of ~1.1mb) but manually editing it for whatever reason will be annoying\nYour Input: "
+                f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~200kb instead of ~800kb) but all docstring and annotations have been removed\nYour Input: "
             )
             .strip()
             .lower()
@@ -144,7 +144,14 @@ files = [
     (file + "py" if file.endswith(".") else file) for file in decompress_directory_list(json.loads(response.text))
 ]
 
-urls = [github_url + file for file in files]
+urls:list[str] = [github_url + file for file in files]
+
+for dir in dirs:
+    if os.path.exists(dir):
+        shutil.rmtree(dir)
+
+
+
 
 requirements = []
 start = time.time()
@@ -170,6 +177,7 @@ for file_id in range(len(urls)):
             installation_directory = dirs[idx]
         except:
             break
+        
         path = os.path.join(installation_directory, file_name)
         parent_dir = os.path.dirname(path)
         if not os.path.exists(parent_dir):

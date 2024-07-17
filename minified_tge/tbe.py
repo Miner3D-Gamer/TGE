@@ -1,7 +1,7 @@
 _E='function_name'
 _D='type'
-_C=True
-_B=None
+_C=None
+_B=True
 _A=False
 from collections.abc import Iterable
 from typing import List,Union,Tuple,Any,get_type_hints
@@ -12,10 +12,10 @@ def pass_func(*args):0
 def execute_function(func=pass_func,*args,**kwargs):return func(*args,**kwargs)
 def determine_affirmative(text):
 	B="i can't go along with that";A='not really';text=text.strip().lower();positives=['y','yes','yeah','yup','uh-huh','sure','affirmative','absolutely','indeed','certainly','of course','definitely','you bet','roger','right on','no doubt','by all means','most certainly','positively','without a doubt','naturally','indubitably','sure thing','yuppers','aye','ok','okey-dokey','all right','righto','very well','exactly','precisely','no problem','for sure','most assuredly','you got it',"that's right",'sure as shooting','all righty','of course, my dear',"couldn't agree more",'a thousand times, yes',"i'm in","it's a go","i'll go along with that",'count me in',"i'm on board",'without hesitation','undoubtedly','yeye'];negatives=['n','no','nope','nah','nuh-uh','negative','not at all','absolutely not','certainly not','no way','never','i disagree',"i'm afraid not","i can't agree with that",'i beg to differ',"i'm not convinced",A,"i'm not so sure",'i have my doubts',"that's not correct","that's incorrect","i don't think so","i'm not on board with that","i'm not buying it",B,"i can't support that","i'm opposed to that","i'm against it","i'm not in favor of that","that's a negative",'no chance','not a chance','no siree',"i can't see that happening","i'm not inclined to agree","i can't accept that","i'm not on the same page","i'm not feeling it",'i have reservations',"i can't endorse that","that's out of the question","i can't support that notion","i'm skeptical","that doesn't work for me","i don't agree with that assessment","i'm not persuaded","i'm not buying into that","i don't subscribe to that view",B,"i'm not swayed by that argument","i don't believe so","i'm not on board","i can't back that up","i'm not convinced of its validity","that's not my understanding","i'm not sold on that idea","i can't vouch for that","i don't really feel like it",A]
-	if text in positives:return _C
+	if text in positives:return _B
 	if text in negatives:return _A
 	closest_positive_match=get_close_matches(text,positives,n=1,cutoff=.8);closest_negative_match=get_close_matches(text,negatives,n=1,cutoff=.8)
-	if closest_positive_match:return _C
+	if closest_positive_match:return _B
 	if closest_negative_match:return _A
 def categorize_responses(text_list):
 	response_list=[]
@@ -30,7 +30,7 @@ def get_available_variables():
 def get_docstring(obj):
 	try:return inspect.getdoc(obj)
 	except:return''
-def convert_number_to_words_less_than_thousand(n,dash=_C):
+def convert_number_to_words_less_than_thousand(n,dash=_B):
 	TINY_NUMBERS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];SMALL_NUMBERS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety']
 	if n>=100:
 		hundreds_digit=n//100;rest=n%100;result=TINY_NUMBERS[hundreds_digit]+' hundred'
@@ -77,9 +77,12 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path)
 				undocumented_functions=find_undocumented_functions(item_path)
 				if undocumented_functions:filename=os.path.relpath(item_path,directory_path);undocumented_functions_dict[filename]=undocumented_functions
 	_check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(directory_path);return undocumented_functions_dict
-def autocomplete(prefix,word_list):return[word for word in word_list if word.startswith(prefix)]
+def strict_autocomplete(prefix,word_list):
+	words=autocomplete(prefix=prefix,word_list=word_list)
+	if prefix in words:return prefix
+	return words
 def is_iterable(thing):return hasattr(thing,'__iter__')
-def split_with_list(string,separators,limit=_B):
+def split_with_list(string,separators,limit=_C):
 	for separator in separators:string=string.replace(separator,'𘚟')
 	return string.split('𘚟')
 def analyze_text(text):
@@ -107,6 +110,33 @@ def check_for_functions_in_module_with_missing_notations(library_module):
 def print_check_for_functions_in_module_with_missing_notations(library_module):
 	data=check_for_functions_in_module_with_missing_notations(library_module)
 	for i in data:print(f"Function '{i[_E]}' of type {'Missing Return'if i[_E]is MissingReturnType else'Missing Input type'}")
+class AutocompleteTrie:
+	def __init__(self):self.root=TrieNode()
+	def insert(self,word):
+		current_node=self.root
+		for letter in word:
+			if letter not in current_node.children:current_node.children[letter]=TrieNode()
+			current_node=current_node.children[letter]
+		current_node.is_end_of_word=_B
+	def _find_node(self,prefix):
+		current_node=self.root
+		for letter in prefix:
+			if letter not in current_node.children:return
+			current_node=current_node.children[letter]
+		return current_node
+	def _autocomplete_helper(self,node,prefix):
+		words=[]
+		if node.is_end_of_word:words.append(prefix)
+		for(letter,next_node)in node.children.items():words.extend(self._autocomplete_helper(next_node,prefix+letter))
+		return words
+	def autocomplete(self,prefix):
+		current_node=self._find_node(prefix)
+		if not current_node:return[]
+		return self._autocomplete_helper(current_node,prefix)
+def autocomplete(word_list):
+	trie=AutocompleteTrie()
+	for word in word_list:trie.insert(word)
+	return trie.autocomplete
 def get_function_id_by_name(func_name):
 	if func_name in globals():
 		func_obj=globals()[func_name]
@@ -115,7 +145,7 @@ class NoInputType:0
 def get_function_inputs(func):
 	B='default';A='name';signature=inspect.signature(func);type_hints=get_type_hints(func);input_parameters=[]
 	for(param_name,param)in signature.parameters.items():
-		param_type=type_hints.get(param_name,_B)
+		param_type=type_hints.get(param_name,_C)
 		if param.default is not inspect.Parameter.empty:default_value=param.default;input_parameters.append({A:param_name,_D:param_type,B:default_value})
 		else:input_parameters.append({A:param_name,_D:param_type,B:NoInputType})
 	return input_parameters
@@ -135,16 +165,16 @@ def count_functions_in_library(library_name):
 	except ModuleNotFoundError:return-1
 	function_count=count_functions_in_module(module,library_name);return function_count
 class ArgumentHandler:
-	def __init__(self,arguments=_B):
-		if arguments is _B:arguments=sys.argv[1:]
+	def __init__(self,arguments=_C):
+		if arguments is _C:arguments=sys.argv[1:]
 		self.arguments=arguments;self.argument_list_length=len(arguments)
-	def get_argument(self,argument,delete=_A,default=_B):
+	def get_argument(self,argument,delete=_A,default=_C):
 		value_id=self.get_id(argument)
 		if value_id<0:return default
 		if delete:value=self.arguments.pop(value_id);self.argument_list_length-=1
 		else:value=self.arguments.__getitem__(value_id)
 		return value
-	def get_argument_by_flag(self,flag,delete=_A,default=_B):
+	def get_argument_by_flag(self,flag,delete=_A,default=_C):
 		value_id=self.get_id(flag)
 		if value_id<0:return default
 		if value_id+1==len(self.arguments):return default
@@ -173,7 +203,7 @@ class TrieNode:
 def insert_path(root,path):
 	node=root
 	for part in path:node=node.children[part]
-	node.is_end_of_path=_C
+	node.is_end_of_path=_B
 def build_trie(paths):
 	root=TrieNode()
 	for path in paths:insert_path(root,path.split('/'))
@@ -203,7 +233,7 @@ def decompress_directory_list(compressed):
 			else:dfs(value,f"{current_path}/{key}".strip('/'))
 	dfs(compressed);return paths
 import python_minifier
-def minify(text,rename_important_names=_A,remove_docstrings=_C):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
+def minify(text,rename_important_names=_A,remove_docstrings=_B):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
 def replace_with_list_as_replacement(string,replacer,replacements):
 	for replacement in replacements:string=string(replacer,replacement)
 	return string

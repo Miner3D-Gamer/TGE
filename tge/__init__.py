@@ -44,8 +44,8 @@ def is_tge_outdated() -> bool:
     )
     response.raise_for_status()
     with open(os.path.dirname(__file__) + "/update.hashed", "r") as f:
-        print(f.read().replace(r"\x", "\\x"), str(response.content)[3:-1])
-        return f.read().replace(r"\x", "\\x") != str(response.content)[2:-1]
+        print(f.read(), str(response.content)[3:-1].replace("\\x", r"\x"))
+        return f.read() != str(response.content)[2:-1]
 
 
 def get_system() -> str:

@@ -15,8 +15,8 @@ else:import platform as platform_mini
 import_time_build_in=tm.time()-start_importing
 import requests
 def is_tge_outdated():
-	A='\\x';B=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');B.raise_for_status()
-	with open(os.path.dirname(__file__)+'/update.hashed','r')as C:print(C.read().replace(A,A),str(B.content)[3:-1]);return C.read().replace(A,A)!=str(B.content)[2:-1]
+	C='\\x';A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
+	with open(os.path.dirname(__file__)+'/update.hashed','r')as B:print(B.read(),str(A.content)[3:-1].replace(C,C));return B.read()!=str(A.content)[2:-1]
 def get_system():
 	A='darwin'
 	if sys.platform.startswith('java'):return'jython'

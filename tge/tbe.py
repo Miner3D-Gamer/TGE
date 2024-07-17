@@ -536,11 +536,17 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path:
 
 
 
-def autocomplete(prefix:str, word_list:Iterable[str])->list[str]:
-    return [word for word in word_list if word.startswith(prefix)]
+# def autocomplete(prefix:str, word_list:Iterable[str])->list[str]:
+#     return [word for word in word_list if word.startswith(prefix)]
+
+def strict_autocomplete(prefix:str, word_list:Iterable[str])->list[str]|str:
+    words = autocomplete(prefix=prefix, word_list=word_list)
+    if prefix in words:
+        return prefix
+    return words
 
 
-def is_iterable(thing:Any)->True|False:
+def is_iterable(thing:Any)->bool:
     return hasattr(thing,"__iter__")
 
 
@@ -817,7 +823,46 @@ def print_check_for_functions_in_module_with_missing_notations(library_module: t
 
 
 
+class AutocompleteTrie:
+    def __init__(self):
+        self.root = TrieNode()
 
+    def insert(self, word):
+        current_node = self.root
+        for letter in word:
+            if letter not in current_node.children:
+                current_node.children[letter] = TrieNode()
+            current_node = current_node.children[letter]
+        current_node.is_end_of_word = True
+
+    def _find_node(self, prefix):
+        current_node = self.root
+        for letter in prefix:
+            if letter not in current_node.children:
+                return None
+            current_node = current_node.children[letter]
+        return current_node
+
+    def _autocomplete_helper(self, node, prefix):
+        words = []
+        if node.is_end_of_word:
+            words.append(prefix)
+        for letter, next_node in node.children.items():
+            words.extend(self._autocomplete_helper(next_node, prefix + letter))
+        return words
+
+    def autocomplete(self, prefix):
+        current_node = self._find_node(prefix)
+        if not current_node:
+            return []
+        return self._autocomplete_helper(current_node, prefix)
+
+def autocomplete(word_list):
+    "Apparently this is faster than just checking for the prefix in a list comprehension one-liner"
+    trie = AutocompleteTrie()
+    for word in word_list:
+        trie.insert(word)
+    return trie.autocomplete
 
 
 

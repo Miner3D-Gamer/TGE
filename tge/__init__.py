@@ -24,11 +24,10 @@ __doc__ = 'https://github.com/Miner3DGaming/TGE/blob/main/README.md'
 start_importing = tm.time()
 import sys
 
-# FIXME: There is a problem with downloading mini_lib/platform_mini.py :(
-# if importing: # These mini libs take way less time to import
-#     from .mini_lib import platform_mini
-# else:
-import platform as platform_mini
+if importing: # These mini libs take way less time to import
+    from .mini_lib import platform_mini
+else:
+    import platform as platform_mini
 
 
 

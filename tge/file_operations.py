@@ -11,7 +11,7 @@ from typing import List, Union, Tuple , Any
 import tkinter as tk
 import pyshortcuts
 
-from .codec import decode, b64decode, b64encode
+from .codec.codec import decode, base
 
 def create_missing_directory(directory: str) -> bool:
     """
@@ -346,7 +346,7 @@ def combine_files(directory: str, output_directory: str, name: str) -> bool:
         for file_name, file_bytes in file_data:
             combined_data += file_name.encode() + b':' + file_bytes + b'|'
         
-        encoded_data = b64encode(combined_data)
+        encoded_data = base.encode_base64(combined_data)
         
         output_file = os.path.join(output_directory, name + '.encrypted')
         with open(output_file, 'wb') as file:
@@ -375,7 +375,7 @@ def split_file(directory: str, output_directory: str) -> bool:
         with open(directory, 'rb') as file:
             encoded_data = file.read()
 
-        combined_data = b64decode(encoded_data)
+        combined_data = base.decode_base64(encoded_data)
 
         file_data = combined_data.split(b'|')[:-1]  # Remove the last empty element
 

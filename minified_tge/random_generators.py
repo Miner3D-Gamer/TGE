@@ -4,7 +4,7 @@ from random import randint,choice,shuffle,uniform,getrandbits
 from string import ascii_letters as string_ascii_letters,digits as string_digits,ascii_lowercase
 from collections.abc import Iterable
 from requests import get as requests_get
-from.codec import decode_html_character
+from.codec.codec import html
 def generate_name(gen):
 	E='both';B=gen
 	if B==0 or'm'or'male':C='m'
@@ -12,7 +12,7 @@ def generate_name(gen):
 	elif B==2 or'u'or'unisex'or'unidentified':C='u'
 	elif B==3 or E or'b':C=E
 	else:return''
-	F='https://www.behindthename.com/random/random.php';G={'gender':C,'number':'1','sets':'1','surname':'','all':'yes'};H=requests_get(F,params=G);A=str(H.text.split('\n')[165]);I=A.find('class="plain">')+14;A=A[I:];J=A.find('<');D=A[:J];D=decode_html_character(D);return D
+	F='https://www.behindthename.com/random/random.php';G={'gender':C,'number':'1','sets':'1','surname':'','all':'yes'};H=requests_get(F,params=G);A=str(H.text.split('\n')[165]);I=A.find('class="plain">')+14;A=A[I:];J=A.find('<');D=A[:J];D=html.decode(D);return D
 def generate_uuid5():return str(uuid.uuid5())
 def generate_uuid1():return str(uuid.uuid1())
 def generate_uuid3():return str(uuid.uuid3())

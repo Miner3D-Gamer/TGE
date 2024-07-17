@@ -8,7 +8,7 @@ import zipfile
 from pathlib import Path as pathlib_path
 from typing import List,Union,Tuple,Any
 import tkinter as tk,pyshortcuts
-from.codec import decode,b64decode,b64encode
+from.codec.codec import decode,base
 def create_missing_directory(directory):
 	A=directory
 	if not os.path.exists(A):os.makedirs(A);return _B
@@ -85,14 +85,14 @@ def combine_files(directory,output_directory,name):
 				with open(F,'rb')as B:C=B.read();E.append((A,C))
 		G=b''
 		for(A,C)in E:G+=A.encode()+b':'+C+b'|'
-		H=b64encode(G);I=os.path.join(output_directory,name+'.encrypted')
+		H=base.encode_base64(G);I=os.path.join(output_directory,name+'.encrypted')
 		with open(I,'wb')as B:B.write(H)
 		return _B
 	except:return _A
 def split_file(directory,output_directory):
 	try:
 		with open(directory,'rb')as A:B=A.read()
-		C=b64decode(B);D=C.split(b'|')[:-1]
+		C=base.decode_base64(B);D=C.split(b'|')[:-1]
 		for E in D:
 			F,G=E.split(b':',1);H=os.path.join(output_directory,F.decode())
 			with open(H,'wb')as A:A.write(G)

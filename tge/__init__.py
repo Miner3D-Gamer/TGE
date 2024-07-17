@@ -122,7 +122,7 @@ from . import validation
 from . import internet
 from . import library as library_utils
 from . import tbe
-from . import codec
+from .codec import codec
 from . import time_utils
 from . import file_operations
 from . import formatting_utils as formatting

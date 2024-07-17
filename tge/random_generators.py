@@ -6,7 +6,7 @@ from string import ascii_letters as string_ascii_letters, digits as string_digit
 from collections.abc import Iterable
 from requests import get as requests_get
 
-from .codec import decode_html_character
+from .codec.codec import html 
 
 def generate_name(gen: int, ) -> str:
     """
@@ -69,7 +69,7 @@ def generate_name(gen: int, ) -> str:
     # idx2 = name_text.find('<')
 
     name = name_text[:idx2]
-    name = decode_html_character(name)
+    name = html.decode(name)
     return name
 
 def generate_uuid5() -> str:

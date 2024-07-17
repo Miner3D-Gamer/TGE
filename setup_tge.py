@@ -68,8 +68,8 @@ for root, dirs, files in os.walk(dir, topdown=False):
 import hashlib, uuid
 
 generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
-with open("update.hash", "wb") as f:
-    f.write(generated_uuid.bytes)
+with open("update.hash", "w") as f:
+    f.write(str(generated_uuid.bytes))
 
 
 print(tge.is_tge_outdated())

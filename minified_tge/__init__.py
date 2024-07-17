@@ -15,7 +15,7 @@ else:import platform as platform_mini
 import_time_build_in=tm.time()-start_importing
 import requests
 def is_tge_outdated():
-	A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hash');A.raise_for_status()
+	A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
 	with open(os.path.dirname(__file__)+'/update.hash','r')as B:print(B.read(),A.content);return B.read()!=A.content
 def get_system():
 	A='darwin'

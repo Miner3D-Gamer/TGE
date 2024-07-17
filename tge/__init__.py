@@ -40,7 +40,7 @@ import requests
 
 def is_tge_outdated() -> bool:
     response = requests.get(
-        "https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hash"
+        "https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed"
     )
     response.raise_for_status()
     with open(os.path.dirname(__file__) + "/update.hash", "r") as f:

@@ -13,7 +13,7 @@ tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge)
 
 dir = f"{os.getcwd()}/tge/"
 
-for i in range(1):
+for i in range(2):
     generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
 
     with open("tge/update.hashed", "w") as f:

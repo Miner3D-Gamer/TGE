@@ -43,7 +43,7 @@ def is_tge_outdated() -> bool:
         "https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed"
     )
     response.raise_for_status()
-    with open(os.path.dirname(__file__) + "/update.hash", "r") as f:
+    with open(os.path.dirname(__file__) + "/update.hashed", "r") as f:
         print(f.read(), response.content)
         return f.read() != response.content
 

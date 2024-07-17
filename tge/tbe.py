@@ -628,12 +628,20 @@ import uuid, hashlib
 
 
 
-def generate_uuid_from_directory(directory):
+def generate_uuid_from_directory(directory, blacklisted_extensions:list=[]):
     hash_md5 = hashlib.md5()
 
     # Traverse all files in the directory
     for root, _, files in os.walk(directory):
         for file in sorted(files):  # Sort files to ensure consistent order
+            blacklisted = True
+            for ext in blacklisted_extensions:
+                if file.endswith(ext):
+                    break
+            else:
+                blacklisted = False
+            if blacklisted:
+                continue
             file_path = os.path.join(root, file)
             if os.path.isfile(file_path):  # Ensure it's a file
                 with open(file_path, 'rb') as f:

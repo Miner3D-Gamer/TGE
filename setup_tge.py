@@ -68,7 +68,7 @@ for root, dirs, files in os.walk(dir, topdown=False):
 import hashlib, uuid
 
 generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
-with open("update.hashed", "w") as f:
+with open("tge/update.hash", "w") as f:
     f.write(str(generated_uuid.bytes))
 
 

@@ -40,7 +40,7 @@ import requests
 def is_tge_outdated()->bool:
     response = requests.get("https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hash")
     response.raise_for_status()
-    with open("update.hash", "r") as f:
+    with open("update.hashed", "r") as f:
         print(f.read(), response.content)
         return f.read() != response.content
     

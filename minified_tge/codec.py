@@ -71,8 +71,8 @@ class msy:
 			for E in D:A+=f"{E}\n"
 			A+='\n'
 		return A
-	def load(A,text):return A._parse_msy(data=text)
-	def format(A,dict):return A._parse_msy(data=dict)
+	def load(A):return msy._parse_msy(data=A)
+	def format(dict):return msy._parse_msy(data=dict)
 def encode(x):
 	try:x=b64encode(bytes(x,_C));x=hexlify(x).decode(_C);return x
 	except:return''

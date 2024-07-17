@@ -36,17 +36,17 @@ class msy:
         
         return formatted_text
 
-    def load(self,text:str)->dict:
+    def load(text:str)->dict:
         """
             Returns a dictionary based on the inputted string (msy format)
         """
-        return self._parse_msy(data=text)
+        return msy._parse_msy(data=text)
         
-    def format(self,dict:dict)->str:
+    def format(dict:dict)->str:
         """
             Returns a a str (msy formatted) from the inputted dictionary
         """
-        return self._parse_msy(data=dict)
+        return msy._parse_msy(data=dict)
 
 
 def encode(x: str) -> Tuple[bool, str]: 

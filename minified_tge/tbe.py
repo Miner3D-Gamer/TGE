@@ -77,8 +77,10 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path)
 				undocumented_functions=find_undocumented_functions(item_path)
 				if undocumented_functions:filename=os.path.relpath(item_path,directory_path);undocumented_functions_dict[filename]=undocumented_functions
 	_check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(directory_path);return undocumented_functions_dict
+def autocomplete(prefix,word_list):return[word for word in word_list if word.startswith(prefix)]
 def strict_autocomplete(prefix,word_list):
 	words=autocomplete(prefix=prefix,word_list=word_list)
+	if len(words)==1:return words[0]
 	if prefix in words:return prefix
 	return words
 def is_iterable(thing):return hasattr(thing,'__iter__')
@@ -125,33 +127,6 @@ def check_for_functions_in_module_with_missing_notations(library_module):
 def print_check_for_functions_in_module_with_missing_notations(library_module):
 	data=check_for_functions_in_module_with_missing_notations(library_module)
 	for i in data:print(f"Function '{i[_E]}' of type {'Missing Return'if i[_E]is MissingReturnType else'Missing Input type'}")
-class AutocompleteTrie:
-	def __init__(self):self.root=TrieNode()
-	def insert(self,word):
-		current_node=self.root
-		for letter in word:
-			if letter not in current_node.children:current_node.children[letter]=TrieNode()
-			current_node=current_node.children[letter]
-		current_node.is_end_of_word=_B
-	def _find_node(self,prefix):
-		current_node=self.root
-		for letter in prefix:
-			if letter not in current_node.children:return
-			current_node=current_node.children[letter]
-		return current_node
-	def _autocomplete_helper(self,node,prefix):
-		words=[]
-		if node.is_end_of_word:words.append(prefix)
-		for(letter,next_node)in node.children.items():words.extend(self._autocomplete_helper(next_node,prefix+letter))
-		return words
-	def autocomplete(self,prefix):
-		current_node=self._find_node(prefix)
-		if not current_node:return[]
-		return self._autocomplete_helper(current_node,prefix)
-def autocomplete(word_list):
-	trie=AutocompleteTrie()
-	for word in word_list:trie.insert(word)
-	return trie.autocomplete
 def get_function_id_by_name(func_name):
 	if func_name in globals():
 		func_obj=globals()[func_name]

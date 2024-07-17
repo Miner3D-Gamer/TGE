@@ -79,5 +79,5 @@ for root, dirs, files in os.walk(dir, topdown=False):
 
 
 
-print(tge.is_tge_outdated())
+print("Is github version of tge up to date:", not tge.is_tge_outdated())
 # the hash is smiling b'[\xa5d(\\!\xb7\xd0P&\xaf\xec(:>\xde'

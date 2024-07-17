@@ -71,14 +71,8 @@ for root, dirs, files in os.walk(dir, topdown=False):
                 o.write(data)
 
 
-<<<<<<< HEAD
 
 
-=======
-generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
-with open("tge/update.hash", "w") as f:
-    f.write(str(generated_uuid.bytes))
->>>>>>> a0d9b930ae69da6f1f8564de0b9aa3a676154189
 
 
 print(tge.is_tge_outdated())

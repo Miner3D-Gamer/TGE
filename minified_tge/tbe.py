@@ -100,6 +100,16 @@ def analyze_text(text):
 	total_comma_count=0
 	for comma_amount in comma_amounts:total_comma_count+=comma_amount
 	return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
+import uuid,hashlib
+def generate_uuid_from_directory(directory):
+	hash_md5=hashlib.md5()
+	for(root,_,files)in os.walk(directory):
+		for file in sorted(files):
+			file_path=os.path.join(root,file)
+			if os.path.isfile(file_path):
+				with open(file_path,'rb')as f:
+					for chunk in iter(lambda:f.read(4096),b''):hash_md5.update(chunk)
+	unique_hash=hash_md5.hexdigest();unique_uuid=uuid.UUID(unique_hash[:32]);return unique_uuid
 def check_for_functions_in_module_with_missing_notations(library_module):
 	functions_with_missing_annotations=[]
 	for(name,obj)in inspect.getmembers(library_module):

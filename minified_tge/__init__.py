@@ -13,6 +13,10 @@ import sys
 if importing:from.mini_lib import platform_mini
 else:import platform as platform_mini
 import_time_build_in=tm.time()-start_importing
+import requests
+def is_tge_outdated():
+	A=requests.get('https://raw.githubusercontent.com/Miner3DGaming/TGE/main/tge/update.hash');A.raise_for_status()
+	with open('update.hash','r',encoding='byte')as B:return B.read()!=A.content
 def get_system():
 	A='darwin'
 	if sys.platform.startswith('java'):return'jython'

@@ -623,12 +623,28 @@ def analyze_text(text:str)->dict[str:str|list]:
 
 
 
+import uuid, hashlib
 
 
 
 
+def generate_uuid_from_directory(directory):
+    hash_md5 = hashlib.md5()
 
-
+    # Traverse all files in the directory
+    for root, _, files in os.walk(directory):
+        for file in sorted(files):  # Sort files to ensure consistent order
+            file_path = os.path.join(root, file)
+            if os.path.isfile(file_path):  # Ensure it's a file
+                with open(file_path, 'rb') as f:
+                    for chunk in iter(lambda: f.read(4096), b""):
+                        hash_md5.update(chunk)
+    
+    # Generate UUID from the MD5 hash
+    unique_hash = hash_md5.hexdigest()
+    unique_uuid = uuid.UUID(unique_hash[:32])
+    
+    return unique_uuid
 
 
 

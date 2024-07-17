@@ -42,10 +42,19 @@ for root, dirs, files in os.walk(dir, topdown=False):
     for file in files:
         file_path = os.path.join(root[len(dir) :].lstrip("\\"), file)
         total_file_path = os.path.join(root, file)
-        with open(total_file_path, "r", encoding="utf8") as f:
-            if file.endswith(".pyc"):
+        if file.endswith(".pyc"):
                 continue
+        if file.endswith(".hash"):
+            with open(total_file_path, "rb") as f:
+                with open(output + file_path, "wb") as o:
+                    data = f.read()
+                    
+                    o.write(data)
+            continue
+        with open(total_file_path, "r", encoding="utf8") as f:
+            
             os.makedirs(os.path.dirname(output + file_path), exist_ok=True)
+            
             with open(output + file_path, "w", encoding="utf8") as o:
                 data = (
                     tge.tbe.minify(
@@ -55,3 +64,12 @@ for root, dirs, files in os.walk(dir, topdown=False):
                     else f.read()
                 )
                 o.write(data)
+
+import hashlib, uuid
+
+generated_uuid = tge.tbe.generate_uuid_from_directory(dir)
+with open("update.hash", "wb") as f:
+    f.write(generated_uuid.bytes)
+
+
+print(tge.is_tge_outdated())

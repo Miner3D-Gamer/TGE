@@ -56,11 +56,11 @@ while True:
             quit()
 
     if inp == "1":
-        dirs = {
+        dirs = [
             f"{i.path}/Lib/site-packages/tge"
             for i in os.scandir(default_python_installation)
             if os.path.exists(f"{i.path}/Lib/site-packages")
-        }
+        ]
 
         break
     elif inp == "2":
@@ -150,8 +150,9 @@ for dir in dirs:
     if os.path.exists(dir):
         shutil.rmtree(dir)
 
-
-
+if give_feedback < 1:
+    print("Directories tge will download into:")
+    print(*dirs, sep="\n", end="\n\n")
 
 requirements = []
 start = time.time()
@@ -172,23 +173,29 @@ for file_id in range(len(urls)):
     if url.endswith("/requirements.txt"):
         requirements = file.text.split("\n")
 
-    for idx in range(len(dirs)):
-        try:
-            installation_directory = dirs[idx]
-        except:
+    dir_offset = 0
+    for idx in range(len(dirs)): 
+        try:# TODO: THIS IS BOUND TO GO WRONG CHANGE THIS TO BE BETTER
+            installation_directory = dirs[idx-dir_offset]
+        except ValueError:
             break
+        
+        if not os.path.exists(installation_directory):
+            os.mkdir(installation_directory)
         
         path = os.path.join(installation_directory, file_name)
         parent_dir = os.path.dirname(path)
-        if not os.path.exists(parent_dir):
+        if not os.path.exists(installation_directory):
             if give_feedback < 2:
                 print(
                     "Directory '%s' cannot be found anymore, maybe it has been moved or deleted."
-                    % parent_dir
+                    % installation_directory
                 )
             dirs.pop(idx)
+            dir_offset+=1
             continue
         os.makedirs(parent_dir, exist_ok=True)
+        print(f"Writing to {path}")
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
 end = time.time()

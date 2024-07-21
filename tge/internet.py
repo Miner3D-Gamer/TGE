@@ -1,56 +1,60 @@
-from typing import List, Union, Tuple , Any, Tuple, Dict, Optional
+from typing import List, Union, Tuple, Any, Tuple, Dict, Optional
 import re
 import pytube
 
 
-
 def remove_html_tags(string: str) -> str:
-        """
-        Removes HTML tags from the given string.
+    """
+    Removes HTML tags from the given string.
 
-        Args:
-            string (str): The input string containing HTML tags.
+    Args:
+        string (str): The input string containing HTML tags.
 
-        Returns:
-            str: The modified string with HTML tags removed.
+    Returns:
+        str: The modified string with HTML tags removed.
 
-        Examples:
-            >>> remove_html_tags('<p>Hello, <b>world!</b></p>')
-            'Hello, world!'
-            >>> remove_html_tags('<h1>Title</h1>')
-            'Title'
-        """
-        return re.sub(r'<.*?>', '', string)
+    Examples:
+        >>> remove_html_tags('<p>Hello, <b>world!</b></p>')
+        'Hello, world!'
+        >>> remove_html_tags('<h1>Title</h1>')
+        'Title'
+    """
+    return re.sub(r"<.*?>", "", string)
 
 
-def get_youtube_video_id(input_string:str)->str:
+def get_youtube_video_id(input_string: str) -> str:
     # Regex pattern to match YouTube video IDs
-    video_id_pattern = r'^[a-zA-Z0-9_-]{11}$'
-    
+    video_id_pattern = r"^[a-zA-Z0-9_-]{11}$"
+
     # Regex pattern to match YouTube URLs and extract the video ID
     url_patterns = [
-        r'(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})',
-        r'(?:https?://)?(?:www\.)?youtube\.com/.*[?&]v=([a-zA-Z0-9_-]{11})',
-        r'(?:https?://)?(?:www\.)?youtube\.com/.*[&?]vi?=([a-zA-Z0-9_-]{11})'
+        r"(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})",
+        r"(?:https?://)?(?:www\.)?youtube\.com/.*[?&]v=([a-zA-Z0-9_-]{11})",
+        r"(?:https?://)?(?:www\.)?youtube\.com/.*[&?]vi?=([a-zA-Z0-9_-]{11})",
     ]
-    
+
     # Check if the input string is a video ID
     if re.match(video_id_pattern, input_string):
         return input_string
-    
+
     # Check if the input string is a YouTube URL and extract the video ID
     for pattern in url_patterns:
         match = re.search(pattern, input_string)
         if match:
             return match.group(1)
-    
+
     return ""
 
+
 import urllib.request
-def is_internet_connected(max_timeout: int = 5, website: str = "https://www.google.com")->bool:
+
+
+def is_internet_connected(
+    max_timeout: int = 5, website: str = "https://www.google.com"
+) -> bool:
     """
     The internet connectivity tester.
-    
+
     Input:
         >>> max_timeout = int(seconds)
         >>> website = str("Website to test for")
@@ -61,77 +65,90 @@ def is_internet_connected(max_timeout: int = 5, website: str = "https://www.goog
     except Exception as e:
         return False
 
-def download_youtube_video(url_or_id: str, save_path: str, file_name: str, quality:str, audio_type:str|None=None) -> Tuple[bool, str]:
-        """
-        Download a YouTube video as audio from the given URL and save it to the specified location.
 
-        Args:
-            url_or_id (str): The YouTube video URL or video ID. If a video ID is provided, it should be exactly 11 characters long.
-                    If a URL is provided, the function handles short URLs and non-standard formats.
-            save_path (str): The directory path where the downloaded video will be saved.
-            file_name (str): The desired name for the downloaded video file. If no file extension is provided, '.mp4' will be added.
+def download_youtube_video(
+    url_or_id: str,
+    save_path: str,
+    file_name: str,
+    quality: str,
+    audio_type: str | None = None,
+) -> Tuple[bool, str]:
+    """
+    Download a YouTube video as audio from the given URL and save it to the specified location.
 
-        Returns:
-            Tuple[bool, str]: A tuple containing a boolean indicating the success of the download (True for success, False for failure)
-                            and a string describing the outcome.
+    Args:
+        url_or_id (str): The YouTube video URL or video ID. If a video ID is provided, it should be exactly 11 characters long.
+                If a URL is provided, the function handles short URLs and non-standard formats.
+        save_path (str): The directory path where the downloaded video will be saved.
+        file_name (str): The desired name for the downloaded video file. If no file extension is provided, '.mp4' will be added.
 
-        Note:
-            The function uses the 'pytube' library to download YouTube videos. It attempts to download the audio-only stream,
-            but you can modify the stream selection based on your preferences.
+    Returns:
+        Tuple[bool, str]: A tuple containing a boolean indicating the success of the download (True for success, False for failure)
+                        and a string describing the outcome.
 
-        Example:
-            success, message = download_youtube_video("https://www.youtube.com/watch?v=VIDEO_ID", "/path/to/save", "my_audio")
-            if success:
-                print("Download successful")
-            else:
-                print("Download failed:", message)
-        """
-        id = get_youtube_video_id(url_or_id)
-        if not re.search(r'.\..', file_name):
-            file_name += ".mp4"
-        try:
-            yt = pytube.YouTube(id)
-            if quality[-1] == "p":
-                video = yt.streams.get_by_resolution(quality)
-            elif quality == "audio":
-                if audio_type == None:
-                    audio_type = "mp4"
-                video = yt.streams.get_audio_only(audio_type)
-            elif quality ==  "highest":
-                video = yt.streams.get_highest_resolution()
-            elif quality ==  "lowest":
-                video = yt.streams.get_lowest_resolution()
-                        
-            
-            
-            video.download(output_path=save_path, filename=file_name)
-            return True, "True"
-        except Exception as e:
-            return False, str(e)
+    Note:
+        The function uses the 'pytube' library to download YouTube videos. It attempts to download the audio-only stream,
+        but you can modify the stream selection based on your preferences.
 
+    Example:
+        success, message = download_youtube_video("https://www.youtube.com/watch?v=VIDEO_ID", "/path/to/save", "my_audio")
+        if success:
+            print("Download successful")
+        else:
+            print("Download failed:", message)
+    """
+    id = get_youtube_video_id(url_or_id)
+    if not re.search(r".\..", file_name):
+        file_name += ".mp4"
+    try:
+        yt = pytube.YouTube(id)
+        if quality[-1] == "p":
+            video = yt.streams.get_by_resolution(quality)
+        elif quality == "audio":
+            if audio_type == None:
+                audio_type = "mp4"
+            video = yt.streams.get_audio_only(audio_type)
+        elif quality == "highest":
+            video = yt.streams.get_highest_resolution()
+        elif quality == "lowest":
+            video = yt.streams.get_lowest_resolution()
 
+        video.download(output_path=save_path, filename=file_name)
+        return True, "True"
+    except Exception as e:
+        return False, str(e)
 
 
 import requests
 
-def post_to_discord_webhook(message_content: str, webhook: str, name: str, avatar_url: str = None, mention: bool = True, activate_voice: bool = False) -> Any:
-        """
-        Posts a message to a Discord webhook. Returns the response code and the content of the message.
-        """
-        data = {"content": message_content, #Contents of the message
-            "username": name, #Name for the user
-            "tts": activate_voice, #Activate TTS (Automatic reading voice)
-            "allowed_mentions": {"parse": []} if mention else {}, #Allow mentions
-            
-            }
-        if avatar_url is not None:
-            data["avatar_url"] = avatar_url
-        
-        response = requests.post(webhook, json=data) 
-        return response.status_code, response.content
+
+def post_to_discord_webhook(
+    message_content: str,
+    webhook: str,
+    name: str,
+    avatar_url: str = None,
+    mention: bool = True,
+    activate_voice: bool = False,
+) -> Any:
+    """
+    Posts a message to a Discord webhook. Returns the response code and the content of the message.
+    """
+    data = {
+        "content": message_content,  # Contents of the message
+        "username": name,  # Name for the user
+        "tts": activate_voice,  # Activate TTS (Automatic reading voice)
+        "allowed_mentions": {"parse": []} if mention else {},  # Allow mentions
+    }
+    if avatar_url is not None:
+        data["avatar_url"] = avatar_url
+
+    response = requests.post(webhook, json=data)
+    return response.status_code, response.content
 
 
 from urllib.parse import urlparse, parse_qs
+
+
 def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
     """
     Extracts information from a YouTube video link.
@@ -160,17 +177,21 @@ def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
     parsed_url = urlparse(link)
     query_params = parse_qs(parsed_url.query)
     if link.__contains__("/shorts/"):
-            link = link.replace("/shorts/", "/watch?v=")
-    
-    video_id = query_params.get('v', [None])[0]
-    
-    other_params = {key: value[0] for key, value in query_params.items() if key != 'v'}
-    
+        link = link.replace("/shorts/", "/watch?v=")
+
+    video_id = query_params.get("v", [None])[0]
+
+    other_params = {key: value[0] for key, value in query_params.items() if key != "v"}
+
     return {
-        'video_id': video_id,
-        'params': other_params,
+        "video_id": video_id,
+        "params": other_params,
     }
+
+
 from .file_operations import create_missing_directory
+
+
 def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
     """
     Downloads a file from the given URL and saves it to the specified directory.
@@ -201,11 +222,11 @@ def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
     try:
         if create:
             create_missing_directory(dir)
-            with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
+            with open(dir + r.url.split("/")[-1], "wb", encoding="utf-8") as f:
                 f.write(r.content)
             return True
         else:
-            with open(dir + r.url.split('/')[-1], 'wb', encoding='utf-8') as f:
+            with open(dir + r.url.split("/")[-1], "wb", encoding="utf-8") as f:
                 f.write(r.content)
             return True
     except:

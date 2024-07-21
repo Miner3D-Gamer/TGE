@@ -2,38 +2,7 @@ from itertools import permutations as itertools_permutations
 from collections.abc import Iterable
 
 
-def list_max(lst: Iterable) -> int:
-    """Find and return the maximum value in a list.
 
-    Args:
-        lst (list): A list of integers.
-
-    Returns:
-        int: The highest value in the list.
-
-    Example:
-        >>> list_max([3, 1, 7, 4])
-        7
-    """
-    sorted_lst = sorted(lst)
-    return sorted_lst[-1]
-
-def list_min(lst: Iterable) -> int:
-    """
-    Returns the minimum value in a list of numbers.
-
-    Args:
-    - lst: a list of numbers
-
-    Returns:
-    - the lowest value in the list
-
-    Example:
-    >>> list_min([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7])
-    1
-    """
-    sorted_lst = sorted(lst)
-    return sorted_lst[0]
 
 def list_sum(lst: Iterable) -> int:
     total = 0
@@ -142,7 +111,7 @@ def exponential_average(lst: Iterable) -> float:
     return sum(lst) / len(lst)
 
 def greatest_product(lst: Iterable, lst2: Iterable) -> int:
-    return list_max(lst) * list_max(lst2)
+    return max(lst) * max(lst2)
 
 def permutations(lst: Iterable) -> list:
     return list(itertools_permutations(lst))

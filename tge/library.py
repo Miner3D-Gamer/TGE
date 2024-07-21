@@ -1,12 +1,13 @@
 import importlib.util
-from typing import List, Union, Tuple , Any, Optional, Dict
+from typing import List, Union, Tuple, Any, Optional, Dict
 import subprocess
 
+
 # Function to Test for Library Existence
-def is_library_installed(library_name:str) -> bool:
+def is_library_installed(library_name: str) -> bool:
     """
-    Tests for the accessability of a library using a custom mini 
-    version of "import_lib" mostly only using the essential 
+    Tests for the accessability of a library using a custom mini
+    version of "import_lib" mostly only using the essential
     functions needed for existence a library.
     """
 
@@ -25,7 +26,7 @@ def download_library(library_name: str) -> Tuple[bool, str]:
         tuple: A tuple containing a boolean indicating whether the installation was successful
         and a message string providing additional information in case of an error.
     """
-    command = ['python', '-m', 'pip', 'install', library_name]
+    command = ["python", "-m", "pip", "install", library_name]
 
     try:
         result = subprocess.run(command, check=True, capture_output=True, text=True)
@@ -48,17 +49,25 @@ import os
 # Honestly no idea what these functions do and I'm way too tired to try and figure out
 def get_installed_python_versions() -> list:
     """Get a list of installed Python executables in the system PATH."""
-    paths = os.getenv('PATH').split(os.pathsep)
+    paths = os.getenv("PATH").split(os.pathsep)
     python_versions = []
     for path in paths:
         try:
             for entry in os.listdir(path):
-                if entry.startswith('python') and (entry.endswith('.exe') or entry.endswith('.bat')):
+                if entry.startswith("python") and (
+                    entry.endswith(".exe") or entry.endswith(".bat")
+                ):
                     full_path = os.path.join(path, entry)
                     if os.access(full_path, os.X_OK):
                         try:
                             # Ensure the file is a Python executable by checking the version
-                            version_info = subprocess.check_output([full_path, '--version'], stderr=subprocess.STDOUT).decode().strip()
+                            version_info = (
+                                subprocess.check_output(
+                                    [full_path, "--version"], stderr=subprocess.STDOUT
+                                )
+                                .decode()
+                                .strip()
+                            )
                             if "Python" in version_info:
                                 python_versions.append(full_path)
                         except subprocess.SubprocessError:
@@ -67,27 +76,36 @@ def get_installed_python_versions() -> list:
             continue
     return python_versions
 
+
 def install_library_from_github(github_repo_url: str) -> None:
     """Install the library from the given GitHub repository URL to all installed Python versions."""
     python_versions = get_installed_python_versions()
     for python in python_versions:
-        print(f'Python executable: {python}')
+        print(f"Python executable: {python}")
         try:
-            version_info = subprocess.check_output([python, '--version'], stderr=subprocess.STDOUT).decode().strip()
+            version_info = (
+                subprocess.check_output([python, "--version"], stderr=subprocess.STDOUT)
+                .decode()
+                .strip()
+            )
             print(f"Installing for {version_info} ({python})")
-            subprocess.check_call([python, '-m', 'pip', 'install', 'git+' + github_repo_url])
+            subprocess.check_call(
+                [python, "-m", "pip", "install", "git+" + github_repo_url]
+            )
         except subprocess.CalledProcessError as e:
             print(f"Failed to install for {python}: {e}")
 
+
 from collections.abc import Iterable
 
-def install_all_libraries(libs:Iterable)->list[tuple[bool, str]]:
+
+def install_all_libraries(libs: Iterable) -> list[tuple[bool, str]]:
     output = []
     for lib in libs:
         if is_library_installed(lib):
             continue
         output.append(download_library(lib))
-        
+
     return output
 
 

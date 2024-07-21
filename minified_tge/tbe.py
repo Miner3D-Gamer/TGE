@@ -179,7 +179,7 @@ def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__
 	undocumented=check_directory_and_sub_directory_for_undocumented_functions(directory);amount=0
 	for i in undocumented:
 		print('\n'+i)
-		for j in undocumented[i]:amount+=1;print(f'\t{j[0]} ("{directory}/{i}", line {j[1]})')
+		for j in undocumented[i]:amount+=1;print(f'\t{j[0]} (File "{directory}\\{i}", line {j[1]})')
 	print('\nA total of %s functions are undocumented'%amount)
 def get_from_dict_by_list(data_dict,keys):
 	for key in keys:data_dict=data_dict[key]
@@ -224,20 +224,3 @@ def decompress_directory_list(compressed):
 	dfs(compressed);return paths
 import python_minifier
 def minify(text,rename_important_names=_A,remove_docstrings=_B):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
-def replace_with_list_as_replacement(string,replacer,replacements):
-	for replacement in replacements:string=string(replacer,replacement)
-	return string
-def replace_with_list_as_replacer(string,replacers,replacement):
-	for replacer in replacers:string=string(replacer,replacement)
-	return string
-def replace_list_with_list(string,replacers,replacements):
-	if len(replacements)==len(replacers):
-		for(replacer,replacement)in(replacers,replacements):string=string.replace(replacer,replacement);return string
-	raise ValueError("List lengths don't match")
-def replace(string,replacers,replacements):
-	if isinstance(replacers,str):
-		if isinstance(replacements,str):return string.replace(replacers,replacements)
-		for replacement in replacements:return replace_with_list_as_replacement(string,replacers,replacement)
-	if isinstance(replacements,str):
-		for replacement in replacers:return replace_with_list_as_replacer(string,replacers,replacement)
-	return replace_list_with_list(string,replacers,replacement)

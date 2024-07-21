@@ -36,14 +36,6 @@ def convert_decimal_to_binary(decimal: int) -> str:
 
     Returns:
     str: The binary representation of the input decimal integer.
-
-    Examples:
-    >>> convert_decimal_to_binary(10)
-    '1010'
-    >>> convert_decimal_to_binary(23)
-    '10111'
-    >>> convert_decimal_to_binary(0)
-    '0'
     """
     binary = ''
     while decimal > 0:

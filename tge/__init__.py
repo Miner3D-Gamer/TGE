@@ -89,6 +89,7 @@ INIT_TIME_BEFORE_IMPORTING = tm.time() - start_import
 from .manipulation import string_utils
 from .manipulation import list_utils
 from .manipulation import dictionary_utils as dict_utils
+from .manipulation import expansions
 
 #   Import modules from "compatibility"
 from .compatibility import tge_pygame

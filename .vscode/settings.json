@@ -15,6 +15,7 @@
         "getprop",
         "getsyi",
         "getwindowsversion",
+        "hjson",
         "ispkg",
         "lastexit",
         "lastlaunch",

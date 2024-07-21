@@ -9,7 +9,7 @@ print(tge.manipulation.string_utils.check_anagram("Hell oWl!dor", "Hello World!"
 print("TGE has %s functions"%tge.tbe.count_functions_in_library("tge"))
 tge.tbe.print_undocumented_functions_in_directory()
 print()
-tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge)
+tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge.manipulation.list_utils)
 
 dir = f"{os.getcwd()}/tge/"
 
@@ -18,7 +18,7 @@ for i in range(2):
 
     with open("tge/update.hashed", "w") as f:
         f.write(tge.codec.base.encode_base64(str(generated_uuid.bytes)[2:-1]))
-    
+
 
 
 directories = []

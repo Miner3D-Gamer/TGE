@@ -21,7 +21,7 @@ def calculate_present_value(principal: float, rate: float, years: int) -> float:
     """
     return principal * pow(1 + rate / 100, years)
 
-def percentage_increase(old_grade: float, new_grade: float) -> float:
+def percentage_increase(number: float, percentage: float) -> float:
     """
     Calculate the percentage increase from an old grade to a new grade.
 
@@ -32,12 +32,8 @@ def percentage_increase(old_grade: float, new_grade: float) -> float:
     Returns:
         float: The percentage increase from the old grade to the new grade.
                The result is represented as a decimal value (e.g., 0.10 for 10% increase).
-
-    Example:
-        >>> percentage_increase(80.0, 90.0)
-        0.125  # 12.5% increase from 80.0 to 90.0
     """
-    return (new_grade - old_grade) / old_grade
+    return (percentage - number) / number
 
 
 def percentage_decrease(old_grade: float, new_grade: float) -> float:

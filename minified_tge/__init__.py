@@ -28,7 +28,7 @@ SYSTEM_NAME=get_system()
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']='hide'
 if not importing:INIT_TIME=tm.time()-start_import;library_importing_time=import_time_build_in;print(f"\nTotal loading time: {INIT_TIME}");print(f"Library importing time: {import_time_build_in}");print(f"Total loading time without library importing time: {INIT_TIME-import_time_build_in}");quit()
 INIT_TIME_BEFORE_IMPORTING=tm.time()-start_import
-from.manipulation import string_utils,list_utils,dictionary_utils as dict_utils
+from.manipulation import string_utils,list_utils,dictionary_utils as dict_utils,expansions
 from.compatibility import tge_pygame
 from.compatibility import tge_tkinter
 from.conversion import binary as binary

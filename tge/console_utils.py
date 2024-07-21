@@ -49,11 +49,6 @@ def typingInput(text: str, delay: float = 0) -> str:
 
     Returns:
     str: The string entered by the user.
-
-    Example:
-    >> typingInput("Please type your name: ")
-    Please type your name: Alice
-    'Alice'
     """
     if not delay > 0:
         delay = 0.05
@@ -64,7 +59,7 @@ def typingInput(text: str, delay: float = 0) -> str:
     value = input("")  
     return value
 
-def writeSentencesToConsole(punctuations, o_text: str, type_delay: float, line_delay: float) -> Tuple[bool, str]:
+def writeSentencesToConsole(punctuations:list[str], o_text: str, type_delay: float, line_delay: float) -> Tuple[bool, str]:
     """
     Writes text and splits it into sentences with punctuations and prints them
 

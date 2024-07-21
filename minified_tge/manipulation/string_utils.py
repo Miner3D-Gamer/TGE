@@ -1,13 +1,12 @@
 import random
+from typing import Iterable,NoReturn
 def scramble_word(word):
 	if not isinstance(word,str):raise ValueError('Input must be a string')
 	A=list(word);random.shuffle(A);return''.join(A)
 def chop(string,substring,rem=True):
-	B=string;A=substring
-	if rem:
-		if B.startswith(A)and B.endswith(A):return B[len(A):-len(A)]
-		else:return B
-	else:return lchop(rchop(B,A),A)
+	B=substring;A=string
+	if A.startswith(B)and A.endswith(B):return A[len(B):-len(B)]
+	else:return A
 def truncate_string(string,length):
 	B=length;A=string
 	if len(A)<=B:return A
@@ -39,7 +38,6 @@ def count_consonants(string):
 		if C in B:A+=1
 	return A
 def count_substring_occurrences(string,substring):return string.count(substring)
-def capitalize_sentences(paragraph):A=paragraph.split('. ');B=[A.capitalize()for A in A];C='. '.join(B);return C
 def count_vowels(string):
 	A=0
 	for B in string:
@@ -71,7 +69,27 @@ def left_replace(s,chars,replacement):
 	A=0
 	while A<len(s)and s[A]in chars:A+=1
 	B=replacement*A;C=s[A:];return B+C
-def replace_rstrip(s,chars,replacement):
+def right_replace(s,chars,replacement):
 	A=len(s)-1
 	while A>=0 and s[A]in chars:A-=1
 	B=replacement*(len(s)-A-1);C=s[:A+1];return C+B
+def replace_with_list_as_replacement(string,replacer,replacements):
+	A=string
+	for B in replacements:A=A(replacer,B)
+	return A
+def replace_with_list_as_replacer(string,replacers,replacement):
+	A=string
+	for B in replacers:A=A(B,replacement)
+	return A
+def replace_list_with_list(string,replacers,replacements):
+	C=replacements;B=replacers;A=string
+	if len(C)==len(B):
+		for(D,E)in(B,C):A=A.replace(D,E);return A
+	raise ValueError("List lengths don't match")
+def replace(string,replacers,replacements):
+	C=string;B=replacers;A=replacements
+	if isinstance(B,str):
+		if isinstance(A,str):return C.replace(B,A)
+		return replace_with_list_as_replacement(C,B,A)
+	if isinstance(A,str):return replace_with_list_as_replacer(C,B,A)
+	return replace_list_with_list(C,B,A)

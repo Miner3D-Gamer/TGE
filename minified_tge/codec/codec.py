@@ -6,12 +6,13 @@ from.import base
 from.import morse
 from.import html
 from.import standard_galactic_alphabet
+from.import json
 def encode(x):
-	try:x=base.b64encode(bytes(x,_A));x=hexlify(x).decode(_A);return x
+	try:x=base.encode_base64(bytes(x,_A));x=hexlify(x).decode(_A);return x
 	except:return''
 def decode(data):
 	C=False;B=data
-	try:B=unhexlify(B);D=base.b64decode(B);return D.decode(_A),True
+	try:B=unhexlify(B);D=base.decode_base64(B);return D.decode(_A),True
 	except BinasciiError as A:return f"Error decoding string (BinasciiError): {A}",C
 	except UnicodeError as A:return f"Error decoding string (UnicodeError): {A}",C
 	except Exception as A:return f"Unknown error decoding string (UnknownError): {A}",C

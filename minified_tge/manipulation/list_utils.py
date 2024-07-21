@@ -1,7 +1,5 @@
 from itertools import permutations as itertools_permutations
 from collections.abc import Iterable
-def list_max(lst):A=sorted(lst);return A[-1]
-def list_min(lst):A=sorted(lst);return A[0]
 def list_sum(lst):
 	A=0
 	for B in lst:
@@ -42,7 +40,7 @@ def find_max_min_difference(lst):return max(lst)-min(lst)
 def find_missing_number(lst):return sum(range(1,len(lst)+1))-sum(lst)
 def remove_whitespace_from_list(lst):return[A.replace(' ','')for A in lst]
 def exponential_average(lst):return sum(lst)/len(lst)
-def greatest_product(lst,lst2):return list_max(lst)*list_max(lst2)
+def greatest_product(lst,lst2):return max(lst)*max(lst2)
 def permutations(lst):return list(itertools_permutations(lst))
 def limit_list(list,limit):return list[:limit]
 def get_items_from_list(list,start,end):return list[start:end]

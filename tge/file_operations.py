@@ -2,16 +2,17 @@ import os
 import shutil
 from filecmp import dircmp as file_dircmp, cmp as file_cmp
 from ast import parse as ast_parse, walk as ast_walk, FunctionDef as ast_FunctionDef
-import zipfile 
+import zipfile
 
 from pathlib import Path as pathlib_path
-from typing import List, Union, Tuple , Any
+from typing import List, Union, Tuple, Any
 
 
 import tkinter as tk
 import pyshortcuts
 
 from .codec.codec import decode, base
+
 
 def create_missing_directory(directory: str) -> bool:
     """
@@ -30,6 +31,7 @@ def create_missing_directory(directory: str) -> bool:
         return True
     else:
         return False
+
 
 def delete_directory(directory: str) -> Tuple[bool, str]:
     """
@@ -55,6 +57,7 @@ def delete_directory(directory: str) -> Tuple[bool, str]:
     except:
         return False, "Error deleting directory"
 
+
 def write_save_data(name: str, dir: str, data) -> Tuple[bool, str]:
     """
     Saves data to a file with the given name in the specified directory.
@@ -74,6 +77,7 @@ def write_save_data(name: str, dir: str, data) -> Tuple[bool, str]:
             return True, "File saved"
     except Exception as e:
         return False, f"Error saving file: {str(e)}"
+
 
 def load_save_data(name: str, dir: str) -> Tuple[bool, str]:
     """
@@ -133,6 +137,7 @@ def move_file(source_path: str, destination_path: str) -> bool:
     else:
         return False
 
+
 def copy_file(source_path: str, destination_path: str) -> bool:
     """
     Copies a file from the source path to the destination path.
@@ -177,7 +182,7 @@ def rename_file(source_path: str, name: str) -> bool:
     except:
         return False
 
-    
+
 def copy_directory(source_path: str, destination_path: str) -> bool:
     """
     Copy the contents of a source directory to a destination directory.
@@ -248,7 +253,7 @@ def rename_directory(source_path: str, name: str) -> bool:
     to the provided new name while maintaining its location. The function first
     checks if the directory exists using the 'doesDirectoryFileExist' function.
     If the directory exists, it is renamed by updating its path accordingly.
-    
+
     Args:
         source_path (str): The current path of the directory to be renamed.
         name (str): The new name to be assigned to the directory.
@@ -278,12 +283,13 @@ def get_parent_path(path: str) -> str:
     """
     return os.path.dirname(path)
 
+
 def get_parent_folder(path: str) -> str:
     """
     Get the parent folder name from the given path.
 
     This function takes a path as input and returns the name of the parent folder.
-    
+
     Args:
         path (str): A string representing the path to a file or directory.
 
@@ -299,22 +305,21 @@ def get_parent_folder(path: str) -> str:
     Examples:
         >>> get_parent_folder("C:\\Users\\Username\\Documents\\file.txt")
         'Documents'
-        >>> get_parent_folder("/home/user/pictures/image.jpg")
-        'user'
+        >>> get_parent_folder("/home/user/pictures")
+        'pictures'
     """
     file_path = path.replace("\\", "/")
     if os.path.isdir(path):
         return file_path.split("/")[-1]
     else:
         final_file_path = file_path.split("/")[-2]
-        #file_path = file_path.split("\\")[-1]
+        # file_path = file_path.split("\\")[-1]
         # print(final_file_path)
         # print(file_path)
         # if os.path.isfile(file_path):
-        #     return os.path.dirname(path)  
+        #     return os.path.dirname(path)
         return final_file_path
-        
-    
+
 
 def combine_files(directory: str, output_directory: str, name: str) -> bool:
     """
@@ -336,25 +341,26 @@ def combine_files(directory: str, output_directory: str, name: str) -> bool:
         file_data = []
         for file_name in os.listdir(directory):
             file_path = os.path.join(directory, file_name)
-            
+
             if os.path.isfile(file_path):
-                with open(file_path, 'rb') as file:
+                with open(file_path, "rb") as file:
                     file_bytes = file.read()
                     file_data.append((file_name, file_bytes))
-        
-        combined_data = b''
+
+        combined_data = b""
         for file_name, file_bytes in file_data:
-            combined_data += file_name.encode() + b':' + file_bytes + b'|'
-        
+            combined_data += file_name.encode() + b":" + file_bytes + b"|"
+
         encoded_data = base.encode_base64(combined_data)
-        
-        output_file = os.path.join(output_directory, name + '.encrypted')
-        with open(output_file, 'wb') as file:
+
+        output_file = os.path.join(output_directory, name + ".encrypted")
+        with open(output_file, "wb") as file:
             file.write(encoded_data)
-        
+
         return True
     except:
         return False
+
 
 def split_file(directory: str, output_directory: str) -> bool:
     """
@@ -372,21 +378,22 @@ def split_file(directory: str, output_directory: str) -> bool:
         Any exceptions raised during the execution will be caught and cause the function to return False.
     """
     try:
-        with open(directory, 'rb') as file:
+        with open(directory, "rb") as file:
             encoded_data = file.read()
 
         combined_data = base.decode_base64(encoded_data)
 
-        file_data = combined_data.split(b'|')[:-1]  # Remove the last empty element
+        file_data = combined_data.split(b"|")[:-1]  # Remove the last empty element
 
         for data in file_data:
-            file_name, file_bytes = data.split(b':', 1)
+            file_name, file_bytes = data.split(b":", 1)
             output_file_path = os.path.join(output_directory, file_name.decode())
-            with open(output_file_path, 'wb') as file:
+            with open(output_file_path, "wb") as file:
                 file.write(file_bytes)
         return True
     except:
         return False
+
 
 def doesDirectoryFileExist(is_file: bool, directory: str) -> bool:
     """
@@ -400,15 +407,20 @@ def doesDirectoryFileExist(is_file: bool, directory: str) -> bool:
         bool: True if the file or directory exists, False otherwise.
     """
     if is_file:
-        if os.path.isfile(fr"{pathlib_path(__file__).resolve().parent}/{directory}") or os.path.isfile(directory):
+        if os.path.isfile(
+            rf"{pathlib_path(__file__).resolve().parent}/{directory}"
+        ) or os.path.isfile(directory):
             return True
         else:
             return False
     else:
-        if os.path.exists(fr"{pathlib_path(__file__).resolve().parent}/{directory}" ) or os.path.exists(directory):
+        if os.path.exists(
+            rf"{pathlib_path(__file__).resolve().parent}/{directory}"
+        ) or os.path.exists(directory):
             return True
         else:
             return False
+
 
 def doesFileExist(directory: str) -> bool:
     """
@@ -422,6 +434,7 @@ def doesFileExist(directory: str) -> bool:
     """
     return os.path.exists(directory) and os.path.isfile(directory)
 
+
 def doesDirectoryExist(directory: str) -> bool:
     """
     Check if the specified directory exists and is a valid directory.
@@ -434,6 +447,7 @@ def doesDirectoryExist(directory: str) -> bool:
     """
     return os.path.exists(directory) and os.path.isdir(directory)
 
+
 def delete_file(name: str, dir: str) -> bool:
     """
     Deletes a file from a directory.
@@ -445,12 +459,13 @@ def delete_file(name: str, dir: str) -> bool:
     Returns:
         bool: True if the file was deleted, False otherwise.
     """
-    if os.path.isfile(fr"{pathlib_path(__file__).resolve().parent}/{dir}/{name}"):
+    if os.path.isfile(rf"{pathlib_path(__file__).resolve().parent}/{dir}/{name}"):
         os.system(f"rm {fr'{pathlib_path(__file__).resolve().parent}/{dir}/{name}'}")
         return True
     else:
         return False
-    
+
+
 def compare_file(directory1, directory2) -> Union[bool, str]:
     """
     Compares the contents of two files and returns True if they are identical, False otherwise.
@@ -472,6 +487,7 @@ def compare_file(directory1, directory2) -> Union[bool, str]:
     except:
         return False, False
 
+
 def compare_directory(directory1: str, directory2: str) -> Union[bool, str]:
     """
     Recursively compares the files in two directories and their subdirectories.
@@ -481,24 +497,29 @@ def compare_directory(directory1: str, directory2: str) -> Union[bool, str]:
         directory2 (str): The path to the second directory.
 
     Returns:
-        Union[bool, str]: 
+        Union[bool, str]:
         - If the directories are the same, returns True and a success message.
         - If the directories are different, returns False and an error message.
     """
 
     try:
         cmp = file_dircmp(directory1, directory2)
-        
-        for file in cmp.common_files: # Compare the files in the current directory
+
+        for file in cmp.common_files:  # Compare the files in the current directory
             file1 = os.path.join(directory1, file)
             file2 = os.path.join(directory2, file)
             if not file_cmp(file1, file2):
                 return False
-        
-        for sub_cmp in cmp.subdirs.values(): # Recursively compare the files in subdirectories
-            if not compare_directory(os.path.join(directory1, sub_cmp.left), os.path.join(directory2, sub_cmp.right)):
+
+        for (
+            sub_cmp
+        ) in cmp.subdirs.values():  # Recursively compare the files in subdirectories
+            if not compare_directory(
+                os.path.join(directory1, sub_cmp.left),
+                os.path.join(directory2, sub_cmp.right),
+            ):
                 return False
-        
+
         return True, "Files are compared successfully"
     except OSError as e:
         return False, "Error: " + str(e)
@@ -516,12 +537,13 @@ def count_items_in_directory(directory_path) -> int:
     """
     return len(os.listdir(directory_path))
 
+
 def get_current_working_directory() -> str:
     """
     Retrieve the current working directory path.
 
     Attempts to fetch the absolute path of the current working directory using the `os.getcwd()` function.
-    
+
     Returns:
         str: The absolute path of the current working directory.
              Returns an empty string if an exception occurs during the retrieval process.
@@ -542,6 +564,7 @@ def get_file_extension(file_path: str) -> str:
     :rtype: str
     """
     return os.path.splitext(file_path)[1][1:]
+
 
 def find_files_by_extension(directory_path: str, extension: str) -> list:
     """
@@ -601,7 +624,7 @@ def get_file_creation_time(file_path: str) -> str:
     else:
         return ""
 
-    
+
 def count_functions_in_file(file_path: str) -> Tuple[int, list]:
     """
     Count and retrieve the names of top-level functions defined in the specified Python file.
@@ -622,7 +645,11 @@ def count_functions_in_file(file_path: str) -> Tuple[int, list]:
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             tree = ast_parse(file.read())
-            functions = [node.name for node in ast_walk(tree) if isinstance(node, ast_FunctionDef)]
+            functions = [
+                node.name
+                for node in ast_walk(tree)
+                if isinstance(node, ast_FunctionDef)
+            ]
             return len(functions), functions
     except:
         return 0, []
@@ -665,7 +692,11 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
                 try:
                     with open(file_path, "r", encoding="utf-8") as file:
                         tree = ast_parse(file.read())
-                        functions = [node.name for node in ast_walk(tree) if isinstance(node, ast_FunctionDef)]
+                        functions = [
+                            node.name
+                            for node in ast_walk(tree)
+                            if isinstance(node, ast_FunctionDef)
+                        ]
                         function_counts[file_path] = (len(functions), functions)
                         total_function_count += len(functions)
                 except IOError:
@@ -675,10 +706,6 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
     return total_function_count, function_counts, error_files
 
 
-
-
-
-    
 def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
     """
     Count the total number of function names in Python files within the specified directory.
@@ -698,7 +725,9 @@ def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
         This function depends on the 'count_functions_in_directory' utility function to perform
         the actual counting of function occurrences in the directory's Python files.
     """
-    total_function_count, function_counts, error_files = count_functions_in_directory(directory_path)
+    total_function_count, function_counts, error_files = count_functions_in_directory(
+        directory_path
+    )
     function_names = []
 
     for file_path, (count, names) in function_counts.items():
@@ -707,7 +736,13 @@ def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
 
     return len(function_names), function_names
 
-def save_counted_function_names_from_directory(directory_path: str, file_name: str, output_path: str, create_missing_directory_bool: bool) -> bool:
+
+def save_counted_function_names_from_directory(
+    directory_path: str,
+    file_name: str,
+    output_path: str,
+    create_missing_directory_bool: bool,
+) -> bool:
     """
     Count the occurrences of function names in the Python files within the specified directory and save them to a file.
 
@@ -723,24 +758,23 @@ def save_counted_function_names_from_directory(directory_path: str, file_name: s
     functions = count_function_names_in_directory(directory_path)[1]
     if directory_path == "":
         directory_path = get_current_working_directory()
-    
+
     if output_path == "":
         output_path = directory_path
-    
-    
+
     if file_name == "":
         file_name = "functions.txt"
-    
+
     if create_missing_directory_bool:
         create_missing_directory(output_path)
     try:
-        with open(output_path + file_name, 'w', encoding='utf-8') as f:
+        with open(output_path + file_name, "w", encoding="utf-8") as f:
             for name in functions:
-                f.write(name + '\n')
+                f.write(name + "\n")
         return True
     except:
         return False
-    
+
 
 def input_file_path(extension: str = None) -> str:
     """
@@ -770,7 +804,6 @@ def input_file_path(extension: str = None) -> str:
     return tk.filedialog.asksaveasfilename(defaultextension=extension)
 
 
-
 def input_directory_path() -> str:
     """
     Prompt user to select a directory using a file dialog.
@@ -785,12 +818,12 @@ def input_directory_path() -> str:
     return save_path
 
 
-
-
-def unzip_file(zip_path: str, extract_dir: str, create_missing_directory_bool: bool = False) -> Tuple[bool, bool]:
+def unzip_file(
+    zip_path: str, extract_dir: str, create_missing_directory_bool: bool = False
+) -> Tuple[bool, bool]:
     """
     Unzips a zip file to the specified extract directory.
-    
+
     Args:
         zip_path (str): pathlib_path to the zip file.
         extract_dir (str): Directory to extract the contents of the zip file to.
@@ -802,7 +835,7 @@ def unzip_file(zip_path: str, extract_dir: str, create_missing_directory_bool: b
     try:
         if create_missing_directory_bool:
             existed = create_missing_directory(extract_dir)
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(extract_dir)
         return True, True
     except:
@@ -811,7 +844,10 @@ def unzip_file(zip_path: str, extract_dir: str, create_missing_directory_bool: b
                 delete_directory(extract_dir)
         return False, True
 
-def zip_directory(directory_path: str, output_path: str, create_missing_directory_bool: bool = False) -> Tuple[bool, bool]:
+
+def zip_directory(
+    directory_path: str, output_path: str, create_missing_directory_bool: bool = False
+) -> Tuple[bool, bool]:
     """
     Zip a given directory and save the resulting zip file to the output path.
 
@@ -831,15 +867,16 @@ def zip_directory(directory_path: str, output_path: str, create_missing_director
     try:
         if create_missing_directory_bool:
             create_missing_directory(output_path)
-        
-        with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zipfile:
+
+        with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zipfile:
             for root, dirs, files in os.walk(directory_path):
                 for file in files:
                     file_path = os.path.join(root, file)
                     zipfile.write(file_path, os.path.relpath(file_path, directory_path))
         return True, True
-    except: 
+    except:
         return False, True
+
 
 def get_appdata_path() -> str:
     """
@@ -851,8 +888,9 @@ def get_appdata_path() -> str:
     return os.path.expanduser("~\AppData")
 
 
-
-def create_shortcut(name: str, target_path: str, shortcut_path: str, description: str = "") -> None:
+def create_shortcut(
+    name: str, target_path: str, shortcut_path: str, description: str = ""
+) -> None:
     """
     Creates a shortcut to a target file or script.
 
@@ -879,9 +917,19 @@ def create_shortcut(name: str, target_path: str, shortcut_path: str, description
                         "Shortcut to run my custom script.")
     """
     target_parent_folder = os.path.dirname(target_path)
-    pyshortcuts.make_shortcut(name=name, script=target_path, working_dir=target_parent_folder, folder=shortcut_path, description=description, executable=target_path)
+    pyshortcuts.make_shortcut(
+        name=name,
+        script=target_path,
+        working_dir=target_parent_folder,
+        folder=shortcut_path,
+        description=description,
+        executable=target_path,
+    )
 
-def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path: str)->str|None:
+
+def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(
+    path: str,
+) -> str | None:
     files = os.listdir(path)  # Get a list of files in the specified directory
     max_num = -1
     latest_file = None
@@ -902,5 +950,6 @@ def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path: 
     else:
         return None  # No valid files found in the directory
 
-def is_directory_empty(directory_path:str)->bool:
+
+def is_directory_empty(directory_path: str) -> bool:
     return not os.listdir(directory_path)

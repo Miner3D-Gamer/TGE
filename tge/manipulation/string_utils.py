@@ -1,7 +1,8 @@
-
 import random
+from typing import Iterable, NoReturn
 
-def scramble_word(word):
+
+def scramble_word(word:str)->str:
     """
     Scramble the letters of a given word.
 
@@ -16,15 +17,14 @@ def scramble_word(word):
 
     word_list = list(word)
     random.shuffle(word_list)
-    return ''.join(word_list)
+    return "".join(word_list)
+
 
 def chop(string: str, substring: str, rem: bool = True) -> str:
-    if rem:
-        if string.startswith(substring) and string.endswith(substring):
-            return string[len(substring):-len(substring)]
-        else: return string
+    if string.startswith(substring) and string.endswith(substring):
+        return string[len(substring) : -len(substring)]
     else:
-        return lchop(rchop(string, substring), substring)
+        return string
 
 
 def truncate_string(string: str, length: int) -> str:
@@ -42,7 +42,7 @@ def truncate_string(string: str, length: int) -> str:
         return string
     else:
         return string[:length]
-    
+
 
 def reverse_string(string: str) -> str:
     """
@@ -55,6 +55,7 @@ def reverse_string(string: str) -> str:
         str: The reversed string.
     """
     return string[::-1]
+
 
 def check_anagram(word1: str, word2: str) -> bool:
     """
@@ -69,6 +70,7 @@ def check_anagram(word1: str, word2: str) -> bool:
     """
     return sorted(word1) == sorted(word2)
 
+
 def remove_duplicate_characters_from_string(string: str) -> str:
     """
     Remove duplicate characters from a given string.
@@ -78,18 +80,13 @@ def remove_duplicate_characters_from_string(string: str) -> str:
 
     Returns:
         str: The string with duplicate characters removed.
-
-    Examples:
-        >>> remove_duplicates_from_string("hello")
-        'helo'
-        >>> remove_duplicates_from_string("abbcccdd")
-        'abcd'
     """
     result = ""
     for char in string:
         if char not in result:
             result += char
     return result
+
 
 def find_longest_word(string: str) -> str:
     """
@@ -100,14 +97,9 @@ def find_longest_word(string: str) -> str:
 
     Returns:
         str: The longest word found in the string.
-
-    Examples:
-        >>> find_longest_word("Hello world")
-        'Hello'
-        >>> find_longest_word("This is a sentence")
-        'sentence'
     """
     return max(string.split(), key=len)
+
 
 def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
     """
@@ -118,14 +110,6 @@ def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
 
     Returns:
         int: The length of the longest substring without repeating characters.
-
-    Examples:
-        >>> get_length_of_longest_substring("abcabcbb")
-        3
-        >>> get_length_of_longest_substring("bbbbb")
-        1
-        >>> get_length_of_longest_substring("pwwkew")
-        3
     """
     if not s:
         return 0
@@ -147,6 +131,7 @@ def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
         char_index_map[s[i]] = i
 
     return max_length
+
 
 def find_first_non_repeating_character(string: str) -> str:
     """
@@ -183,19 +168,10 @@ def count_consonants(string: str) -> int:
 
     return count
 
+
 def count_substring_occurrences(string: str, substring: str) -> int:
     return string.count(substring)
 
-def capitalize_sentences(paragraph):
-    sentences = paragraph.split('. ')  # Split the paragraph into individual sentences
-
-    # Capitalize the first letter of each sentence
-    capitalized_sentences = [sentence.capitalize() for sentence in sentences]
-
-    # Join the sentences back together
-    formatted_paragraph = '. '.join(capitalized_sentences)
-
-    return formatted_paragraph
 
 def count_vowels(string: str) -> int:
     count = 0
@@ -204,10 +180,11 @@ def count_vowels(string: str) -> int:
             count += 1
     return count
 
+
 def find_longest_substring(string: str) -> str:
     longest_substring = ""
     current_substring = ""
-    
+
     for char in string:
         if char in current_substring:
             # Found a repeating character, update the longest substring if needed
@@ -215,84 +192,90 @@ def find_longest_substring(string: str) -> str:
                 longest_substring = current_substring
             # Reset the current substring after the repeated character
             current_substring = current_substring.split(char)[-1]
-        
+
         # Add the current character to the current substring
         current_substring += char
-    
+
     # Check if the current substring is longer than the longest substring
     if len(current_substring) > len(longest_substring):
         longest_substring = current_substring
-    
+
     return longest_substring
+
 
 def check_pangram(string: str) -> bool:
     alphabet = set(string.ascii_lowercase)  # Create a set of all lowercase letters
-    
+
     # Convert the string to lowercase and remove any non-alphabetic characters
     # by using only the characters present in the alphabet set
-    filtered_string = ''.join(filter(lambda c: c in alphabet, string.lower()))
-    
+    filtered_string = "".join(filter(lambda c: c in alphabet, string.lower()))
+
     # Check if the filtered string contains all the letters of the alphabet
     return set(filtered_string) == alphabet
+
 
 def find_common_characters(string1: str, string2: str) -> str:
     return "".join(set(string1) & set(string2))
 
-def split_text(text, chunk_size):
-    return [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
+
+def split_text(text:str, chunk_size:int)->list[str]:
+    return [text[i : i + chunk_size] for i in range(0, len(text), chunk_size)]
 
 
 def lchop(string: str, substring: str) -> str:
     if string.startswith(substring):
-        return string[len(substring):]
-    else:
-        return string
-    
-def rchop(string: str, substring: str) -> str:
-    if string.endswith(substring):
-        
-        return string[:-len(substring)]
+        return string[len(substring) :]
     else:
         return string
 
-def left_pad(string, length, char=' '):
+
+def rchop(string: str, substring: str) -> str:
+    if string.endswith(substring):
+
+        return string[: -len(substring)]
+    else:
+        return string
+
+
+def left_pad(string:str, length:int, char:str=" ")->str:
     """
     Pads the given string on the left with the specified character to the desired length.
-    
+
     Parameters:
     string (str): The original string.
     length (int): The desired length after padding.
     char (str): The character to pad with (default is a space).
-    
+
     Returns:
     str: The left-padded string.
     """
     return string.rjust(length, char)
 
-def right_pad(string, length, char=' '):
+
+def right_pad(string:str, length:int, char:str=" ")->str:
     """
     Pads the given string on the right with the specified character to the desired length.
-    
+
     Parameters:
     string (str): The original string.
     length (int): The desired length after padding.
     char (str): The character to pad with (default is a space).
-    
+
     Returns:
     str: The right-padded string.
     """
     return string.ljust(length, char)
 
 
-def left_replace(s, chars, replacement):
+def left_replace(s, chars: Iterable, replacement: str)->str:
     """
     Replace leading characters in `chars` with `replacement` in the string `s`.
-    
+
     Parameters:
     s (str): The original string.
     chars (str): A string of characters to be replaced.
     replacement (str): The character to replace with.
-    
+
     Returns:
     str: The modified string with leading characters replaced.
     """
@@ -304,18 +287,19 @@ def left_replace(s, chars, replacement):
     # Create the replaced string
     replaced_part = replacement * index
     remaining_part = s[index:]
-    
+
     return replaced_part + remaining_part
 
-def replace_rstrip(s, chars, replacement):
+
+def right_replace(s, chars, replacement)->str:
     """
     Replace trailing characters in `chars` with `replacement` in the string `s`.
-    
+
     Parameters:
     s (str): The original string.
     chars (str): A string of characters to be replaced.
     replacement (str): The character to replace with.
-    
+
     Returns:
     str: The modified string with trailing characters replaced.
     """
@@ -326,6 +310,45 @@ def replace_rstrip(s, chars, replacement):
 
     # Create the replaced string
     replaced_part = replacement * (len(s) - index - 1)
-    remaining_part = s[:index + 1]
-    
+    remaining_part = s[: index + 1]
+
     return remaining_part + replaced_part
+
+
+def replace_with_list_as_replacement(
+    string: str, replacer: str, replacements: Iterable
+) -> str:
+    for replacement in replacements:
+        string = string(replacer, replacement)
+    return string
+
+
+def replace_with_list_as_replacer(
+    string: str, replacers: Iterable, replacement: str
+) -> str:
+    for replacer in replacers:
+        string = string(replacer, replacement)
+    return string
+
+
+def replace_list_with_list(
+    string: str, replacers: Iterable, replacements: Iterable
+) -> str | NoReturn:
+    if len(replacements) == len(replacers):
+        for replacer, replacement in (replacers, replacements):
+            string = string.replace(replacer, replacement)
+            return string
+    raise ValueError("List lengths don't match")
+
+
+def replace(
+    string: str, replacers: str | Iterable, replacements: str | Iterable
+) -> str:
+    if isinstance(replacers, str):
+        if isinstance(replacements, str):
+            return string.replace(replacers, replacements)
+        return replace_with_list_as_replacement(string, replacers, replacements)
+    if isinstance(replacements, str):
+        return replace_with_list_as_replacer(string, replacers, replacements)
+    return replace_list_with_list(string, replacers, replacements)
+    # ????????????????????????????????????????????????????????????

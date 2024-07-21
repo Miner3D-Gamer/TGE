@@ -16,3 +16,6 @@ pyperclip
 tkinter
 pathlib
 python-minifier
+hjson
+json5
+json

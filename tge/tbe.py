@@ -369,9 +369,6 @@ def number_to_words(number:int) -> str:
         
         >>> number_to_words(-42)
         'minus forty-two'
-        
-        >>> number_to_words(0)
-        'zero'
     """
 
     big_numbers = [
@@ -1284,7 +1281,7 @@ def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__fi
         print("\n"+i)
         for j in undocumented[i]:
             amount += 1
-            print(f'\t{j[0]} ("{directory}/{i}", line {j[1]})')
+            print(f'\t{j[0]} (File "{directory}\\{i}", line {j[1]})')
     print("\nA total of %s functions are undocumented"%amount)
 
 
@@ -1507,34 +1504,7 @@ def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=Tr
     return python_minifier.minify(text, rename_globals=rename_important_names, remove_literal_statements=remove_docstrings)
 
 
-def replace_with_list_as_replacement(string:str, replacer:str, replacements:Iterable)->str:
-    for replacement in replacements:
-        string = string(replacer, replacement)
-    return string
 
-def replace_with_list_as_replacer(string:str, replacers:str, replacement:str)->str:
-    for replacer in replacers:
-        string = string(replacer, replacement)
-    return string
-
-def replace_list_with_list(string:str, replacers:Iterable, replacements:Iterable)->str|MissingReturnType:
-    if len(replacements) == len(replacers):
-        for replacer, replacement in (replacers, replacements):
-                string = string.replace(replacer, replacement)
-                return string
-    raise ValueError("List lengths don't match")
-
-def replace(string:str, replacers:str|Iterable, replacements:str|Iterable)->str:
-    if isinstance(replacers, str):
-        if isinstance(replacements,str):
-            return string.replace(replacers, replacements)
-        for replacement in replacements:
-            return replace_with_list_as_replacement(string, replacers, replacement)
-    if isinstance(replacements,str):
-        for replacement in replacers:
-            return replace_with_list_as_replacer(string, replacers, replacement)
-    return replace_list_with_list(string, replacers, replacement)
-    # ????????????????????????????????????????????????????????????
     
 
 

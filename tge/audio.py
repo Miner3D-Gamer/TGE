@@ -203,11 +203,6 @@ def save_text_to_speech(text: str, name: str, dir: str) -> None:
         The function attempts to create any missing directories in the specified 'dir' path.
         If successful, the generated audio file is saved in the format 'dir/name'.
         If an exception occurs during the saving process, the function returns None.
-
-    Example:
-        save_text_to_speech("Hello, how are you?", "greeting", "output_audio")
-        # Converts the text to speech and saves it as 'output_audio/greeting.mp3'
-
     """
     if dir == "":
         dir = "."

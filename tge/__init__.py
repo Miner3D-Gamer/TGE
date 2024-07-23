@@ -7,14 +7,16 @@ import os
 
 importing = __name__ != "__main__"
 
-__version__ = "1.0.0"
+if not importing:
+    print("This library is meant to imported, not to be run.")
+    quit()
+
 __name__ = "tge"
 __author__ = "Miner3D"
 __license__ = "LGPL, GNU Lesser General Public License"
 __url__ = "https://github.com/Miner3DGaming/TGE"
 
-__doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.md"
-
+__doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.MD"
 
 "Yep"
 "At this point that python takes about a whole 0.1 seconds to skip over all the documentation/docstring (tested using compile function with consistent results)"
@@ -22,23 +24,19 @@ __doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.md"
 "I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear them (well not actually since they are bugs and bugs are usually not good in these situations)"
 
 
-start_importing = tm.time()
 import sys
 
-if importing:  # These mini libs take way less time to import
-    from .mini_lib import platform_mini
-else:
-    import platform as platform_mini
-
-
-# from typing import List, Union, Tuple , Any, Optional, Dict
-
-import_time_build_in = tm.time() - start_importing
 
 import requests
 
 
 def is_tge_outdated() -> bool:
+    """
+    Check if the local tge module is outdated by comparing the local 'update.hashed' with the latest version from the remote repository.
+
+    Returns:
+        bool: True if the local file is outdated, False otherwise.
+    """
     response = requests.get(
         "https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed"
     )
@@ -49,17 +47,36 @@ def is_tge_outdated() -> bool:
         return file != content
 
 
-def get_system() -> str:
-    """Returns the current user system"""
-    if sys.platform.startswith("java"):
+from .mini_lib import platform_mini
+
+if sys.platform.startswith("java"):
+
+    def get_system() -> str:
+        "Returns the current user system"
         return "jython"
-    elif sys.platform == "darwin":
+
+elif sys.platform == "darwin":
+
+    def get_system() -> str:
+        "Returns the current user system"
         return "darwin"
-    elif sys.platform == "win32":
+
+elif sys.platform == "win32":
+
+    def get_system() -> str:
+        "Returns the current user system"
         return "windows"
-    elif platform_mini.system() == "Linux":
+
+elif platform_mini.system() == "Linux":
+
+    def get_system() -> str:
+        "Returns the current user system"
         return "linux"
-    else:
+
+else:
+
+    def get_system() -> str:
+        "Returns the current user system"
         return "unknown"
 
 
@@ -68,19 +85,6 @@ SYSTEM_NAME = get_system()
 
 # Hide Pygame Support Prompt
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
-
-
-# Printing Timing Information (if not importing as a module)
-if not importing:
-    # This was once more impressive but a lot of stuff got cut for performance reason
-    INIT_TIME = tm.time() - start_import
-    library_importing_time = import_time_build_in
-    print(f"\nTotal loading time: {INIT_TIME}")
-    print(f"Library importing time: {import_time_build_in}")
-    print(
-        f"Total loading time without library importing time: {INIT_TIME - import_time_build_in}"
-    )
-    quit()
 
 INIT_TIME_BEFORE_IMPORTING = tm.time() - start_import
 
@@ -113,8 +117,7 @@ from .math_functions.vector_calculation import Vector
 
 
 #   Import modules from "user_interface"
-from .user_interface import system_interactions
-from .user_interface import clipboard
+from .user_interface import system_interactions as system
 
 
 #   Import modules from root directory
@@ -143,4 +146,4 @@ from . import steam_utils
 tim = tm.time()
 IMPORT_TIME = tim - INIT_TIME_BEFORE_IMPORTING
 INIT_TIME = tim - start_import
-del tim, importing
+del tim, importing, INIT_TIME_BEFORE_IMPORTING

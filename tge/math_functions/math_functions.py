@@ -436,3 +436,10 @@ def round_with_precision(number, digits=0):
     factor = 10 ** digits
     rounded_number = int(number * factor) / factor
     return rounded_number
+
+def find_divisors(x):
+    divisors = []
+    for i in range(1, x + 1):
+        if x % i == 0:
+            divisors.append(i)
+    return divisors

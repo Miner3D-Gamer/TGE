@@ -19,7 +19,8 @@ for i in range(2):
     with open("tge/update.hashed", "w") as f:
         f.write(tge.codec.base.encode_base64(str(generated_uuid.bytes)[2:-1]))
 
-
+print("Pure size of TGE:", tge.conversion.binary.convert_byte_to_kilobyte(tge.file_operations.get_file_size_of_directory("./tge")))
+print("Pure size of minified TGE:", tge.conversion.binary.convert_byte_to_kilobyte(tge.file_operations.get_file_size_of_directory("./minified_tge")))
 
 directories = []
 
@@ -46,6 +47,10 @@ with open("directory.json", "w") as f:  #
 
 cwd = os.getcwd()
 output = rf"{cwd}/minified_tge/"
+try:
+    os.remove(output)
+except PermissionError:
+    print("VS is still using the minified tge folder, delete it manually or just leave it")
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root
     for file in files:

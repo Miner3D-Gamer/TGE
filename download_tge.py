@@ -14,7 +14,7 @@ class ArgumentHandler:
     def get_argument_by_flag(A, flag, delete=False, default=None):
         C = default
         if not flag in A.a:
-            B =  -1
+            B = -1
         else:
             B = A.a.index(flag)
         if B < 0:
@@ -27,20 +27,28 @@ class ArgumentHandler:
         else:
             D = A.a.__getitem__(B + 1)
         return D
+
+
 argument_handler = ArgumentHandler()
+
 
 def is_directory_empty(directory_path):
     return not os.listdir(directory_path)
 
-sl = argument_handler.get_argument_by_flag("-suppression_level",delete=True, default="0")
+
+sl = argument_handler.get_argument_by_flag(
+    "-suppression_level", delete=True, default="0"
+)
 if sl.isdigit():
-    give_feedback  =  int(sl)
+    give_feedback = int(sl)
 else:
-    give_feedback  =  0
+    give_feedback = 0
 
 default_python_installation = f"{os.getenv('LOCALAPPDATA')}\Programs\Python"
 while True:
-    inp = argument_handler.get_argument_by_flag("-install_option",delete=True, default=False)
+    inp = argument_handler.get_argument_by_flag(
+        "-install_option", delete=True, default=False
+    )
     if not inp:
         inp = input(
             f"""Choose how to install TGE (Enter Number):
@@ -64,7 +72,9 @@ while True:
 
         break
     elif inp == "2":
-        path =  argument_handler.get_argument_by_flag("-path",delete=True, default=False)
+        path = argument_handler.get_argument_by_flag(
+            "-path", delete=True, default=False
+        )
         if not path:
             path = filedialog.askopenfilename()
         path = os.path.dirname(path) + "/Lib/site-packages"
@@ -76,11 +86,13 @@ while True:
                 print("'%s' could not be found\n" % path)
             continue
     elif inp == "3":
-        path =  argument_handler.get_argument_by_flag("-path",delete=True, default=False)
+        path = argument_handler.get_argument_by_flag(
+            "-path", delete=True, default=False
+        )
         if not path:
             path = filedialog.askdirectory()
         if not os.path.exists(path):
-            if give_feedback <1:
+            if give_feedback < 1:
                 print("Path not found.")
             continue
         if is_directory_empty(path):
@@ -93,12 +105,17 @@ if give_feedback < 1:
     print()
 base_github_url = "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/"
 while True:
-    
-    inp = argument_handler.get_argument_by_flag("-install_minified",delete=True, default=None)
+
+    inp = argument_handler.get_argument_by_flag(
+        "-install_minified", delete=True, default=None
+    )
     if inp is None:
+        min_space = "250kb"
+        norm_space = "1.1mb"
         inp = (
             input(
-                f"Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~200kb instead of ~800kb) but all docstring and annotations have been removed\nYour Input: "
+                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%s instead of ~%s) but all docstring and annotations have been removed\nYour Input: "
+                % (min_space, norm_space)
             )
             .strip()
             .lower()
@@ -118,33 +135,40 @@ response = requests.get(f"{base_github_url}directory.json")
 
 response.raise_for_status()
 
-def decompress_directory_list(compressed): # FIXME: THIS IS BROKEN FOR PATHS WHERE THERE IS ONLY ONE FILE AND I HAVE NO IDEA HOW TO FIX IT
+
+def decompress_directory_list(
+    compressed: dict,
+) -> list[str]:
+    # FIXME: THIS IS BROKEN FOR PATHS WHERE THERE IS ONLY ONE FILE AND I HAVE NO IDEA HOW TO FIX IT
     paths = []
 
-    def dfs(node, current_path=""):
+    def dfs(node: str | list | dict, current_path="") -> None:
+        nonlocal paths
+
         if isinstance(node, list):
-            paths.append(f"{current_path}/{node[0]}".strip('/'))
+            paths.append(f"{current_path}/{node[0]}".strip("/"))
             return
         if isinstance(node, str):
             paths.append(node)
             return
 
         for key, value in node.items():
-            if key == 'files':
+            if key == "files":
                 for file_path in value:
-                    paths.append(f"{current_path}/{file_path}".strip('/'))
+                    paths.append(f"{current_path}/{file_path}".strip("/"))
             else:
-                dfs(value, f"{current_path}/{key}".strip('/'))
+                dfs(value, f"{current_path}/{key}".strip("/"))
 
     dfs(compressed)
     return paths
 
 
 files = [
-    (file + "py" if file.endswith(".") else file) for file in decompress_directory_list(json.loads(response.text))
+    (file + "py" if file.endswith(".") else file)
+    for file in decompress_directory_list(json.loads(response.text))
 ]
 
-urls:list[str] = [github_url + file for file in files]
+urls: list[str] = [github_url + file for file in files]
 
 for dir in dirs:
     if os.path.exists(dir):
@@ -174,15 +198,15 @@ for file_id in range(len(urls)):
         requirements = file.text.split("\n")
 
     dir_offset = 0
-    for idx in range(len(dirs)): 
-        try:# TODO: THIS IS BOUND TO GO WRONG CHANGE THIS TO BE BETTER
-            installation_directory = dirs[idx-dir_offset]
+    for idx in range(len(dirs)):
+        try:  # TODO: THIS IS BOUND TO GO WRONG CHANGE THIS TO BE BETTER
+            installation_directory = dirs[idx - dir_offset]
         except ValueError:
             break
-        
+
         if not os.path.exists(installation_directory):
             os.mkdir(installation_directory)
-        
+
         path = os.path.join(installation_directory, file_name)
         parent_dir = os.path.dirname(path)
         if not os.path.exists(installation_directory):
@@ -192,7 +216,7 @@ for file_id in range(len(urls)):
                     % installation_directory
                 )
             dirs.pop(idx)
-            dir_offset+=1
+            dir_offset += 1
             continue
         os.makedirs(parent_dir, exist_ok=True)
         print(f"Writing to {path}")
@@ -206,11 +230,14 @@ for dir in dirs:
 
 try:
     import tge.library as library
+
     if give_feedback < 1:
         print("Done downloading TGE in %s seconds!" % (end - start))
 except:
     if give_feedback < 2:
-        print("Well, this didn't quit work out. Wasted about %s seconds" % (end - start))
+        print(
+            "Well, this didn't quit work out. Wasted about %s seconds" % (end - start)
+        )
     quit()
 
 

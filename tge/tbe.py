@@ -1476,10 +1476,10 @@ def compress_directory_list(paths:Iterable)->dict[list|str]:
 
 
 
-def decompress_directory_list(compressed)->list[str]:
+def decompress_directory_list(compressed:dict)->list[str]:
     paths = []
 
-    def dfs(node, current_path=""):
+    def dfs(node:str|list|dict, current_path=""):
         if isinstance(node, list):
             paths.append(f"{current_path}/{node[0]}".strip('/'))
             return

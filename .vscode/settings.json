@@ -5,11 +5,13 @@
         "autocloud",
         "bcdfghjklmnpqrstvwxyz",
         "bootstra",
+        "brontobytes",
         "csid",
         "cvkey",
         "demux",
         "docstrings",
         "fixpoint",
+        "geopbytes",
         "getexif",
         "gethostname",
         "getprop",
@@ -35,6 +37,10 @@
         "vminfo",
         "Welp",
         "winver",
-        "youtu"
+        "xobibytes",
+        "yobibytes",
+        "yottabytes",
+        "youtu",
+        "zettabytes"
     ]
 }

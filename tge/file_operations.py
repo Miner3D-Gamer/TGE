@@ -953,3 +953,18 @@ def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(
 
 def is_directory_empty(directory_path: str) -> bool:
     return not os.listdir(directory_path)
+
+
+def get_filesize(directory: str):
+    return os.path.getsize(directory)
+
+
+def get_file_size_of_directory(directory: str) -> int:
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(directory):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            # Skip if it is symbolic link
+            if not os.path.islink(fp):
+                total_size += os.path.getsize(fp)
+    return total_size

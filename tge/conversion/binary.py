@@ -1,4 +1,4 @@
-
+from math import ceil
 
 HEX_CHARACTERS = "0123456789ABCDEF"
 
@@ -88,3 +88,39 @@ def convert_hexadecimal_to_decimal(hexadecimal: str) -> int:
     decimal = 0
     for hex_digit in reversed(hexadecimal):
         decimal = decimal * 16 + HEX_CHARACTERS.index(hex_digit)
+
+def convert_bytes(value: int, from_unit: str, to_unit: str) -> float:
+    units = [
+        "bytes",
+        "kilobytes",
+        "megabytes",
+        "gigabytes",
+        "terabytes",
+        "petabytes",
+        "exabytes",
+        "zettabytes",
+        "yottabytes",
+        "brontobytes",
+        "geopbytes",
+        "xobibytes",
+        "yobibytes"
+    ]
+
+    if from_unit not in units or to_unit not in units:
+        raise ValueError("Invalid unit specified")
+
+    # Convert the value to bytes and then to the desired unit
+    bytes_value = value * (1024 ** units.index(from_unit))
+    return ceil(bytes_value / (1024 ** units.index(to_unit)))
+
+
+def convert_byte_to_kilobyte(bytes: int) -> float:
+    return convert_bytes(bytes, "bytes", "kilobytes")
+
+
+def convert_kilobyte_to_megabyte(kilobytes: int) -> float:
+    return convert_bytes(kilobytes, "kilobytes", "megabytes")
+
+
+def convert_megabyte_to_gigabyte(megabytes: int) -> float:
+    return convert_bytes(megabytes, "megabytes", "gigabytes")

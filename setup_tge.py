@@ -51,6 +51,7 @@ try:
     os.remove(output)
 except PermissionError:
     print("VS is still using the minified tge folder, delete it manually or just leave it")
+except FileNotFoundError:...
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root
     for file in files:

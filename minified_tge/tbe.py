@@ -178,8 +178,8 @@ class ArgumentHandler:
 def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__)):
 	undocumented=check_directory_and_sub_directory_for_undocumented_functions(directory);amount=0
 	for i in undocumented:
-		print('\n'+i)
-		for j in undocumented[i]:amount+=1;print(f'\t{j[0]} (File "{directory}\\{i}", line {j[1]})')
+		print('\n\n'+i)
+		for j in undocumented[i]:amount+=1;print(f'\n\t{j[0]} \n\tFile "{directory}\\{i}", line {j[1]}')
 	print('\nA total of %s functions are undocumented'%amount)
 def get_from_dict_by_list(data_dict,keys):
 	for key in keys:data_dict=data_dict[key]

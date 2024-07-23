@@ -4,8 +4,9 @@ _C=None
 _B=True
 _A=False
 from collections.abc import Iterable
+from types import FunctionType,ModuleType,MethodType
 from typing import List,Union,Tuple,Any,get_type_hints
-import types,ast,os,sys,importlib
+import ast,os,sys,importlib
 from difflib import get_close_matches
 import inspect
 def pass_func(*args):0
@@ -120,7 +121,7 @@ def generate_uuid_from_directory(directory,blacklisted_extensions=[]):
 def check_for_functions_in_module_with_missing_notations(library_module):
 	functions_with_missing_annotations=[]
 	for(name,obj)in inspect.getmembers(library_module):
-		if isinstance(obj,types.FunctionType):
+		if isinstance(obj,FunctionType):
 			input_parameters=get_function_inputs(obj);missing_input_types=[param for param in input_parameters if param[_D]is NoInputType];return_type=get_return_type(obj)
 			if missing_input_types or return_type is MissingReturnType:functions_with_missing_annotations.append({_E:name,'missing_input_types':missing_input_types,'return_type':return_type})
 	return functions_with_missing_annotations
@@ -144,6 +145,9 @@ def get_return_type(func):
 	signature=inspect.signature(func);return_type=signature.return_annotation
 	if return_type==inspect.Signature.empty:return MissingReturnType
 	else:return return_type
+def repeat(func,times):
+	for i in range(times):val=func()
+	return val
 def count_functions_in_module(module,library_name):
 	function_count=0
 	for(name,obj)in inspect.getmembers(module):

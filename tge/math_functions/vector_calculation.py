@@ -23,6 +23,10 @@ class Vector:
     normalize() -> 'Vector': Returns a normalized (unit) vector.
     """
     def __init__(self, *components: float) -> None:
+        """Initialize an object with a list of float components.
+
+Args:
+    *components (float): Variable number of float arguments to initialize the `components` list."""
         self.components = list(components)
 
     def __repr__(self) -> str:

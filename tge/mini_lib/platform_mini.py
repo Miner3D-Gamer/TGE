@@ -38,12 +38,15 @@ _WIN32_CLIENT_RELEASES = {
 }
 
 def system():
+    ":/"
     return uname().system
 
 def _unknown_as_blank(val):
+    ":/"
     return '' if val == 'unknown' else val
 
 def _node(default=''):
+    ":/"
     try:
         import socket
     except ImportError:
@@ -56,6 +59,7 @@ def _node(default=''):
 def _syscmd_ver(system='', release='', version='',
 
                supported_platforms=('win32', 'win16', 'dos')):
+    ":/"
     if sys.platform not in supported_platforms:
         return system, release, version
 
@@ -87,6 +91,7 @@ def _syscmd_ver(system='', release='', version='',
     return system, release, version
 
 def _norm_version(version, build=''):
+    ":/"
     l = version.split('.')
     if build:
         l.append(build)
@@ -99,6 +104,7 @@ def _norm_version(version, build=''):
 
 
 def java_ver(release='', vendor='', vminfo=('', '', ''), osinfo=('', '', '')):
+    ":/"
     try:
         import java.lang # type: ignore
     except ImportError:
@@ -120,6 +126,7 @@ def java_ver(release='', vendor='', vminfo=('', '', ''), osinfo=('', '', '')):
     return release, vendor, vminfo, osinfo
 
 def win32_ver(release='', version='', csd='', ptype=''):
+    ":/"
     try:
         from sys import getwindowsversion
     except ImportError:
@@ -167,6 +174,7 @@ def win32_ver(release='', version='', csd='', ptype=''):
 
 
 def _java_getprop(name, default):
+    ":/"
 
     from java.lang import System # type: ignore
     try:
@@ -178,6 +186,7 @@ def _java_getprop(name, default):
         return default
 
 def uname():
+    ":/"
     global _uname_cache
 
     if _uname_cache is not None:
@@ -244,9 +253,11 @@ class uname_result(
 
     @functools.cached_property
     def processor(self):
+        ":/"
         return _unknown_as_blank(_Processor.get())
 
     def __iter__(self):
+        ":/"
         return itertools.chain(
             super().__iter__(),
             (self.processor,)
@@ -254,6 +265,7 @@ class uname_result(
 
     @classmethod
     def _make(cls, iterable):
+        ":/"
         num_fields = len(cls._fields) - 1
         result = cls.__new__(cls, *iterable)
         if len(result) != num_fields + 1:
@@ -262,21 +274,26 @@ class uname_result(
         return result
 
     def __getitem__(self, key):
+        ":/"
         return tuple(self)[key]
 
     def __len__(self):
+        ":/"
         return len(tuple(iter(self)))
 
     def __reduce__(self):
+        ":/"
         return uname_result, tuple(self)[:len(self._fields) - 1]
 
 class _Processor:
     @classmethod
     def get(cls):
+        ":/"
         func = getattr(cls, f'get_{sys.platform}', cls.from_subprocess)
         return func() or ''
 
     def from_subprocess():
+        ":/"
         try:
             import subprocess
         except ImportError:
@@ -292,6 +309,7 @@ class _Processor:
             pass
 
 def _get_machine_win32():
+    ":/"
     return (
         os.environ.get('PROCESSOR_ARCHITEW6432', '') or
         os.environ.get('PROCESSOR_ARCHITECTURE', '')

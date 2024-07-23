@@ -17,9 +17,9 @@ def surface_area_of_cylinder(radius,height):A=radius;B=sqrt(A**2+height**2);C=3.
 def surface_area_of_cylinder_with_accuracy(radius,height,accuracy):A=radius;B=sqrt(A**2+height**2);C=get_pi(accuracy)*A*B;return C
 def surface_area_of_sphere(radius):A=4*3.14159*radius**2;return A
 def surface_area_of_sphere_with_accuracy(radius,accuracy):A=get_pi(accuracy)*radius**2;return A
-def surface_area_of_cube(side_length):A=6*side_length**2;return A
-def surface_area_of_rectangle(length,width):A=length*width;return A
-def surface_area_of_cuboid(length,width,height):C=height;B=width;A=length;D=2*(A*B+B*C+C*A);return D
+def surface_area_of_cube(side_length):return 6*side_length**2
+def surface_area_of_rectangle(length,width):return length*width
+def surface_area_of_cuboid(length,width,height):C=height;B=width;A=length;return 2*(A*B+B*C+C*A)
 def volume_of_cone(radius,height):return 1/3*3.14159*radius**2*height
 def volume_of_cone_with_accuracy(radius,height,accuracy):return 1/3*get_pi(accuracy)*radius**2*height
 def surface_area_of_cone(radius,height):A=radius;B=3.14159*A**2;C=3.14159*A*sqrt(A**2+height**2);D=B+C;return D
@@ -31,12 +31,6 @@ def area_of_triangle(base,height):return .5*base*height
 def calculate_distance_between_two_points(x,y):return((x-y)**2)**.5
 def calculate_distance_between_three_points(x,y,z):return((x-z)**2+(y-z)**2)**.5
 def calculate_distance_between_four_points(x,y,z,a):return((x-a)**2+(y-a)**2+(z-a)**2)**.5
-def calculate_distance_between_five_points(x,y,z,a,b):return((x-a)**2+(y-b)**2+(z-a)**2)**.5
-def calculate_distance_between_six_points(x,y,z,a,b,c):return((x-a)**2+(y-b)**2+(z-c)**2)**.5
-def calculate_distance_between_seven_points(x,y,z,a,b,c,d):return((x-a)**2+(y-b)**2+(z-c)**2+(d-a)**2)**.5
-def calculate_distance_between_eight_points(x,y,z,a,b,c,d,e):return((x-a)**2+(y-b)**2+(z-c)**2+(d-e)**2+(e-a)**2)**.5
-def calculate_distance_between_nine_points(x,y,z,a,b,c,d,e,f):return((x-a)**2+(y-b)**2+(z-c)**2+(d-e)**2+(e-f)**2+(f-a)**2)**.5
-def calculate_distance_between_ten_points(x,y,z,a,b,c,d,e,f,g):return((x-a)**2+(y-b)**2+(z-c)**2+(d-e)**2+(e-f)**2+(f-g)**2+(g-a)**2)**.5
 from collections.abc import Iterable
 def calculate_distance_between_points(*A):
 	if len(A)<2:return .0

@@ -41,18 +41,22 @@ else:
 
 
 def ClickMouseButton(button_number: int) -> None:
+    "Click the mouse button specified by `button_number`."
     ClickMouseButtonList[button_number]()
 
 
 def HoldMouseButton(button_number: int) -> None:
+    "Hold down the mouse button specified by `button_number`."
     HoldMouseButtonList[button_number]()
 
 
 def ReleaseMouseButton(button_number: int) -> None:
+    "Release the mouse button specified by `button_number`."
     ReleaseMouseButtonList[button_number]()
 
 
 def ClickMouseButtonAt(button_number: int, x: int, y: int) -> None:
+    "Click the mouse button specified by `button_number` at the coordinates (x, y)."
     ClickMouseButtonAtList[button_number](x, y)
 
 
@@ -86,32 +90,38 @@ def ClickMouseButtonAt(button_number: int, x: int, y: int) -> None:
 
 
 def LeftClickAt(x: int, y: int) -> None:
+    "Move the mouse to the specified coordinates (x, y) and perform a left mouse button click."
     mouseTo(x, y)
     LeftClick()
 
 
 def DoubleLeftClick() -> None:
+    "Perform two consecutive left mouse button clicks at the current mouse position."
     LeftClick()
     LeftClick()
 
 
 def DoubleLeftClickAt(x: int, y: int) -> None:
+    "Move the mouse to the specified coordinates (x, y) and perform two consecutive left mouse button clicks."
     mouseTo(x, y)
     LeftClick()
     LeftClick()
 
 
 def RightClickAt(x: int, y: int) -> None:
+    "Move the mouse to the specified coordinates (x, y) and perform a right mouse button click."
     MouseTo(x, y)
     RightClick()
 
 
 def DoubleRightClick() -> None:
+    "Perform two consecutive right mouse button clicks at the current mouse position."
     RightClick()
     RightClick()
 
 
 def MiddleClickAt(x: int, y: int) -> None:
+    "Move the mouse to the specified coordinates (x, y) and perform a middle mouse button click."
     mouseTo(x, y)
     MiddleClick()
 

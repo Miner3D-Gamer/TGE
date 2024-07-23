@@ -467,6 +467,13 @@ def number_to_words(number:int) -> str:
 
 
 def find_undocumented_functions(file_path:str)->list:
+    """Find all functions without docstrings in a Python file.
+
+Args:
+    file_path (str): Path to the Python file to scan.
+
+Returns:
+    list: A list of undocumented functions, each represented as a list with the function name and its end line number."""
     undocumented_functions = []
 
     with open(file_path, 'r', encoding="utf8") as file:
@@ -481,6 +488,13 @@ def find_undocumented_functions(file_path:str)->list:
     return undocumented_functions
 
 def check_directory_for_undocumented_functions(directory_path:str)->dict:
+    """Check a directory for Python files and find undocumented functions in each file.
+
+Args:
+    directory_path (str): Path to the directory to scan.
+
+Returns:
+    dict: A dictionary where keys are filenames and values are lists of undocumented functions, each represented as a list with the function name and its end line number."""
     undocumented_functions_dict = {}
 
     for filename in os.listdir(directory_path):
@@ -493,9 +507,23 @@ def check_directory_for_undocumented_functions(directory_path:str)->dict:
     return undocumented_functions_dict
 
 def check_directory_and_sub_directory_for_undocumented_functions(directory_path:str)->dict:
+    """Check a directory and its subdirectories for Python files and find undocumented functions in each file.
+
+Args:
+    directory_path (str): Path to the directory to scan.
+
+Returns:
+    dict: A dictionary where keys are relative file paths and values are lists of undocumented functions, each represented as a list with the function name and its end line number."""
     undocumented_functions_dict = {}
 
     def _check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(current_path:str)->None:
+        """Recursively traverse directories and files to find undocumented functions in Python files and update the dictionary with results.
+
+Args:
+    current_path (str): The path of the current directory to traverse.
+
+Inner Updates:
+    Updates `undocumented_functions_dict` with undocumented functions found in Python files, using relative paths as keys."""
         for item in os.listdir(current_path):
             item_path = os.path.join(current_path, item)
 
@@ -534,9 +562,26 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path:
 
 
 def autocomplete(prefix:str, word_list:Iterable[str])->list[str]:
+    """Return a list of words from `word_list` that start with the specified `prefix`.
+
+Args:
+    prefix (str): The prefix to match against.
+    word_list (Iterable[str]): A list of words to search through.
+
+Returns:
+    list[str]: A list of matching words."""
     return [word for word in word_list if word.startswith(prefix)]
 
 def strict_autocomplete(prefix:str, word_list:Iterable[str])->list[str]|str:
+    """Return a single word, the prefix itself, or a list of words that start with the specified `prefix`.
+
+Args:
+    prefix (str): The prefix to match against.
+    word_list (Iterable[str]): A list of words to search through.
+
+Returns:
+    str | list[str]: The single matching word, the prefix, or a list of matching words.
+"""
     words = autocomplete(prefix=prefix, word_list=word_list)
     if len(words) == 1:
         return words[0]
@@ -546,11 +591,27 @@ def strict_autocomplete(prefix:str, word_list:Iterable[str])->list[str]|str:
 
 
 def is_iterable(thing:Any)->bool:
+    """Check if a given object is iterable.
+
+Args:
+    thing (Any): The object to check.
+
+Returns:
+    bool: True if the object is iterable, otherwise False."""
     return hasattr(thing,"__iter__")
 
 
 
 def split_with_list(string: str, separators: Iterable, limit: None | int = None) -> list[str]:
+    """Split a string by multiple separators and return the resulting substrings.
+
+Args:
+    string (str): The string to split.
+    separators (Iterable): A list of separators to replace with a unique delimiter.
+    limit (None | int, optional): The maximum number of splits to perform. Defaults to None, meaning no limit.
+
+Returns:
+    list[str]: A list of substrings resulting from the split operation."""
     for separator in separators:
         string = string.replace(separator, "𘚟")
     return string.split("𘚟")
@@ -558,6 +619,24 @@ def split_with_list(string: str, separators: Iterable, limit: None | int = None)
 
 
 def analyze_text(text:str)->dict[str:str|list]:
+    """Analyze the text to provide various statistics about sentences, words, and commas.
+
+Args:
+    text (str): The text to analyze.
+
+Returns:
+    dict[str, str | list]: A dictionary with the following keys:
+        - "sentence_amount": Number of sentences.
+        - "total_word_count": Total number of words.
+        - "average_word_count_per_sentence": Average number of words per sentence.
+        - "max_words_per_sentence": Maximum number of words in a sentence.
+        - "min_words_per_sentence": Minimum number of words in a sentence.
+        - "total_comma_count": Total number of commas.
+        - "average_commas_count_per_sentence": Average number of commas per sentence.
+        - "max_commas_per_sentence": Maximum number of commas in a sentence.
+        - "min_commas_per_sentence": Minimum number of commas in a sentence.
+        - "word_amount_list": List of word counts for each sentence.
+        - "comma_amount_list": List of comma counts for each sentence."""
     text = text.replace("...", "…").replace("\n", "").strip()
 
     legacy_sentences = split_with_list(text, [". ", "! ", "? "])
@@ -628,6 +707,14 @@ import uuid, hashlib
 
 
 def generate_uuid_from_directory(directory, blacklisted_extensions:list=[]):
+    """Generate a UUID based on the content of all files in a directory, excluding files with specified extensions.
+
+Args:
+    directory (str): Path to the directory to scan.
+    blacklisted_extensions (list, optional): List of file extensions to exclude from hashing. Defaults to an empty list.
+
+Returns:
+    UUID: A UUID generated from the MD5 hash of the file contents."""
     hash_md5 = hashlib.md5()
 
     # Traverse all files in the directory
@@ -829,6 +916,13 @@ def check_for_functions_in_module_with_missing_notations(library_module: types.M
     return functions_with_missing_annotations
 
 def print_check_for_functions_in_module_with_missing_notations(library_module: types.ModuleType)->None:
+    """Print details of functions in a module that are missing type annotations.
+
+Args:
+    library_module (types.ModuleType): The module to check for missing type annotations.
+    
+Details:
+    Prints each function with missing type annotations, specifying whether the issue is a missing return type or missing input type."""
     data = check_for_functions_in_module_with_missing_notations(library_module)
     for i in data:
         print(f"Function '{i['function_name']}' of type {'Missing Return' if i['function_name'] is MissingReturnType else 'Missing Input type'}")
@@ -1159,6 +1253,15 @@ def get_return_type(func:types.MethodType)->Any:
 
 
 def count_functions_in_module(module:types.ModuleType, library_name:str)->int:
+    """Count the number of functions in a module and its submodules.
+
+Args:
+    module (types.ModuleType): The module to analyze.
+    library_name (str): The library name to use for identifying submodules.
+
+Returns:
+    int: The total number of functions in the module and its submodules.
+"""
     function_count = 0
     for name, obj in inspect.getmembers(module):
         if inspect.isfunction(obj):
@@ -1168,6 +1271,13 @@ def count_functions_in_module(module:types.ModuleType, library_name:str)->int:
     return function_count
 
 def count_functions_in_library(library_name:str)->int:
+    """Count the number of functions in a library by importing it and analyzing its modules.
+
+Args:
+    library_name (str): The name of the library to import and analyze.
+
+Returns:
+    int: The total number of functions in the library, or -1 if the library could not be found."""
     try:
         module = importlib.import_module(library_name)
     except ModuleNotFoundError:
@@ -1181,13 +1291,30 @@ def count_functions_in_library(library_name:str)->int:
 
 
 class ArgumentHandler:
+    "Handle command-line arguments by allowing retrieval, deletion, and flag-based access."
     def __init__(self, arguments: None | list = None) -> None:
+        """Initialize the object with a list of arguments. If no arguments are provided, use command-line arguments excluding the script name.
+
+Args:
+    arguments (None | list, optional): A list of arguments. Defaults to None, in which case command-line arguments are used.
+
+Attributes:
+    arguments (Iterable): The list of arguments."""
         if arguments is None:
             arguments = sys.argv[1:]
         self.arguments: Iterable = arguments
         self.argument_list_length = len(arguments)
 
     def get_argument(self, argument: str, delete:bool=False, default:Any=None) -> str | None:
+        """Retrieve the value of a specified argument. Optionally remove it from the list and adjust the argument count.
+
+Args:
+    argument (str): The argument to retrieve.
+    delete (bool, optional): If True, remove the argument from the list after retrieving it. Defaults to False.
+    default (Any, optional): The value to return if the argument is not found. Defaults to None.
+
+Returns:
+    str | None: The value of the argument, or `default` if the argument is not found."""
         value_id = self.get_id(argument)
         if value_id < 0:
             return default
@@ -1201,6 +1328,15 @@ class ArgumentHandler:
         return value
     
     def get_argument_by_flag(self, flag: str, delete:bool=False, default:Any=None) -> str | None:
+        """Retrieve the value associated with a specified flag. Optionally remove the flag and its value from the list and adjust the argument count.
+
+Args:
+    flag (str): The flag to retrieve the value for.
+    delete (bool, optional): If True, remove the flag and its value from the list after retrieving it. Defaults to False.
+    default (Any, optional): The value to return if the flag or its value is not found. Defaults to None.
+
+Returns:
+    str | None: The value associated with the flag, or `default` if the flag or value is not found."""
         value_id = self.get_id(flag)
         if value_id < 0:
             return default
@@ -1217,6 +1353,13 @@ class ArgumentHandler:
         return value
     
     def get_id(self, item:str)->int:
+        """Retrieve the index of a specified item in the arguments list.
+
+Args:
+    item (str): The item to find in the arguments list.
+
+Returns:
+    int: The index of the item if found, or -1 if the item is not in the list."""
         if not item in self.arguments:
             return -1
         
@@ -1226,6 +1369,10 @@ class ArgumentHandler:
         return value_id
 
     def is_empty(self)->bool:
+        """Check if the arguments list is empty.
+
+Returns:
+    bool: True if the arguments list is empty, otherwise False."""
         return self.argument_list_length == 0
     
 
@@ -1274,6 +1421,13 @@ class ArgumentHandler:
 
 
 def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__file__))->int:
+    """Print undocumented functions in all Python files within a directory and its subdirectories.
+
+Args:
+    directory (str, optional): Path to the directory to scan. Defaults to the directory of the current file.
+
+Returns:
+    int: The total number of undocumented functions found."""
     undocumented = check_directory_and_sub_directory_for_undocumented_functions(directory)
 
     amount = 0
@@ -1426,28 +1580,32 @@ from collections import defaultdict
 
 class TrieNode:
     def __init__(self):
+        "Node in a Trie data structure with a dictionary of child nodes and a boolean flag to mark the end of a path."
         self.children = defaultdict(TrieNode)
         self.is_end_of_path = False
 
-def insert_path(root, path):
+def _insert_path(root:TrieNode, path:Iterable)->None:
+    "Insert a path into a Trie data structure."
     node = root
     for part in path:
         node = node.children[part]
     node.is_end_of_path = True
 
-def build_trie(paths:Iterable)->TrieNode:
+def _build_trie(paths:Iterable)->TrieNode:
+    "Build a Trie from a list of file paths."
     root = TrieNode()
     for path in paths:
-        insert_path(root, path.split('/'))
+        _insert_path(root, path.split('/'))
     return root
 
-def serialize_trie(node:TrieNode)->dict:
+def _serialize_trie(node:TrieNode)->dict:
+    "Serialize a Trie into a compressed dictionary format representing a directory structure."
     if not node.children:
         return []
 
     if len(node.children) == 1 and node.is_end_of_path == False:
         key, child = next(iter(node.children.items()))
-        serialized_child = serialize_trie(child)
+        serialized_child = _serialize_trie(child)
         if isinstance(serialized_child, list) and not serialized_child:
             return key
         if isinstance(serialized_child, str):
@@ -1456,7 +1614,7 @@ def serialize_trie(node:TrieNode)->dict:
 
     result = {}
     for key, child in node.children.items():
-        serialized_child = serialize_trie(child)
+        serialized_child = _serialize_trie(child)
         if isinstance(serialized_child, list) and not serialized_child:
             result.setdefault('files', []).append(key)
         else:
@@ -1465,8 +1623,9 @@ def serialize_trie(node:TrieNode)->dict:
     return result
 
 def compress_directory_list(paths:Iterable)->dict[list|str]:
-    trie = build_trie(paths)
-    compressed = serialize_trie(trie)
+    "Compress a list of file paths into a dictionary format representing the directory structure."
+    trie = _build_trie(paths)
+    compressed = _serialize_trie(trie)
     return compressed
 
 
@@ -1477,9 +1636,17 @@ def compress_directory_list(paths:Iterable)->dict[list|str]:
 
 
 def decompress_directory_list(compressed:dict)->list[str]:
+    """Decompress a directory structure from a nested dictionary format into a list of file paths.
+
+Args:
+    compressed (dict): The compressed directory structure in dictionary format.
+
+Returns:
+    list[str]: A list of file paths extracted from the compressed structure."""
     paths = []
 
     def dfs(node:str|list|dict, current_path=""):
+        "Inner loop"
         if isinstance(node, list):
             paths.append(f"{current_path}/{node[0]}".strip('/'))
             return
@@ -1501,6 +1668,15 @@ def decompress_directory_list(compressed:dict)->list[str]:
 import python_minifier
 
 def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
+    """Minify Python code by optionally renaming important names and removing docstrings.
+
+Args:
+    text (str): The Python code to minify.
+    rename_important_names (bool, optional): Whether to rename important names (variables, functions) to shorter names. Defaults to False.
+    remove_docstrings (bool, optional): Whether to remove docstrings from the code. Defaults to True.
+
+Returns:
+    str: The minified Python code."""
     return python_minifier.minify(text, rename_globals=rename_important_names, remove_literal_statements=remove_docstrings)
 
 

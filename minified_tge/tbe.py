@@ -190,28 +190,28 @@ def set_in_dict_by_list(data_dict,keys,value):
 from collections import defaultdict
 class TrieNode:
 	def __init__(self):self.children=defaultdict(TrieNode);self.is_end_of_path=_A
-def insert_path(root,path):
+def _insert_path(root,path):
 	node=root
 	for part in path:node=node.children[part]
 	node.is_end_of_path=_B
-def build_trie(paths):
+def _build_trie(paths):
 	root=TrieNode()
-	for path in paths:insert_path(root,path.split('/'))
+	for path in paths:_insert_path(root,path.split('/'))
 	return root
-def serialize_trie(node):
+def _serialize_trie(node):
 	if not node.children:return[]
 	if len(node.children)==1 and node.is_end_of_path==_A:
-		key,child=next(iter(node.children.items()));serialized_child=serialize_trie(child)
+		key,child=next(iter(node.children.items()));serialized_child=_serialize_trie(child)
 		if isinstance(serialized_child,list)and not serialized_child:return key
 		if isinstance(serialized_child,str):return f"{key}/{serialized_child}"
 		return{key:serialized_child}
 	result={}
 	for(key,child)in node.children.items():
-		serialized_child=serialize_trie(child)
+		serialized_child=_serialize_trie(child)
 		if isinstance(serialized_child,list)and not serialized_child:result.setdefault('files',[]).append(key)
 		else:result[key]=serialized_child
 	return result
-def compress_directory_list(paths):trie=build_trie(paths);compressed=serialize_trie(trie);return compressed
+def compress_directory_list(paths):trie=_build_trie(paths);compressed=_serialize_trie(trie);return compressed
 def decompress_directory_list(compressed):
 	paths=[]
 	def dfs(node,current_path=''):

@@ -1282,7 +1282,6 @@ def print_undocumented_functions_in_directory(directory:str=os.path.dirname(__fi
         for j in undocumented[i]:
             amount += 1
             print(f'\n\t{j[0]} \n\tFile "{directory}\\{i}", line {j[1]}')
-    print("\nA total of %s functions are undocumented"%amount)
     return amount
 
 

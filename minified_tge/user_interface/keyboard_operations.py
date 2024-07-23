@@ -1,6 +1,6 @@
 from.cursor_operations import WINDOWS
 import pyautogui as pygui
-from..user_interface.clipboard import get_clipboard
+from.clipboard_operations import get_clipboard
 def hold_key(key):pygui.keyDown(key)
 def release_key(key):pygui.keyUp(key)
 def press_key(key):pygui.press(key)

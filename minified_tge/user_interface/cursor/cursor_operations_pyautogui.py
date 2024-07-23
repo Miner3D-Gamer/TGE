@@ -1,6 +1,7 @@
 _B='middle'
 _A=False
-from..cursor_operations import pygui,WHEEL_DELTA
+from..cursor_operations import WHEEL_DELTA
+import pyautogui as pygui
 def getScreenDimensions():return pygui.size()
 SCREEN_WIDTH,SCREEN_HEIGHT=getScreenDimensions()
 def mouseTo(x,y):pygui.moveTo(x,y)

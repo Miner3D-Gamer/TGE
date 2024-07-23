@@ -1,2 +1,1 @@
-from.cursor_operations import*
-from.system_interactions import*
+from.import cursor_operations as cursor,clipboard_operations as clipboard

@@ -1,41 +1,26 @@
 from ..cursor_operations import WHEEL_DELTA
-from ... import PYAUTOGUI
 
 import pynput
 
 MOUSE = pynput.mouse.Controller()
 
-if PYAUTOGUI:
-    from pyautogui import size as pyautogui_size
+from pyautogui import size as getScreenDimensions
 
-    def getScreenDimensions() -> tuple[int, int]:
-        return pyautogui_size()
-else:
-    from ... import TKINTER
-    if TKINTER:
-        from tkinter import Tk
 
-        TK_ROOT = Tk()
-        def getScreenDimensions() -> tuple[int, int]:
-            return TK_ROOT.winfo_screenwidth(), TK_ROOT.winfo_screenheight()
-    else:
-        from ... import SCREENINFO
-        if SCREENINFO:
-            from screeninfo import get_monitors
 
-            def getScreenDimensions() -> tuple[int, int]:
-                monitors = get_monitors()
+# from screeninfo import get_monitors
 
-                monitor_width = 0
-                monitor_height = 0
+# def getScreenDimensions() -> tuple[int, int]:
+#     monitors = get_monitors()
 
-                for monitor in monitors:
-                    monitor_width += monitor.width
-                    monitor_height += monitor.height
-                return monitor_width, monitor_height
-        else:
-            def getScreenDimensions()->tuple[int, int]:
-                return -1, -1
+#     monitor_width = 0
+#     monitor_height = 0
+
+#     for monitor in monitors:
+#         monitor_width += monitor.width
+#         monitor_height += monitor.height
+#     return monitor_width, monitor_height
+
         
 
 

@@ -114,11 +114,6 @@ class uname_result(collections.namedtuple('uname_result_base','system node relea
 class _Processor:
 	@classmethod
 	def get(A):B=getattr(A,f"get_{sys.platform}",A.from_subprocess);return B()or''
-	def get_win32():return os.environ.get('PROCESSOR_IDENTIFIER',_get_machine_win32())
-	def get_OpenVMS():
-		try:import vms_lib as A
-		except ImportError:pass
-		else:C,B=A.getsyi('SYI$_CPU',0);return'Alpha'if B>=128 else'VAX'
 	def from_subprocess():
 		try:import subprocess as A
 		except ImportError:return

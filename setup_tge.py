@@ -5,11 +5,14 @@ import os, json
 
 
 import tge
+
 print(tge.manipulation.string_utils.check_anagram("Hell oWl!dor", "Hello World!"))
-print("TGE has %s functions"%tge.tbe.count_functions_in_library("tge"))
+print("TGE has %s functions" % tge.tbe.count_functions_in_library("tge"))
 tge.tbe.print_undocumented_functions_in_directory()
 print()
-tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge.manipulation.list_utils)
+tge.tbe.print_check_for_functions_in_module_with_missing_notations(
+    tge.manipulation.list_utils
+)
 
 dir = f"{os.getcwd()}/tge/"
 
@@ -19,8 +22,18 @@ for i in range(2):
     with open("tge/update.hashed", "w") as f:
         f.write(tge.codec.base.encode_base64(str(generated_uuid.bytes)[2:-1]))
 
-print("Pure size of TGE:", tge.conversion.binary.convert_byte_to_kilobyte(tge.file_operations.get_file_size_of_directory("./tge")))
-print("Pure size of minified TGE:", tge.conversion.binary.convert_byte_to_kilobyte(tge.file_operations.get_file_size_of_directory("./minified_tge")))
+print(
+    "Pure size of TGE:",
+    tge.conversion.binary.convert_byte_to_kilobyte(
+        tge.file_operations.get_file_size_of_directory("./tge")
+    ),
+)
+print(
+    "Pure size of minified TGE:",
+    tge.conversion.binary.convert_byte_to_kilobyte(
+        tge.file_operations.get_file_size_of_directory("./minified_tge")
+    ),
+)
 
 directories = []
 
@@ -50,26 +63,29 @@ output = rf"{cwd}/minified_tge/"
 try:
     os.remove(output)
 except PermissionError:
-    print("VS is still using the minified tge folder, delete it manually or just leave it")
-except FileNotFoundError:...
+    print(
+        "VS is still using the minified tge folder, delete it manually or just leave it"
+    )
+except FileNotFoundError:
+    ...
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root
     for file in files:
         file_path = os.path.join(root[len(dir) :].lstrip("\\"), file)
         total_file_path = os.path.join(root, file)
         if file.endswith(".pyc"):
-                continue
+            continue
         if file.endswith(".hash"):
             with open(total_file_path, "rb") as f:
                 with open(output + file_path, "wb") as o:
                     data = f.read()
-                    
+
                     o.write(data)
             continue
         with open(total_file_path, "r", encoding="utf8") as f:
-            
+
             os.makedirs(os.path.dirname(output + file_path), exist_ok=True)
-            
+
             with open(output + file_path, "w", encoding="utf8") as o:
                 data = (
                     tge.tbe.minify(
@@ -79,10 +95,6 @@ for root, dirs, files in os.walk(dir, topdown=False):
                     else f.read()
                 )
                 o.write(data)
-
-
-
-
 
 
 print("Is github version of tge up to date:", not tge.is_tge_outdated())

@@ -1,5 +1,5 @@
-from ..cursor_operations import pygui, WHEEL_DELTA
-
+from ..cursor_operations import WHEEL_DELTA
+import pyautogui as pygui
 
 def getScreenDimensions() -> tuple[int, int]:
     return pygui.size()

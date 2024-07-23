@@ -113,7 +113,6 @@ from .math_functions import financial_calculations
 from .math_functions import geometry_calculations
 from .math_functions import math_functions
 from .math_functions import statistics_calculations
-from .math_functions.vector_calculation import Vector
 
 
 #   Import modules from "user_interface"

@@ -1,12 +1,13 @@
 import os, json
 
-# Nope, I've tried optimizing this crap for the last 4 hours. This version is good enough
-# Welp, TODO: Instead of using an array, use a dictionary for a greater compression.
+
 
 
 import tge
+tge.console.clear()
 
 print(tge.INIT_TIME)
+
 total_functions = tge.tbe.count_functions_in_library("tge")
 print("TGE has %s functions" % total_functions)
 undocumented = tge.tbe.print_undocumented_functions_in_directory()
@@ -35,7 +36,7 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
 
 print("Pure size of TGE: %s kb" % tge_size)
 print("Pure size of minified TGE: %s kb" % minified_size)
-print("The minified TGE is %sx smaller" % str(tge_size / minified_size))
+print("The minified TGE is %sx smaller" % str(tge_size / min(minified_size, tge_size)))
 print()
 directories = []
 

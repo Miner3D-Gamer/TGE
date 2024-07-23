@@ -6,9 +6,13 @@ import os, json
 
 import tge
 
-print(tge.manipulation.string_utils.check_anagram("Hell oWl!dor", "Hello World!"))
-print("TGE has %s functions" % tge.tbe.count_functions_in_library("tge"))
-tge.tbe.print_undocumented_functions_in_directory()
+print(tge.INIT_TIME)
+total_functions = tge.tbe.count_functions_in_library("tge")
+print("TGE has %s functions" % total_functions)
+undocumented = tge.tbe.print_undocumented_functions_in_directory()
+print(
+    f"{total_functions-undocumented}/{total_functions} Functions are documented, that means {((total_functions-undocumented)/total_functions)*100}% of functions are documented and {undocumented} are still missing"
+)
 print()
 tge.tbe.print_check_for_functions_in_module_with_missing_notations(
     tge.manipulation.list_utils
@@ -22,19 +26,17 @@ for i in range(2):
     with open("tge/update.hashed", "w") as f:
         f.write(tge.codec.base.encode_base64(str(generated_uuid.bytes)[2:-1]))
 
-print(
-    "Pure size of TGE:",
-    tge.conversion.binary.convert_byte_to_kilobyte(
-        tge.file_operations.get_file_size_of_directory("./tge")
-    ),
+tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
+    tge.file_operations.get_file_size_of_directory("./tge")
 )
-print(
-    "Pure size of minified TGE:",
-    tge.conversion.binary.convert_byte_to_kilobyte(
-        tge.file_operations.get_file_size_of_directory("./minified_tge")
-    ),
+minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
+    tge.file_operations.get_file_size_of_directory("./minified_tge")
 )
 
+print("Pure size of TGE: %s kb" % tge_size)
+print("Pure size of minified TGE: %s kb" % minified_size)
+print("The minified TGE is %sx smaller" % str(tge_size / minified_size))
+print()
 directories = []
 
 

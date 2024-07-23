@@ -41,4 +41,5 @@ tge/mini_lib/__pycache__/platform_mini.cpython-311.pyc
 tge/user_interface/__pycache__/clipboard.cpython-311.pyc
 tge/user_interface/__pycache__/cursor_operations.cpython-311.pyc
 tge/user_interface/__pycache__/system_interactions.cpython-311.pyc
+tge/user_interface/cursor/__pycache__/cursor_operations_ctypes.cpython-311.__pycache__
 tge/user_interface/cursor/__pycache__/cursor_operations_ctypes.cpython-311.pyc

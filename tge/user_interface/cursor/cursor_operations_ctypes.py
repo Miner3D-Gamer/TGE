@@ -21,7 +21,7 @@ def mouseGet() -> tuple[int, int]:
     ctypes.windll.user32.GetCursorPos(ctypes.byref(CURSOR_POINT))
     return CURSOR_POINT.x, CURSOR_POINT.y
 
-def Click() -> None:
+def LeftClick() -> None:
     # Perform a left mouse button click
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)  # MOUSEEVENTF_LEFTDOWN
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)  # MOUSEEVENTF_LEFTUP

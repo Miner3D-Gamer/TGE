@@ -82,37 +82,23 @@ def ClickMouseButtonAt(button_number: int, x: int, y: int) -> None:
 #         mouseTo(x, y)
 
 
-def LeftClick() -> None:
-    Click()
 
 
-def ClickAt(x: int, y: int) -> None:
+
+def LeftClickAt(x: int, y: int) -> None:
     mouseTo(x, y)
-    Click()
+    LeftClick()
 
 
-def DoubleClick() -> None:
-    Click()
-    Click()
+def DoubleLeftClick() -> None:
+    LeftClick()
+    LeftClick()
 
 
-def DoubleClickAt(x: int, y: int) -> None:
+def DoubleLeftClickAt(x: int, y: int) -> None:
     mouseTo(x, y)
-    Click()
-    Click()
-
-
-def TripleClick() -> None:
-    Click()
-    Click()
-    Click()
-
-
-def TripleClickAt(x: int, y: int) -> None:
-    mouseTo(x, y)
-    Click()
-    Click()
-    Click()
+    LeftClick()
+    LeftClick()
 
 
 def RightClickAt(x: int, y: int) -> None:
@@ -125,61 +111,21 @@ def DoubleRightClick() -> None:
     RightClick()
 
 
-def DoubleRightClickAt(x: int, y: int) -> None:
-    mouseTo(x, y)
-    RightClick()
-    RightClick()
-
-
-def TripleRightClickAt(x: int, y: int) -> None:
-    mouseTo(x, y)
-    RightClick()
-    RightClick()
-    RightClick()
-
-
-def TripleRightClick() -> None:
-    RightClick()
-    RightClick()
-    RightClick()
-
-
 def MiddleClickAt(x: int, y: int) -> None:
     mouseTo(x, y)
     MiddleClick()
 
 
-def DoubleMiddleClickAt(x: int, y: int) -> None:
-    mouseTo(x, y)
-    MiddleClick()
-    MiddleClick()
-
-
-def DoubleMiddleClick() -> None:
-    MiddleClick()
-    MiddleClick()
-
-
-def TripleMiddleClick() -> None:
-    MiddleClick()
-    MiddleClick()
-    MiddleClick()
-
-
-def TripleMiddleClickAt(x: int, y: int) -> None:
-    mouseTo(x, y)
-    MiddleClick()
-    MiddleClick()
-    MiddleClick()
-
 
 def drag_to(x, y):
+    "Drag the mouse from its current position to the specified coordinates (x, y)"
     LeftMouseDown()
     mouseTo(x, y)
     LeftMouseUp()
 
 
 def drag_obj_to(x, y, a, b):
+    "Drag an object from the starting coordinates (x, y) to the destination coordinates (a, b)."
     mouseTo(x, y)
     drag_to(a, b)
 
@@ -188,7 +134,7 @@ def drag_obj_to(x, y, a, b):
 #     return x in ["left", "right", "middle"]
 
 
-ClickMouseButtonList = [Click, MiddleClick, RightClick]
-ClickMouseButtonAtList = [ClickAt, MiddleClickAt, RightClickAt]
+ClickMouseButtonList = [LeftClick, MiddleClick, RightClick]
+ClickMouseButtonAtList = [LeftClickAt, MiddleClickAt, RightClickAt]
 HoldMouseButtonList = [LeftMouseDown, RightMouseDown, MiddleMouseDown]
 ReleaseMouseButtonList = [LeftMouseUp, RightMouseUp, MiddleMouseUp]

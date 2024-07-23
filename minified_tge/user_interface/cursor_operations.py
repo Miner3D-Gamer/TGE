@@ -8,25 +8,15 @@ def ClickMouseButton(button_number):ClickMouseButtonList[button_number]()
 def HoldMouseButton(button_number):HoldMouseButtonList[button_number]()
 def ReleaseMouseButton(button_number):ReleaseMouseButtonList[button_number]()
 def ClickMouseButtonAt(button_number,x,y):ClickMouseButtonAtList[button_number](x,y)
-def LeftClick():Click()
-def ClickAt(x,y):mouseTo(x,y);Click()
-def DoubleClick():Click();Click()
-def DoubleClickAt(x,y):mouseTo(x,y);Click();Click()
-def TripleClick():Click();Click();Click()
-def TripleClickAt(x,y):mouseTo(x,y);Click();Click();Click()
+def LeftClickAt(x,y):mouseTo(x,y);LeftClick()
+def DoubleLeftClick():LeftClick();LeftClick()
+def DoubleLeftClickAt(x,y):mouseTo(x,y);LeftClick();LeftClick()
 def RightClickAt(x,y):MouseTo(x,y);RightClick()
 def DoubleRightClick():RightClick();RightClick()
-def DoubleRightClickAt(x,y):mouseTo(x,y);RightClick();RightClick()
-def TripleRightClickAt(x,y):mouseTo(x,y);RightClick();RightClick();RightClick()
-def TripleRightClick():RightClick();RightClick();RightClick()
 def MiddleClickAt(x,y):mouseTo(x,y);MiddleClick()
-def DoubleMiddleClickAt(x,y):mouseTo(x,y);MiddleClick();MiddleClick()
-def DoubleMiddleClick():MiddleClick();MiddleClick()
-def TripleMiddleClick():MiddleClick();MiddleClick();MiddleClick()
-def TripleMiddleClickAt(x,y):mouseTo(x,y);MiddleClick();MiddleClick();MiddleClick()
 def drag_to(x,y):LeftMouseDown();mouseTo(x,y);LeftMouseUp()
 def drag_obj_to(x,y,a,b):mouseTo(x,y);drag_to(a,b)
-ClickMouseButtonList=[Click,MiddleClick,RightClick]
-ClickMouseButtonAtList=[ClickAt,MiddleClickAt,RightClickAt]
+ClickMouseButtonList=[LeftClick,MiddleClick,RightClick]
+ClickMouseButtonAtList=[LeftClickAt,MiddleClickAt,RightClickAt]
 HoldMouseButtonList=[LeftMouseDown,RightMouseDown,MiddleMouseDown]
 ReleaseMouseButtonList=[LeftMouseUp,RightMouseUp,MiddleMouseUp]

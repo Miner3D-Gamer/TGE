@@ -37,7 +37,7 @@ def MouseTo(x: int, y: int) -> None:
 def mouseGet() -> tuple[int, int]:
     return MOUSE.position
 
-def Click() -> None:
+def LeftClick() -> None:
     MOUSE.click(1)
 
 def RightClick() -> None:

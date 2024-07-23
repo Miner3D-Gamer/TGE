@@ -5,7 +5,7 @@ from pyautogui import size as getScreenDimensions
 SCREEN_WIDTH,SCREEN_HEIGHT=getScreenDimensions()
 def MouseTo(x,y):MOUSE.position=x,y
 def mouseGet():return MOUSE.position
-def Click():MOUSE.click(1)
+def LeftClick():MOUSE.click(1)
 def RightClick():MOUSE.click(3)
 def MiddleClick():MOUSE.click(2)
 def ScrollV(clicks,wheel_delta=WHEEL_DELTA):MOUSE.scroll(dy=clicks)

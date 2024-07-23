@@ -86,9 +86,9 @@
 
 from collections.abc import Iterable
 
+from types import FunctionType, ModuleType, MethodType
 
 from typing import List, Union, Tuple , Any, get_type_hints
-import types
 import ast
 import os
 import sys
@@ -890,7 +890,7 @@ Returns:
 
 
 
-def check_for_functions_in_module_with_missing_notations(library_module: types.ModuleType) -> List[dict]:
+def check_for_functions_in_module_with_missing_notations(library_module: ModuleType) -> List[dict]:
     """
     Check all functions in a given library module for missing input type or return type annotations.
     Parameters:
@@ -901,7 +901,7 @@ def check_for_functions_in_module_with_missing_notations(library_module: types.M
     functions_with_missing_annotations = []
 
     for name, obj in inspect.getmembers(library_module):
-        if isinstance(obj, types.FunctionType):
+        if isinstance(obj, FunctionType):
             input_parameters = get_function_inputs(obj)
             missing_input_types = [param for param in input_parameters if param['type'] is NoInputType]
 
@@ -915,11 +915,11 @@ def check_for_functions_in_module_with_missing_notations(library_module: types.M
 
     return functions_with_missing_annotations
 
-def print_check_for_functions_in_module_with_missing_notations(library_module: types.ModuleType)->None:
+def print_check_for_functions_in_module_with_missing_notations(library_module: ModuleType)->None:
     """Print details of functions in a module that are missing type annotations.
 
 Args:
-    library_module (types.ModuleType): The module to check for missing type annotations.
+    library_module (ModuleType): The module to check for missing type annotations.
     
 Details:
     Prints each function with missing type annotations, specifying whether the issue is a missing return type or missing input type."""
@@ -990,7 +990,7 @@ Details:
 
 
 
-def get_function_id_by_name(func_name)->None|types.ModuleType:
+def get_function_id_by_name(func_name)->None|ModuleType:
     """
     Retrieve the function object (ID) from its name.
 
@@ -1046,7 +1046,7 @@ class NoInputType:
     """Custom class to indicate that no input type annotation is specified."""
     pass
 
-def get_function_inputs(func:types.MethodType)->list[dict]:
+def get_function_inputs(func:MethodType)->list[dict]:
     """
     Retrieve all input parameters of a given function along with their types and default values.
 
@@ -1093,7 +1093,7 @@ class MissingReturnType:
 
 
 
-def get_return_type(func:types.MethodType)->Any:
+def get_return_type(func:MethodType)->Any:
     """
     Retrieve the return type annotation of a given function.
 
@@ -1139,6 +1139,10 @@ def get_return_type(func:types.MethodType)->Any:
 
 
 
+def repeat(func:FunctionType, times:int)->Any:
+    for i in range(times):
+        val = func()
+    return val
 
 
 
@@ -1250,13 +1254,11 @@ def get_return_type(func:types.MethodType)->Any:
 
 
 
-
-
-def count_functions_in_module(module:types.ModuleType, library_name:str)->int:
+def count_functions_in_module(module:ModuleType, library_name:str)->int:
     """Count the number of functions in a module and its submodules.
 
 Args:
-    module (types.ModuleType): The module to analyze.
+    module (ModuleType): The module to analyze.
     library_name (str): The library name to use for identifying submodules.
 
 Returns:
@@ -1734,7 +1736,7 @@ Returns:
 #     strengths = []
 #     weaknesses = []
     
-#     for other_type, other_stats in types.items():
+#     for other_type, other_stats in items():
 #         if name in other_stats["weak_against_type"]:
 #             strengths.append(other_type)
 #         if name in other_stats["strong_against_type"]:
@@ -1756,11 +1758,11 @@ Returns:
 
 # def print_type_stats(input_type: str):
 #     if input_type != "":
-#         type_stats = types.get(input_type.lower())
+#         type_stats = get(input_type.lower())
 #         if type_stats:
 #             print_type_info(input_type, type_stats)
 #     else:
-#         for type_name, type_stats in types.items():
+#         for type_name, type_stats in items():
 #             print_type_info(type_name, type_stats)
 #             print()
 
@@ -1794,14 +1796,14 @@ Returns:
 
 # def get_weaknesses(type_name: str):
 #     weaknesses = []
-#     for other_type, other_stats in types.items():
+#     for other_type, other_stats in items():
 #         if type_name.lower() in other_stats["strong_against_type"]:
 #             weaknesses.append(other_type)
 #     return weaknesses
 
 # def get_strengths(type_name: str):
 #     strengths = []
-#     for other_type, other_stats in types.items():
+#     for other_type, other_stats in items():
 #         if type_name.lower() in other_stats["weak_against_type"]:
 #             strengths.append(other_type)
 #     return strengths
@@ -1812,10 +1814,10 @@ Returns:
 #         for m_type in types:
 #             for strong in types[m_type]["strong_against_type"]:
 #                 if strong not in all_types:
-#                     all_types.append(strong)
+#                     all_append(strong)
 #             for weak in types[m_type]["weak_against_type"]:
 #                 if weak not in all_types:
-#                     all_types.append(weak)
+#                     all_append(weak)
 
 #         print("Missing types:")
         

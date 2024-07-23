@@ -41,4 +41,4 @@ def install_all_libraries(libs):
 def are_all_required_libraries_installed():
 	with open('requirements.txt','r')as B:C=B.readlines()
 	for A in C:
-		if not is_library_installed(A):ModuleNotFoundError(A)
+		if not is_library_installed(A.strip()):raise ModuleNotFoundError(f"Library not found: {A.strip()}")

@@ -1,13 +1,4 @@
-
-
-
-
-
-
-
-
-
-def remove_duplicates_from_dictionary(dictionary:dict)->dict:
+def remove_duplicates_from_dictionary(dictionary: dict) -> dict:
     """
     Remove duplicates from a dictionary based on its values.
 
@@ -27,9 +18,5 @@ def remove_duplicates_from_dictionary(dictionary:dict)->dict:
             unique_values.remove(value)
 
     return new_dictionary
-from typing import Any
-def find_index(dictionary:dict, key:Any, value:Any)->Any:
-    for item in dictionary:
-        if dictionary[item][key] == value:
-            return item
-    return None
+
+

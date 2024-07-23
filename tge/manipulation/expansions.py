@@ -4,11 +4,36 @@ from typing import Iterable
 
 class ExpandedString(str):
     def __new__(cls, value):
+        """
+        Create a new instance of the ExpandedString class.
+
+        Args:
+            cls: The class being instantiated.
+            value (str): The initial value for the new instance, which will be passed to the str constructor.
+
+        Returns:
+            ExpandedString: A new instance of the ExpandedString class.
+
+        Notes:
+            This method uses the __new__ method of the str class to create a new string instance.
+            It then returns this instance as an ExpandedString object.
+        """
         # Call the __new__ method of str and pass the value
         instance = super(ExpandedString, cls).__new__(cls, value)
         return instance
 
     def __init__(self, value):
+        """
+        Initialize an instance of the ExpandedString class.
+
+        Args:
+            value (str): The initial value for the instance. This is passed to the __new__ method and used to initialize the string.
+
+        Notes:
+            Any additional initialization code specific to the ExpandedString class can be added here.
+            The superclass __init__ method is not explicitly called because str objects are immutable and 
+            their initialization is handled by the __new__ method.
+        """
         # Any additional initialization can be done here
         super().__init__()
 
@@ -38,10 +63,29 @@ class ExpandedString(str):
         self = "".join(word_list)
 
     def chop(self, substring: str) -> None:
+        """
+        Remove a specified substring from the beginning and end of the string.
+
+        Args:
+            substring (str): The substring to be removed from both the start and end of the string.
+
+        Modifies:
+            self: The string is modified in place to remove the specified substring from both ends.
+        """
         if self.startswith(substring) and self.endswith(substring):
             self = self[len(substring) : -len(substring)]
 
     def get_chopped(self, substring: str) -> str:
+        """
+        Return a new string with a specified substring removed from the beginning and end.
+
+        Args:
+            substring (str): The substring to be removed from both the start and end of the string.
+
+        Returns:
+            str: A new string with the specified substring removed from both the start and end if present;
+                otherwise, returns the original string.
+        """
         if self.startswith(substring) and self.endswith(substring):
             return self[len(substring) : -len(substring)]
         else:
@@ -185,6 +229,15 @@ class ExpandedString(str):
         return None
 
     def count_consonants(self) -> int:
+        """
+        Count the number of consonants in the string.
+
+        Consonants are defined as letters that are not vowels. This method considers both uppercase and lowercase 
+        consonants and counts each occurrence within the string.
+
+        Returns:
+            int: The number of consonant characters in the string.
+        """
         consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
         count = 0
 
@@ -194,10 +247,27 @@ class ExpandedString(str):
 
         return count
 
+
     def count_substring_occurrences(self, substring: str) -> int:
+        """
+        Count the number of occurrences of a substring within the string.
+
+        Args:
+            substring (str): The substring to search for within the string.
+
+        Returns:
+            int: The number of times the substring appears in the string.
+        """
         return self.count(substring)
 
+
     def count_vowels(self) -> int:
+        """
+        Count the number of vowels in the string.
+
+        Returns:
+            int: The total number of vowels (including 'a', 'e', 'i', 'o', 'u', and 'ä', 'ö', 'ü') in the string.
+        """
         count = 0
         for char in self:
             if char in "aeiouäöü":
@@ -205,6 +275,12 @@ class ExpandedString(str):
         return count
 
     def find_longest_substring(self) -> str:
+        """
+        Find the longest substring without repeating characters.
+
+        Returns:
+            str: The longest substring within the string that does not contain any repeating characters.
+        """
         longest_substring = ""
         current_substring = ""
 
@@ -222,6 +298,12 @@ class ExpandedString(str):
         return longest_substring
 
     def check_pangram(string: str) -> bool:
+        """
+        Check if the string is a pangram (contains every letter of the alphabet at least once).
+
+        Returns:
+            bool: True if the string contains every letter of the alphabet, False otherwise.
+        """
         alphabet = set(string.lower)
 
         filtered_string = "".join(filter(lambda c: c in alphabet, string.lower()))
@@ -229,33 +311,88 @@ class ExpandedString(str):
         return set(filtered_string) == alphabet
 
     def find_common_characters(self, string2: str) -> str:
+        """
+        Find the common characters between two strings.
+
+        Args:
+            string2 (str): The second string to compare with.
+
+        Returns:
+            str: A string of characters that are common to both strings.
+        """
         return "".join(set(self) & set(string2))
 
     def get_chunks(self, chunk_size: int):
+        """
+        Split the string into chunks of a specified size.
+
+        Args:
+            chunk_size (int): The size of each chunk.
+
+        Returns:
+            list: A list of string chunks.
+        """
         return [self[i : i + chunk_size] for i in range(0, len(self), chunk_size)]
 
     def lchop(self, substring: str) -> None:
+        """
+        Remove the specified prefix substring from the start of the string in-place.
+
+        Args:
+            substring (str): The prefix substring to be removed.
+
+        Returns:
+            None: The method modifies the string in place, no return value.
+        """
         if self.startswith(substring):
             self = self[len(substring) :]
 
     def get_lchop(self, substring: str) -> str:
+        """
+        Return a string with the specified prefix substring removed from the start.
+
+        Args:
+            substring (str): The prefix substring to be removed.
+
+        Returns:
+            str: The modified string with the prefix removed, or the original string if the prefix is not present.
+        """
         if self.startswith(substring):
             return self[len(substring) :]
         else:
             return self
 
     def rchop(self, substring: str) -> None:
+        """
+        Remove the specified suffix substring from the end of the string in-place.
+
+        Args:
+            substring (str): The suffix substring to be removed.
+
+        Returns:
+            None: The method modifies the string in place, no return value.
+        """
         if self.endswith(substring):
             self = self[: -len(substring)]
 
     def get_rchop(self, substring: str) -> str:
+        """
+        Remove the specified substring from the end of the string if it exists.
+
+        Args:
+            substring (str): The substring to be removed from the end of the string.
+
+        Returns:
+            str: The modified string with the specified substring removed from the end if it was present.
+                If the substring is not found at the end, the original string is returned.
+        """
         if self.endswith(substring):
 
             return self[: -len(substring)]
         else:
             return self
 
-    def left_pad(self, length:int, char:str=" ") -> None:
+    def left_pad(self, length: int, char: str = " ") -> None:
         """
         Pads the given string on the left with the specified character to the desired length.
 
@@ -265,7 +402,7 @@ class ExpandedString(str):
         """
         self = self.rjust(length, char)
 
-    def get_left_pad(self, length:int, char:str=" ")->str:
+    def get_left_pad(self, length: int, char: str = " ") -> str:
         """
         Pads the given string on the left with the specified character to the desired length.
 
@@ -320,7 +457,7 @@ class ExpandedString(str):
 
         self = replaced_part + remaining_part
 
-    def get_left_replace(self, chars: Iterable, replacement: str)->str:
+    def get_left_replace(self, chars: Iterable, replacement: str) -> str:
         """
         Replace leading characters in `chars` with `replacement` in the string.
 
@@ -401,18 +538,50 @@ class ExpandedString(str):
     def replace_with_list_as_replacement(
         self, replacer: str, replacements: Iterable
     ) -> None:
+        """
+        Replace all occurrences of a specified substring in a string with a list of replacement substrings.
+
+        Args:
+            replacer (str): The substring to be replaced.
+            replacements (Iterable): An iterable of replacement substrings.
+
+        Returns:
+            None: The method modifies the string in place, no return value.
+        """
         for replacement in replacements:
             string = string(replacer, replacement)
 
     def replace_with_list_as_replacer(
         string, replacers: Iterable, replacement: str
     ) -> None:
+        """
+        Replace all occurrences of each substring in a list of replacers with a specified replacement substring in the given string.
+
+        Args:
+            string (str): The string in which replacements will be made.
+            replacers (Iterable): An iterable of substrings to be replaced.
+            replacement (str): The replacement substring.
+
+        Returns:
+            None: The method modifies the string in place, no return value.
+        """
+
         for replacer in replacers:
             string = string(replacer, replacement)
 
     def get_replace_with_list_as_replacement(
         self, replacer: str, replacements: Iterable
     ) -> str:
+        """
+        Return a new string where all occurrences of a specified substring are replaced with a list of replacement substrings.
+
+        Args:
+            replacer (str): The substring to be replaced.
+            replacements (Iterable): An iterable of replacement substrings.
+
+        Returns:
+            str: The modified string with replacements applied.
+        """
         string = self
         for replacement in replacements:
             string = string(replacer, replacement)
@@ -421,9 +590,17 @@ class ExpandedString(str):
     def get_replace_with_list_as_replacer(
         self, replacers: Iterable, replacement: str
     ) -> str:
+        """
+        Return a new string where all occurrences of each substring in a list of replacers are replaced with a specified replacement substring.
+
+        Args:
+            replacers (Iterable): An iterable of substrings to be replaced.
+            replacement (str): The replacement substring.
+
+        Returns:
+            str: The modified string with replacements applied.
+        """
         string = self
         for replacer in replacers:
             string = string(replacer, replacement)
         return string
-
-

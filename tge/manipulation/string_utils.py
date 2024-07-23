@@ -21,10 +21,22 @@ def scramble_word(word:str)->str:
 
 
 def chop(string: str, substring: str, rem: bool = True) -> str:
-    if string.startswith(substring) and string.endswith(substring):
-        return string[len(substring) : -len(substring)]
+    """
+    Remove a specified substring from the beginning and end of a string if it is present on both sides.
+
+    Args:
+        string (str): The input string to process.
+        substring (str): The substring to remove from both the start and end of the string.
+        rem (bool): If True, the substring will be removed from both ends if present. If False, no removal is performed.
+
+    Returns:
+        str: The modified string with the substring removed from both ends if it was present.
+    """
+    if rem and string.startswith(substring) and string.endswith(substring):
+        return string[len(substring): -len(substring)]
     else:
         return string
+
 
 
 def truncate_string(string: str, length: int) -> str:
@@ -159,6 +171,15 @@ def find_first_non_repeating_character(string: str) -> str:
 
 
 def count_consonants(string: str) -> int:
+    """
+    Count the number of consonants in a given string.
+
+    Args:
+        string (str): The input string to analyze.
+
+    Returns:
+        int: The count of consonants in the string. Consonants include all letters except vowels.
+    """
     consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
     count = 0
 
@@ -170,18 +191,46 @@ def count_consonants(string: str) -> int:
 
 
 def count_substring_occurrences(string: str, substring: str) -> int:
+    """
+    Count the number of occurrences of a substring within a given string.
+
+    Args:
+        string (str): The input string to search within.
+        substring (str): The substring to count occurrences of.
+
+    Returns:
+        int: The number of times the substring appears in the string.
+    """
     return string.count(substring)
 
 
+
 def count_vowels(string: str) -> int:
+    """
+    Count the number of vowels in a given string.
+
+    Args:
+        string (str): The input string to analyze.
+
+    Returns:
+        int: The count of vowels in the string. Vowels include 'a', 'e', 'i', 'o', 'u', 'ä', 'ö', 'ü'.
+    """
     count = 0
     for char in string:
         if char in "aeiouäöü":
             count += 1
     return count
 
-
 def find_longest_substring(string: str) -> str:
+    """
+    Find the longest substring of unique characters in a given string.
+
+    Args:
+        string (str): The input string to analyze.
+
+    Returns:
+        str: The longest substring of unique characters found in the input string.
+    """
     longest_substring = ""
     current_substring = ""
 
@@ -202,9 +251,18 @@ def find_longest_substring(string: str) -> str:
 
     return longest_substring
 
-
 def check_pangram(string: str) -> bool:
-    alphabet = set(string.ascii_lowercase)  # Create a set of all lowercase letters
+    """
+    Check if a given string is a pangram (contains every letter of the alphabet at least once).
+
+    Args:
+        string (str): The input string to check.
+
+    Returns:
+        bool: True if the string is a pangram, False otherwise.
+    """
+    import string as st
+    alphabet = set(st.ascii_lowercase)  # Create a set of all lowercase letters
 
     # Convert the string to lowercase and remove any non-alphabetic characters
     # by using only the characters present in the alphabet set
@@ -214,27 +272,63 @@ def check_pangram(string: str) -> bool:
     return set(filtered_string) == alphabet
 
 
+
 def find_common_characters(string1: str, string2: str) -> str:
+    """
+    Find common characters between two strings.
+
+    Args:
+        string1 (str): The first string.
+        string2 (str): The second string.
+
+    Returns:
+        str: A string containing characters that are common to both input strings.
+    """
     return "".join(set(string1) & set(string2))
 
+def split_text(text: str, chunk_size: int) -> list[str]:
+    """
+    Split a string into chunks of a specified size.
 
-def split_text(text:str, chunk_size:int)->list[str]:
-    return [text[i : i + chunk_size] for i in range(0, len(text), chunk_size)]
+    Args:
+        text (str): The input string to split.
+        chunk_size (int): The size of each chunk.
 
+    Returns:
+        list[str]: A list of substrings, each of length `chunk_size`, except possibly the last one.
+    """
+    return [text[i: i + chunk_size] for i in range(0, len(text), chunk_size)]
 
 def lchop(string: str, substring: str) -> str:
-    if string.startswith(substring):
-        return string[len(substring) :]
-    else:
-        return string
+    """
+    Remove a substring from the beginning of a string if it exists.
 
+    Args:
+        string (str): The input string.
+        substring (str): The substring to remove from the start of `string`.
+
+    Returns:
+        str: The modified string with the leading `substring` removed, if it was present.
+    """
+    if string.startswith(substring):
+        return string[len(substring):]
+    return string
 
 def rchop(string: str, substring: str) -> str:
-    if string.endswith(substring):
+    """
+    Remove a substring from the end of a string if it exists.
 
-        return string[: -len(substring)]
-    else:
-        return string
+    Args:
+        string (str): The input string.
+        substring (str): The substring to remove from the end of `string`.
+
+    Returns:
+        str: The modified string with the trailing `substring` removed, if it was present.
+    """
+    if string.endswith(substring):
+        return string[:-len(substring)]
+    return string
+
 
 
 def left_pad(string:str, length:int, char:str=" ")->str:
@@ -318,32 +412,82 @@ def right_replace(s, chars, replacement)->str:
 def replace_with_list_as_replacement(
     string: str, replacer: str, replacements: Iterable
 ) -> str:
-    for replacement in replacements:
-        string = string(replacer, replacement)
-    return string
+    """
+    Replace all occurrences of a single character in a string with multiple replacement strings.
 
+    Args:
+        string (str): The input string to modify.
+        replacer (str): The character or substring to replace.
+        replacements (Iterable): An iterable of replacement strings.
+
+    Returns:
+        str: The modified string after replacements.
+    """
+    for replacement in replacements:
+        string = string.replace(replacer, replacement)
+    return string
 
 def replace_with_list_as_replacer(
     string: str, replacers: Iterable, replacement: str
 ) -> str:
-    for replacer in replacers:
-        string = string(replacer, replacement)
-    return string
+    """
+    Replace multiple characters in a string with a single replacement string.
 
+    Args:
+        string (str): The input string to modify.
+        replacers (Iterable): An iterable of characters or substrings to replace.
+        replacement (str): The replacement string.
+
+    Returns:
+        str: The modified string after replacements.
+    """
+    for replacer in replacers:
+        string = string.replace(replacer, replacement)
+    return string
 
 def replace_list_with_list(
     string: str, replacers: Iterable, replacements: Iterable
-) -> str | NoReturn:
-    if len(replacements) == len(replacers):
-        for replacer, replacement in (replacers, replacements):
-            string = string.replace(replacer, replacement)
-            return string
-    raise ValueError("List lengths don't match")
+) -> str:
+    """
+    Replace multiple characters in a string with multiple replacement strings, matching the lengths.
 
+    Args:
+        string (str): The input string to modify.
+        replacers (Iterable): An iterable of characters or substrings to replace.
+        replacements (Iterable): An iterable of replacement strings.
+
+    Returns:
+        str: The modified string after replacements.
+
+    Raises:
+        ValueError: If the lengths of `replacers` and `replacements` do not match.
+    """
+    if len(replacements) == len(replacers):
+        for replacer, replacement in zip(replacers, replacements):
+            string = string.replace(replacer, replacement)
+        return string
+    raise ValueError("List lengths don't match")
 
 def replace(
     string: str, replacers: str | Iterable, replacements: str | Iterable
 ) -> str:
+    """
+    Replace substrings in a string based on the types of `replacers` and `replacements`.
+
+    Args:
+        string (str): The input string to modify.
+        replacers (str | Iterable): A single character/substring to replace or an iterable of such substrings.
+        replacements (str | Iterable): A single replacement string or an iterable of replacement strings.
+
+    Returns:
+        str: The modified string after replacements.
+
+    Notes:
+        - If `replacers` is a string and `replacements` is also a string, it performs a simple replacement.
+        - If `replacers` is a string and `replacements` is an iterable, it replaces occurrences of the string `replacers` with each element in `replacements`.
+        - If `replacers` is an iterable and `replacements` is a string, it replaces each element in `replacers` with the single `replacement` string.
+        - If both `replacers` and `replacements` are iterables, their lengths must match, and it performs element-wise replacements.
+    """
     if isinstance(replacers, str):
         if isinstance(replacements, str):
             return string.replace(replacers, replacements)
@@ -351,4 +495,3 @@ def replace(
     if isinstance(replacements, str):
         return replace_with_list_as_replacer(string, replacers, replacements)
     return replace_list_with_list(string, replacers, replacements)
-    # ????????????????????????????????????????????????????????????

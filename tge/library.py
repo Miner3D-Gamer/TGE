@@ -99,7 +99,25 @@ def install_library_from_github(github_repo_url: str) -> None:
 from collections.abc import Iterable
 
 
-def install_all_libraries(libs: Iterable) -> list[tuple[bool, str]]:
+def install_all_libraries(libs: Iterable[str]) -> list[tuple[bool, str]]:
+    """
+    Install a list of libraries and return a list of installation results.
+
+    This function attempts to install each library from the provided list. It skips libraries that are already installed,
+    and it collects the results of the installation attempts.
+
+    Args:
+        libs (Iterable[str]): An iterable containing the names of libraries to be installed.
+
+    Returns:
+        list[tuple[bool, str]]: A list of tuples where each tuple contains:
+            - A boolean indicating whether the installation was successful (True) or failed (False).
+            - A string message describing the result of the installation attempt.
+
+    Examples:
+        >>> install_all_libraries(["numpy", "pandas"])
+        [(True, "Successfully installed numpy"), (True, "Successfully installed pandas")]
+    """
     output = []
     for lib in libs:
         if is_library_installed(lib):
@@ -109,9 +127,23 @@ def install_all_libraries(libs: Iterable) -> list[tuple[bool, str]]:
     return output
 
 
-def are_all_required_libraries_installed():
+def are_all_required_libraries_installed() -> None:
+    """
+    Check if all libraries listed in the 'requirements.txt' file are installed.
+
+    This function reads the 'requirements.txt' file, which should contain a list of library names. It checks whether 
+    each library is installed and raises a `ModuleNotFoundError` if any library is missing.
+
+    Raises:
+        ModuleNotFoundError: If any library listed in 'requirements.txt' is not installed.
+
+    Examples:
+        >>> are_all_required_libraries_installed()
+        # This will check the libraries listed in 'requirements.txt' and raise an exception if any are missing.
+    """
     with open("requirements.txt", "r") as f:
         libs = f.readlines()
     for lib in libs:
-        if not is_library_installed(lib):
-            ModuleNotFoundError(lib)
+        if not is_library_installed(lib.strip()):  # Use strip() to remove any leading/trailing whitespace
+            raise ModuleNotFoundError(f"Library not found: {lib.strip()}")
+

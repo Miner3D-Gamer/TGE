@@ -5,7 +5,7 @@ def scramble_word(word):
 	A=list(word);random.shuffle(A);return''.join(A)
 def chop(string,substring,rem=True):
 	B=substring;A=string
-	if A.startswith(B)and A.endswith(B):return A[len(B):-len(B)]
+	if rem and A.startswith(B)and A.endswith(B):return A[len(B):-len(B)]
 	else:return A
 def truncate_string(string,length):
 	B=length;A=string
@@ -52,17 +52,17 @@ def find_longest_substring(string):
 		A+=C
 	if len(A)>len(B):B=A
 	return B
-def check_pangram(string):A=string;B=set(A.ascii_lowercase);C=''.join(filter(lambda c:c in B,A.lower()));return set(C)==B
+def check_pangram(string):import string as B;A=set(B.ascii_lowercase);C=''.join(filter(lambda c:c in A,string.lower()));return set(C)==A
 def find_common_characters(string1,string2):return''.join(set(string1)&set(string2))
 def split_text(text,chunk_size):A=chunk_size;return[text[B:B+A]for B in range(0,len(text),A)]
 def lchop(string,substring):
 	B=substring;A=string
 	if A.startswith(B):return A[len(B):]
-	else:return A
+	return A
 def rchop(string,substring):
 	B=substring;A=string
 	if A.endswith(B):return A[:-len(B)]
-	else:return A
+	return A
 def left_pad(string,length,char=' '):return string.rjust(length,char)
 def right_pad(string,length,char=' '):return string.ljust(length,char)
 def left_replace(s,chars,replacement):
@@ -75,16 +75,17 @@ def right_replace(s,chars,replacement):
 	B=replacement*(len(s)-A-1);C=s[:A+1];return C+B
 def replace_with_list_as_replacement(string,replacer,replacements):
 	A=string
-	for B in replacements:A=A(replacer,B)
+	for B in replacements:A=A.replace(replacer,B)
 	return A
 def replace_with_list_as_replacer(string,replacers,replacement):
 	A=string
-	for B in replacers:A=A(B,replacement)
+	for B in replacers:A=A.replace(B,replacement)
 	return A
 def replace_list_with_list(string,replacers,replacements):
 	C=replacements;B=replacers;A=string
 	if len(C)==len(B):
-		for(D,E)in(B,C):A=A.replace(D,E);return A
+		for(D,E)in zip(B,C):A=A.replace(D,E)
+		return A
 	raise ValueError("List lengths don't match")
 def replace(string,replacers,replacements):
 	C=string;B=replacers;A=replacements

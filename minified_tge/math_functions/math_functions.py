@@ -118,3 +118,11 @@ class Vector:
 		B=A.magnitude()
 		if B==0:raise ValueError('Cannot normalize a zero vector.')
 		return Vector(*[A/B for A in A.components])
+def bottom_clamp(min,value):A=value;return A if A>min else min
+def top_clamp(max,value):A=value;return A if A<max else max
+def clamp(min,max,value):
+	A=value
+	if A<min:return min
+	elif A>max:return max
+	else:return A
+def sign(x):return 1 if x>0 else-1 if x<0 else 0

@@ -2,6 +2,7 @@ from PIL import Image
 from typing import List, Union, Tuple , Any
 
 
+from .math_functions.math_functions import clamp
 from .file_operations import doesDirectoryFileExist
 
 def rotate_image(image_path: str, angle: int) -> bool:
@@ -339,3 +340,20 @@ def hex_list_to_rgb_list(hex_list):
         rgb_list.append(hex_to_rgb(i))
     
     return rgb_list
+
+
+class Color:
+    def __init__(self, color: tuple[int, int, int]) -> None:
+        self.color = [clamp(0, 255, color[0]),clamp(0, 255, color[1]),clamp(0, 255, color[2])]
+    
+    def __repr__(self) -> str:
+        return "r%s b%s g%s"%(self.color[0],self.color[1],self.color[2])
+    
+    def __iter__(self):
+        return iter(self.color)
+    
+    def get(self) -> tuple[int, int, int]:
+        return tuple(self.color)
+    
+    def __call__(self):
+        return self.get()

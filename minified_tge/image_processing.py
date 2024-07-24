@@ -5,6 +5,7 @@ _B=None
 _A=True
 from PIL import Image
 from typing import List,Union,Tuple,Any
+from.math_functions.math_functions import clamp
 from.file_operations import doesDirectoryFileExist
 def rotate_image(image_path,angle):
 	A=image_path
@@ -86,3 +87,9 @@ def hex_list_to_rgb_list(hex_list):
 	A=[]
 	for B in hex_list:A.append(hex_to_rgb(B))
 	return A
+class Color:
+	def __init__(B,color):A=color;B.color=[clamp(0,255,A[0]),clamp(0,255,A[1]),clamp(0,255,A[2])]
+	def __repr__(A):return'r%s b%s g%s'%(A.color[0],A.color[1],A.color[2])
+	def __iter__(A):return iter(A.color)
+	def get(A):return tuple(A.color)
+	def __call__(A):return A.get()

@@ -2,6 +2,7 @@ from math import sqrt, factorial as math_factorial, modf
 from typing import List, Union, Tuple, Any
 from numbers import Number
 
+
 def reverse_number(number: Number) -> int:
     """
     Reverses the digits of the input integer.
@@ -652,5 +653,8 @@ def clamp(min: Number, max: Number, value: Number) -> int:
         return value
 
 
-def sign(x: Number) -> int:
+from typing import Literal
+
+
+def sign(x: Number) -> Literal[-1, 0, 1]:
     return 1 if x > 0 else -1 if x < 0 else 0

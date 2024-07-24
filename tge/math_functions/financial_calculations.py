@@ -1,3 +1,4 @@
+from numbers import Number
 
 
 
@@ -7,7 +8,7 @@
 
 
 
-def calculate_present_value(principal: float, rate: float, years: int) -> float:
+def calculate_present_value(principal: Number, rate: Number, years: int) -> float:
     """
     Calculate the present value of an investment based on the given parameters.
 
@@ -21,7 +22,7 @@ def calculate_present_value(principal: float, rate: float, years: int) -> float:
     """
     return principal * pow(1 + rate / 100, years)
 
-def percentage_increase(number: float, percentage: float) -> float:
+def percentage_increase(number: Number, percentage: Number) -> float:
     """
     Calculate the percentage increase from an old grade to a new grade.
 
@@ -36,7 +37,7 @@ def percentage_increase(number: float, percentage: float) -> float:
     return (percentage - number) / number
 
 
-def percentage_decrease(old_grade: float, new_grade: float) -> float:
+def percentage_decrease(old_grade: Number, new_grade: Number) -> float:
     """
     Calculate the percentage decrease between an old grade and a new grade.
 
@@ -49,7 +50,7 @@ def percentage_decrease(old_grade: float, new_grade: float) -> float:
     """
     return (old_grade - new_grade) / old_grade
 
-def discount_price(price: float, discount: float) -> float:
+def discount_price(price: Number, discount: Number) -> float:
     """
     Calculate the discounted price based on the original price and discount percentage.
 
@@ -62,7 +63,7 @@ def discount_price(price: float, discount: float) -> float:
     """
     return price * (1 - discount)
 
-def body_mass_index(weight: float, height: float) -> float:
+def body_mass_index(weight: Number, height: Number) -> float:
     """
     Calculate the Body Mass Index (BMI) using weight and height.
 

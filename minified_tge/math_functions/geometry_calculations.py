@@ -1,5 +1,6 @@
 from math import sqrt
 from.math_functions import get_pi
+from numbers import Number
 def volume_of_cuboid(length,width,height):return length*width*height
 def volume_of_cube(side):return side**3
 def volume_of_sphere(radius):return 4/3*3.14159*radius**3

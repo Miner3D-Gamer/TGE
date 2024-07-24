@@ -51,7 +51,7 @@
 #         docstring = generate_docstring(function_name, input_unit, output_unit)
         
 #         # Print the generated docstring and the source code of the function
-#         print(f"def {function_name}({input_unit}: float) -> float:")
+#         print(f"def {function_name}({input_unit}: Number) -> float:")
 #         print(f"    {docstring}\n")
 #         print(inspect.getsource(function))
 

@@ -132,6 +132,9 @@ def get_function_id_by_name(func_name):
 	if func_name in globals():
 		func_obj=globals()[func_name]
 		if callable(func_obj):return func_obj
+from numbers import Number
+class DualInfinite:0
+def div(a,b):return a/b if b!=0 else DualInfinite
 class NoInputType:0
 def get_function_inputs(func):
 	B='default';A='name';signature=inspect.signature(func);type_hints=get_type_hints(func);input_parameters=[]

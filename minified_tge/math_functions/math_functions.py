@@ -1,6 +1,7 @@
 _A=False
 from math import sqrt,factorial as math_factorial,modf
 from typing import List,Union,Tuple,Any
+from numbers import Number
 def reverse_number(number):return int(str(number)[::-1])
 def exponent(base,exponent):
 	A=exponent;B=1

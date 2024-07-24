@@ -5,7 +5,11 @@ from typing import List, Union, Tuple , Any
 from random import random, choice
 import sys
 from collections.abc import Iterable
+from numbers import Number
+
+
 from .tbe import determine_affirmative#, pass_func
+
 
 __all__ = ["typingPrint"]
 
@@ -21,7 +25,7 @@ else:
 
 
 
-def typingPrint(text: str, delay: float) -> None:
+def typingPrint(text: str, delay: Number) -> None:
     """
     Prints the given text with a typing effect.
 
@@ -39,7 +43,7 @@ def typingPrint(text: str, delay: float) -> None:
         sys.stdout.flush()
         time.sleep(delay)
 
-def typingInput(text: str, delay: float = 0) -> str:
+def typingInput(text: str, delay: Number = 0) -> str:
     """
     Displays the given text character by character with a delay of 0.05 seconds,
     then waits for the user to type a string and press Enter. Returns the entered string.
@@ -59,7 +63,7 @@ def typingInput(text: str, delay: float = 0) -> str:
     value = input("")  
     return value
 
-def writeSentencesToConsole(punctuations:list[str], o_text: str, type_delay: float, line_delay: float) -> Tuple[bool, str]:
+def writeSentencesToConsole(punctuations:list[str], o_text: str, type_delay: Number, line_delay: Number) -> Tuple[bool, str]:
     """
     Writes text and splits it into sentences with punctuations and prints them
 
@@ -457,7 +461,7 @@ def prompt_number(question: str, min: int=None, max: int=None, incorrect=None, e
                 return error(input_ans)
 
 
-def matrix_rain(rows: int, columns: int, speed: float=0.1, density: float=0.2, duration: float = None, symbols: Iterable = ['0', '1']) -> None:
+def matrix_rain(rows: int, columns: int, speed: Number=0.1, density: Number=0.2, duration: Number = None, symbols: Iterable = ['0', '1']) -> None:
     """
     Displays a matrix rain animation on the console.
 

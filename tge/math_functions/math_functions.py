@@ -1,8 +1,8 @@
 from math import sqrt, factorial as math_factorial, modf
 from typing import List, Union, Tuple, Any
+from numbers import Number
 
-
-def reverse_number(number: int) -> int:
+def reverse_number(number: Number) -> int:
     """
     Reverses the digits of the input integer.
 
@@ -15,7 +15,7 @@ def reverse_number(number: int) -> int:
     return int(str(number)[::-1])
 
 
-def exponent(base: int, exponent: int) -> int:
+def exponent(base: Number, exponent: Number) -> int:
     """
     Calculate the result of raising a given base to a specified exponent.
 
@@ -36,13 +36,13 @@ def exponent(base: int, exponent: int) -> int:
     return result
 
 
-def hypotenuse(a: float, b: float) -> float:
+def hypotenuse(a: Number, b: Number) -> float:
     """
     Calculate the length of the hypotenuse of a right-angled triangle given the lengths of its two perpendicular sides.
 
     Parameters:
-    a (float): The length of the first perpendicular side.
-    b (float): The length of the second perpendicular side.
+    a (Number): The length of the first perpendicular side.
+    b (Number): The length of the second perpendicular side.
 
     Returns:
     float: The length of the hypotenuse.
@@ -50,7 +50,7 @@ def hypotenuse(a: float, b: float) -> float:
     return sqrt(a**2 + b**2)
 
 
-def quadratic_roots(a: float, b: float, c: float) -> float:
+def quadratic_roots(a: Number, b: Number, c: Number) -> float:
     """
     Calculate the roots of a quadratic equation in the form ax^2 + bx + c = 0.
 
@@ -65,7 +65,7 @@ def quadratic_roots(a: float, b: float, c: float) -> float:
     return (-b + sqrt(b**2 - 4 * a * c)) / (2 * a)
 
 
-def check_perfect_number(number: int) -> bool:
+def check_perfect_number(number: Number) -> bool:
     """
     Check if a number is a perfect number.
 
@@ -88,7 +88,7 @@ def check_perfect_number(number: int) -> bool:
     return divisor_sum == number
 
 
-def factorial_iterative(number: int) -> int:
+def factorial_iterative(number: Number) -> int:
     """
     Calculate the factorial of a given non-negative integer using an iterative approach.
 
@@ -104,7 +104,7 @@ def factorial_iterative(number: int) -> int:
     return result
 
 
-def factorial_recursive(number: int) -> int:
+def factorial_recursive(number: Number) -> int:
     """
     Calculate the factorial of a non-negative integer using a recursive approach.
 
@@ -120,7 +120,7 @@ def factorial_recursive(number: int) -> int:
         return number * factorial_recursive(number - 1)
 
 
-def binomial_coefficient(n: int, k: int) -> int:
+def binomial_coefficient(n: Number, k: Number) -> int:
     """
     Calculate the binomial coefficient (n choose k).
 
@@ -137,7 +137,7 @@ def binomial_coefficient(n: int, k: int) -> int:
     return factorial(n) / (factorial(k) * factorial(n - k))
 
 
-def factorial(n: int) -> int:
+def factorial(n: Number) -> int:
     """
     Calculate the factorial of a non-negative integer.
 
@@ -150,7 +150,7 @@ def factorial(n: int) -> int:
     return math_factorial(n)
 
 
-def calculate_combinations(n: int, k: int) -> int:
+def calculate_combinations(n: Number, k: Number) -> int:
     """
     Calculate the number of combinations (n choose k) using the binomial coefficient formula.
 
@@ -164,7 +164,7 @@ def calculate_combinations(n: int, k: int) -> int:
     return factorial(n) / (factorial(k) * factorial(n - k))
 
 
-def generate_fibonacci_sequence(number: int) -> list:
+def generate_fibonacci_sequence(number: Number) -> list:
     """
     Generate a Fibonacci sequence up to the specified number of terms.
 
@@ -180,7 +180,7 @@ def generate_fibonacci_sequence(number: int) -> list:
     return fibonacci_sequence
 
 
-def check_armstrong_number(number: int) -> bool:
+def check_armstrong_number(number: Number) -> bool:
     """
     Check if a given number is an Armstrong number.
 
@@ -197,7 +197,7 @@ def check_armstrong_number(number: int) -> bool:
     return sum(int(i) ** len(str(number)) for i in str(number)) == number
 
 
-def calculate_gcd(a: int, b: int) -> int:
+def calculate_gcd(a: Number, b: Number) -> int:
     """
     Calculate the Greatest Common Divisor (GCD) of two integers using the Euclidean algorithm.
 
@@ -213,7 +213,7 @@ def calculate_gcd(a: int, b: int) -> int:
     return a
 
 
-def factorial_recursive(number: int) -> int:
+def factorial_recursive(number: Number) -> int:
     """
     Calculate the factorial of a non-negative integer using a recursive approach.
 
@@ -236,7 +236,7 @@ def factorial_recursive(number: int) -> int:
         return number * factorial_recursive(number - 1)
 
 
-def fibonacci(n: int) -> list:
+def fibonacci(n: Number) -> list:
     """
     Generate a Fibonacci sequence of length n.
 
@@ -266,7 +266,7 @@ def fibonacci(n: int) -> list:
 
 
 def num_range(
-    start: int, stop: int, step: int
+    start: Number, stop: Number, step: Number
 ) -> Union[bool, List[float], Tuple[bool, str]]:
     """
     Generate a list of numbers from start to stop with a given step.
@@ -316,7 +316,7 @@ def num_range(
         return list(range(start, stop, step))
 
 
-def calculate_percentage(value: int, total: int) -> int:
+def calculate_percentage(value: Number, total: Number) -> int:
     """
     Calculate the percentage of a value in relation to a total.
 
@@ -330,7 +330,7 @@ def calculate_percentage(value: int, total: int) -> int:
     return int(value / total * 100)
 
 
-def get_pi(amount: int) -> float:
+def get_pi(amount: Number) -> float:
     """
     Returns up to 1000 digits of Pi
 
@@ -355,7 +355,7 @@ def get_pi(amount: int) -> float:
         return float(return_like_a_thousand_digits_of_pi()[: amount + 1])
 
 
-def smaller(a: int, b: int) -> int:
+def smaller(a: Number, b: Number) -> int:
     """
     Returns the smaller of two numbers.
 
@@ -372,7 +372,7 @@ def smaller(a: int, b: int) -> int:
         return b
 
 
-def bigger(a: int, b: int) -> int:
+def bigger(a: Number, b: Number) -> int:
     """
     Returns the larger of two input numbers.
 
@@ -400,7 +400,7 @@ def return_like_a_thousand_digits_of_pi() -> str:
 import struct
 
 
-def fast_inverse_sqrt(x: int | float) -> float:
+def fast_inverse_sqrt(x: Number) -> float:
     """
     Fast inverse square root algorithm.
 
@@ -425,7 +425,7 @@ def fast_inverse_sqrt(x: int | float) -> float:
     return y
 
 
-def tetration(base: int, exponent: int) -> int:
+def tetration(base: Number, exponent: Number) -> int:
     """Calculate tetration, which is iterated exponentiation.
 
     Args:
@@ -444,7 +444,7 @@ def tetration(base: int, exponent: int) -> int:
     return temp
 
 
-def hexation(base: int, exponent: int) -> int:
+def hexation(base: Number, exponent: Number) -> int:
     """Calculate hexation, which is iterated tetration.
 
     Args:
@@ -510,7 +510,7 @@ class Vector:
     __init__(*components) -> None: Initializes a vector with the given components.
     __repr__() -> str: Returns a string representation of the vector.
     __len__() -> int: Returns the number of components in the vector.
-    __getitem__(index: int) -> float: Returns the component at the specified index.
+    __getitem__(index: Number) -> float: Returns the component at the specified index.
     __eq__(other: 'Vector') -> bool: Checks if two vectors are equal.
     __add__(other: 'Vector') -> 'Vector': Adds two vectors element-wise.
     __sub__(other: 'Vector') -> 'Vector': Subtracts two vectors element-wise.
@@ -519,7 +519,7 @@ class Vector:
     normalize() -> 'Vector': Returns a normalized (unit) vector.
     """
 
-    def __init__(self, *components: float) -> None:
+    def __init__(self, *components: Number) -> None:
         """Initialize an object with a list of float components.
 
         Args:
@@ -635,15 +635,15 @@ class Vector:
         return Vector(*[component / mag for component in self.components])
 
 
-def bottom_clamp(min: int, value: int) -> int:
+def bottom_clamp(min: Number, value: Number) -> int:
     return value if value > min else min
 
 
-def top_clamp(max: int, value: int) -> int:
+def top_clamp(max: Number, value: Number) -> int:
     return value if value < max else max
 
 
-def clamp(min: int, max: int, value: int) -> int:
+def clamp(min: Number, max: Number, value: Number) -> int:
     if value < min:
         return min
     elif value > max:
@@ -652,5 +652,5 @@ def clamp(min: int, max: int, value: int) -> int:
         return value
 
 
-def sign(x: int) -> int:
+def sign(x: Number) -> int:
     return 1 if x > 0 else -1 if x < 0 else 0

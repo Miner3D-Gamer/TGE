@@ -1,6 +1,6 @@
+from numbers import Number
 
-
-def celsius_to_fahrenheit(celsius: float) -> float:
+def celsius_to_fahrenheit(celsius: Number) -> float:
     """
     Convert temperature from Celsius to Fahrenheit.
 
@@ -12,7 +12,7 @@ def celsius_to_fahrenheit(celsius: float) -> float:
     """
     return celsius * 1.8 + 32
 
-def fahrenheit_to_celsius(fahrenheit: float) -> float:
+def fahrenheit_to_celsius(fahrenheit: Number) -> float:
     """
     Convert a temperature in Fahrenheit to Celsius.
 
@@ -24,7 +24,7 @@ def fahrenheit_to_celsius(fahrenheit: float) -> float:
     """
     return (fahrenheit - 32) / 1.8
 
-def celsius_to_kelvin(celsius: float) -> float:
+def celsius_to_kelvin(celsius: Number) -> float:
     """
     Convert temperature in degrees Celsius to Kelvin.
 
@@ -36,7 +36,7 @@ def celsius_to_kelvin(celsius: float) -> float:
     """
     return celsius + 273.15
 
-def kelvin_to_celsius(kelvin: float) -> float:
+def kelvin_to_celsius(kelvin: Number) -> float:
     """
     Convert a temperature from Kelvin to Celsius.
 
@@ -48,7 +48,7 @@ def kelvin_to_celsius(kelvin: float) -> float:
     """
     return kelvin - 273.15
 
-def kelvin_to_fahrenheit(kelvin: float) -> float:
+def kelvin_to_fahrenheit(kelvin: Number) -> float:
     """
     Convert a temperature in Kelvin to Fahrenheit.
 
@@ -60,7 +60,7 @@ def kelvin_to_fahrenheit(kelvin: float) -> float:
     """
     return (kelvin - 273.15) * 1.8 + 32
 
-def fahrenheit_to_kelvin(fahrenheit: float) -> float:
+def fahrenheit_to_kelvin(fahrenheit: Number) -> float:
     """
     Convert temperature from Fahrenheit to Kelvin.
 

@@ -6,6 +6,7 @@ from typing import List,Union,Tuple,Any
 from random import random,choice
 import sys
 from collections.abc import Iterable
+from numbers import Number
 from.tbe import determine_affirmative
 __all__=['typingPrint']
 if os.name=='nt':

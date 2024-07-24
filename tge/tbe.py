@@ -1018,16 +1018,18 @@ def get_function_id_by_name(func_name)->None|ModuleType:
 
 
 
+from numbers import Number
 
 
 
 
 
+class DualInfinite:
+    """A value that is both positively and negatively infinite, not as range but as literal value"""
 
 
-
-
-
+def div(a:Number, b:Number)->float|DualInfinite:
+    return a/b if b!=0 else DualInfinite
 
 
 
@@ -1377,7 +1379,6 @@ Returns:
     bool: True if the arguments list is empty, otherwise False."""
         return self.argument_list_length == 0
     
-
 
 
 

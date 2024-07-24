@@ -110,11 +110,11 @@ while True:
         "-install_minified", delete=True, default=None
     )
     if inp is None:
-        min_space = "250kb"
-        norm_space = "1.1mb"
+        min_space = "200kb"
+        norm_space = "1mb"
         inp = (
             input(
-                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%s instead of ~%s) but all docstring and annotations have been removed\nYour Input: "
+                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%s instead of ~%s) but all docstring and annotations have been removed (Default:N)\nYour Input: "
                 % (min_space, norm_space)
             )
             .strip()

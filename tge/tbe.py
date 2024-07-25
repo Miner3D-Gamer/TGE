@@ -1279,7 +1279,26 @@ def profile_function(func):
 
 
 
+def profile_function(function, filename):
 
+
+
+    profile = cProfile.Profile()
+    profile.enable()
+
+    function()
+
+    profile.disable()
+
+
+    profile_filename = f'{filename}.pstats'
+    profile.dump_stats(profile_filename)
+    stats = pstats.Stats(profile_filename)
+
+    with open(f'{filename}.txt', 'w') as f:
+        stats = pstats.Stats(profile_filename, stream=f)
+        stats.sort_stats("cumulative")
+        stats.print_stats()
 
 
 

@@ -1,3 +1,4 @@
+_F='cumulative'
 _E='function_name'
 _D='type'
 _C=None
@@ -153,8 +154,11 @@ def repeat(func,times):
 	return val
 import cProfile,pstats,io
 def profile_function(func):
-	def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby='cumulative';ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
+	def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_F;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
 	return wrapper
+def profile_function(function,filename):
+	profile=cProfile.Profile();profile.enable();function();profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
+	with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_F);stats.print_stats()
 def count_functions_in_module(module,library_name):
 	function_count=0
 	for(name,obj)in inspect.getmembers(module):

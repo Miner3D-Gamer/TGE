@@ -1,21 +1,20 @@
 
 
-
-def b_lshift(a:int, b:int)->int:
+def b_lshift(a: int, b: int) -> int:
     """
     Performs a bitwise left shift operation on the given byte 'a'.
-    
+
     Args:
         a (int): The byte value to be left-shifted.
         b (int): The number of positions to shift 'a' to the left.
-        
+
     Returns:
         int: The result of left-shifting 'a' by 'b' positions.
     """
     return a << b
 
 
-def b_rshift(a:int, b:int)->int:
+def b_rshift(a: int, b: int) -> int:
     """
     Perform bitwise right shift operation on the given byte 'a'.
 
@@ -29,7 +28,7 @@ def b_rshift(a:int, b:int)->int:
     return a >> b
 
 
-def b_and(a:int, b:int)->int:
+def b_and(a: int, b: int) -> int:
     """
     Performs a bitwise AND operation between two bytes.
 
@@ -49,7 +48,7 @@ def b_and(a:int, b:int)->int:
     return a & b
 
 
-def b_or(a:int, b:int)->int:
+def b_or(a: int, b: int) -> int:
     """
     Perform a bitwise OR operation between two bytes.
 
@@ -68,24 +67,24 @@ def b_or(a:int, b:int)->int:
     return a | b
 
 
-def b_xor(a:int, b:int)->int:
+def b_xor(a: int, b: int) -> int:
     """
     Perform a bitwise XOR (exclusive OR) operation between two bytes.
-    
+
     This function takes two byte values, 'a' and 'b', and applies the bitwise XOR operation
     to their binary representations. It returns an byte representing the result of the XOR operation.
-    
+
     Parameters:
     a (int): The first byte operand for the XOR operation.
     b (int): The second byte operand for the XOR operation.
-    
+
     Returns:
     int: The result of the bitwise XOR operation between 'a' and 'b'.
     """
     return a ^ b
 
 
-def b_not(a:int)->int:
+def b_not(a: int) -> int:
     """
     Perform bitwise NOT operation on the given byte 'a'.
 
@@ -101,7 +100,7 @@ def b_not(a:int)->int:
     return ~a
 
 
-def b_nand(a:int, b:int)->int:
+def b_nand(a: int, b: int) -> int:
     """
     Computes the bitwise NAND (NOT AND) operation between two binary inputs.
 
@@ -119,7 +118,7 @@ def b_nand(a:int, b:int)->int:
     return ~(a & b)
 
 
-def b_nor(a:int, b:int)->int:
+def b_nor(a: int, b: int) -> int:
     """
     Performs bitwise NOR (NOT OR) operation between two input bytes, 'a' and 'b'.
 
@@ -137,7 +136,7 @@ def b_nor(a:int, b:int)->int:
     return ~(a | b)
 
 
-def b_nxor(a:int, b:int)->int:
+def b_nxor(a: int, b: int) -> int:
     """
     Perform bitwise negated XOR (b_nxor) operation between two bytes, 'a' and 'b'.
 
@@ -155,24 +154,24 @@ def b_nxor(a:int, b:int)->int:
     return ~(a ^ b)
 
 
-def b_three_nand(a:int, b:int, c:int)->int:
+def b_three_nand(a: int, b: int, c: int) -> int:
     """
     Compute the 3-input NAND gate result.
 
     This function calculates the logical NOT-AND (NAND) operation for three input values: a, b, and c.
-    
+
     Args:
     a (int): The first input binary value (0 or 1).
     b (int): The second input binary value (0 or 1).
     c (int): The third input binary value (0 or 1).
-    
+
     Returns:
     int: The result of the 3-input NAND operation, which is 1 if the logical NOT-AND of all inputs is 0, otherwise 0.
     """
     return ~(a & b & c) & 1
 
 
-def b_three_nor(a:int, b:int, c:int)->int:
+def b_three_nor(a: int, b: int, c: int) -> int:
     """
     Performs a three-input NOR operation on the given inputs.
 
@@ -192,7 +191,7 @@ def b_three_nor(a:int, b:int, c:int)->int:
     return ~(a | b | c) & 1
 
 
-def b_three_nxor(a:int, b:int, c:int)->int:
+def b_three_nxor(a: int, b: int, c: int) -> int:
     """
     Calculate the three-input negated exclusive OR (NXOR) operation.
 
@@ -212,7 +211,7 @@ def b_three_nxor(a:int, b:int, c:int)->int:
     return ~(a ^ b ^ c) & 1
 
 
-def b_three_xor(a:int, b:int, c:int)->int:
+def b_three_xor(a: int, b: int, c: int) -> int:
     """
     Calculate the bitwise three-way XOR operation with negation.
 
@@ -229,4 +228,3 @@ def b_three_xor(a:int, b:int, c:int)->int:
         int: The result of ~(a ^ b ^ c), i.e., the bitwise negated three-way XOR result.
     """
     return ~(a ^ b ^ c)
-

@@ -1236,6 +1236,40 @@ def repeat(func:FunctionType, times:int)->Any:
 
 
 
+import cProfile
+import pstats
+import io
+
+
+def profile_function(func):
+    """
+    A decorator that profiles the execution time of a function.
+
+    This decorator uses the cProfile module to profile the function's 
+    execution. It captures and prints the profiling statistics, sorted 
+    by cumulative time, to standard output.
+
+    Args:
+        func (function): The function to be profiled.
+
+    Returns:
+        function: The wrapped function with profiling enabled.
+    """
+    def wrapper(*args, **kwargs):
+        pr = cProfile.Profile()
+        pr.enable()
+        result = func(*args, **kwargs)
+        pr.disable()
+
+        s = io.StringIO()
+        sortby = "cumulative"
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats()
+        print(s.getvalue())
+
+        return result
+
+    return wrapper
 
 
 

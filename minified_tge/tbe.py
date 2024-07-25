@@ -151,6 +151,10 @@ def get_return_type(func):
 def repeat(func,times):
 	for i in range(times):val=func()
 	return val
+import cProfile,pstats,io
+def profile_function(func):
+	def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby='cumulative';ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
+	return wrapper
 def count_functions_in_module(module,library_name):
 	function_count=0
 	for(name,obj)in inspect.getmembers(module):

@@ -48,3 +48,6 @@ tge/user_interface/clipboard/__pycache__/clipboard_windows.cpython-311.pyc
 tge/validation/__pycache__/validation.cpython-311.pyc
 tge/validation/__pycache__/minecraft.cpython-311.pyc
 tge/validation/__pycache__/numbers.cpython-311.pyc
+tge/user_interface/keyboard/__pycache__/windows.cpython-311.pyc
+tge/user_interface/keyboard/__pycache__/virtual_keys.cpython-311.pyc
+tge/user_interface/__pycache__/keyboard_operations.cpython-311.pyc

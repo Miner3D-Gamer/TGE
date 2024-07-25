@@ -2,6 +2,29 @@ from typing import List, Union, Tuple, Any, Tuple, Dict, Optional
 import re
 import pytube
 
+def is_url(url: str) -> bool:
+    """
+    Check if a given string is a valid URL.
+
+    This function uses regular expressions to determine whether the input string
+    follows the typical pattern of a URL. It checks for patterns starting with
+    'http://' or 'https://' followed by a valid domain name, and optional
+    paths or query parameters.
+
+    Args:
+        url (str): The string to be checked as a potential URL.
+
+    Returns:
+        bool: True if the input string appears to be a valid URL, False otherwise.
+    """
+    pattern = re.compile(
+        r'^(?:http|https)://'
+        r'(?:[\w-]+\.)*[\w-]+'
+        r'(?:\.[a-zA-Z]{2,})'
+        r'(?:/?|(?:/[^\s]+)+)?$'
+    )
+
+    return bool(re.match(pattern, url))
 
 def remove_html_tags(string: str) -> str:
     """
@@ -231,3 +254,28 @@ def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
             return True
     except:
         return False
+def is_url_available(url: str, check_url: bool = True) -> bool:
+    """
+    Check the availability of a URL by sending a GET request and evaluating the response status code.
+
+    Parameters:
+    url (str): The URL to be checked for availability.
+    check_url (bool, optional): If True, performs a basic URL format check before proceeding (default: True).
+
+    Returns:
+    bool: True if the URL is available and returns a status code of 200, False otherwise.
+    """
+    if check_url:
+        check_url = not is_url(url)
+
+    if not check_url:
+        return False
+
+    try:
+        r = requests.get(url)
+        if r.status_code == 200:
+            return True
+        else:
+            return False
+    except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout:
+        return None

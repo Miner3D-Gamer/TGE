@@ -46,7 +46,7 @@ from.user_interface import system_interactions as system
 from.import audio
 from.import console_utils as console
 from.import random_generators as random
-from.import validation
+from.validation import validation
 from.import internet
 from.import library as library_utils
 from.import tbe

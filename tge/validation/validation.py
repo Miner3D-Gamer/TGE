@@ -1,14 +1,15 @@
 import re
-import requests
+from typing import Iterable
 
 from ipaddress import IPv4Address, IPv6Address, AddressValueError
 
-from .manipulation.string_utils import reverse_string
+from . import minecraft
+from . import numbers
 
 
 
 
-def is_empty(text) -> bool:
+def is_empty(text:str|Iterable) -> bool:
     """
     Returns a boolean indicating whether the given text is empty or not.
 
@@ -17,127 +18,16 @@ def is_empty(text) -> bool:
     :return: True if the given text is empty, False otherwise.
     :rtype: bool
     """
-    return text == ""
-
-def is_prime(number: int) -> bool:
-    """
-    Determines whether a given integer is a prime number or not.
-    
-    :param number: An integer to check for primality.
-    :type number: int
-    :return: True if the given number is prime, False otherwise.
-    :rtype: bool
-    """
-    if number <= 1:
-        return False
-    for i in range(2, number):
-        if number % i == 0:
-            return False
-    return True
-
-def is_palindrome(string: str) -> bool:
-    """
-    Check if a given string is a palindrome.
-
-    :param string: A string to be checked.
-    :type string: str
-    :return: True if the string is a palindrome, False otherwise.
-    :rtype: bool
-    """
-    return string == reverse_string(string)
-
-def is_leap_year(year: int) -> bool:
-    """
-    Determine if a given year is a leap year or not.
-
-    A leap year occurs every 4 years, except for years that are both divisible
-    by 100 and not divisible by 400. These exceptions ensure that the calendar
-    year remains synchronized with the astronomical year.
-
-    Args:
-        year (int): The year to be checked for leap year status.
-
-    Returns:
-        bool: True if the input year is a leap year, False otherwise.
-    """
-    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
-
-def is_even(number: int) -> bool:
-    """
-    Determine whether the given integer is an even number.
-
-    Parameters:
-    number (int): The integer to be checked for evenness.
-
-    Returns:
-    bool: True if the input number is even, False otherwise.
-    """
-    return number % 2 == 0
-
-def is_odd(number: int) -> bool:
-    """
-    Determine whether an integer is odd.
-
-    Args:
-        number (int): The integer to be checked for oddness.
-
-    Returns:
-        bool: True if the input integer is odd, False if it's even.
-    """
-    return number % 2 == 1 # not is_even(number)
-
-
-def is_url(url: str) -> bool:
-    """
-    Check if a given string is a valid URL.
-
-    This function uses regular expressions to determine whether the input string
-    follows the typical pattern of a URL. It checks for patterns starting with
-    'http://' or 'https://' followed by a valid domain name, and optional
-    paths or query parameters.
-
-    Args:
-        url (str): The string to be checked as a potential URL.
-
-    Returns:
-        bool: True if the input string appears to be a valid URL, False otherwise.
-    """
-    pattern = re.compile(
-        r'^(?:http|https)://'
-        r'(?:[\w-]+\.)*[\w-]+'
-        r'(?:\.[a-zA-Z]{2,})'
-        r'(?:/?|(?:/[^\s]+)+)?$'
-    )
-
-    return bool(re.match(pattern, url))
+    return not text
 
 
 
-def is_url_available(url: str, check_url: bool = True) -> bool:
-    """
-    Check the availability of a URL by sending a GET request and evaluating the response status code.
 
-    Parameters:
-    url (str): The URL to be checked for availability.
-    check_url (bool, optional): If True, performs a basic URL format check before proceeding (default: True).
 
-    Returns:
-    bool: True if the URL is available and returns a status code of 200, False otherwise.
-    """
-    if check_url:
-        check_url = not is_url(url)
 
-    if not check_url:
-        return False
 
-    try:
-        r = requests.get(url)
-        if r.status_code == 200:
-            return True
-        else:
-            return False
-    except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout:
-        return None
+
+
         
 
 
@@ -270,59 +160,6 @@ def validate_credit_card(number: int) -> bool:
     # The number is valid if the checksum is divisible by 10
     return checksum % 10 == 0
 
-def isStr(input_string: str) -> bool:
-    """Return True if the given input is a string, False otherwise.
-
-    This function is an alternative for checking if a variable is a string with the
-    isinstance built-in function.
-
-    Args:
-        input_string (str): The input to check if it is a string.
-
-    Returns:
-        bool: True if the input is a string, False otherwise.
-    """
-    return isinstance(input_string, str)
-
-def isDic(input_string) -> bool:
-    """
-    This function is an alternative for checking if a variable is a dictionary with the
-    isinstance built-in function.
-
-    Args:
-        input_string (Any): The input object to check.
-
-    Returns:
-        bool: True if the input is a dictionary object, False otherwise.
-    """
-    return isinstance(input_string, dict)
-
-def isInt(input_string) -> bool:
-    """
-    This function is an alternative for checking if a variable is an integer with the
-    isinstance built-in function.
-
-    Args:
-        input_string (any): The variable to be checked.
-
-    Returns:
-        bool: True if input_string is an integer, False otherwise.
-    """
-    return isinstance(input_string, int)
-
-def isFloat(input_string) -> bool:
-    """
-    This function is an alternative for checking if a variable is a float with the
-    isinstance built-in function.
-
-    Args:
-        input_string (any): The input value to check.
-
-    Returns:
-        bool: True if the input value is a float, False otherwise.
-    """
-    return isinstance(input_string, float)
-
 def check_valid_ipv6(ip_address: str) -> bool:
     """
     Check the validity of an IPv6 address.
@@ -339,9 +176,10 @@ def check_valid_ipv6(ip_address: str) -> bool:
     """
     try:
         ip = IPv6Address(ip_address)
-        return True
     except AddressValueError:
         return False
+    else:
+        return True
 
 def check_valid_ipv4(ip_address: str) -> bool:
     """
@@ -364,15 +202,3 @@ def check_valid_ipv4(ip_address: str) -> bool:
     except AddressValueError:
         return False
     
-def compare(file1, file2) -> bool:
-    """
-    Compare two files and return a boolean indicating whether they are equal or not.
-
-    Args:
-        file1 (str): The path to the first file.
-        file2 (str): The path to the second file.
-
-    Returns:
-        bool: True if the files are equal, False otherwise.
-    """
-    return file1 == file2

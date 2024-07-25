@@ -126,4 +126,5 @@ def clamp(min,max,value):
 	if A<min:return min
 	elif A>max:return max
 	else:return A
+from typing import Literal
 def sign(x):return 1 if x>0 else-1 if x<0 else 0

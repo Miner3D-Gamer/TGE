@@ -45,3 +45,6 @@ tge/user_interface/cursor/__pycache__/cursor_operations_ctypes.cpython-311.__pyc
 tge/user_interface/cursor/__pycache__/cursor_operations_ctypes.cpython-311.pyc
 tge/user_interface/__pycache__/clipboard_operations.cpython-311.pyc
 tge/user_interface/clipboard/__pycache__/clipboard_windows.cpython-311.pyc
+tge/validation/__pycache__/validation.cpython-311.pyc
+tge/validation/__pycache__/minecraft.cpython-311.pyc
+tge/validation/__pycache__/numbers.cpython-311.pyc

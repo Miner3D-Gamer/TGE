@@ -3,6 +3,7 @@ import shutil
 from filecmp import dircmp as file_dircmp, cmp as file_cmp
 from ast import parse as ast_parse, walk as ast_walk, FunctionDef as ast_FunctionDef
 import zipfile
+import math
 
 from pathlib import Path as pathlib_path
 from typing import List, Union, Tuple, Any
@@ -958,13 +959,16 @@ def is_directory_empty(directory_path: str) -> bool:
 def get_filesize(directory: str):
     return os.path.getsize(directory)
 
-
-def get_file_size_of_directory(directory: str) -> int:
+def get_file_size_of_directory(directory: str, chunk_size:int = 4096) -> int:
     total_size = 0
+    
     for dirpath, dirnames, filenames in os.walk(directory):
         for f in filenames:
             fp = os.path.join(dirpath, f)
-            # Skip if it is symbolic link
             if not os.path.islink(fp):
-                total_size += os.path.getsize(fp)
+                file_size = os.path.getsize(fp)
+                # Round up file size to the nearest chunk size
+                rounded_size = math.ceil(file_size / chunk_size) * chunk_size
+                total_size += rounded_size
+                
     return total_size

@@ -34,8 +34,8 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
     tge.file_operations.get_file_size_of_directory("./minified_tge")
 )
 
-print("Pure size of TGE: %s kb" % tge_size)
-print("Pure size of minified TGE: %s kb" % minified_size)
+print("Size of TGE: %s kb" % tge_size)
+print("Size of minified TGE: %s kb" % minified_size)
 print("The minified TGE is %sx smaller" % str(tge_size / (minified_size if minified_size != 0 else tge_size)))
 print()
 directories = []

@@ -4,7 +4,7 @@ _A=False
 import os,shutil
 from filecmp import dircmp as file_dircmp,cmp as file_cmp
 from ast import parse as ast_parse,walk as ast_walk,FunctionDef as ast_FunctionDef
-import zipfile
+import zipfile,math
 from pathlib import Path as pathlib_path
 from typing import List,Union,Tuple,Any
 import tkinter as tk,pyshortcuts
@@ -215,10 +215,10 @@ def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path):
 	else:return
 def is_directory_empty(directory_path):return not os.listdir(directory_path)
 def get_filesize(directory):return os.path.getsize(directory)
-def get_file_size_of_directory(directory):
-	A=0
-	for(C,F,D)in os.walk(directory):
-		for E in D:
-			B=os.path.join(C,E)
-			if not os.path.islink(B):A+=os.path.getsize(B)
-	return A
+def get_file_size_of_directory(directory,chunk_size=4096):
+	A=chunk_size;B=0
+	for(D,I,E)in os.walk(directory):
+		for F in E:
+			C=os.path.join(D,F)
+			if not os.path.islink(C):G=os.path.getsize(C);H=math.ceil(G/A)*A;B+=H
+	return B

@@ -42,7 +42,9 @@ from.math_functions import financial_calculations
 from.math_functions import geometry_calculations
 from.math_functions import math_functions
 from.math_functions import statistics_calculations
-from.user_interface import system_interactions as system
+from.system_interactions import clipboard_operations as clipboard
+from.system_interactions import cursor_operations as cursor
+from.system_interactions import keyboard_operations as keyboard
 from.import audio
 from.import console_utils as console
 from.import random_generators as random

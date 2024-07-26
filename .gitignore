@@ -40,7 +40,7 @@ tge/math_functions/__pycache__/vector_calculation.cpython-311.pyc
 tge/mini_lib/__pycache__/platform_mini.cpython-311.pyc
 tge/user_interface/__pycache__/clipboard.cpython-311.pyc
 tge/user_interface/__pycache__/cursor_operations.cpython-311.pyc
-tge/user_interface/__pycache__/system_interactions.cpython-311.pyc
+tge/user_interface/__pycache__/system_interactionss.cpython-311.pyc
 tge/user_interface/cursor/__pycache__/cursor_operations_ctypes.cpython-311.__pycache__
 tge/user_interface/cursor/__pycache__/cursor_operations_ctypes.cpython-311.pyc
 tge/user_interface/__pycache__/clipboard_operations.cpython-311.pyc
@@ -51,3 +51,12 @@ tge/validation/__pycache__/numbers.cpython-311.pyc
 tge/user_interface/keyboard/__pycache__/windows.cpython-311.pyc
 tge/user_interface/keyboard/__pycache__/virtual_keys.cpython-311.pyc
 tge/user_interface/__pycache__/keyboard_operations.cpython-311.pyc
+tge/system_interactions/__pycache__/clipboard_operations.cpython-311.pyc
+tge/system_interactions/__pycache__/clipboard.cpython-311.pyc
+tge/system_interactions/__pycache__/cursor_operations.cpython-311.pyc
+tge/system_interactions/__pycache__/system_interactionss.cpython-311.pyc
+tge/system_interactions/__pycache__/keyboard_operations.cpython-311.pyc
+tge/system_interactions/clipboard/__pycache__/clipboard_windows.cpython-311.pyc
+tge/system_interactions/cursor/__pycache__/cursor_operations_ctypes.cpython-311.pyc
+tge/system_interactions/keyboard/__pycache__/virtual_keys.cpython-311.pyc
+tge/system_interactions/keyboard/__pycache__/windows.cpython-311.pyc

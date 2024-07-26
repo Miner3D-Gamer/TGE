@@ -153,7 +153,7 @@ def repeat(func,times):
 	for i in range(times):val=func()
 	return val
 import cProfile,pstats,io
-def profile_function(func):
+def profile(func):
 	def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_F;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
 	return wrapper
 def profile_function(function,filename):

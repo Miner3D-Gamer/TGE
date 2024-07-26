@@ -1241,7 +1241,7 @@ import pstats
 import io
 
 
-def profile_function(func):
+def profile(func):
     """
     A decorator that profiles the execution time of a function.
 

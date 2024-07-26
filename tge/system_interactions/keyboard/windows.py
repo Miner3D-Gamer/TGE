@@ -1,6 +1,6 @@
 import ctypes
 from ctypes import wintypes
-from .virtual_keys import *
+from . import virtual_keys as keys
 
 user32 = ctypes.WinDLL('user32')
 user32.GetAsyncKeyState.restype = wintypes.SHORT

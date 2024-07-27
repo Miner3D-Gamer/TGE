@@ -4,6 +4,7 @@ import os
 from importlib import import_module as importlib_import_module
 from collections.abc import Iterable
 import pygame
+from types import FunctionType
 from..random_generators import generate_random_string
 from..tbe import pass_func
 from..image_processing import count_gif_frames
@@ -31,15 +32,12 @@ def load_images_from_directory(directory_path):
 	os.remove(f"{G}.py")
 	if len(C)==0:return C,E,_B
 	else:return C,E,_A
-def handle_input(quit_callback=exit,key_callback=pass_func,mouse_button_callback=pass_func):
-	D=mouse_button_callback;C=key_callback;B=quit_callback
+def handle_events(quit_callback=exit,key_callback=pass_func,mouse_button_callback=pass_func,misc_callback=pass_func):
 	for A in pygame.event.get():
-		if A.type==pygame.QUIT:
-			if B:B()
-		elif A.type==pygame.KEYDOWN:
-			if C:C(A.key)
-		elif A.type==pygame.MOUSEBUTTONDOWN:
-			if D:D(A.button)
+		if A.type==pygame.QUIT:quit_callback()
+		elif A.type==pygame.KEYDOWN:key_callback(A.key)
+		elif A.type==pygame.MOUSEBUTTONDOWN:mouse_button_callback(A.button)
+		else:misc_callback(A)
 class SpriteAnimator:
 	def __init__(A,images,frame_delay):B=images;A.images=B;A.frame_delay=frame_delay;A.num_frames=len(B);A.frame_index=0;A.frame_counter=0
 	def animate_sprite(A,sprite):

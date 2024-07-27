@@ -2,6 +2,7 @@ import os
 from importlib import import_module as importlib_import_module
 from collections.abc import Iterable
 import pygame
+from types import FunctionType
 
 from ..random_generators import generate_random_string
 
@@ -24,7 +25,15 @@ def update_screen(clock: pygame.time.Clock, fps: int = 0) -> None:
     pygame.display.update()
     clock.tick(fps)
 
-def render_text(screen: pygame.Surface, text: str, font_name: str, size: int, color: tuple, position: tuple) -> None:
+
+def render_text(
+    screen: pygame.Surface,
+    text: str,
+    font_name: str,
+    size: int,
+    color: tuple,
+    position: tuple,
+) -> None:
     """
     Renders and displays the given text on the specified Pygame screen.
 
@@ -52,10 +61,26 @@ def load_images_from_directory(directory_path: str) -> None:
         directory_path (str): The path of the directory.
     """
 
-    supported_extensions = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tga", ".lbm", ".pbm", ".ppm", ".svg", ".tiff", ".webp", ".xbm", ".xpm", ".tif"]
+    supported_extensions = [
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".bmp",
+        ".tga",
+        ".lbm",
+        ".pbm",
+        ".ppm",
+        ".svg",
+        ".tiff",
+        ".webp",
+        ".xbm",
+        ".xpm",
+        ".tif",
+    ]
     skipped = []
     files = {}
-    
+
     for file in os.listdir(directory_path):
         file_name, file_extension = os.path.splitext(file)
         if file_extension in supported_extensions:
@@ -63,7 +88,7 @@ def load_images_from_directory(directory_path: str) -> None:
                 if file_extension == ".gif":
                     if count_gif_frames(directory_path + "/" + file)[1] == 1:
                         pass
-                    else: 
+                    else:
                         skipped.append(file)
                         continue
                 files[file_name] = file
@@ -85,7 +110,9 @@ def load_images_from_directory(directory_path: str) -> None:
         f.write("\treturn successful_files")
     try:
         generated_module = importlib_import_module(temp_file_name)
-        successful_files = generated_module.pygame_load_images_from_directory_temp_file()
+        successful_files = (
+            generated_module.pygame_load_images_from_directory_temp_file()
+        )
     except:
         return skipped, successful_files, False
     os.remove(f"{temp_file_name}.py")
@@ -96,9 +123,14 @@ def load_images_from_directory(directory_path: str) -> None:
         return skipped, successful_files, False
 
 
-def handle_input(quit_callback = exit, key_callback = pass_func, mouse_button_callback = pass_func)->None:
+def handle_events(
+    quit_callback: FunctionType = exit,
+    key_callback: FunctionType = pass_func,
+    mouse_button_callback: FunctionType = pass_func,
+    misc_callback: FunctionType = pass_func,
+) -> None:
     """
-    Handles various input events in a Pygame application.
+    Handles various events in a Pygame application.
 
     Args:
         quit_callback (function, optional): A callback function to handle the quit event.
@@ -114,18 +146,15 @@ def handle_input(quit_callback = exit, key_callback = pass_func, mouse_button_ca
     """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            # Handle the quit event
-            if quit_callback:
-                quit_callback()
+            quit_callback()
         elif event.type == pygame.KEYDOWN:
-            # Handle key press events
-            if key_callback:
-                key_callback(event.key)
+            key_callback(event.key)
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            # Handle mouse button press events
-            if mouse_button_callback:
-                mouse_button_callback(event.button)
-                
+            mouse_button_callback(event.button)
+        else:
+            misc_callback(event)
+
+
 class SpriteAnimator:
     def __init__(self, images: Iterable, frame_delay: int) -> None:
         """
@@ -167,6 +196,7 @@ class SpriteAnimator:
         # Delay between frames
         pygame.time.delay(self.frame_delay)
 
+
 def check_collision(*rects: pygame.Rect) -> bool:
     """
     Check for collision between multiple rectangles.
@@ -182,6 +212,7 @@ def check_collision(*rects: pygame.Rect) -> bool:
             if rects[i].colliderect(rects[j]):
                 return True
     return False
+
 
 def check_collision_with_all(*rects: pygame.Rect) -> bool:
     """
@@ -199,12 +230,14 @@ def check_collision_with_all(*rects: pygame.Rect) -> bool:
                 return False
     return True
 
+
 def pygame_exit() -> None:
     """
     ㅤ
     >>> pygame.quit()
     """
     pygame.quit()
+
 
 def background_color(window: pygame.Surface, color: tuple) -> None:
     """
@@ -213,14 +246,16 @@ def background_color(window: pygame.Surface, color: tuple) -> None:
     Args:
         window (pygame.Surface): The Pygame window surface to be filled.
         color (tuple): A tuple representing the RGB values of the desired color.
-    
+
     Returns:
         None
     """
     window.fill(color)
 
 
-def draw_texture_at(surface: pygame.Surface, texture: pygame.Surface, position: tuple) -> None:
+def draw_texture_at(
+    surface: pygame.Surface, texture: pygame.Surface, position: tuple
+) -> None:
     """
     Draws a texture onto a surface at a specified position.
 
@@ -234,8 +269,11 @@ def draw_texture_at(surface: pygame.Surface, texture: pygame.Surface, position: 
     """
     surface.blit(texture, position)
 
+
 from typing import NoReturn
-def exit()->NoReturn:
+
+
+def exit() -> NoReturn:
     """
     Exit the program safely and without errors just with one line
     >>> pygame.quit()
@@ -244,30 +282,29 @@ def exit()->NoReturn:
     pygame.quit()
     quit()
 
+
 # def convert_num_to_key(num):
 #     index = {
-        
-        
-        
-        
+
+
 #         8: 'backspace',
 #         9: 'tab',
-        
+
 #         13: 'enter',
-        
+
 #         27: 'esc',
-        
-        
+
+
 #         32: 'space',
-        
+
 #         35: '#',
-        
-        
+
+
 #         43: '+',
 #         44: ',',
 #         45: '-',
 #         46: '.',
-        
+
 #         48: '0',
 #         49: '1',
 #         50: '2',
@@ -278,15 +315,8 @@ def exit()->NoReturn:
 #         55: '7',
 #         56: '8',
 #         57: '9',
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
 #         94: '^',
 #         97: 'a',
 #         98: 'b',
@@ -314,23 +344,22 @@ def exit()->NoReturn:
 #         120: 'x',
 #         121: 'y',
 #         122: 'z',
-        
-        
+
+
 #         127: 'del',
-        
+
 #         180: '´',
-        
-        
+
+
 #         223: 'ß',
-        
+
 #         246: 'ö',
 #         228: 'ä',
 #         252: 'ü',
-        
-        
-        
+
+
 #         1073741925: 'menu',
-        
+
 #         1073742048: 'ctrl',
 #         1073742049: 'shift',
 #         1073742050: 'alt',
@@ -339,7 +368,7 @@ def exit()->NoReturn:
 #         1073742053: 'rshift',
 #         1073742054: 'alt ctrl',
 #         1073742055: 'rwindows',
-        
+
 #         1073741881: 'caps lock',
 #         1073741882: 'f1',
 #         1073741883: 'f2',
@@ -359,7 +388,7 @@ def exit()->NoReturn:
 #         1073741897: 'insert',
 #         1073741898: 'home',
 #         1073741899: 'page up',
-        
+
 #         1073741901: 'end',
 #         1073741902: 'page down',
 #         1073741903: 'right',
@@ -383,13 +412,8 @@ def exit()->NoReturn:
 #         1073741921: 'num9',
 #         1073741922: 'num0',
 #         1073741923: 'comma',
-        
-        
-        
-        
-        
-        
-        
+
+
 #     }
 #     if isinstance(num, int):
 #         try:
@@ -401,14 +425,3 @@ def exit()->NoReturn:
 #             return next(key for key, value in index.items() if value == num)
 #         except StopIteration:
 #             return num + ' <- Invalid key'
-
-
-
-
-
-
-
-
-
-
-

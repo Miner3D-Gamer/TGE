@@ -190,6 +190,20 @@ class ArgumentHandler:
 		if not item in self.arguments:return-1
 		value_id=self.arguments.index(item);return value_id
 	def is_empty(self):return self.argument_list_length==0
+class HashMap:
+	def __init__(self,*items):self.map=[*items]
+	def append(self,value):
+		if not value in self.map:self.map.append(value)
+	def extend(self,value):
+		if not value in self.map:self.map.append(*value)
+	def pop(self,index):return self.map.pop(index)
+	def remove(self,value):self.map.remove(value)
+	def index(self,value):return self.map.index(value)
+	def __getitem__(self,index):return self.map[index]
+	def clear(self):self.map=[]
+	def __iter__(self):return self.map
+	def __repr__(self):return str(self.map)
+	def __contains__(self,item):return item in self.map
 def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__)):
 	undocumented=check_directory_and_sub_directory_for_undocumented_functions(directory);amount=0
 	for i in undocumented:

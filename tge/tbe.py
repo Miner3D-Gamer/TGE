@@ -1445,10 +1445,41 @@ Returns:
 
 
 
+class HashMap:
+    def __init__(self, *items) -> None:
+        self.map = [*items]
 
+    def append(self, value: Any) -> None:
+        if not value in self.map:
+            self.map.append(value)
 
+    def extend(self, value: Any) -> None:
+        if not value in self.map:
+            self.map.append(*value)
+    
+    def pop(self, index:int)->Any:
+        return self.map.pop(index)
 
+    def remove(self, value:Any) -> None:
+        self.map.remove(value)
+    
+    def index(self, value:Any)->None:
+        return self.map.index(value)
+    
+    def __getitem__(self, index:int)->None:
+        return self.map[index]
 
+    def clear(self) -> None:
+        self.map = []
+
+    def __iter__(self):
+        return self.map
+
+    def __repr__(self) -> str:
+        return str(self.map)
+    
+    def __contains__(self, item:Any)->bool:
+        return item in self.map
 
 
 

@@ -316,6 +316,9 @@ def num_range(
     else:
         return list(range(start, stop, step))
 
+def divide_by_power_of_2(int:Number, divider:Number)->int:
+    """A fast way of dividing"""
+    return int >> divider
 
 def calculate_percentage(value: Number, total: Number) -> int:
     """

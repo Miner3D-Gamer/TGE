@@ -61,6 +61,7 @@ def num_range(start,stop,step):
 		for H in range(A,B,C):E.append(H/D)
 		return E
 	else:return list(range(A,B,C))
+def divide_by_power_of_2(int,divider):return int>>divider
 def calculate_percentage(value,total):return int(value/total*100)
 def get_pi(amount):
 	A=amount

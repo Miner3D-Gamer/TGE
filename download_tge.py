@@ -1,4 +1,4 @@
-import os, tkinter, time
+import os, time
 import tkinter.filedialog as filedialog
 import shutil
 import sys
@@ -110,8 +110,8 @@ while True:
         "-install_minified", delete=True, default=None
     )
     if inp is None:
-        min_space = "200kb"
-        norm_space = "1mb"
+        min_space = "300kb"
+        norm_space = "600kb"
         inp = (
             input(
                 "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%s instead of ~%s) but all docstring and annotations have been removed (Default:N)\nYour Input: "
@@ -222,28 +222,49 @@ for file_id in range(len(urls)):
         print(f"Writing to {path}")
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
-end = time.time()
 
 
-for dir in dirs:
-    sys.path.append(dir)
-
-try:
-    import tge.library as library
-
-    if give_feedback < 1:
-        print("Done downloading TGE in %s seconds!" % (end - start))
-except:
-    if give_feedback < 2:
-        print(
-            "Well, this didn't quit work out. Wasted about %s seconds" % (end - start)
-        )
-    quit()
+import importlib.util
+import subprocess
 
 
-output = library.install_all_libraries(requirements)
+def is_library_installed(library_name):
+    A = importlib.util.find_spec(library_name)
+    return A is not None
+
+
+def download_library(library_name):
+    D = False
+    C = library_name
+    B = True
+    E = ["python", "-m", "pip", "install", C]
+    try:
+        F = subprocess.run(E, check=B, capture_output=B, text=B)
+        return B, F.stdout
+    except subprocess.CalledProcessError as A:
+        G = f"Failed to install {C}. Return code: {A.returncode}. Output: {A.output}. Error: {A.stderr}."
+        return D, G
+    except Exception as A:
+        return D, f"An unexpected error occurred: {str(A)}"
+
+
+def install_all_libraries(libs):
+    A = []
+    for B in libs:
+        if is_library_installed(B):
+            continue
+        A.append(download_library(B))
+    return A
+
+
+output = install_all_libraries(requirements)
 
 for successful, error in output:
     if not successful:
         if give_feedback < 3:
             print("Error while downloading dependency:", error)
+end = time.time()
+if give_feedback < 1:
+    print(
+        "Downloading and installing tge and all it's dependencies took %s seconds" % end
+    )

@@ -166,7 +166,7 @@ def decompress_directory_list(
     # FIXME: THIS IS BROKEN FOR PATHS WHERE THERE IS ONLY ONE FILE AND I HAVE NO IDEA HOW TO FIX IT
     paths = []
 
-    def dfs(node: str | list | dict, current_path="") -> None:
+    def dfs(node, current_path="") -> None:
         nonlocal paths
 
         if isinstance(node, list):

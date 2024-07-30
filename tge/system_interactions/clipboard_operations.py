@@ -1,8 +1,8 @@
 from .cursor_operations import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
 from .. import SYSTEM_NAME
 
+from .keyboard_operations import press_key, key_to_virtual_key
 
-    
 
 from ..file_operations import get_file_extension
 
@@ -12,25 +12,25 @@ else:
     from .clipboard.clipboard_pyperclip import *
 
 
-
-
 def save_clipboard_to_file(file_path: str) -> bool:
     """
     Saves the current contents of the clipboard to a specified file.
 
     This function attempts to open the specified file in write mode and writes the content
     currently stored in the clipboard to it. It uses the 'utf-8' encoding for writing the file.
-    
+
     Args:
         file_path (str): The path to the file where the clipboard content will be saved.
-        
+
     Returns:
         bool: Returns True if the clipboard content was successfully saved to the file,
             otherwise returns False if an error occurs during the process.
     """
     try:
-        file = open(file_path, 'w', encoding='utf-8')
-        file.write(get_clipboard())  # Assumes a 'get_clipboard()' function is defined elsewhere.
+        file = open(file_path, "w", encoding="utf-8")
+        file.write(
+            get_clipboard()
+        )  # Assumes a 'get_clipboard()' function is defined elsewhere.
         file.close()
         return True
     except:
@@ -54,7 +54,7 @@ def load_clipboard_from_file(file_path: str) -> bool:
         bool: True if the text was successfully copied to the clipboard, False otherwise.
     """
     try:
-        file = open(file_path, 'r', encoding='utf-8')
+        file = open(file_path, "r", encoding="utf-8")
         text = file.read()
         file.close()
         copy_to_clipboard(text)
@@ -126,3 +126,8 @@ def get_clipboard_file_extension() -> str:
     return get_file_extension(get_clipboard())
 
 
+def paste_clipboard():
+    clipboard: str = get_clipboard()
+    for line in clipboard.splitlines(True):
+        for character in line:
+            press_key(key_to_virtual_key(character))

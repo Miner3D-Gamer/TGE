@@ -1,13 +1,9 @@
 import os, json
 
 import tge
-import minified_tge
 
 tge.console.clear()
 
-print("Importing TGE took %s milliseconds"%(tge.INIT_TIME*1000))
-print("Importing TGE took %s milliseconds"%(minified_tge.INIT_TIME*1000))
-del minified_tge
 total_functions = tge.tbe.count_functions_in_library("tge")
 print("TGE has %s functions" % total_functions)
 undocumented = tge.tbe.print_undocumented_functions_in_directory()
@@ -129,7 +125,7 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
 #     )
 #     with open("minified_downloader.py", "w") as w:
 #         w.write(data)
-
+import minified_tge
 
 print("Size of TGE: %s kb" % tge_size)
 print("Size of minified TGE: %s kb" % minified_size)

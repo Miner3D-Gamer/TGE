@@ -13,7 +13,9 @@ from collections import defaultdict
 import inspect
 from pathlib import Path
 import getpass
-import uuid,hashlib,cProfile,pstats,io,python_minifier
+import uuid,hashlib,cProfile,pstats,io
+version=sys.version_info
+if version.minor<12:import python_minifier
 def pass_func(*args,**more_args):0
 def execute_function(func=pass_func,*args,**kwargs):return func(*args,**kwargs)
 def determine_affirmative(text):
@@ -271,4 +273,7 @@ def decompress_directory_list(compressed):
     for file_path in value:paths.append(f"{current_path}/{file_path}".strip('/'))
    else:dfs(value,f"{current_path}/{key}".strip('/'))
  dfs(compressed);return paths
-def minify(text,rename_important_names=_A,remove_docstrings=_B):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
+if version.minor<12:
+ def minify(text,rename_important_names=_A,remove_docstrings=_B):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
+else:
+ def minify(text,rename_important_names=_A,remove_docstrings=_B):return text

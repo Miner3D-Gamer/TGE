@@ -101,7 +101,11 @@ import uuid, hashlib
 import cProfile
 import pstats
 import io
-import python_minifier
+
+version = sys.version_info
+
+if version.minor < 12:
+    import python_minifier
 
 
 def pass_func(*args: Any, **more_args:Any) -> None:
@@ -1777,18 +1781,22 @@ Returns:
     return paths
 
 
+if version.minor < 12:
+    def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
+        """Minify Python code by optionally renaming important names and removing docstrings.
 
-def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
-    """Minify Python code by optionally renaming important names and removing docstrings.
+    Args:
+        text (str): The Python code to minify.
+        rename_important_names (bool, optional): Whether to rename important names (variables, functions) to shorter names. Defaults to False.
+        remove_docstrings (bool, optional): Whether to remove docstrings from the code. Defaults to True.
 
-Args:
-    text (str): The Python code to minify.
-    rename_important_names (bool, optional): Whether to rename important names (variables, functions) to shorter names. Defaults to False.
-    remove_docstrings (bool, optional): Whether to remove docstrings from the code. Defaults to True.
-
-Returns:
-    str: The minified Python code."""
-    return python_minifier.minify(text, rename_globals=rename_important_names, remove_literal_statements=remove_docstrings)
+    Returns:
+        str: The minified Python code."""
+        return python_minifier.minify(text, rename_globals=rename_important_names, remove_literal_statements=remove_docstrings)
+else:
+    def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
+        """'python_minifier' isn't installed, the text will 1 to 1 be returned"""
+        return text
 
 
 

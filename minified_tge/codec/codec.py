@@ -3,7 +3,10 @@ from binascii import hexlify,unhexlify,Error as BinasciiError
 from.import msy
 from.import base
 from.import morse
+from.import html
 from.import standard_galactic_alphabet
+from.import json
+html,json
 def encode(x):
  try:x=base.encode_base64(bytes(x,_A));x=hexlify(x).decode(_A);return x
  except:return''

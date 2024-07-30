@@ -4,6 +4,11 @@ import shutil
 import sys
 
 
+def is_library_installed(library_name):
+    A = importlib.util.find_spec(library_name)
+    return A is not None
+
+
 class ArgumentHandler:
     def __init__(C, arguments=None):
         B = arguments
@@ -28,6 +33,15 @@ class ArgumentHandler:
             D = A.a.__getitem__(B + 1)
         return D
 
+    def has_argument(self, argument, delete=False):
+        value_id = self.get_id(argument)
+        if value_id < 0:
+            return False
+        if delete:
+            self.arguments.remove(value_id)
+            self.argument_list_length -= 1
+        return True
+
 
 argument_handler = ArgumentHandler()
 
@@ -43,6 +57,21 @@ if sl.isdigit():
     give_feedback = int(sl)
 else:
     give_feedback = 0
+
+wait_for_reaction = not (
+    argument_handler.has_argument("-hasty", delete=True) or give_feedback > 2
+)
+
+
+if is_library_installed("tge"):
+    import tge
+
+    if not tge.is_tge_outdated():
+        print("TGE is up to date")
+        if wait_for_reaction:
+            input()
+        quit()
+
 
 default_python_installation = f"{os.getenv('LOCALAPPDATA')}\Programs\Python"
 while True:
@@ -228,11 +257,6 @@ import importlib.util
 import subprocess
 
 
-def is_library_installed(library_name):
-    A = importlib.util.find_spec(library_name)
-    return A is not None
-
-
 def download_library(library_name):
     D = False
     C = library_name
@@ -268,3 +292,5 @@ if give_feedback < 1:
     print(
         "Downloading and installing tge and all it's dependencies took %s seconds" % end
     )
+if wait_for_reaction:
+    input()

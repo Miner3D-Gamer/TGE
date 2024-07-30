@@ -1,6 +1,3 @@
-
-
-
 import os, json
 
 import tge
@@ -75,8 +72,6 @@ with open(".gitignore", "w") as f:
     )
 
 
-
-
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root
     for file in files:
@@ -123,6 +118,16 @@ tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
 minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
     tge.file_operations.get_file_size_of_directory("./minified_tge", [".pyc"])
 )
+
+# with open("download_tge.py", "r") as f:
+#     data = tge.tbe.minify(
+#         f.read(),
+#         rename_important_names=False,
+#         remove_docstrings=True,
+#     )
+#     with open("minified_downloader.py", "w") as w:
+#         w.write(data)
+
 
 print("Size of TGE: %s kb" % tge_size)
 print("Size of minified TGE: %s kb" % minified_size)

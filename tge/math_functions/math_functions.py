@@ -1,7 +1,7 @@
 from math import sqrt, factorial as math_factorial, modf
-from typing import List, Union, Tuple, Any
+#from typing import List, Union, Tuple, Any
 from numbers import Number
-
+from typing import overload
 
 def reverse_number(number: Number) -> int:
     """
@@ -266,59 +266,52 @@ def fibonacci(n: Number) -> list:
         return fibonacci_sequence
 
 
-def num_range(
-    start: Number, stop: Number, step: Number
-) -> Union[bool, List[float], Tuple[bool, str]]:
+@overload
+def range(stop: int) -> range:
     """
-    Generate a list of numbers from start to stop with a given step.
+    Returns a range object from 0 to stop (exclusive).
 
     Args:
-    - start: An integer that represents the starting value of the sequence.
-    - stop: An integer that represents the end value of the sequence.
-    - step: An integer that represents the step size of the sequence.
+        stop (int): The end value (exclusive) of the range.
 
     Returns:
-    - If any of the inputs are not integers, it returns False and a message indicating which input was invalid.
-    - If the step is less than or equal to 0, it returns False and a message indicating that the step size must be positive.
-    - If the start is greater than the stop, it returns False and a message indicating that the start value must be less than the stop value.
-    - If any of the inputs are floats, it generates a list of numbers with the same step size and start and stop values, but with the results rounded to two decimal places.
-    - If all inputs are integers, it generates a list of integers from start to stop with a given step size.
+        range: A range object from 0 to stop.
     """
+    return range(stop)
 
-    if type(start) != int and type(start) != float:
-        return False, "Start must be an integer"
-    if type(stop) != int and type(stop) != float:
-        return False, "Stop must be an integer"
-    if type(step) != int and type(step) != float:
-        return False, "Step must be an integer"
+@overload
+def range(start: int, stop: int) -> range:
+    """
+    Returns a range object from start to stop (exclusive).
 
-    if step <= 0:
-        return False, "Step cannot be less than or equal to 0"
-    if start > stop:
-        return False, "Start cannot be greater than stop"
+    Args:
+        start (int): The start value of the range.
+        stop (int): The end value (exclusive) of the range.
 
-    if isinstance(step, float) or isinstance(start, float) or isinstance(stop, float):
-        x = min([start, stop, step])
-        num_frac = modf(x)[0]
-        y = 10 ** (len(str(num_frac)) - 2)
-        step *= y
-        start *= y
-        stop *= y
-        step = int(step)
-        start = int(start)
-        stop = int(stop)
+    Returns:
+        range: A range object from start to stop.
+    """
+    return range(start, stop)
 
-        result = []
-        for i in range(start, stop, step):
-            result.append(i / y)
+@overload
+def range(start: int, stop: int) -> range:
+    """
+    Returns a range object from start to stop (exclusive) with step inferred from start and stop values.
 
-        return result
-    else:
-        return list(range(start, stop, step))
+    Args:
+        start (int): The start value of the range.
+        stop (int): The end value (exclusive) of the range.
 
-def divide_by_power_of_2(int:Number, divider:Number)->int:
+    Returns:
+        range: A range object from start to stop with step -1 if start < stop else 1.
+    """
+    return range(start, stop, -1 if start < stop else 1)
+
+
+def divide_by_power_of_2(int: Number, divider: Number) -> int:
     """A fast way of dividing"""
     return int >> divider
+
 
 def calculate_percentage(value: Number, total: Number) -> int:
     """

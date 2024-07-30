@@ -47,12 +47,13 @@ def fibonacci(n):
   A=[0,1]
   while len(A)<n:B=A[-1]+A[-2];A.append(B)
   return A
+from builtins import range as builtin_range
 @overload
-def range(stop):return range(stop)
+def range(stop):return builtin_range(stop)
 @overload
-def range(start,stop):return range(start,stop)
+def range(start,stop):return builtin_range(start,stop)
 @overload
-def range(start,stop):A=start;return range(A,stop,-1 if A<stop else 1)
+def range(start,stop):A=start;return builtin_range(A,stop,-1 if A<stop else 1)
 def divide_by_power_of_2(int,divider):return int>>divider
 def calculate_percentage(value,total):return int(value/total*100)
 def get_pi(amount):

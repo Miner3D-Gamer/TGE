@@ -1382,44 +1382,42 @@ Args:
     arguments (None | list, optional): A list of arguments. Defaults to None, in which case command-line arguments are used.
 
 Attributes:
-    arguments (Iterable): The list of arguments."""
+    arguments (list): The list of arguments."""
         if arguments is None:
             arguments = sys.argv[1:]
-        self.arguments: Iterable = arguments
+        self.arguments: list = arguments
         self.argument_list_length = len(arguments)
 
-    def get_argument(self, argument: str, delete:bool=False, default:Any=None) -> str | None:
+    def has_argument(self, argument: str, delete:bool=False) -> str | None:
         """Retrieve the value of a specified argument. Optionally remove it from the list and adjust the argument count.
 
-Args:
-    argument (str): The argument to retrieve.
-    delete (bool, optional): If True, remove the argument from the list after retrieving it. Defaults to False.
-    default (Any, optional): The value to return if the argument is not found. Defaults to None.
+        Args:
+            argument (str): The argument to retrieve.
+            delete (bool, optional): If True, remove the argument from the list after retrieving it. Defaults to False.
+            default (Any, optional): The value to return if the argument is not found. Defaults to None.
 
-Returns:
-    str | None: The value of the argument, or `default` if the argument is not found."""
+        Returns:
+        str | None: The value of the argument, or `default` if the argument is not found."""
         value_id = self.get_id(argument)
         if value_id < 0:
-            return default
+            False
         
         if delete:
-            value = self.arguments.pop(value_id)
+            self.arguments.remove(value_id)
             self.argument_list_length-=1
-        else:
-            value = self.arguments.__getitem__(value_id)
             
-        return value
+        return False
     
     def get_argument_by_flag(self, flag: str, delete:bool=False, default:Any=None) -> str | None:
         """Retrieve the value associated with a specified flag. Optionally remove the flag and its value from the list and adjust the argument count.
 
-Args:
-    flag (str): The flag to retrieve the value for.
-    delete (bool, optional): If True, remove the flag and its value from the list after retrieving it. Defaults to False.
-    default (Any, optional): The value to return if the flag or its value is not found. Defaults to None.
+        Args:
+            flag (str): The flag to retrieve the value for.
+            delete (bool, optional): If True, remove the flag and its value from the list after retrieving it. Defaults to False.
+            default (Any, optional): The value to return if the flag or its value is not found. Defaults to None.
 
-Returns:
-    str | None: The value associated with the flag, or `default` if the flag or value is not found."""
+        Returns:
+        str | None: The value associated with the flag, or `default` if the flag or value is not found."""
         value_id = self.get_id(flag)
         if value_id < 0:
             return default

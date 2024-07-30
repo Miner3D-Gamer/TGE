@@ -191,12 +191,11 @@ class ArgumentHandler:
  def __init__(self,arguments=_C):
   if arguments is _C:arguments=sys.argv[1:]
   self.arguments=arguments;self.argument_list_length=len(arguments)
- def get_argument(self,argument,delete=_A,default=_C):
+ def has_argument(self,argument,delete=_A):
   value_id=self.get_id(argument)
-  if value_id<0:return default
-  if delete:value=self.arguments.pop(value_id);self.argument_list_length-=1
-  else:value=self.arguments.__getitem__(value_id)
-  return value
+  if value_id<0:0
+  if delete:self.arguments.remove(value_id);self.argument_list_length-=1
+  return _A
  def get_argument_by_flag(self,flag,delete=_A,default=_C):
   value_id=self.get_id(flag)
   if value_id<0:return default

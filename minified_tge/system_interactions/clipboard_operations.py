@@ -1,6 +1,6 @@
 from..import SYSTEM_NAME
-if SYSTEM_NAME=='windows':from.clipboard.clipboard_windows import*;from.keyboard.windows.keyboard import press_key,key_to_virtual_key
-else:from.clipboard.clipboard_pyperclip import*;from.keyboard.linux.keyboard import press_key,key_to_virtual_key
+if SYSTEM_NAME=='windows':from.clipboard.clipboard_windows import*;from.keyboard.windows import press_key,key_to_virtual_key
+else:from.clipboard.clipboard_pyperclip import*;from.keyboard.linux import press_key,key_to_virtual_key
 def save_clipboard_to_file(file_path):
  try:file=open(file_path,'w',encoding='utf-8');file.write(get_clipboard());file.close();return True
  except:return False

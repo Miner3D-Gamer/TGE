@@ -72,7 +72,7 @@ z: Final[VirtualKey] = XK.XK_z
 left_windows: Final[VirtualKey] = XK.XK_Super_L
 right_windows: Final[VirtualKey] = XK.XK_Super_R
 application: Final[VirtualKey] = XK.XK_Menu
-computer_sleep: Final[VirtualKey] = XK.XK_Sleep
+computer_sleep: Final[VirtualKey] = None
 
 number_pad_0: Final[VirtualKey] = XK.XK_KP_0
 number_pad_1: Final[VirtualKey] = XK.XK_KP_1

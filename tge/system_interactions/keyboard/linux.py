@@ -1,5 +1,5 @@
 from Xlib import X, XK, display
-from . import virtual_keys as keys
+from . import linux_virtual_keys as keys
 
 # Connect to the display
 d = display.Display()

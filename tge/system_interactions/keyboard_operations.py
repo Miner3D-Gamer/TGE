@@ -1,6 +1,6 @@
 from .. import SYSTEM_NAME
 if SYSTEM_NAME == "windows":
-    from .keyboard.windows.keyboard import *
+    from .keyboard.windows import *
 elif SYSTEM_NAME == "linux":
-    from .keyboard.linux.keyboard import *
+    from .keyboard.linux import *
     

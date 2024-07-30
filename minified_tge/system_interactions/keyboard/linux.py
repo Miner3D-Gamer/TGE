@@ -1,5 +1,5 @@
 from Xlib import X,XK,display
-from.import virtual_keys as keys
+from.import linux_virtual_keys as keys
 d=display.Display()
 root=d.screen().root
 def is_key_pressed(key_code):A=root.query_pointer()._data['mask'];return A&1<<key_code-8!=0

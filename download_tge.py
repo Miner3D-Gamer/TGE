@@ -2,7 +2,8 @@ import os, time
 import tkinter.filedialog as filedialog
 import shutil
 import sys
-
+import importlib.util
+import subprocess
 
 def is_library_installed(library_name):
     A = importlib.util.find_spec(library_name)
@@ -34,12 +35,7 @@ class ArgumentHandler:
         return D
 
     def has_argument(self, argument, delete=False):
-        value_id = self.a.index(argument)
-        if value_id < 0:
-            return False
-        if delete:
-            self.a.remove(value_id)
-        return True
+        return  argument in self.a
 
 
 argument_handler = ArgumentHandler()
@@ -252,8 +248,7 @@ for file_id in range(len(urls)):
             f.write(file.text)
 
 
-import importlib.util
-import subprocess
+
 
 
 def download_library(library_name):
@@ -289,7 +284,7 @@ for successful, error in output:
 end = time.time()
 if give_feedback < 1:
     print(
-        "Downloading and installing tge and all it's dependencies took %s seconds" % end
+        "Downloading and installing tge and all it's dependencies took %s seconds" % (end-start)
     )
 if wait_for_reaction:
     input()

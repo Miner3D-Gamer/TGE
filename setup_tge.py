@@ -1,9 +1,10 @@
+
+
+
 import os, json
 
-
-
-
 import tge
+
 tge.console.clear()
 
 print(tge.INIT_TIME)
@@ -18,7 +19,7 @@ print()
 tge.tbe.print_check_for_functions_in_module_with_missing_notations(
     tge.manipulation.list_utils
 )
-
+# print("lines:", tge.tbe.count_lines_in_directory("./tge"))
 dir = f"{os.getcwd()}/tge/"
 
 for i in range(2):
@@ -27,16 +28,7 @@ for i in range(2):
     with open("tge/update.hashed", "w") as f:
         f.write(tge.codec.base.encode_base64(str(generated_uuid.bytes)[2:-1]))
 
-tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
-    tge.file_operations.get_file_size_of_directory("./tge")
-)
-minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
-    tge.file_operations.get_file_size_of_directory("./minified_tge")
-)
 
-print("Size of TGE: %s kb" % tge_size)
-print("Size of minified TGE: %s kb" % minified_size)
-print("The minified TGE is %sx smaller" % str(tge_size / (minified_size if minified_size != 0 else tge_size)))
 print()
 directories = []
 
@@ -71,6 +63,20 @@ except PermissionError:
     )
 except FileNotFoundError:
     ...
+
+with open(".gitignore", "w") as f:
+    f.write(
+        "\n".join(
+            [
+                file[2:].replace("\\", "/")
+                for file in tge.tbe.find_files_with_extension(".", ".pyc")
+            ]
+        )
+    )
+
+
+
+
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root
     for file in files:
@@ -91,14 +97,39 @@ for root, dirs, files in os.walk(dir, topdown=False):
 
             with open(output + file_path, "w", encoding="utf8") as o:
                 data = (
-                    tge.tbe.minify(
-                        f.read(), rename_important_names=False, remove_docstrings=True
+                    (
+                        tge.tbe.remove_unused_libraries(
+                            "".join(
+                                [
+                                    tge.manipulation.string_utils.left_replace(
+                                        line, "	", " "
+                                    )
+                                    for line in tge.tbe.minify(
+                                        f.read(),
+                                        rename_important_names=False,
+                                        remove_docstrings=True,
+                                    )
+                                ]
+                            )
+                        )
                     )
                     if file.endswith(".py")
                     else f.read()
                 )
                 o.write(data)
+tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
+    tge.file_operations.get_file_size_of_directory("./tge", [".pyc"])
+)
+minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
+    tge.file_operations.get_file_size_of_directory("./minified_tge", [".pyc"])
+)
 
+print("Size of TGE: %s kb" % tge_size)
+print("Size of minified TGE: %s kb" % minified_size)
+print(
+    "The minified TGE is %sx smaller"
+    % str(tge_size / (minified_size if minified_size != 0 else tge_size))
+)
 
 print("Is github version of tge up to date:", not tge.is_tge_outdated())
 # the hash is smiling b'[\xa5d(\\!\xb7\xd0P&\xaf\xec(:>\xde'

@@ -85,33 +85,28 @@
 #             return -1
 
 from collections.abc import Iterable
-
 from types import FunctionType, ModuleType, MethodType
-
 from typing import List, Union, Tuple , Any, get_type_hints
 import ast
 import os
 import sys
 import importlib
 from difflib import get_close_matches
-
+from collections import defaultdict
 import inspect
+from pathlib import Path
+import getpass
+from numbers import Number
+import uuid, hashlib
+import cProfile
+import pstats
+import io
+import python_minifier
 
 
-
-
-
-
-def pass_func(*args: Any) -> None:
-    """
-    This function does nothing and has no side effects.
-    
-    Returns:
-        None: This function does not return any value.
-    
-    """
+def pass_func(*args: Any, **more_args:Any) -> None:
+    """This function does nothing and has no side effects."""
     pass
-
 
 
 
@@ -701,7 +696,7 @@ Returns:
 
 
 
-import uuid, hashlib
+
 
 
 
@@ -1018,7 +1013,6 @@ def get_function_id_by_name(func_name)->None|ModuleType:
 
 
 
-from numbers import Number
 
 
 
@@ -1120,6 +1114,28 @@ def get_return_type(func:MethodType)->Any:
 
 
 
+import subprocess, tempfile
+
+
+def remove_unused_libraries(code_str):
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.py') as temp_file:
+        temp_file.write(code_str.encode('utf-8'))
+        temp_file_path = temp_file.name
+
+    try:
+        command = ['autoflake', '--in-place', '--remove-unused-variables', temp_file_path]
+        result = subprocess.run(command, capture_output=True, text=True)
+        
+        if result.returncode != 0:
+            raise RuntimeError(f'Error running autoflake: {result.stderr}')
+        
+        with open(temp_file_path, 'r', encoding="utf8") as temp_file:
+            cleaned_code = temp_file.read()
+
+        return cleaned_code
+
+    finally:
+        os.remove(temp_file_path)
 
 
 
@@ -1130,12 +1146,20 @@ def get_return_type(func:MethodType)->Any:
 
 
 
+def find_files_with_extension(root_dir, file_extension):
+    """
+    Returns a list of all file directories with the specified extension.
 
-
-
-
-
-
+    :param root_dir: The root directory to start searching from.
+    :param file_extension: The file extension to search for (e.g., '.txt').
+    :return: A list of file paths with the specified extension.
+    """
+    file_paths = []
+    for root, dirs, files in os.walk(root_dir):
+        for file in files:
+            if file.endswith(file_extension):
+                file_paths.append(os.path.join(root, file))
+    return file_paths
 
 
 
@@ -1156,7 +1180,11 @@ def repeat(func:FunctionType, times:int)->Any:
 
 
 
+def get_username():
+    return getpass.getuser()
 
+def get_original_username():
+    return Path.home()[9:]
 
 
 
@@ -1236,9 +1264,7 @@ def repeat(func:FunctionType, times:int)->Any:
 
 
 
-import cProfile
-import pstats
-import io
+
 
 
 def profile(func):
@@ -1662,7 +1688,6 @@ def set_in_dict_by_list(data_dict:dict, keys:Iterable, value:Any)->None:
 
 
 
-from collections import defaultdict
 
 
 class TrieNode:
@@ -1752,7 +1777,6 @@ Returns:
     return paths
 
 
-import python_minifier
 
 def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
     """Minify Python code by optionally renaming important names and removing docstrings.

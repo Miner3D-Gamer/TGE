@@ -25,9 +25,12 @@ minified_tge/system_interactions/clipboard/__pycache__/clipboard_windows.cpython
 minified_tge/system_interactions/cursor/__pycache__/cursor_operations_ctypes.cpython-311.pyc
 minified_tge/system_interactions/keyboard/__pycache__/virtual_keys.cpython-311.pyc
 minified_tge/system_interactions/keyboard/__pycache__/windows.cpython-311.pyc
+minified_tge/system_interactions/window/__pycache__/windows.cpython-311.pyc
 minified_tge/system_interactions/__pycache__/clipboard_operations.cpython-311.pyc
 minified_tge/system_interactions/__pycache__/cursor_operations.cpython-311.pyc
 minified_tge/system_interactions/__pycache__/keyboard_operations.cpython-311.pyc
+minified_tge/system_interactions/__pycache__/shared.cpython-311.pyc
+minified_tge/system_interactions/__pycache__/window_manager.cpython-311.pyc
 minified_tge/validation/__pycache__/minecraft.cpython-311.pyc
 minified_tge/validation/__pycache__/numbers.cpython-311.pyc
 minified_tge/validation/__pycache__/validation.cpython-311.pyc

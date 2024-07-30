@@ -199,7 +199,7 @@ def determine_affirmative(text: str) -> bool:
     # If no clear determination can be made
     return None
 
-def categorize_responses(text_list: Iterable[str]) -> List[str]:
+def categorize_responses(text_list: Iterable[str]) -> "list[str]":
     """
     Categorizes a list of text responses as affirmative, negative, or uncertain.
 
@@ -208,10 +208,10 @@ def categorize_responses(text_list: Iterable[str]) -> List[str]:
     `determine_affirmative` function.
 
     Args:
-        text_list (List[str]): A list of text responses to be categorized.
+        text_list ("list[str]"): A list of text responses to be categorized.
 
     Returns:
-        List[str]: A list of categorized responses, where each response is
+        "list[str]": A list of categorized responses, where each response is
         classified as 'True' for affirmative, 'False' for negative, or 'None'
         for uncertain.
 
@@ -556,7 +556,7 @@ Inner Updates:
 
 
 
-def autocomplete(prefix:str, word_list:Iterable[str])->list[str]:
+def autocomplete(prefix:str, word_list:Iterable[str])->"list[str]":
     """Return a list of words from `word_list` that start with the specified `prefix`.
 
 Args:
@@ -564,10 +564,10 @@ Args:
     word_list (Iterable[str]): A list of words to search through.
 
 Returns:
-    list[str]: A list of matching words."""
+    "list[str]": A list of matching words."""
     return [word for word in word_list if word.startswith(prefix)]
 
-def strict_autocomplete(prefix:str, word_list:Iterable[str])->Union[list[str], str]:
+def strict_autocomplete(prefix:str, word_list:Iterable[str])->Union["list[str]", str]:
     """Return a single word, the prefix itself, or a list of words that start with the specified `prefix`.
 
 Args:
@@ -595,7 +595,7 @@ Returns:
 
 
 
-def split_with_list(string: str, separators: Iterable, limit: Union[None, int] = None) -> list[str]:
+def split_with_list(string: str, separators: Iterable, limit: Union[None, int] = None) -> "list[str]":
     """Split a string by multiple separators and return the resulting substrings.
 
 Args:
@@ -604,7 +604,7 @@ Args:
     
 
 Returns:
-    list[str]: A list of substrings resulting from the split operation."""
+    "list[str]": A list of substrings resulting from the split operation."""
     for separator in separators:
         string = string.replace(separator, "𘚟")
     return string.split("𘚟")
@@ -1747,14 +1747,14 @@ def compress_directory_list(paths:Iterable)->dict[Union[list,str]]:
 
 
 
-def decompress_directory_list(compressed:dict)->list[str]:
+def decompress_directory_list(compressed:dict)->"list[str]":
     """Decompress a directory structure from a nested dictionary format into a list of file paths.
 
 Args:
     compressed (dict): The compressed directory structure in dictionary format.
 
 Returns:
-    list[str]: A list of file paths extracted from the compressed structure."""
+    "list[str]": A list of file paths extracted from the compressed structure."""
     paths = []
 
     def dfs(node:Union[str,list,dict], current_path=""):

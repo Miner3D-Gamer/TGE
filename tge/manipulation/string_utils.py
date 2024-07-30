@@ -286,7 +286,7 @@ def find_common_characters(string1: str, string2: str) -> str:
     """
     return "".join(set(string1) & set(string2))
 
-def split_text(text: str, chunk_size: int) -> list[str]:
+def split_text(text: str, chunk_size: int) -> "list[str]":
     """
     Split a string into chunks of a specified size.
 
@@ -295,7 +295,7 @@ def split_text(text: str, chunk_size: int) -> list[str]:
         chunk_size (int): The size of each chunk.
 
     Returns:
-        list[str]: A list of substrings, each of length `chunk_size`, except possibly the last one.
+        "list[str]": A list of substrings, each of length `chunk_size`, except possibly the last one.
     """
     return [text[i: i + chunk_size] for i in range(0, len(text), chunk_size)]
 

@@ -56,7 +56,7 @@
 # Get import time of tge
 import os, sys, time
 
-import tge
+
 sys.path.append(os.path.dirname(os.getcwd()))
 import tge # type: ignore
 print(tge.INIT_TIME)

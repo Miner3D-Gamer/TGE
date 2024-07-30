@@ -1,3 +1,4 @@
+class VirtualKey:...
 backspace=8
 tab=9
 clear=12
@@ -109,3 +110,20 @@ left_control=162
 right_control=163
 left_alt=164
 right_alt=165
+comma=188
+dot=190
+minus=189
+plus=187
+ä=222
+ß=221
+ö=192
+ü=180
+oem_1=186
+oem_2=191
+oem_3=192
+oem_4=219
+oem_5=220
+oem_6=221
+oem_7=222
+oem_8=223
+oem_102=226

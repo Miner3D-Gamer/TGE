@@ -19,3 +19,5 @@ python-minifier
 hjson
 json5
 json
+autoflake
+py7zr

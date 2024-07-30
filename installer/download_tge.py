@@ -136,10 +136,12 @@ while True:
     if inp is None:
         min_space = "300kb"
         norm_space = "600kb"
+        min_import_time = "0.05-0.01"
+        norm_import_time = "0.4-0.6"
         inp = (
             input(
-                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%s instead of ~%s) but all docstring and annotations have been removed (Default:N)\nYour Input: "
-                % (min_space, norm_space)
+                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%s instead of ~%s) and will be faster to import (%s instead of %s) but all docstring and annotations have been removed (Default:N)\nYour Input: "
+                % (min_space, norm_space, min_import_time, norm_import_time)
             )
             .strip()
             .lower()

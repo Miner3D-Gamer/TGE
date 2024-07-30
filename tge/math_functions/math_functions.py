@@ -265,6 +265,7 @@ def fibonacci(n: Number) -> list:
             fibonacci_sequence.append(next_number)
         return fibonacci_sequence
 
+from builtins import range as builtin_range
 
 @overload
 def range(stop: int) -> range:
@@ -277,7 +278,7 @@ def range(stop: int) -> range:
     Returns:
         range: A range object from 0 to stop.
     """
-    return range(stop)
+    return builtin_range(stop)
 
 @overload
 def range(start: int, stop: int) -> range:
@@ -291,7 +292,7 @@ def range(start: int, stop: int) -> range:
     Returns:
         range: A range object from start to stop.
     """
-    return range(start, stop)
+    return builtin_range(start, stop)
 
 @overload
 def range(start: int, stop: int) -> range:
@@ -305,7 +306,7 @@ def range(start: int, stop: int) -> range:
     Returns:
         range: A range object from start to stop with step -1 if start < stop else 1.
     """
-    return range(start, stop, -1 if start < stop else 1)
+    return builtin_range(start, stop, -1 if start < stop else 1)
 
 
 def divide_by_power_of_2(int: Number, divider: Number) -> int:

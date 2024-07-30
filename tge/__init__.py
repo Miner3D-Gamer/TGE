@@ -8,8 +8,7 @@ import os
 importing = __name__ != "__main__"
 
 if not importing:
-    print("This library is meant to imported, not to be run.")
-    quit()
+    raise RuntimeError("This library is meant to be imported, not run directly. Dummy.")
 
 __name__ = "tge"
 __author__ = "Miner3D"
@@ -89,18 +88,18 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 INIT_TIME_BEFORE_IMPORTING = tm.time() - start_import
 
 
-#   Import modules from "manipulation"
+
 from .manipulation import string_utils
 from .manipulation import list_utils
 from .manipulation import dictionary_utils as dict_utils
 from .manipulation import expansions
 
-#   Import modules from "compatibility"
+
 from .compatibility import tge_pygame
 from .compatibility import tge_tkinter
 
 
-#   Import modules from "conversion"
+
 from .conversion import binary as binary_conversion
 from .conversion import temperature as temperature_conversion
 from .conversion import time as time_conversion
@@ -108,42 +107,39 @@ from .conversion import units as units_conversion
 from .conversion import data as data_conversion
 
 
-#   Import modules from "math_functions"
+
 from .math_functions import financial_calculations
 from .math_functions import geometry_calculations
 from .math_functions import math_functions
 from .math_functions import statistics_calculations
 
 
-#   Import modules from "system_interaction"
+
 from .system_interactions import clipboard_operations as clipboard
 from .system_interactions import cursor_operations as cursor
 from .system_interactions import keyboard_operations as keyboard
 from .system_interactions import window_manager
 
 
-
-#   Import modules from root directory
+from .validation import validation
+from .codec import codec
 from . import audio
 from . import console_utils as console
 from . import random_generators as random
-from .validation import validation
 from . import internet
 from . import library as library_utils
 from . import tbe
-from .codec import codec
 from . import time_utils
 from . import file_operations
 from . import formatting_utils as formatting
 from . import bool_operations
 from . import bitwise
-from . import hello_world
-
+from . import image_processing
+from . import steam_utils
 # from .file_system import SimDirFilSystem
 
 
-from . import image_processing
-from . import steam_utils
+
 
 
 tim = tm.time()

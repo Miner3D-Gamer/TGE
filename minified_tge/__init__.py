@@ -3,7 +3,7 @@ import time as tm
 start_import=tm.time()
 import os
 importing=__name__!='__main__'
-if not importing:print('This library is meant to imported, not to be run.');quit()
+if not importing:raise RuntimeError('This library is meant to be imported, not run directly. Dummy.')
 __name__='tge'
 __author__='Miner3D'
 __license__='LGPL, GNU Lesser General Public License'
@@ -46,20 +46,19 @@ from.system_interactions import clipboard_operations as clipboard
 from.system_interactions import cursor_operations as cursor
 from.system_interactions import keyboard_operations as keyboard
 from.system_interactions import window_manager
+from.validation import validation
+from.codec import codec
 from.import audio
 from.import console_utils as console
 from.import random_generators as random
-from.validation import validation
 from.import internet
 from.import library as library_utils
 from.import tbe
-from.codec import codec
 from.import time_utils
 from.import file_operations
 from.import formatting_utils as formatting
 from.import bool_operations
 from.import bitwise
-from.import hello_world
 from.import image_processing
 from.import steam_utils
 tim=tm.time()

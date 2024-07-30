@@ -24,4 +24,10 @@ def hold_key(key_code):
 
 def release_key(key_code):
     user32.keybd_event(key_code, 0, KEYEVENTF_KEYUP, 0)
-    
+
+def key_to_virtual_key(key:str)->int:
+    if key == "\n":
+        key = "enter"
+    elif key == "\t":
+        key = "tab"
+    return keys.__dict__.get(key)

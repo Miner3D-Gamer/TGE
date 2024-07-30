@@ -248,6 +248,7 @@ for file_id in range(len(urls)):
         print(f"Writing to {path}")
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
+    print("Done writing!")
 
 
 

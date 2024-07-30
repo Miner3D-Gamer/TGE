@@ -1,5 +1,6 @@
 from.cursor_operations import USER32,KERNEL32,ctypes,CF_UNICODETEXT,GHND
 from..import SYSTEM_NAME
+from.keyboard_operations import press_key,key_to_virtual_key
 from..file_operations import get_file_extension
 if SYSTEM_NAME=='windows':from.clipboard.clipboard_windows import*
 else:from.clipboard.clipboard_pyperclip import*
@@ -13,3 +14,7 @@ def append_to_clipboard(text):clip=get_clipboard();clip+=text;copy_to_clipboard(
 def prepend_to_clipboard(text):clip=get_clipboard();clip=text+clip;copy_to_clipboard(clip)
 def get_clipboard_size():return len(get_clipboard())
 def get_clipboard_file_extension():return get_file_extension(get_clipboard())
+def paste_clipboard():
+ clipboard=get_clipboard()
+ for line in clipboard.splitlines(True):
+  for character in line:press_key(key_to_virtual_key(character))

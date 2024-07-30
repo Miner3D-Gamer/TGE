@@ -1,5 +1,5 @@
 import re
-from typing import Iterable
+from typing import Iterable, Union
 
 from ipaddress import IPv4Address, IPv6Address, AddressValueError
 
@@ -9,7 +9,7 @@ from . import numbers
 
 
 
-def is_empty(text:str|Iterable) -> bool:
+def is_empty(text:Union[str, Iterable]) -> bool:
     """
     Returns a boolean indicating whether the given text is empty or not.
 

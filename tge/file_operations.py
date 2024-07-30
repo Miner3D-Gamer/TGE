@@ -930,7 +930,7 @@ def create_shortcut(
 
 def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(
     path: str,
-) -> str | None:
+) -> Union[str, None]:
     files = os.listdir(path)  # Get a list of files in the specified directory
     max_num = -1
     latest_file = None

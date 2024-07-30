@@ -94,7 +94,7 @@ def download_youtube_video(
     save_path: str,
     file_name: str,
     quality: str,
-    audio_type: str | None = None,
+    audio_type: Union[str, None] = None,
 ) -> Tuple[bool, str]:
     """
     Download a YouTube video as audio from the given URL and save it to the specified location.

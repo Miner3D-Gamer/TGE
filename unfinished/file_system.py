@@ -2,7 +2,7 @@ import os
 import time
 from tge.tbe import ArgumentHandler
 # import re
-
+from typing import Union
 
 # import sys
 
@@ -40,7 +40,7 @@ class SimDirFilSystem:  # Simple Directory File System
     def __init__(
         self,
         home_directory: str,
-        current_drive_letter: str | None = None,
+        current_drive_letter: Union[str, None] = None,
         current_offset_directory: str = "",
     ):
         if current_drive_letter is None:

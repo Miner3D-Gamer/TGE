@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import concurrent.futures
 import datetime
 from collections.abc import Iterable
-
+from typing import Union
 
 def get_game_name(session:requests.Session, game_id:int)->str:
     """
@@ -101,7 +101,7 @@ def get_valid_game_ids_with_names()->list:
     valid_game_ids_with_names = check_game_ids_with_names(game_ids, result)
     return valid_game_ids_with_names
 
-def get_response(session:requests.Session, game_id:int)->bytes|None:
+def get_response(session:requests.Session, game_id:int)->Union[bytes,None]:
     """
     Retrieve the HTTP response content for a specific game on Steam Community.
 
@@ -162,7 +162,7 @@ def is_valid_game_id(session:requests.Session, game_id:int)->bool:
     
     return False
 
-def check_game_ids(game_ids:Iterable)->dict[bool|None]:
+def check_game_ids(game_ids:Iterable)->dict[Union[bool,None]]:
     """
     Check the validity of a list of game IDs using multi-threading.
     
@@ -535,10 +535,10 @@ def get_steam_data()->dict:
     steam_data["social"] = {}
     steam_data["social"]["friends"], steam_data["social"]["groups"] = get_steam_friends()
     return steam_data
+from numbers import Number
 
 
-
-def convert_to_datetime(timestamp:float|int)->datetime.datetime:
+def convert_to_datetime(timestamp:Number)->datetime.datetime:
     """
     Converts a Unix timestamp to a datetime object.
 

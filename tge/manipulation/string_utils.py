@@ -1,5 +1,5 @@
 import random
-from typing import Iterable, NoReturn
+from typing import Iterable, Union
 
 
 def scramble_word(word:str)->str:
@@ -469,15 +469,15 @@ def replace_list_with_list(
     raise ValueError("List lengths don't match")
 
 def replace(
-    string: str, replacers: str | Iterable, replacements: str | Iterable
+    string: str, replacers: Union[str , Iterable], replacements: Union[str , Iterable]
 ) -> str:
     """
     Replace substrings in a string based on the types of `replacers` and `replacements`.
 
     Args:
         string (str): The input string to modify.
-        replacers (str | Iterable): A single character/substring to replace or an iterable of such substrings.
-        replacements (str | Iterable): A single replacement string or an iterable of replacement strings.
+        replacers (Union[str , Iterable]): A single character/substring to replace or an iterable of such substrings.
+        replacements (Union[str , Iterable]): A single replacement string or an iterable of replacement strings.
 
     Returns:
         str: The modified string after replacements.

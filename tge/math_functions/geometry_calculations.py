@@ -398,15 +398,15 @@ def area_of_oval(width: int, height: int) -> int:
     return area
 
 
-def area_of_triangle(base: Number | float, height: Number | float) -> float | float:
+def area_of_triangle(base: Number, height: Number) -> float:
     """Calculate the area of a triangle.
 
     Args:
-        base (float | int): The base length of the triangle.
-        height (float | int): The height of the triangle.
+        base (Number): The base length of the triangle.
+        height (Number): The height of the triangle.
 
     Returns:
-        float | int: The area of the triangle."""
+        Number: The area of the triangle."""
     return 0.5 * base * height
 
 

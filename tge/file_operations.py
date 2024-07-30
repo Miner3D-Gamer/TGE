@@ -959,16 +959,61 @@ def is_directory_empty(directory_path: str) -> bool:
 def get_filesize(directory: str):
     return os.path.getsize(directory)
 
-def get_file_size_of_directory(directory: str, chunk_size:int = 4096) -> int:
+def get_file_size_of_directory(directory: str, blacklisted_file_extensions: list = [], chunk_size: int = 4096) -> int:
     total_size = 0
-    
+
     for dirpath, dirnames, filenames in os.walk(directory):
         for f in filenames:
+            if any(f.endswith(ext) for ext in blacklisted_file_extensions):
+                continue
+
             fp = os.path.join(dirpath, f)
             if not os.path.islink(fp):
                 file_size = os.path.getsize(fp)
-                # Round up file size to the nearest chunk size
                 rounded_size = math.ceil(file_size / chunk_size) * chunk_size
                 total_size += rounded_size
-                
+    
     return total_size
+
+def get_user_directory():
+    return pathlib_path.home()
+
+
+
+
+
+
+
+
+
+from . import SYSTEM_NAME
+
+
+if SYSTEM_NAME == "windows":
+    def add_to_path_to_system_path_variables(path):
+
+        current_path = os.getenv("PATH")
+        new_path = f"{current_path};{path}"
+        os.system(f'setx PATH "{new_path}"')
+
+elif SYSTEM_NAME == "darwin":
+    import subprocess
+    def add_to_path_to_system_path_variables(path):
+            with open(os.path.expanduser("~/.bash_profile"), "a") as file:
+                file.write(f'\nexport PATH="{path}:$PATH"\n')
+            subprocess.run(["source", "~/.bash_profile"], shell=True, check=True)
+elif SYSTEM_NAME == "linux":
+    import subprocess
+    def add_to_path_to_system_path_variables(path):
+            with open(os.path.expanduser("~/.bashrc"), "a") as file:
+                file.write(f'\nexport PATH="{path}:$PATH"\n')
+            subprocess.run(["source", "~/.bashrc"], shell=True, check=True)
+else:
+    def add_to_path_to_system_path_variables(path):
+        raise BaseException("Unknown System")
+
+
+
+
+
+

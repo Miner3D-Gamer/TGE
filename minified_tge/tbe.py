@@ -207,18 +207,22 @@ class ArgumentHandler:
   if not item in self.arguments:return-1
   value_id=self.arguments.index(item);return value_id
  def is_empty(self):return self.argument_list_length==0
+def burn_value_into_function(x):
+ def burned_value_function():return x
+ return burned_value_function
 class HashMap:
- def __init__(self,*items):self.map=[*items]
+ def __init__(self,*items):self.map=list(items)
  def append(self,value):
-  if not value in self.map:self.map.append(value)
- def extend(self,value):
-  if not value in self.map:self.map.append(*value)
+  if value not in self.map:self.map.append(value)
+ def extend(self,values):
+  for value in values:
+   if value not in self.map:self.map.append(value)
  def pop(self,index):return self.map.pop(index)
  def remove(self,value):self.map.remove(value)
  def index(self,value):return self.map.index(value)
  def __getitem__(self,index):return self.map[index]
- def clear(self):self.map=[]
- def __iter__(self):return self.map
+ def clear(self):self.map.clear()
+ def __iter__(self):return iter(self.map)
  def __repr__(self):return str(self.map)
  def __contains__(self,item):return item in self.map
 def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__)):

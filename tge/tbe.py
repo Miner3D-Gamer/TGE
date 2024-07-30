@@ -86,7 +86,7 @@
 
 from collections.abc import Iterable
 from types import FunctionType, ModuleType, MethodType
-from typing import List, Union, Tuple , Any, get_type_hints
+from typing import List, Union, Tuple , Any, get_type_hints, Iterator
 import ast
 import os
 import sys
@@ -567,15 +567,13 @@ Returns:
     list[str]: A list of matching words."""
     return [word for word in word_list if word.startswith(prefix)]
 
-def strict_autocomplete(prefix:str, word_list:Iterable[str])->list[str]|str:
+def strict_autocomplete(prefix:str, word_list:Iterable[str])->Union[list[str], str]:
     """Return a single word, the prefix itself, or a list of words that start with the specified `prefix`.
 
 Args:
     prefix (str): The prefix to match against.
     word_list (Iterable[str]): A list of words to search through.
 
-Returns:
-    str | list[str]: The single matching word, the prefix, or a list of matching words.
 """
     words = autocomplete(prefix=prefix, word_list=word_list)
     if len(words) == 1:
@@ -597,13 +595,13 @@ Returns:
 
 
 
-def split_with_list(string: str, separators: Iterable, limit: None | int = None) -> list[str]:
+def split_with_list(string: str, separators: Iterable, limit: Union[None, int] = None) -> list[str]:
     """Split a string by multiple separators and return the resulting substrings.
 
 Args:
     string (str): The string to split.
     separators (Iterable): A list of separators to replace with a unique delimiter.
-    limit (None | int, optional): The maximum number of splits to perform. Defaults to None, meaning no limit.
+    
 
 Returns:
     list[str]: A list of substrings resulting from the split operation."""
@@ -613,14 +611,14 @@ Returns:
 
 
 
-def analyze_text(text:str)->dict[str:str|list]:
+def analyze_text(text:str)->dict[str, Union[str,list]]:
     """Analyze the text to provide various statistics about sentences, words, and commas.
 
 Args:
     text (str): The text to analyze.
 
 Returns:
-    dict[str, str | list]: A dictionary with the following keys:
+    dict[str, str  list]: A dictionary with the following keys:
         - "sentence_amount": Number of sentences.
         - "total_word_count": Total number of words.
         - "average_word_count_per_sentence": Average number of words per sentence.
@@ -985,7 +983,7 @@ Details:
 
 
 
-def get_function_id_by_name(func_name)->None|ModuleType:
+def get_function_id_by_name(func_name)->Union[None,ModuleType]:
     """
     Retrieve the function object (ID) from its name.
 
@@ -1022,7 +1020,7 @@ class DualInfinite:
     """A value that is both positively and negatively infinite, not as range but as literal value"""
 
 
-def div(a:Number, b:Number)->float|DualInfinite:
+def div(a:Number, b:Number)->Union[float,DualInfinite]:
     return a/b if b!=0 else DualInfinite
 
 
@@ -1375,11 +1373,11 @@ Returns:
 
 class ArgumentHandler:
     "Handle command-line arguments by allowing retrieval, deletion, and flag-based access."
-    def __init__(self, arguments: None | list = None) -> None:
+    def __init__(self, arguments: Union[None , list] = None) -> None:
         """Initialize the object with a list of arguments. If no arguments are provided, use command-line arguments excluding the script name.
 
 Args:
-    arguments (None | list, optional): A list of arguments. Defaults to None, in which case command-line arguments are used.
+    arguments (Union[None , list], optional): A list of arguments. Defaults to None, in which case command-line arguments are used.
 
 Attributes:
     arguments (list): The list of arguments."""
@@ -1388,7 +1386,7 @@ Attributes:
         self.arguments: list = arguments
         self.argument_list_length = len(arguments)
 
-    def has_argument(self, argument: str, delete:bool=False) -> str | None:
+    def has_argument(self, argument: str, delete:bool=False) -> Union[str , None]:
         """Retrieve the value of a specified argument. Optionally remove it from the list and adjust the argument count.
 
         Args:
@@ -1397,7 +1395,7 @@ Attributes:
             default (Any, optional): The value to return if the argument is not found. Defaults to None.
 
         Returns:
-        str | None: The value of the argument, or `default` if the argument is not found."""
+        Union[str , None]: The value of the argument, or `default` if the argument is not found."""
         value_id = self.get_id(argument)
         if value_id < 0:
             False
@@ -1408,7 +1406,7 @@ Attributes:
             
         return False
     
-    def get_argument_by_flag(self, flag: str, delete:bool=False, default:Any=None) -> str | None:
+    def get_argument_by_flag(self, flag: str, delete:bool=False, default:Any=None) -> Union[str , None]:
         """Retrieve the value associated with a specified flag. Optionally remove the flag and its value from the list and adjust the argument count.
 
         Args:
@@ -1417,7 +1415,7 @@ Attributes:
             default (Any, optional): The value to return if the flag or its value is not found. Defaults to None.
 
         Returns:
-        str | None: The value associated with the flag, or `default` if the flag or value is not found."""
+        str  None: The value associated with the flag, or `default` if the flag or value is not found."""
         value_id = self.get_id(flag)
         if value_id < 0:
             return default
@@ -1461,7 +1459,10 @@ Returns:
 
 
 
-
+def burn_value_into_function(x):
+    def burned_value_function():
+        return x
+    return burned_value_function
 
 
 
@@ -1470,39 +1471,40 @@ Returns:
 
 
 class HashMap:
-    def __init__(self, *items) -> None:
-        self.map = [*items]
+    def __init__(self, *items: Any) -> None:
+        self.map: List[Any] = list(items)
 
     def append(self, value: Any) -> None:
-        if not value in self.map:
+        if value not in self.map:
             self.map.append(value)
 
-    def extend(self, value: Any) -> None:
-        if not value in self.map:
-            self.map.append(*value)
-    
-    def pop(self, index:int)->Any:
+    def extend(self, values: List[Any]) -> None:
+        for value in values:
+            if value not in self.map:
+                self.map.append(value)
+
+    def pop(self, index: int) -> Any:
         return self.map.pop(index)
 
-    def remove(self, value:Any) -> None:
+    def remove(self, value: Any) -> None:
         self.map.remove(value)
-    
-    def index(self, value:Any)->None:
+
+    def index(self, value: Any) -> int:
         return self.map.index(value)
-    
-    def __getitem__(self, index:int)->None:
+
+    def __getitem__(self, index: int) -> Any:
         return self.map[index]
 
     def clear(self) -> None:
-        self.map = []
+        self.map.clear()
 
-    def __iter__(self):
-        return self.map
+    def __iter__(self) -> Iterator[Any]:
+        return iter(self.map)
 
     def __repr__(self) -> str:
         return str(self.map)
-    
-    def __contains__(self, item:Any)->bool:
+
+    def __contains__(self, item: Any) -> bool:
         return item in self.map
 
 
@@ -1732,7 +1734,7 @@ def _serialize_trie(node:TrieNode)->dict:
 
     return result
 
-def compress_directory_list(paths:Iterable)->dict[list|str]:
+def compress_directory_list(paths:Iterable)->dict[Union[list,str]]:
     "Compress a list of file paths into a dictionary format representing the directory structure."
     trie = _build_trie(paths)
     compressed = _serialize_trie(trie)
@@ -1755,7 +1757,7 @@ Returns:
     list[str]: A list of file paths extracted from the compressed structure."""
     paths = []
 
-    def dfs(node:str|list|dict, current_path=""):
+    def dfs(node:Union[str,list,dict], current_path=""):
         "Inner loop"
         if isinstance(node, list):
             paths.append(f"{current_path}/{node[0]}".strip('/'))

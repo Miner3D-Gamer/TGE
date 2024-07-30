@@ -101,11 +101,11 @@ from .compatibility import tge_tkinter
 
 
 #   Import modules from "conversion"
-from .conversion import binary as binary
-from .conversion import temperature as temperature
-from .conversion import time as time
-from .conversion import units as units
-from .conversion import data as data
+from .conversion import binary as binary_conversion
+from .conversion import temperature as temperature_conversion
+from .conversion import time as time_conversion
+from .conversion import units as units_conversion
+from .conversion import data as data_conversion
 
 
 #   Import modules from "math_functions"
@@ -119,6 +119,8 @@ from .math_functions import statistics_calculations
 from .system_interactions import clipboard_operations as clipboard
 from .system_interactions import cursor_operations as cursor
 from .system_interactions import keyboard_operations as keyboard
+from .system_interactions import window_manager
+
 
 
 #   Import modules from root directory

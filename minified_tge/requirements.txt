@@ -21,3 +21,4 @@ json5
 json
 autoflake
 py7zr
+pyobjc

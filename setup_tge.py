@@ -2,6 +2,7 @@ import os, json
 
 import tge
 
+
 tge.console.clear()
 
 print(tge.INIT_TIME)
@@ -14,7 +15,7 @@ print(
 )
 print()
 tge.tbe.print_check_for_functions_in_module_with_missing_notations(
-    tge.manipulation.list_utils
+    tge.list_utils
 )
 # print("lines:", tge.tbe.count_lines_in_directory("./tge"))
 dir = f"{os.getcwd()}/tge/"
@@ -96,7 +97,7 @@ for root, dirs, files in os.walk(dir, topdown=False):
                         tge.tbe.remove_unused_libraries(
                             "".join(
                                 [
-                                    tge.manipulation.string_utils.left_replace(
+                                    tge.string_utils.left_replace(
                                         line, "	", " "
                                     )
                                     for line in tge.tbe.minify(

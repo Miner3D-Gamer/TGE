@@ -1,5 +1,6 @@
 from .. import SYSTEM_NAME
 
+from.shared import *
 
 if SYSTEM_NAME == "windows":
     import ctypes
@@ -7,8 +8,6 @@ if SYSTEM_NAME == "windows":
     class POINT(ctypes.Structure):
         _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
 
-    USER32 = ctypes.windll.user32
-    KERNEL32 = ctypes.windll.kernel32
 
     # // Mouse
     CURSOR_POINT = POINT()

@@ -56,8 +56,21 @@
 # Get import time of tge
 import os, sys, time
 
-import tge.library
+import tge
 sys.path.append(os.path.dirname(os.getcwd()))
 import tge # type: ignore
 print(tge.INIT_TIME)
 
+
+
+
+
+# while True:
+    
+    
+#     if tge.keyboard.is_key_pressed(tge.keyboard.keys.right_shift):
+#         print(tge.clipboard.get_clipboard())
+#         tge.clipboard.paste_clipboard()
+#         time.sleep(1)
+#     time.sleep(0.1)
+    

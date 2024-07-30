@@ -34,12 +34,11 @@ class ArgumentHandler:
         return D
 
     def has_argument(self, argument, delete=False):
-        value_id = self.get_id(argument)
+        value_id = self.a.index(argument)
         if value_id < 0:
             return False
         if delete:
-            self.arguments.remove(value_id)
-            self.argument_list_length -= 1
+            self.a.remove(value_id)
         return True
 
 

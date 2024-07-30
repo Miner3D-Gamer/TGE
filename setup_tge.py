@@ -1,12 +1,13 @@
 import os, json
 
 import tge
-
+import minified_tge
 
 tge.console.clear()
 
-print(tge.INIT_TIME)
-
+print("Importing TGE took %s milliseconds"%(tge.INIT_TIME*1000))
+print("Importing TGE took %s milliseconds"%(minified_tge.INIT_TIME*1000))
+del minified_tge
 total_functions = tge.tbe.count_functions_in_library("tge")
 print("TGE has %s functions" % total_functions)
 undocumented = tge.tbe.print_undocumented_functions_in_directory()

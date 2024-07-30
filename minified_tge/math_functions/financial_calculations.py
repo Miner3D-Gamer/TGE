@@ -1,4 +1,3 @@
-from numbers import Number
 def calculate_present_value(principal,rate,years):return principal*pow(1+rate/100,years)
 def percentage_increase(number,percentage):A=number;return(percentage-A)/A
 def percentage_decrease(old_grade,new_grade):A=old_grade;return(A-new_grade)/A

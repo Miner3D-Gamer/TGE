@@ -9,8 +9,8 @@ def MiddleClick():ctypes.windll.user32.mouse_event(MOUSEEVENTF_MIDDLEDOWN,0,0,0,
 def ScrollV(clicks,wheel_delta=WHEEL_DELTA):ctypes.windll.user32.mouse_event(MOUSEEVENTF_WHEEL,0,0,wheel_delta*clicks,0)
 def ScrollH(clicks,wheel_delta=WHEEL_DELTA):ctypes.windll.user32.mouse_event(MOUSEEVENTF_HWHEEL,0,0,wheel_delta*clicks,0)
 def Scroll(dx=None,dy=None,wheel_delta_x=WHEEL_DELTA,wheel_delta_y=WHEEL_DELTA):
-	if dx:ScrollH(dx,wheel_delta=wheel_delta_x)
-	if dy:ScrollV(dy,wheel_delta=wheel_delta_y)
+ if dx:ScrollH(dx,wheel_delta=wheel_delta_x)
+ if dy:ScrollV(dy,wheel_delta=wheel_delta_y)
 def LeftMouseDown():ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0)
 def RightMouseDown():ctypes.windll.user32.mouse_event(MOUSEEVENTF_RIGHTDOWN,0,0,0,0)
 def MiddleMouseDown():ctypes.windll.user32.mouse_event(MOUSEEVENTF_MIDDLEDOWN,0,0,0,0)

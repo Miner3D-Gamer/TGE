@@ -11,19 +11,19 @@ __url__='https://github.com/Miner3DGaming/TGE'
 __doc__='https://github.com/Miner3DGaming/TGE/blob/main/README.MD'
 import sys,requests
 def is_tge_outdated():
-	A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
-	with open(os.path.dirname(__file__)+'/update.hashed','r')as B:C=B.read();D=str(A.content)[2:-1];return C!=D
+ A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
+ with open(os.path.dirname(__file__)+'/update.hashed','r')as B:C=B.read();D=str(A.content)[2:-1];return C!=D
 from.mini_lib import platform_mini
 if sys.platform.startswith('java'):
-	def get_system():return'jython'
+ def get_system():return'jython'
 elif sys.platform==_A:
-	def get_system():return _A
+ def get_system():return _A
 elif sys.platform=='win32':
-	def get_system():return'windows'
+ def get_system():return'windows'
 elif platform_mini.system()=='Linux':
-	def get_system():return'linux'
+ def get_system():return'linux'
 else:
-	def get_system():return'unknown'
+ def get_system():return'unknown'
 SYSTEM_NAME=get_system()
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']='hide'
 INIT_TIME_BEFORE_IMPORTING=tm.time()-start_import

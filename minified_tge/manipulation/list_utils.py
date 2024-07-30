@@ -1,33 +1,32 @@
 from itertools import permutations as itertools_permutations
-from collections.abc import Iterable
 def list_mul(lst):
-	A=1
-	for B in lst:
-		if isinstance(B,(int,float)):A=A*B
-	return A
+ A=1
+ for B in lst:
+  if isinstance(B,(int,float)):A=A*B
+ return A
 def remove_duplicates(list):
-	A=[]
-	for B in list:
-		if B not in A:A.append(B)
-	return A
+ A=[]
+ for B in list:
+  if B not in A:A.append(B)
+ return A
 def count_occurrences(list,item):
-	A=0
-	for B in list:
-		if B==item:A+=1
-	return A
+ A=0
+ for B in list:
+  if B==item:A+=1
+ return A
 def calculate_average(lst):
-	A=len(lst)
-	if A==0:return 0
-	B=sum(lst);C=B/A;return C
+ A=len(lst)
+ if A==0:return 0
+ B=sum(lst);C=B/A;return C
 def find_common_elements(lst1,lst2):
-	A=[]
-	for B in lst1:
-		if B in lst2:A.append(B)
-	return A
+ A=[]
+ for B in lst1:
+  if B in lst2:A.append(B)
+ return A
 def median(lst):
-	A=sorted(lst);B=len(A)
-	if B%2==0:return(A[B//2-1]+A[B//2])/2
-	else:return A[B//2]
+ A=sorted(lst);B=len(A)
+ if B%2==0:return(A[B//2-1]+A[B//2])/2
+ else:return A[B//2]
 def reverse_list(lst):return lst[::-1]
 def find_max_min_difference(lst):return max(lst)-min(lst)
 def find_missing_number(lst):return sum(range(1,len(lst)+1))-sum(lst)
@@ -38,5 +37,5 @@ def permutations(lst):return list(itertools_permutations(lst))
 def limit_list(lst,limit):return lst[:limit]
 def get_items_from_list(lst,start,end):return lst[start:end]
 def sort_list_of_dictionaries(lst,key):
-	try:return sorted(lst,key=lambda x:x[key]),True
-	except:return lst,False
+ try:return sorted(lst,key=lambda x:x[key]),True
+ except:return lst,False

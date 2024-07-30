@@ -1,4 +1,3 @@
-from typing import Final
 backspace=8
 tab=9
 clear=12

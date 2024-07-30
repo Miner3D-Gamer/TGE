@@ -1,6 +1,5 @@
 from math import sqrt
 from.math_functions import get_pi
-from numbers import Number
 def volume_of_cuboid(length,width,height):return length*width*height
 def volume_of_cube(side):return side**3
 def volume_of_sphere(radius):return 4/3*3.14159*radius**3
@@ -32,11 +31,10 @@ def area_of_triangle(base,height):return .5*base*height
 def calculate_distance_between_two_points(x,y):return((x-y)**2)**.5
 def calculate_distance_between_three_points(x,y,z):return((x-z)**2+(y-z)**2)**.5
 def calculate_distance_between_four_points(x,y,z,a):return((x-a)**2+(y-a)**2+(z-a)**2)**.5
-from collections.abc import Iterable
 def calculate_distance_between_points(*A):
-	if len(A)<2:return .0
-	B=.0
-	for C in range(len(A)-1):D,E=A[C];F,G=A[C+1];H=sqrt((F-D)**2+(G-E)**2);B+=H
-	return B
+ if len(A)<2:return .0
+ B=.0
+ for C in range(len(A)-1):D,E=A[C];F,G=A[C+1];H=sqrt((F-D)**2+(G-E)**2);B+=H
+ return B
 def vector_magnitude(vector):A=vector;return sqrt(A[0]**2+A[1]**2)
 def hamming_distance(string1,string2):return sum(A!=B for(A,B)in zip(string1,string2))

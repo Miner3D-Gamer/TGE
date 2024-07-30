@@ -9,7 +9,8 @@ __author__='Miner3D'
 __license__='LGPL, GNU Lesser General Public License'
 __url__='https://github.com/Miner3DGaming/TGE'
 __doc__='https://github.com/Miner3DGaming/TGE/blob/main/README.MD'
-import sys,requests
+import sys
+import requests
 def is_tge_outdated():
  A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
  with open(os.path.dirname(__file__)+'/update.hashed','r')as B:C=B.read();D=str(A.content)[2:-1];return C!=D

@@ -2,7 +2,7 @@ from ..cursor_operations import WHEEL_DELTA
 import pyautogui as pygui
 
 
-def getScreenDimensions() -> tuple[int, int]:
+def getScreenDimensions() -> "tuple[int, int]":
     "Retrieve the dimensions of the screen as a tuple (width, height)."
     return pygui.size()
 
@@ -15,7 +15,7 @@ def mouseTo(x: int, y: int) -> None:
     pygui.moveTo(x, y)
 
 
-def mouseGet() -> tuple[int, int]:
+def mouseGet() -> "tuple[int, int]":
     "Retrieve the current mouse cursor position as a tuple (x, y)."
     return pygui.position()
 

@@ -167,7 +167,7 @@ def mux_eight(
     return inputs[index]
 
 
-def mux_any(inputs: Iterable[bool], selectors: Iterable[bool]) -> bool:
+def mux_any(inputs: "Iterable[bool]", selectors: "Iterable[bool]") -> bool:
     if len(inputs) != 2 ** len(selectors):
         raise ValueError(
             "Number of inputs must be 2^n where n is the number of selectors."
@@ -195,7 +195,7 @@ def nor_any(*args: bool) -> bool:
 
 def binary_to_gray(
     b3: bool, b2: bool, b1: bool, b0: bool
-) -> tuple[bool, bool, bool, bool]:
+) -> "tuple[bool, bool, bool, bool]":
     g3 = b3
     g2 = b3 ^ b2
     g1 = b2 ^ b1
@@ -203,7 +203,7 @@ def binary_to_gray(
     return g3, g2, g1, g0
 
 
-def demux(input: bool, *select: bool) -> list[bool]:
+def demux(input: bool, *select: bool) -> "list[bool]":
     n = len(select)
     outputs = [False] * (2**n)
 
@@ -215,21 +215,21 @@ def demux(input: bool, *select: bool) -> list[bool]:
     return outputs
 
 
-def half_adder(a: bool, b: bool) -> tuple[bool, bool]:
+def half_adder(a: bool, b: bool) -> "tuple[bool, bool]":
     return xor(a, b), a and b
 
 
-def full_adder(a: bool, b: bool, cin: bool = False) -> tuple[bool, bool]:
+def full_adder(a: bool, b: bool, cin: bool = False) -> "tuple[bool, bool]":
     sum1, carry1 = half_adder(a, b)
     sum2, carry2 = half_adder(sum1, cin)
     return sum2, carry1 or carry2
 
 
 def four_bit_adder(
-    a: tuple[bool, bool, bool, bool],
-    b: tuple[bool, bool, bool, bool],
+    a: "tuple[bool, bool, bool, bool]",
+    b: "tuple[bool, bool, bool, bool]",
     carry: bool = False,
-) -> tuple[bool, bool, bool, bool, bool]:
+) -> "tuple[bool, bool, bool, bool, bool]":
     carry, sum1 = full_adder(a[3], b[3], carry)
     carry, sum2 = full_adder(a[2], b[2], carry)
     carry, sum3 = full_adder(a[1], b[1], carry)
@@ -237,7 +237,7 @@ def four_bit_adder(
     return sum4, sum3, sum2, sum1, carry
 
 
-def two_complement(b: tuple[bool, bool, bool, bool]) -> tuple[bool, bool, bool, bool]:
+def two_complement(b: "tuple[bool, bool, bool, bool]") -> "tuple[bool, bool, bool, bool]":
     # Invert the bits
     inverted_b = tuple((not (bit)) for bit in b)
     # Add 1 to the inverted bits
@@ -246,15 +246,15 @@ def two_complement(b: tuple[bool, bool, bool, bool]) -> tuple[bool, bool, bool, 
 
 
 def four_bit_subtractor(
-    a: tuple[bool, bool, bool, bool],
-    b: tuple[bool, bool, bool, bool],
+    a: "tuple[bool, bool, bool, bool]",
+    b: "tuple[bool, bool, bool, bool]",
     borrow: bool = False,
-) -> tuple[bool, bool, bool, bool, bool]:
+) -> "tuple[bool, bool, bool, bool, bool]":
     b_complement = two_complement(b)
     result, carry_out = four_bit_adder(a, b_complement, borrow)
     return result + (carry_out,)
 
-def any_bit_adder(a: Iterable[bool], b: Iterable[bool], carry: bool = False) -> tuple[list[bool], bool]:
+def any_bit_adder(a: "Iterable[bool]", b: "Iterable[bool]", carry: bool = False) -> "tuple[list[bool], bool]":
     if len(a) != len(b):
         raise ValueError("Input lists must have the same length")
 
@@ -268,7 +268,7 @@ def any_bit_adder(a: Iterable[bool], b: Iterable[bool], carry: bool = False) -> 
     return result, carry
 
 
-def number_to_bools(num: int) -> list[bool]:
+def number_to_bools(num: int) -> "list[bool]":
     if num < 0:
         raise ValueError("Input number must be non-negative")
 
@@ -283,7 +283,7 @@ def number_to_bools(num: int) -> list[bool]:
 
     return bool_list
 
-def bools_to_number(bools: Iterable[bool]) -> int:
+def bools_to_number(bools: "Iterable[bool]") -> int:
     num = 0
     bit_length = len(bools)
     for i in range(bit_length):

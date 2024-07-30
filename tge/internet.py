@@ -95,7 +95,7 @@ def download_youtube_video(
     file_name: str,
     quality: str,
     audio_type: Union[str, None] = None,
-) -> Tuple[bool, str]:
+) -> "Tuple[bool, str]":
     """
     Download a YouTube video as audio from the given URL and save it to the specified location.
 
@@ -172,7 +172,7 @@ def post_to_discord_webhook(
 from urllib.parse import urlparse, parse_qs
 
 
-def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
+def extract_youtube_info(link: str) -> "Dict[str, Optional[str]]":
     """
     Extracts information from a YouTube video link.
 

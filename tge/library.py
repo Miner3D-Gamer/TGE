@@ -15,7 +15,7 @@ def is_library_installed(library_name: str) -> bool:
     return spec is not None
 
 
-def download_library(library_name: str) -> Tuple[bool, str]:
+def download_library(library_name: str) -> "Tuple[bool, str]":
     """
     Downloads and installs a Python library using pip.
 
@@ -99,7 +99,7 @@ def install_library_from_github(github_repo_url: str) -> None:
 from collections.abc import Iterable
 
 
-def install_all_libraries(libs: Iterable[str]) -> list[tuple[bool, str]]:
+def install_all_libraries(libs: "Iterable[str]") -> "list[tuple[bool, str]]":
     """
     Install a list of libraries and return a list of installation results.
 
@@ -107,7 +107,7 @@ def install_all_libraries(libs: Iterable[str]) -> list[tuple[bool, str]]:
     and it collects the results of the installation attempts.
 
     Args:
-        libs (Iterable[str]): An iterable containing the names of libraries to be installed.
+        libs ("Iterable[str]"): An iterable containing the names of libraries to be installed.
 
     Returns:
         list[tuple[bool, str]]: A list of tuples where each tuple contains:

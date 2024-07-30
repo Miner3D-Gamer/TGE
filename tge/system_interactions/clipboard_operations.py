@@ -1,15 +1,17 @@
-from .cursor_operations import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
+#from .shared import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
 from .. import SYSTEM_NAME
+import os
 
-from .keyboard_operations import press_key, key_to_virtual_key
 
 
-from ..file_operations import get_file_extension
 
 if SYSTEM_NAME == "windows":
     from .clipboard.clipboard_windows import *
+    from .keyboard.windows.keyboard import press_key, key_to_virtual_key
 else:
     from .clipboard.clipboard_pyperclip import *
+    from .keyboard.linux.keyboard import press_key, key_to_virtual_key
+
 
 
 def save_clipboard_to_file(file_path: str) -> bool:
@@ -123,7 +125,7 @@ def get_clipboard_file_extension() -> str:
     str: The file extension of the content in the clipboard, or an empty string if no
         valid file extension is found.
     """
-    return get_file_extension(get_clipboard())
+    return get_clipboard().split(".")[-1]
 
 
 def paste_clipboard():

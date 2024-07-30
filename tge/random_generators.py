@@ -195,7 +195,7 @@ def generate_random_string(length: int=1) -> str:
     """
     return ''.join(choice(string_ascii_letters + string_digits) for _ in range(length))
 
-def randomInt(min: int, max: int, float: bool = False) -> Union[Tuple[bool, Union[int, float]], Tuple[bool, str]]:
+def randomInt(min: int, max: int, float: bool = False) -> "Union[Tuple[bool, Union[int, float]], Tuple[bool, str]]":
     """
     Returns a random integer between `min` and `max`, inclusive.
 

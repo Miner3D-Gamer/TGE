@@ -1,5 +1,5 @@
-from ..cursor_operations import WHEEL_DELTA
 
+WHEEL_DELTA = 120
 import pynput
 
 MOUSE = pynput.mouse.Controller()
@@ -29,7 +29,7 @@ def MouseTo(x: int, y: int) -> None:
     MOUSE.position = x, y
 
 
-def mouseGet() -> tuple[int, int]:
+def mouseGet() -> "tuple[int, int]":
     "Retrieve the current mouse cursor position as a tuple (x, y)."
     return MOUSE.position
 

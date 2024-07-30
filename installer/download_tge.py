@@ -280,10 +280,11 @@ def install_all_libraries(libs):
 
 output = install_all_libraries(requirements)
 
-for successful, error in output:
+for id, value in enumerate(output):
+    successful, error = value
     if not successful:
         if give_feedback < 3:
-            print("Error while downloading dependency:", error)
+            print("Error while downloading dependency (%s):" %requirements[id], error)
 end = time.time()
 if give_feedback < 1:
     print(

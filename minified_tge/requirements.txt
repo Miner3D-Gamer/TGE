@@ -22,3 +22,6 @@ json
 autoflake
 py7zr
 pyobjc
+python-xlib
+pydub
+simpleaudio

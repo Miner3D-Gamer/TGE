@@ -24,7 +24,7 @@ __doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.MD"
 
 
 import sys
-
+from typing import Literal
 
 import requests
 
@@ -79,7 +79,7 @@ else:
         return "unknown"
 
 
-SYSTEM_NAME = get_system()
+SYSTEM_NAME: "Literal['jython', 'darwin', 'windows', 'linux', 'unknown']" = get_system()
 
 
 # Hide Pygame Support Prompt

@@ -13,7 +13,7 @@ from . import json
 # To make sure the imports stay when minifying
 html, json
 
-def encode(x: str) -> Tuple[bool, str]:
+def encode(x: str) -> "Tuple[bool, str]":
     """
     Encode a string using base64 and hexadecimal encoding.
 

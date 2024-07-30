@@ -155,7 +155,7 @@ def count_gif_frames(file_path) -> Union[bool, int, str]:
     else:
         return False, 0, "The file at " + file_path + " does not exist"
 
-def get_image_metadata(file_path: str = None, image: str = None) -> Tuple[Any, str]:
+def get_image_metadata(file_path: str = None, image: str = None) -> "Tuple[Any, str]":
     """
     Retrieve metadata from an image file.
 
@@ -343,7 +343,7 @@ def hex_list_to_rgb_list(hex_list):
 
 
 class Color:
-    def __init__(self, color: tuple[int, int, int]) -> None:
+    def __init__(self, color: "tuple[int, int, int]") -> None:
         self.color = [clamp(0, 255, color[0]),clamp(0, 255, color[1]),clamp(0, 255, color[2])]
     
     def __repr__(self) -> str:
@@ -352,7 +352,7 @@ class Color:
     def __iter__(self):
         return iter(self.color)
     
-    def get(self) -> tuple[int, int, int]:
+    def get(self) -> "tuple[int, int, int]":
         return tuple(self.color)
     
     def __call__(self):

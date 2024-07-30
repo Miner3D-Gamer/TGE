@@ -1,21 +1,30 @@
-from ..cursor_operations import (
-    ctypes,
-    MOUSE_EVENTF_ABSOLUTE,
-    MOUSE_EVENTF_MOVE,
-    MOUSEEVENTF_RIGHTUP,
-    MOUSEEVENTF_RIGHTDOWN,
-    MOUSEEVENTF_MIDDLEUP,
-    MOUSEEVENTF_MIDDLEDOWN,
-    MOUSEEVENTF_LEFTUP,
-    MOUSEEVENTF_LEFTDOWN,
-    MOUSEEVENTF_WHEEL,
-    MOUSEEVENTF_HWHEEL,
-    CURSOR_POINT,
-    WHEEL_DELTA,
-)
+from ..shared import  ctypes
+
+class POINT(ctypes.Structure):
+    _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
 
 
-def getScreenDimensions() -> tuple[int, int]:
+# // Mouse
+CURSOR_POINT = POINT()
+
+WHEEL_DELTA = 120  # The number of wheel clicks per notch
+MOUSE_EVENTF_MOVE = 0x0001  # Move Mouse Event
+MOUSEEVENTF_LEFTDOWN = 0x0002  # MOUSEEVENTF_LEFTDOWN
+MOUSEEVENTF_LEFTUP = 0x0004  # MOUSEEVENTF_LEFTUP
+MOUSEEVENTF_RIGHTDOWN = 0x0008  # MOUSEEVENTF_RIGHTDOWN
+MOUSEEVENTF_RIGHTUP = 0x0010  # MOUSEEVENTF_RIGHTUP
+MOUSEEVENTF_MIDDLEDOWN = 0x0020  # MOUSEEVENTF_MIDDLEDOWN
+MOUSEEVENTF_MIDDLEUP = 0x0040  # MOUSEEVENTF_MIDDLEUP
+MOUSEEVENTF_WHEEL = 0x0800  # Mouse wheel event
+MOUSEEVENTF_HWHEEL = 0x01000  # Horizontal wheel movement
+MOUSE_EVENTF_ABSOLUTE = 0x8000  # Move absolute event
+
+# // Clipboard
+CF_TEXT = 1
+OPEN_EXISTING = 3
+GMEM_ZEROINIT = 0x0040
+
+def getScreenDimensions() -> "tuple[int, int]":
     "Retrieve the dimensions of the screen as a tuple (width, height)."
     return ctypes.windll.user32.GetSystemMetrics(
         0
@@ -40,7 +49,7 @@ def mouseTo(
     )
 
 
-def mouseGet() -> tuple[int, int]:
+def mouseGet() -> "tuple[int, int]":
     "Retrieve the current mouse cursor position as a tuple (x, y)."
     ctypes.windll.user32.GetCursorPos(ctypes.byref(CURSOR_POINT))
     return CURSOR_POINT.x, CURSOR_POINT.y

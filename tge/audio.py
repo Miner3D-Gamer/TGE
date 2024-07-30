@@ -89,42 +89,42 @@ def save_text_to_speech(text: str, name: str, dir: str, language="en") -> None:
 
 
 
-def install_ffmpeg():
-    if SYSTEM_NAME == "Windows":
-        # Define URLs and paths for Windows
-        ffmpeg_url = "https://ffmpeg.org/releases/ffmpeg-release-full.7z"
-        download_path = "ffmpeg.7z"
-        extract_path = "ffmpeg"
+# def install_ffmpeg():
+#     if SYSTEM_NAME == "Windows":
+#         # Define URLs and paths for Windows
+#         ffmpeg_url = "https://ffmpeg.org/releases/ffmpeg-release-full.7z"
+#         download_path = "ffmpeg.7z"
+#         extract_path = "ffmpeg"
 
-        # Download FFmpeg
-        urllib.request.urlretrieve(ffmpeg_url, download_path)
+#         # Download FFmpeg
+#         urllib.request.urlretrieve(ffmpeg_url, download_path)
 
-        # Extract the downloaded file
-        import py7zr
+#         # Extract the downloaded file
+#         import py7zr
 
-        with py7zr.SevenZipFile(download_path, mode="r") as archive:
-            archive.extractall(path=extract_path)
+#         with py7zr.SevenZipFile(download_path, mode="r") as archive:
+#             archive.extractall(path=extract_path)
 
-        # Add FFmpeg to PATH
-        ffmpeg_bin = os.path.join(extract_path, "ffmpeg-*/bin")
-        os.environ["PATH"] += os.pathsep + ffmpeg_bin
+#         # Add FFmpeg to PATH
+#         ffmpeg_bin = os.path.join(extract_path, "ffmpeg-*/bin")
+#         os.environ["PATH"] += os.pathsep + ffmpeg_bin
 
-    elif SYSTEM_NAME == "Darwin":
-        # Install FFmpeg using Homebrew on macOS
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "brew"])
-            subprocess.check_call(["brew", "install", "ffmpeg"])
-        except subprocess.CalledProcessError as e:
-            raise BaseException(f"Error installing FFmpeg: {e}")
+#     elif SYSTEM_NAME == "Darwin":
+#         # Install FFmpeg using Homebrew on macOS
+#         try:
+#             subprocess.check_call([sys.executable, "-m", "pip", "install", "brew"])
+#             subprocess.check_call(["brew", "install", "ffmpeg"])
+#         except subprocess.CalledProcessError as e:
+#             raise BaseException(f"Error installing FFmpeg: {e}")
 
-    elif SYSTEM_NAME == "Linux":
-        # Install FFmpeg using apt-get on Ubuntu/Debian
-        try:
-            subprocess.check_call(["sudo", "apt-get", "update"])
-            subprocess.check_call(["sudo", "apt-get", "install", "-y", "ffmpeg"])
-        except subprocess.CalledProcessError as e:
-            raise BaseException(f"Error installing FFmpeg: {e}")
-    else:
-        raise BaseException(f"Unsupported operating system: {SYSTEM_NAME}")
+#     elif SYSTEM_NAME == "Linux":
+#         # Install FFmpeg using apt-get on Ubuntu/Debian
+#         try:
+#             subprocess.check_call(["sudo", "apt-get", "update"])
+#             subprocess.check_call(["sudo", "apt-get", "install", "-y", "ffmpeg"])
+#         except subprocess.CalledProcessError as e:
+#             raise BaseException(f"Error installing FFmpeg: {e}")
+#     else:
+#         raise BaseException(f"Unsupported operating system: {SYSTEM_NAME}")
 
-    print("FFmpeg installation complete.")
+#     print("FFmpeg installation complete.")

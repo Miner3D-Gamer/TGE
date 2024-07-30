@@ -199,7 +199,7 @@ def determine_affirmative(text: str) -> bool:
     # If no clear determination can be made
     return None
 
-def categorize_responses(text_list: Iterable[str]) -> "list[str]":
+def categorize_responses(text_list: "Iterable[str]") -> "list[str]":
     """
     Categorizes a list of text responses as affirmative, negative, or uncertain.
 
@@ -556,23 +556,23 @@ Inner Updates:
 
 
 
-def autocomplete(prefix:str, word_list:Iterable[str])->"list[str]":
+def autocomplete(prefix:str, word_list:"Iterable[str]")->"list[str]":
     """Return a list of words from `word_list` that start with the specified `prefix`.
 
 Args:
     prefix (str): The prefix to match against.
-    word_list (Iterable[str]): A list of words to search through.
+    word_list ("Iterable[str]"): A list of words to search through.
 
 Returns:
     "list[str]": A list of matching words."""
     return [word for word in word_list if word.startswith(prefix)]
 
-def strict_autocomplete(prefix:str, word_list:Iterable[str])->Union["list[str]", str]:
+def strict_autocomplete(prefix:str, word_list:"Iterable[str]")->Union["list[str]", str]:
     """Return a single word, the prefix itself, or a list of words that start with the specified `prefix`.
 
 Args:
     prefix (str): The prefix to match against.
-    word_list (Iterable[str]): A list of words to search through.
+    word_list ("Iterable[str]"): A list of words to search through.
 
 """
     words = autocomplete(prefix=prefix, word_list=word_list)
@@ -611,7 +611,7 @@ Returns:
 
 
 
-def analyze_text(text:str)->dict[str, Union[str,list]]:
+def analyze_text(text:str)->"dict[str, Union[str,list]]":
     """Analyze the text to provide various statistics about sentences, words, and commas.
 
 Args:
@@ -883,7 +883,7 @@ Returns:
 
 
 
-def check_for_functions_in_module_with_missing_notations(library_module: ModuleType) -> List[dict]:
+def check_for_functions_in_module_with_missing_notations(library_module: ModuleType) -> "List[dict]":
     """
     Check all functions in a given library module for missing input type or return type annotations.
     Parameters:
@@ -1040,7 +1040,7 @@ class NoInputType:
     """Custom class to indicate that no input type annotation is specified."""
     pass
 
-def get_function_inputs(func:MethodType)->list[dict]:
+def get_function_inputs(func:MethodType)->"list[dict]":
     """
     Retrieve all input parameters of a given function along with their types and default values.
 
@@ -1734,7 +1734,7 @@ def _serialize_trie(node:TrieNode)->dict:
 
     return result
 
-def compress_directory_list(paths:Iterable)->dict[Union[list,str]]:
+def compress_directory_list(paths:Iterable)->"dict[Union[list,str]]":
     "Compress a list of file paths into a dictionary format representing the directory structure."
     trie = _build_trie(paths)
     compressed = _serialize_trie(trie)

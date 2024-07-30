@@ -15,10 +15,10 @@ __all__ = ["typingPrint"]
 
 if os.name == 'nt':
     
-    def clear() -> Tuple[bool, str]:
+    def clear() -> "Tuple[bool, str]":
         os.system('cls')
 else:
-    def clear() -> Tuple[bool, str]:
+    def clear() -> "Tuple[bool, str]":
         os.system('clear')
 
 
@@ -63,7 +63,7 @@ def typingInput(text: str, delay: Number = 0) -> str:
     value = input("")  
     return value
 
-def writeSentencesToConsole(punctuations:"list[str]", o_text: str, type_delay: Number, line_delay: Number) -> Tuple[bool, str]:
+def writeSentencesToConsole(punctuations:"list[str]", o_text: str, type_delay: Number, line_delay: Number) -> "Tuple[bool, str]":
     """
     Writes text and splits it into sentences with punctuations and prints them
 
@@ -159,7 +159,7 @@ def skip_line() -> None:
     """Prints a newline character to skip to the next line."""
     print("\n")
 
-def print_table(data: Iterable["list[str]"]) -> Tuple[bool, str]:
+def print_table(data: "Iterable[list[str]]") -> "Tuple[bool, str]":
     """
     Prints a table representation of the provided data.
 

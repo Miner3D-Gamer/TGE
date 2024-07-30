@@ -1,4 +1,4 @@
-from..cursor_operations import WHEEL_DELTA
+WHEEL_DELTA=120
 import pynput
 MOUSE=pynput.mouse.Controller()
 from pyautogui import size as getScreenDimensions

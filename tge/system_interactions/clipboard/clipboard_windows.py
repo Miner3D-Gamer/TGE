@@ -1,4 +1,4 @@
-from ..cursor_operations import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
+from ..shared import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
 
 def get_clipboard(user32 = USER32, kernel32 = KERNEL32) -> str: # About 20% faster on Windows than with pyperclip
         """

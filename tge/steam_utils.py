@@ -162,7 +162,7 @@ def is_valid_game_id(session:requests.Session, game_id:int)->bool:
     
     return False
 
-def check_game_ids(game_ids:Iterable)->dict[Union[bool,None]]:
+def check_game_ids(game_ids:Iterable)->"dict[Union[bool,None]]":
     """
     Check the validity of a list of game IDs using multi-threading.
     

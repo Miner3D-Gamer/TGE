@@ -1,4 +1,3 @@
-
 WHEEL_DELTA = 120
 import pynput
 
@@ -24,9 +23,9 @@ from pyautogui import size as getScreenDimensions
 SCREEN_WIDTH, SCREEN_HEIGHT = getScreenDimensions()
 
 
-def set_mouse_to(x: int, y: int) -> None:
+def set_mouse_to(coords: "tuple[int, int]") -> None:
     "Move the mouse cursor to the specified coordinates (x, y)."
-    MOUSE.position = x, y
+    MOUSE.position = coords
 
 
 def get_mouse_position() -> "tuple[int, int]":
@@ -102,12 +101,18 @@ def middle_mouse_up() -> None:
 def is_left_pressed():
     return _is_button_pressed(1)
 
+
 def is_right_pressed():
     return _is_button_pressed(3)
 
+
 def is_middle_pressed():
     return _is_button_pressed(2)
+
+
 MOUSE
+
+
 def _is_button_pressed(button):
     with pynput.mouse.Events() as events:
         for event in events:

@@ -1,4 +1,5 @@
-from ..shared import  ctypes
+from ..shared import ctypes
+
 
 class POINT(ctypes.Structure):
     _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
@@ -28,6 +29,7 @@ CF_TEXT = 1
 OPEN_EXISTING = 3
 GMEM_ZEROINIT = 0x0040
 
+
 def getScreenDimensions() -> "tuple[int, int]":
     "Retrieve the dimensions of the screen as a tuple (width, height)."
     return ctypes.windll.user32.GetSystemMetrics(
@@ -39,13 +41,15 @@ SCREEN_WIDTH, SCREEN_HEIGHT = getScreenDimensions()
 
 
 def set_mouse_to(
-    x: int, y: int, screen_width: int = SCREEN_WIDTH, screen_height: int = SCREEN_HEIGHT
+    coords: "tuple[int, int]",
+    screen_width: int = SCREEN_WIDTH,
+    screen_height: int = SCREEN_HEIGHT,
 ) -> None:
     "Move the mouse cursor to the specified coordinates (x, y)."
 
     # Calculate absolute position
-    abs_x = int(65535 * (x / screen_width))
-    abs_y = int(65535 * (y / screen_height))
+    abs_x = int(65535 * (coords[0] / screen_width))
+    abs_y = int(65535 * (coords[1] / screen_height))
 
     # Move the mouse cursor to the target position
     ctypes.windll.user32.mouse_event(
@@ -156,13 +160,16 @@ def middle_mouse_up() -> None:
         MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
     )  # MOUSEEVENTF_MIDDLEUP
 
+
 def is_left_button_pressed():
     """Check if the left mouse button is pressed."""
     return (ctypes.windll.user32.GetAsyncKeyState(MK_LBUTTON) & 0x8000) != 0
 
+
 def is_middle_button_pressed():
     """Check if the middle mouse button is pressed."""
     return (ctypes.windll.user32.GetAsyncKeyState(MK_MBUTTON) & 0x8000) != 0
+
 
 def is_right_button_pressed():
     """Check if the right mouse button is pressed."""

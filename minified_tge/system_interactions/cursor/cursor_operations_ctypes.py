@@ -12,6 +12,9 @@ MOUSEEVENTF_MIDDLEUP=64
 MOUSEEVENTF_WHEEL=2048
 MOUSEEVENTF_HWHEEL=4096
 MOUSE_EVENTF_ABSOLUTE=32768
+MK_LBUTTON=1
+MK_MBUTTON=16
+MK_RBUTTON=2
 CF_TEXT=1
 OPEN_EXISTING=3
 GMEM_ZEROINIT=64
@@ -33,3 +36,6 @@ def middle_mouse_down():ctypes.windll.user32.mouse_event(MOUSEEVENTF_MIDDLEDOWN,
 def left_mouse_up():ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0)
 def right_mouse_up():ctypes.windll.user32.mouse_event(MOUSEEVENTF_RIGHTUP,0,0,0,0)
 def middle_mouse_up():ctypes.windll.user32.mouse_event(MOUSEEVENTF_MIDDLEUP,0,0,0,0)
+def is_left_button_pressed():return ctypes.windll.user32.GetAsyncKeyState(MK_LBUTTON)&32768!=0
+def is_middle_button_pressed():return ctypes.windll.user32.GetAsyncKeyState(MK_MBUTTON)&32768!=0
+def is_right_button_pressed():return ctypes.windll.user32.GetAsyncKeyState(MK_RBUTTON)&32768!=0

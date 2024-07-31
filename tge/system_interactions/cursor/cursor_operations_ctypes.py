@@ -34,7 +34,7 @@ def getScreenDimensions() -> "tuple[int, int]":
 SCREEN_WIDTH, SCREEN_HEIGHT = getScreenDimensions()
 
 
-def mouseTo(
+def set_mouse_to(
     x: int, y: int, screen_width: int = SCREEN_WIDTH, screen_height: int = SCREEN_HEIGHT
 ) -> None:
     "Move the mouse cursor to the specified coordinates (x, y)."
@@ -49,13 +49,13 @@ def mouseTo(
     )
 
 
-def mouseGet() -> "tuple[int, int]":
+def get_mouse_position() -> "tuple[int, int]":
     "Retrieve the current mouse cursor position as a tuple (x, y)."
     ctypes.windll.user32.GetCursorPos(ctypes.byref(CURSOR_POINT))
     return CURSOR_POINT.x, CURSOR_POINT.y
 
 
-def LeftClick() -> None:
+def left_click() -> None:
     "Perform a left mouse button click at the current mouse position."
     # Perform a left mouse button click
     ctypes.windll.user32.mouse_event(
@@ -66,7 +66,7 @@ def LeftClick() -> None:
     )  # MOUSEEVENTF_LEFTUP
 
 
-def RightClick() -> None:
+def right_click() -> None:
     "Perform a left mouse button click at the current mouse position."
     # Perform a right mouse button click
     ctypes.windll.user32.mouse_event(
@@ -77,9 +77,8 @@ def RightClick() -> None:
     )  # MOUSEEVENTF_RIGHTUP
 
 
-def MiddleClick() -> None:
+def middle_click() -> None:
     "Perform a middle mouse button click at the current mouse position."
-    # Perform a middle mouse button click
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0
     )  # MOUSEEVENTF_MIDDLEDOWN
@@ -88,18 +87,18 @@ def MiddleClick() -> None:
     )  # MOUSEEVENTF_MIDDLEUP
 
 
-def ScrollV(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
+def scroll_vertical(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
     "Scroll the mouse wheel vertically by the specified number of `clicks`."
     # Simulate scrolling the mouse wheel up by sending wheel events
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_WHEEL, 0, 0, wheel_delta * clicks, 0)
 
 
-def ScrollH(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
+def scroll_horizontal(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
     "Scroll the mouse wheel horizontally by the specified number of `clicks`."
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_HWHEEL, 0, 0, wheel_delta * clicks, 0)
 
 
-def Scroll(
+def scroll(
     dx: int = None,
     dy: int = None,
     wheel_delta_x: int = WHEEL_DELTA,
@@ -107,47 +106,47 @@ def Scroll(
 ) -> None:
     "Scroll the mouse wheel both horizontally and vertically by the specified amounts (`dx` and `dy`)."
     if dx:
-        ScrollH(dx, wheel_delta=wheel_delta_x)
+        scroll_horizontal(dx, wheel_delta=wheel_delta_x)
     if dy:
-        ScrollV(dy, wheel_delta=wheel_delta_y)
+        scroll_vertical(dy, wheel_delta=wheel_delta_y)
 
 
-def LeftMouseDown() -> None:
+def left_mouse_down() -> None:
     "Press and hold the left mouse button."
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
     )  # MOUSEEVENTF_LEFTDOWN
 
 
-def RightMouseDown() -> None:
+def right_mouse_down() -> None:
     "Press and hold the right mouse button."
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0
     )  # MOUSEEVENTF_RIGHTDOWN
 
 
-def MiddleMouseDown() -> None:
+def middle_mouse_down() -> None:
     "Press and hold the middle mouse button."
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0
     )  # MOUSEEVENTF_MIDDLEDOWN
 
 
-def LeftMouseUp() -> None:
+def left_mouse_up() -> None:
     "Release the left mouse button."
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
     )  # MOUSEEVENTF_LEFTUP
 
 
-def RightMouseUp() -> None:
+def right_mouse_up() -> None:
     "Release the right mouse button."
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0
     )  # MOUSEEVENTF_RIGHTUP
 
 
-def MiddleMouseUp() -> None:
+def middle_mouse_up() -> None:
     "Release the middle mouse button."
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0

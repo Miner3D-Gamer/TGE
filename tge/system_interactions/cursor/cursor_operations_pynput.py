@@ -24,42 +24,42 @@ from pyautogui import size as getScreenDimensions
 SCREEN_WIDTH, SCREEN_HEIGHT = getScreenDimensions()
 
 
-def MouseTo(x: int, y: int) -> None:
+def set_mouse_to(x: int, y: int) -> None:
     "Move the mouse cursor to the specified coordinates (x, y)."
     MOUSE.position = x, y
 
 
-def mouseGet() -> "tuple[int, int]":
+def get_mouse_position() -> "tuple[int, int]":
     "Retrieve the current mouse cursor position as a tuple (x, y)."
     return MOUSE.position
 
 
-def LeftClick() -> None:
+def left_click() -> None:
     "Perform a left mouse button click at the current mouse position."
     MOUSE.click(1)
 
 
-def RightClick() -> None:
+def right_click() -> None:
     "Perform a left mouse button click at the current mouse position."
     MOUSE.click(3)
 
 
-def MiddleClick() -> None:
+def middle_click() -> None:
     "Perform a middle mouse button click at the current mouse position."
     MOUSE.click(2)
 
 
-def ScrollV(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
+def scroll_vertical(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
     "Scroll the mouse wheel vertically by the specified number of `clicks`."
     MOUSE.scroll(dy=clicks)
 
 
-def ScrollH(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
+def scroll_horizontal(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
     "Scroll the mouse wheel horizontally by the specified number of `clicks`."
     MOUSE.scroll(dx=clicks)
 
 
-def Scroll(
+def scroll(
     dx: int = None,
     dy: int = None,
     wheel_delta_x: int = WHEEL_DELTA,
@@ -69,31 +69,31 @@ def Scroll(
     MOUSE.scroll(dy=dy, dx=dx)
 
 
-def LeftMouseDown() -> None:
+def left_mouse_down() -> None:
     "Press and hold the left mouse button."
     MOUSE.press(1)
 
 
-def RightMouseDown() -> None:
+def right_mouse_down() -> None:
     "Press and hold the right mouse button."
     MOUSE.press(3)
 
 
-def MiddleMouseDown() -> None:
+def middle_mouse_down() -> None:
     "Press and hold the middle mouse button."
     MOUSE.press(2)
 
 
-def LeftMouseUp() -> None:
+def left_mouse_up() -> None:
     "Release the left mouse button."
     MOUSE.release(1)
 
 
-def RightMouseUp() -> None:
+def right_mouse_up() -> None:
     "Release the right mouse button."
     MOUSE.release(3)
 
 
-def MiddleMouseUp() -> None:
+def middle_mouse_up() -> None:
     "Release the middle mouse button."
     MOUSE.release(2)

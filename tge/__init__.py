@@ -135,7 +135,6 @@ from . import formatting_utils as formatting
 from . import bool_operations
 from . import bitwise
 from . import image_processing
-from . import steam_utils
 # from .file_system import SimDirFilSystem
 
 

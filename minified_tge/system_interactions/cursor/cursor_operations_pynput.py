@@ -3,7 +3,7 @@ import pynput
 MOUSE=pynput.mouse.Controller()
 from pyautogui import size as getScreenDimensions
 SCREEN_WIDTH,SCREEN_HEIGHT=getScreenDimensions()
-def set_mouse_to(x,y):MOUSE.position=x,y
+def set_mouse_to(coords):MOUSE.position=coords
 def get_mouse_position():return MOUSE.position
 def left_click():MOUSE.click(1)
 def right_click():MOUSE.click(3)

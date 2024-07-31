@@ -7,6 +7,7 @@ import concurrent.futures
 import datetime
 from collections.abc import Iterable
 from typing import Union
+import vdf
 
 def get_game_name(session:requests.Session, game_id:int)->str:
     """

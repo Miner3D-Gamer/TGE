@@ -20,7 +20,7 @@ OPEN_EXISTING=3
 GMEM_ZEROINIT=64
 def getScreenDimensions():return ctypes.windll.user32.GetSystemMetrics(0),ctypes.windll.user32.GetSystemMetrics(1)
 SCREEN_WIDTH,SCREEN_HEIGHT=getScreenDimensions()
-def set_mouse_to(x,y,screen_width=SCREEN_WIDTH,screen_height=SCREEN_HEIGHT):A=int(65535*(x/screen_width));B=int(65535*(y/screen_height));ctypes.windll.user32.mouse_event(MOUSE_EVENTF_MOVE|MOUSE_EVENTF_ABSOLUTE,A,B,0,0)
+def set_mouse_to(coords,screen_width=SCREEN_WIDTH,screen_height=SCREEN_HEIGHT):A=coords;B=int(65535*(A[0]/screen_width));C=int(65535*(A[1]/screen_height));ctypes.windll.user32.mouse_event(MOUSE_EVENTF_MOVE|MOUSE_EVENTF_ABSOLUTE,B,C,0,0)
 def get_mouse_position():ctypes.windll.user32.GetCursorPos(ctypes.byref(CURSOR_POINT));return CURSOR_POINT.x,CURSOR_POINT.y
 def left_click():ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0)
 def right_click():ctypes.windll.user32.mouse_event(MOUSEEVENTF_RIGHTDOWN,0,0,0,0);ctypes.windll.user32.mouse_event(MOUSEEVENTF_RIGHTUP,0,0,0,0)

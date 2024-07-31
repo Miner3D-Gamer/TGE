@@ -19,6 +19,10 @@ MOUSEEVENTF_WHEEL = 0x0800  # Mouse wheel event
 MOUSEEVENTF_HWHEEL = 0x01000  # Horizontal wheel movement
 MOUSE_EVENTF_ABSOLUTE = 0x8000  # Move absolute event
 
+MK_LBUTTON = 0x0001  # Left button
+MK_MBUTTON = 0x0010  # Middle button
+MK_RBUTTON = 0x0002  # Right button
+
 # // Clipboard
 CF_TEXT = 1
 OPEN_EXISTING = 3
@@ -151,3 +155,15 @@ def middle_mouse_up() -> None:
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
     )  # MOUSEEVENTF_MIDDLEUP
+
+def is_left_button_pressed():
+    """Check if the left mouse button is pressed."""
+    return (ctypes.windll.user32.GetAsyncKeyState(MK_LBUTTON) & 0x8000) != 0
+
+def is_middle_button_pressed():
+    """Check if the middle mouse button is pressed."""
+    return (ctypes.windll.user32.GetAsyncKeyState(MK_MBUTTON) & 0x8000) != 0
+
+def is_right_button_pressed():
+    """Check if the right mouse button is pressed."""
+    return (ctypes.windll.user32.GetAsyncKeyState(MK_RBUTTON) & 0x8000) != 0

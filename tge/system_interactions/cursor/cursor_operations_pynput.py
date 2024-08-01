@@ -119,3 +119,4 @@ def _is_button_pressed(button):
             if isinstance(event, pynput.mouse.Events.Click) and event.button == button:
                 return event.pressed
         return False
+

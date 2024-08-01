@@ -20,6 +20,9 @@ MOUSEEVENTF_WHEEL = 0x0800  # Mouse wheel event
 MOUSEEVENTF_HWHEEL = 0x01000  # Horizontal wheel movement
 MOUSE_EVENTF_ABSOLUTE = 0x8000  # Move absolute event
 
+VK_XBUTTON1 = 0x05 # 4th mouse button
+VK_XBUTTON2 = 0x06 # 5th mouse button
+
 MK_LBUTTON = 0x0001  # Left button
 MK_MBUTTON = 0x0010  # Middle button
 MK_RBUTTON = 0x0002  # Right button
@@ -93,6 +96,45 @@ def middle_click() -> None:
     ctypes.windll.user32.mouse_event(
         MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
     )  # MOUSEEVENTF_MIDDLEUP
+
+MOUSEEVENTF_XDOWN = 0x0080
+MOUSEEVENTF_XUP = 0x0100
+
+
+def click_mouse_button_4():
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON1, 0)
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON1, 0)
+
+def click_mouse_button_5():
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON2, 0)
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON2, 0)
+
+def hold_mouse_button_4():
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON1, 0)
+
+def release_mouse_button_4():
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON1, 0)
+
+def hold_mouse_button_5():
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON2, 0)
+
+def release_mouse_button_5():
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON2, 0)
+
+
+
+def is_mouse_button_4_pressed(button):
+    return (ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON1) & 0x8000) != 0
+
+def is_mouse_button_5_pressed(button):
+    return (ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON2) & 0x8000) != 0
+
+
+
+
+
+
+
 
 
 def scroll_vertical(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:

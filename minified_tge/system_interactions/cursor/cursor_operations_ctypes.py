@@ -12,6 +12,8 @@ MOUSEEVENTF_MIDDLEUP=64
 MOUSEEVENTF_WHEEL=2048
 MOUSEEVENTF_HWHEEL=4096
 MOUSE_EVENTF_ABSOLUTE=32768
+VK_XBUTTON1=5
+VK_XBUTTON2=6
 MK_LBUTTON=1
 MK_MBUTTON=16
 MK_RBUTTON=2
@@ -25,6 +27,16 @@ def get_mouse_position():ctypes.windll.user32.GetCursorPos(ctypes.byref(CURSOR_P
 def left_click():ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0)
 def right_click():ctypes.windll.user32.mouse_event(MOUSEEVENTF_RIGHTDOWN,0,0,0,0);ctypes.windll.user32.mouse_event(MOUSEEVENTF_RIGHTUP,0,0,0,0)
 def middle_click():ctypes.windll.user32.mouse_event(MOUSEEVENTF_MIDDLEDOWN,0,0,0,0);ctypes.windll.user32.mouse_event(MOUSEEVENTF_MIDDLEUP,0,0,0,0)
+MOUSEEVENTF_XDOWN=128
+MOUSEEVENTF_XUP=256
+def click_mouse_button_4():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN,0,0,VK_XBUTTON1,0);ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP,0,0,VK_XBUTTON1,0)
+def click_mouse_button_5():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN,0,0,VK_XBUTTON2,0);ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP,0,0,VK_XBUTTON2,0)
+def hold_mouse_button_4():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN,0,0,VK_XBUTTON1,0)
+def release_mouse_button_4():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP,0,0,VK_XBUTTON1,0)
+def hold_mouse_button_5():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN,0,0,VK_XBUTTON2,0)
+def release_mouse_button_5():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP,0,0,VK_XBUTTON2,0)
+def is_mouse_button_4_pressed(button):return ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON1)&32768!=0
+def is_mouse_button_5_pressed(button):return ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON2)&32768!=0
 def scroll_vertical(clicks,wheel_delta=WHEEL_DELTA):ctypes.windll.user32.mouse_event(MOUSEEVENTF_WHEEL,0,0,wheel_delta*clicks,0)
 def scroll_horizontal(clicks,wheel_delta=WHEEL_DELTA):ctypes.windll.user32.mouse_event(MOUSEEVENTF_HWHEEL,0,0,wheel_delta*clicks,0)
 def scroll(dx=None,dy=None,wheel_delta_x=WHEEL_DELTA,wheel_delta_y=WHEEL_DELTA):

@@ -59,13 +59,17 @@ wait_for_reaction = not (
 
 
 if is_library_installed("tge"):
-    import tge
+    try:
+        import tge
+    except:
+        pass
+    else:
 
-    if not tge.is_tge_outdated():
-        print("TGE is up to date")
-        if wait_for_reaction:
-            input()
-        quit()
+        if not tge.is_tge_outdated():
+            print("TGE is up to date")
+            if wait_for_reaction:
+                input()
+            quit()
 
 
 default_python_installation = f"{os.getenv('LOCALAPPDATA')}\Programs\Python"

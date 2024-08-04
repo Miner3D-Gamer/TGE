@@ -154,7 +154,7 @@ while True:
         github_url = f"{base_github_url}tge/"
         break
 
-    elif inp in ["y", "1", "sure"]:
+    elif inp in ["y", "1", "sure", ""]:
         github_url = f"{base_github_url}minified_tge/"
         break
 

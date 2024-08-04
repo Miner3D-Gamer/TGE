@@ -5,6 +5,7 @@ import sys
 import importlib.util
 import subprocess
 
+
 def is_library_installed(library_name):
     A = importlib.util.find_spec(library_name)
     return A is not None
@@ -35,7 +36,7 @@ class ArgumentHandler:
         return D
 
     def has_argument(self, argument, delete=False):
-        return  argument in self.a
+        return argument in self.a
 
 
 argument_handler = ArgumentHandler()
@@ -66,10 +67,25 @@ if is_library_installed("tge"):
     else:
 
         if not tge.is_tge_outdated():
-            print("TGE is up to date")
-            if wait_for_reaction:
-                input()
-            quit()
+            while True:
+                if argument_handler.get_argument_by_flag(
+                    "-install_option", delete=True, default=False
+                ):
+                    break
+                inp = (
+                    input(
+                        "Your local TGE is already up to date, are you sure you wanna continue? (y/n): "
+                    )
+                    .lower()
+                    .strip()
+                )
+                if inp == "n":
+
+                    if wait_for_reaction:
+                        input()
+                    quit()
+                elif inp == "y":
+                    break
 
 
 default_python_installation = f"{os.getenv('LOCALAPPDATA')}\Programs\Python"
@@ -144,7 +160,7 @@ while True:
         norm_import_time = "0.4-0.6"
         inp = (
             input(
-                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%s instead of ~%s) and will be faster to import (%s instead of %s) but all docstring and annotations have been removed (Default:N)\nYour Input: "
+                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%ss instead of ~%ss) and will be faster to import (%s instead of %s) but all docstring and annotations have been removed (Default:N)\nYour Input: "
                 % (min_space, norm_space, min_import_time, norm_import_time)
             )
             .strip()
@@ -255,9 +271,6 @@ for file_id in range(len(urls)):
     print("Done writing!")
 
 
-
-
-
 def download_library(library_name):
     D = False
     C = library_name
@@ -277,22 +290,28 @@ def install_all_libraries(libs):
     A = []
     for B in libs:
         if is_library_installed(B):
+            A.append((True, ""))
             continue
         A.append(download_library(B))
     return A
 
+import platform
 
 output = install_all_libraries(requirements)
-
-for id, value in enumerate(output):
-    successful, error = value
-    if not successful:
-        if give_feedback < 3:
-            print("Error while downloading dependency (%s):" %requirements[id], error)
+if give_feedback < 3:
+    for id, value in enumerate(output):
+        successful, error = value
+        if not successful:
+            library = requirements[id]
+            if library == "pyobjc":
+                if platform.system() != "Darwin":
+                    continue
+            print("Error while downloading dependency (%s):" % requirements[id], error)
 end = time.time()
 if give_feedback < 1:
     print(
-        "Downloading and installing tge and all it's dependencies took %s seconds" % (end-start)
+        "\nDownloading and installing tge and all it's dependencies took %s seconds"
+        % (end - start)
     )
 if wait_for_reaction:
     input()

@@ -49,7 +49,6 @@ from.system_interactions import keyboard_operations as keyboard
 from.system_interactions import window_manager
 from.validation import validation
 from.codec import codec
-from.import audio
 from.import console_utils as console
 from.import random_generators as random
 from.import internet
@@ -61,6 +60,14 @@ from.import formatting_utils as formatting
 from.import bool_operations
 from.import bitwise
 from.import image_processing
+import subprocess,shutil
+def is_ffmpeg_installed():
+ B='ffmpeg';A=False
+ if shutil.which(B)is None:return A
+ try:C=subprocess.run([B,'-version'],stdout=subprocess.PIPE,stderr=subprocess.PIPE);return C.returncode==0
+ except FileNotFoundError:return A
+ except Exception as D:print(f"An error occurred: {D}");return A
+if is_ffmpeg_installed():from.import audio
 tim=tm.time()
 IMPORT_TIME=tim-INIT_TIME_BEFORE_IMPORTING
 INIT_TIME=tim-start_import

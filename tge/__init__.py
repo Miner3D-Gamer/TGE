@@ -123,7 +123,6 @@ from .system_interactions import window_manager
 
 from .validation import validation
 from .codec import codec
-from . import audio
 from . import console_utils as console
 from . import random_generators as random
 from . import internet
@@ -137,7 +136,25 @@ from . import bitwise
 from . import image_processing
 # from .file_system import SimDirFilSystem
 
+import subprocess
+import shutil
 
+def is_ffmpeg_installed():
+    if shutil.which("ffmpeg") is None:
+        return False
+    
+    try:
+        result = subprocess.run(["ffmpeg", "-version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return result.returncode == 0
+    except FileNotFoundError:
+        return False
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+
+
+if is_ffmpeg_installed():
+    from . import audio
 
 
 

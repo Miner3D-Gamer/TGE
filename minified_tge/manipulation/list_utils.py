@@ -39,3 +39,7 @@ def get_items_from_list(lst,start,end):return lst[start:end]
 def sort_list_of_dictionaries(lst,key):
  try:return sorted(lst,key=lambda x:x[key]),True
  except:return lst,False
+def zipper_insert(list1,list2):
+ C=list2;B=list1;D=min(len(B),len(C));A=[]
+ for E in range(D):A.append(B[E]);A.append(C[E])
+ A.extend(B[D:]);A.extend(C[D:]);return A

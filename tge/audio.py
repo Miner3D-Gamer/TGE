@@ -1,12 +1,11 @@
-from typing import List, Union, Tuple, Any
+#from typing import List, Union, Tuple, Any
 import os
 from . import SYSTEM_NAME
 from gtts import gTTS
 from pydub import AudioSegment
 from simpleaudio import play_buffer
-import subprocess
-import urllib.request
-import sys
+# import urllib.request
+# import sys
 
 class AudioPlayer:
     def __init__(self, file_path: str) -> None:

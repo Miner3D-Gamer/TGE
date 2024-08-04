@@ -248,3 +248,21 @@ def sort_list_of_dictionaries(lst: Iterable, key: str) -> tuple:
         return sorted(lst, key=lambda x: x[key]), True
     except:
         return lst, False
+
+def zipper_insert(list1, list2):
+    # Find the length of the shorter list
+    min_length = min(len(list1), len(list2))
+    
+    # Initialize the result list
+    result = []
+    
+    # Add elements from both lists in alternating fashion
+    for i in range(min_length):
+        result.append(list1[i])
+        result.append(list2[i])
+    
+    # Append any remaining elements from the longer list
+    result.extend(list1[min_length:])
+    result.extend(list2[min_length:])
+    
+    return result

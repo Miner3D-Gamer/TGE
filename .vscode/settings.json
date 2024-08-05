@@ -37,6 +37,7 @@
         "patchlevel",
         "pkgdir",
         "pydub",
+        "pyobjc",
         "RBUTTON",
         "simpleaudio",
         "subtractor",

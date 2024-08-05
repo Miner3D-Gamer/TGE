@@ -59,15 +59,7 @@ except PermissionError:
 except FileNotFoundError:
     ...
 
-with open(".gitignore", "w") as f:
-    f.write(
-        "\n".join(
-            [
-                file[2:].replace("\\", "/")
-                for file in tge.tbe.find_files_with_extension(".", ".pyc")
-            ]
-        )
-    )
+
 
 
 for root, dirs, files in os.walk(dir, topdown=False):
@@ -126,6 +118,16 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
 #     with open("minified_downloader.py", "w") as w:
 #         w.write(data)
 import minified_tge
+
+with open(".gitignore", "w") as f:
+    f.write(
+        "\n".join(
+            [
+                file[2:].replace("\\", "/")
+                for file in tge.tbe.find_files_with_extension(".", ".pyc")
+            ]
+        )
+    )
 
 print("Size of TGE: %s kb" % tge_size)
 print("Size of minified TGE: %s kb" % minified_size)

@@ -1,6 +1,6 @@
 from itertools import permutations as itertools_permutations
 from collections.abc import Iterable
-
+from typing import Any
 
 def list_mul(lst: Iterable) -> tuple:
     """
@@ -266,3 +266,55 @@ def zipper_insert(list1, list2):
     result.extend(list2[min_length:])
     
     return result
+
+def compress_list(list_to_compress: list):
+    width = len(list_to_compress)
+    new_sub_list = []
+    char = list_to_compress[0]
+    amount = 0
+    add = lambda amount, char: (
+        [amount, char] if amount > 1 and amount != width else [char]
+    )
+    for index in range(len(list_to_compress)):
+        new_char = list_to_compress[index]
+        if new_char == char:
+            amount += 1
+        else:
+            new_sub_list += add(amount, char)
+            char = new_char
+            amount = 1
+    else:
+        new_sub_list += add(amount, char)
+    if len(new_sub_list) == 1:
+        new_sub_list = new_sub_list[0]
+    return new_sub_list
+
+
+def compress_list_of_lists(list_to_compress: list[list]) -> list[list]:
+    new_list = []
+    for sub_list in list_to_compress:
+        new_list.append(compress_list(sub_list))
+    return new_list
+
+
+def decompress_list(list_to_decompress: list | Any, width: int):
+    if not isinstance(list_to_decompress, list):
+        return [list_to_decompress] * width
+
+    new_sub_list = []
+    repeat_amount = 1
+    for index in range(len(list_to_decompress)):
+        item = list_to_decompress[index]
+        if isinstance(item, int):
+            repeat_amount = item
+        else:
+            new_sub_list += repeat_amount * [item]
+            repeat_amount = 1
+    return new_sub_list
+
+
+def decompress_list_of_lists(list_to_decompress: list[list], width: int) -> list[list]:
+    new_list = []
+    for sub_list in list_to_decompress:
+        new_list.append(decompress_list(sub_list, width))
+    return new_list

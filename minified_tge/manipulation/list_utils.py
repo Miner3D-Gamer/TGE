@@ -43,3 +43,29 @@ def zipper_insert(list1,list2):
  C=list2;B=list1;D=min(len(B),len(C));A=[]
  for E in range(D):A.append(B[E]);A.append(C[E])
  A.extend(B[D:]);A.extend(C[D:]);return A
+def compress_list(list_to_compress):
+ B=list_to_compress;G=len(B);A=[];C=B[0];D=0;E=lambda amount,char:[amount,char]if amount>1 and amount!=G else[char]
+ for H in range(len(B)):
+  F=B[H]
+  if F==C:D+=1
+  else:A+=E(D,C);C=F;D=1
+ else:A+=E(D,C)
+ if len(A)==1:A=A[0]
+ return A
+def compress_list_of_lists(list_to_compress):
+ A=[]
+ for B in list_to_compress:A.append(compress_list(B))
+ return A
+def decompress_list(list_to_decompress,width):
+ A=list_to_decompress
+ if not isinstance(A,list):return[A]*width
+ D=[];B=1
+ for E in range(len(A)):
+  C=A[E]
+  if isinstance(C,int):B=C
+  else:D+=B*[C];B=1
+ return D
+def decompress_list_of_lists(list_to_decompress,width):
+ A=[]
+ for B in list_to_decompress:A.append(decompress_list(B,width))
+ return A

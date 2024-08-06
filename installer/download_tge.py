@@ -268,45 +268,59 @@ for file_id in range(len(urls)):
         print(f"Writing to {path}")
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
-    print("Done writing!")
+    if give_feedback < 1:
+        print("Done writing!")
 
 
-def download_library(library_name):
-    D = False
-    C = library_name
-    B = True
-    E = ["python", "-m", "pip", "install", C]
-    try:
-        F = subprocess.run(E, check=B, capture_output=B, text=B)
-        return B, F.stdout
-    except subprocess.CalledProcessError as A:
-        G = f"Failed to install {C}. Return code: {A.returncode}. Output: {A.output}. Error: {A.stderr}."
-        return D, G
-    except Exception as A:
-        return D, f"An unexpected error occurred: {str(A)}"
+dont_download_dependencies = argument_handler.has_argument(
+    "-skip_dependencies", delete=True
+)
+if not dont_download_dependencies:
 
+    if give_feedback < 1:
+        print("Checking and downloading dependencies")
 
-def install_all_libraries(libs):
-    A = []
-    for B in libs:
-        if is_library_installed(B):
-            A.append((True, ""))
-            continue
-        A.append(download_library(B))
-    return A
+    def download_library(library_name):
+        D = False
+        C = library_name
+        B = True
+        E = ["python", "-m", "pip", "install", C]
+        try:
+            F = subprocess.run(E, check=B, capture_output=B, text=B)
+            return B, F.stdout
+        except subprocess.CalledProcessError as A:
+            G = f"Failed to install {C}. Return code: {A.returncode}. Output: {A.output}. Error: {A.stderr}."
+            return D, G
+        except Exception as A:
+            return D, f"An unexpected error occurred: {str(A)}"
 
-import platform
+    if give_feedback < 1:
+        print("Directories tge will download into:")
+        print(*dirs, sep="\n", end="\n\n")
 
-output = install_all_libraries(requirements)
-if give_feedback < 3:
-    for id, value in enumerate(output):
-        successful, error = value
-        if not successful:
-            library = requirements[id]
-            if library == "pyobjc":
-                if platform.system() != "Darwin":
-                    continue
-            print("Error while downloading dependency (%s):" % requirements[id], error)
+    def install_all_libraries(libs):
+        A = []
+        for B in libs:
+            if is_library_installed(B):
+                A.append((True, ""))
+                continue
+            A.append(download_library(B))
+        return A
+
+    import platform
+
+    output = install_all_libraries(requirements)
+    if give_feedback < 3:
+        for id, value in enumerate(output):
+            successful, error = value
+            if not successful:
+                library = requirements[id]
+                if library == "pyobjc":
+                    if platform.system() != "Darwin":
+                        continue
+                print(
+                    "Error while downloading dependency (%s):" % requirements[id], error
+                )
 end = time.time()
 if give_feedback < 1:
     print(

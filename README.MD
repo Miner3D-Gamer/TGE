@@ -50,3 +50,6 @@ building text-based games, console applications, file manipulation, and various 
 
 ### -hasty 
   If this flag isn't set and -suppression_level is below 3, the script will wait for human input before closing
+
+### -skip_dependencies
+ If this flag is set, no dependencies will be checked for or downloaded

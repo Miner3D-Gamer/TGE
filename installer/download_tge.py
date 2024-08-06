@@ -69,7 +69,7 @@ if is_library_installed("tge"):
         if not tge.is_tge_outdated():
             while True:
                 if argument_handler.get_argument_by_flag(
-                    "-install_option", delete=True, default=False
+                    "-install_option", delete=False, default=False
                 ):
                     break
                 inp = (
@@ -324,8 +324,11 @@ if not dont_download_dependencies:
 end = time.time()
 if give_feedback < 1:
     print(
-        "\nDownloading and installing tge and all it's dependencies took %s seconds"
-        % (end - start)
+        "\nDownloading and installing tge %s took %s seconds"
+        % (
+            "and all it's dependencies" if not dont_download_dependencies else "",
+            end - start,
+        )
     )
 if wait_for_reaction:
     input()

@@ -11,9 +11,7 @@ print(
     f"{total_functions-undocumented}/{total_functions} Functions are documented, that means {((total_functions-undocumented)/total_functions)*100}% of functions are documented and {undocumented} are still missing"
 )
 print()
-tge.tbe.print_check_for_functions_in_module_with_missing_notations(
-    tge.list_utils
-)
+tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge.list_utils)
 # print("lines:", tge.tbe.count_lines_in_directory("./tge"))
 dir = f"{os.getcwd()}/tge/"
 
@@ -60,8 +58,6 @@ except FileNotFoundError:
     ...
 
 
-
-
 for root, dirs, files in os.walk(dir, topdown=False):
     root = root
     for file in files:
@@ -82,20 +78,16 @@ for root, dirs, files in os.walk(dir, topdown=False):
 
             with open(output + file_path, "w", encoding="utf8") as o:
                 data = (
-                    (
-                        tge.tbe.remove_unused_libraries(
-                            "".join(
-                                [
-                                    tge.string_utils.left_replace(
-                                        line, "	", " "
-                                    )
-                                    for line in tge.tbe.minify(
-                                        f.read(),
-                                        rename_important_names=False,
-                                        remove_docstrings=True,
-                                    )
-                                ]
-                            )
+                    tge.tbe.remove_unused_libraries(
+                        "".join(
+                            [
+                                tge.string_utils.left_replace(line, "	", " ")
+                                for line in tge.tbe.minify(
+                                    f.read(),
+                                    rename_important_names=False,
+                                    remove_docstrings=True,
+                                )
+                            ]
                         )
                     )
                     if file.endswith(".py")

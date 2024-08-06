@@ -160,7 +160,7 @@ while True:
         norm_import_time = "0.4-0.6"
         inp = (
             input(
-                "Do you wanna download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%ss instead of ~%ss) and will be faster to import (%s instead of %s) but all docstring and annotations have been removed (Default:N)\nYour Input: "
+                "Do you want download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%ss instead of ~%ss) and will be faster to import (%s instead of %s) but all docstring and annotations have been removed. Runtime differences are unknown (Default:N)\nYour Input: "
                 % (min_space, norm_space, min_import_time, norm_import_time)
             )
             .strip()

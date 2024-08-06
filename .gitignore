@@ -32,6 +32,7 @@ minified_tge/system_interactions/__pycache__/keyboard_operations.cpython-311.pyc
 minified_tge/system_interactions/__pycache__/shared.cpython-311.pyc
 minified_tge/system_interactions/__pycache__/window_manager.cpython-311.pyc
 minified_tge/validation/__pycache__/minecraft.cpython-311.pyc
+minified_tge/validation/__pycache__/numbers.cpython-311.pyc
 minified_tge/validation/__pycache__/validation.cpython-311.pyc
 minified_tge/__pycache__/file_operations.cpython-311.pyc
 minified_tge/__pycache__/image_processing.cpython-311.pyc

@@ -140,6 +140,7 @@ import subprocess
 import shutil
 
 def is_ffmpeg_installed():
+    """Checks if the generic audio library FFmpeg in installed"""
     if shutil.which("ffmpeg") is None:
         return False
     

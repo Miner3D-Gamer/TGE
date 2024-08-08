@@ -1024,7 +1024,17 @@ class DualInfinite:
     """A value that is both positively and negatively infinite, not as range but as literal value"""
 
 
-def div(a:Number, b:Number)->Union[float,DualInfinite]:
+def divide(a:Number, b:Number)->Union[float,DualInfinite]:
+    """
+    Divides two numbers and handles division by zero.
+
+    Args:
+        a (float): The numerator.
+        b (float): The denominator.
+
+    Returns:
+        Union[float, DualInfinite]: The result of the division if b != 0, otherwise an instance of DualInfinite.
+    """
     return a/b if b!=0 else DualInfinite
 
 
@@ -1119,7 +1129,8 @@ def get_return_type(func:MethodType)->Any:
 import subprocess, tempfile
 
 
-def remove_unused_libraries(code_str):
+def remove_unused_libraries(code_str:str)->str:
+    """Remove unused variables from code using autoflake."""
     with tempfile.NamedTemporaryFile(delete=False, suffix='.py') as temp_file:
         temp_file.write(code_str.encode('utf-8'))
         temp_file_path = temp_file.name
@@ -1148,7 +1159,7 @@ def remove_unused_libraries(code_str):
 
 
 
-def find_files_with_extension(root_dir, file_extension):
+def find_files_with_extension(root_dir:str, file_extension:str)->List[str]:
     """
     Returns a list of all file directories with the specified extension.
 
@@ -1163,29 +1174,33 @@ def find_files_with_extension(root_dir, file_extension):
                 file_paths.append(os.path.join(root, file))
     return file_paths
 
+def find_files_with_extensions(root_dir:str, file_extensions:List[str])->List[str]:
+    """
+    Returns a list of all file directories with the specified extensions.
+
+    :param root_dir: The root directory to start searching from.
+    :param file_extensions: The file extensions to search.
+    :return: A list of file paths with the specified extension.
+    """
+    files = []
+    for file_extension in file_extensions:
+        files.extend(find_files_with_extension(root_dir, file_extension))
+    return files
 
 
 
-
-def repeat(func:FunctionType, times:int)->Any:
+def repeat(func: FunctionType, times: int) -> Any:
+    """Call func multiple times and return the last result."""
     for i in range(times):
         val = func()
     return val
 
-
-
-
-
-
-
-
-
-
-
-def get_username():
+def get_username() -> str:
+    """Return the current system username."""
     return getpass.getuser()
 
-def get_original_username():
+def get_original_username() -> str:
+    """Return the original system username."""
     return Path.home()[9:]
 
 
@@ -1284,6 +1299,7 @@ def profile(func):
         function: The wrapped function with profiling enabled.
     """
     def wrapper(*args, **kwargs):
+        ""
         pr = cProfile.Profile()
         pr.enable()
         result = func(*args, **kwargs)
@@ -1307,7 +1323,8 @@ def profile(func):
 
 
 
-def profile_function(function, filename):
+def profile_function(function:FunctionType, filename:str)->None:
+    """Profile a function and save performance stats to files."""
 
 
 
@@ -1475,40 +1492,52 @@ def burn_value_into_function(x):
 
 
 class HashMap:
+    "A Custom Hashmap"
     def __init__(self, *items: Any) -> None:
+        """Initialize with items."""
         self.map: List[Any] = list(items)
 
     def append(self, value: Any) -> None:
+        """Add value if not present."""
         if value not in self.map:
             self.map.append(value)
 
     def extend(self, values: List[Any]) -> None:
+        """Add multiple values if not present."""
         for value in values:
             if value not in self.map:
                 self.map.append(value)
 
     def pop(self, index: int) -> Any:
+        """Remove and return item at index."""
         return self.map.pop(index)
 
     def remove(self, value: Any) -> None:
+        """Remove the first occurrence of value."""
         self.map.remove(value)
 
     def index(self, value: Any) -> int:
+        """Return index of value."""
         return self.map.index(value)
 
     def __getitem__(self, index: int) -> Any:
+        """Get item at index."""
         return self.map[index]
 
     def clear(self) -> None:
+        """Remove all items."""
         self.map.clear()
 
     def __iter__(self) -> Iterator[Any]:
+        """Return an iterator."""
         return iter(self.map)
 
     def __repr__(self) -> str:
+        """Return string representation."""
         return str(self.map)
 
     def __contains__(self, item: Any) -> bool:
+        """Check if item is present."""
         return item in self.map
 
 

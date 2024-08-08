@@ -2,6 +2,7 @@ from itertools import permutations as itertools_permutations
 from collections.abc import Iterable
 from typing import Any, Union, List
 
+
 def list_mul(lst: Iterable) -> tuple:
     """
     Multiply all the numbers in the given list and return the result along with a success message.
@@ -249,25 +250,27 @@ def sort_list_of_dictionaries(lst: Iterable, key: str) -> tuple:
     except:
         return lst, False
 
-def zipper_insert(list1, list2):
+
+def zipper_insert(list1: list, list2: list) -> list:
     # Find the length of the shorter list
     min_length = min(len(list1), len(list2))
-    
+
     # Initialize the result list
     result = []
-    
+
     # Add elements from both lists in alternating fashion
     for i in range(min_length):
         result.append(list1[i])
         result.append(list2[i])
-    
+
     # Append any remaining elements from the longer list
     result.extend(list1[min_length:])
     result.extend(list2[min_length:])
-    
+
     return result
 
-def compress_list(list_to_compress: list):
+
+def compress_list(list_to_compress: list) -> Union[Any, list]:
     width = len(list_to_compress)
     new_sub_list = []
     char = list_to_compress[0]
@@ -297,7 +300,7 @@ def compress_list_of_lists(list_to_compress: List[list]) -> List[list]:
     return new_list
 
 
-def decompress_list(list_to_decompress: Union[list, Any], width: int):
+def decompress_list(list_to_decompress: Union[list, Any], width: int) -> list:
     if not isinstance(list_to_decompress, list):
         return [list_to_decompress] * width
 

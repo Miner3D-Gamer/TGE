@@ -3,8 +3,8 @@ from..shared import*
 from ctypes import wintypes
 class RECT(ctypes.Structure):_fields_=[('left',wintypes.LONG),('top',wintypes.LONG),('right',wintypes.LONG),('bottom',wintypes.LONG)]
 def is_window_minimized(hwnd,user32=USER32):return user32.IsIconic(hwnd)!=0
-def minimize_window(hwnd,user32=USER32):user32.ShowWindow(hwnd,2)
-def maximize_window(hwnd):ctypes.windll.user32.ShowWindow(hwnd,9)
+def minimize_window(hwnd,user32=USER32):user32.ShowWindow(hwnd,6)
+def maximize_window(hwnd):ctypes.windll.user32.ShowWindow(hwnd,3)
 def get_window_position(hwnd):
  rect=RECT();ctypes.windll.user32.GetWindowRect(hwnd,ctypes.byref(rect))
  if rect.left==-32000 and rect.top==-32000:return

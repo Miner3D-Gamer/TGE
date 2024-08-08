@@ -139,7 +139,7 @@ def get_function_id_by_name(func_name):
   func_obj=globals()[func_name]
   if callable(func_obj):return func_obj
 class DualInfinite:0
-def div(a,b):return a/b if b!=0 else DualInfinite
+def divide(a,b):return a/b if b!=0 else DualInfinite
 class NoInputType:0
 def get_function_inputs(func):
  B='default';A='name';signature=inspect.signature(func);type_hints=get_type_hints(func);input_parameters=[]
@@ -168,6 +168,10 @@ def find_files_with_extension(root_dir,file_extension):
   for file in files:
    if file.endswith(file_extension):file_paths.append(os.path.join(root,file))
  return file_paths
+def find_files_with_extensions(root_dir,file_extensions):
+ files=[]
+ for file_extension in file_extensions:files.extend(find_files_with_extension(root_dir,file_extension))
+ return files
 def repeat(func,times):
  for i in range(times):val=func()
  return val

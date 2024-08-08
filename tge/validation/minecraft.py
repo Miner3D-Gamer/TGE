@@ -1,16 +1,18 @@
 import re
 
-
 def is_valid_function_name(name: str) -> bool:
-    # Check if name starts or ends with a slash
+    """
+    Checks if a given name is a valid function name based on the following criteria:
+    - Does not start or end with a slash ("/").
+    - Does not contain double slashes ("//").
+    - Only contains lowercase letters, digits, underscores, and slashes.
+    """
     if name.startswith("/") or name.endswith("/"):
         return False
 
-    # Check if name contains consecutive slashes
     if "//" in name:
         return False
 
-    # Check if name contains invalid characters
     if not re.match(r"^[a-z0-9_/]+$", name):
         return False
 
@@ -27,29 +29,36 @@ def is_valid_registry_name(input_str: str) -> bool:
     Returns:
     bool: True if the input string is a valid Minecraft registry name, False otherwise.
     """
-    # Regular expression pattern to match "{str}:{str}"
     pattern = r"^\w+:\w+$"
 
-    # Check if the input string matches the pattern
     if re.match(pattern, input_str):
         return True
     else:
         return False
 
 
+
+
+
 def is_number_range(s: str) -> bool:
-    # Define the regex pattern for the range "{whole number}..{whole number}"
+    """
+    Validates if a string represents a number range in the format 'start..end',
+    where both 'start' and 'end' are non-negative integers.
+    """
     pattern = r"^\d+\.\.\d+$"
 
-    # Use the fullmatch method to check if the entire string matches the pattern
     if re.fullmatch(pattern, s):
-        # Split the string by '..' and check if both parts are whole numbers
         start, end = s.split("..")
         return start.isdigit() and end.isdigit()
     return False
 
 
 def is_valid_scoreboard_name(name: str) -> bool:
+    """
+    Determines if a given name is a valid scoreboard name consisting of:
+    - Starts with a letter or underscore.
+    - Contains only letters, digits, and underscores.
+    """
     if re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", name):
         return True
     else:

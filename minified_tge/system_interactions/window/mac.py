@@ -1,28 +1,12 @@
-_A='Window not found'
 from Quartz import CGWindowListCopyWindowInfo,kCGWindowListOptionOnScreenOnly,kCGNullWindowID
-from AppKit import NSWorkspace,NSApplication,NSApp
-def is_window_minimized_mac(window_name):
- B=NSWorkspace.sharedWorkspace();C=B.activeSpace().windows()
- for A in C:
-  if window_name in A.title():return A.isMiniaturized()
- return False
-def minimize_window_mac(window_name):
- B=NSWorkspace.sharedWorkspace();C=B.activeSpace().windows()
- for A in C:
-  if window_name in A.title():A.performMiniaturize_(None);return
- raise ValueError(_A)
-def get_window_position_mac(window_name):
- C=NSWorkspace.sharedWorkspace();D=C.activeSpace().windows()
- for A in D:
-  if window_name in A.title():B=A.frame();E,F=B.origin.x,B.origin.y;return E,F
- raise ValueError(_A)
-def maximize_window_mac(window_name):
- B=NSWorkspace.sharedWorkspace();C=B.activeSpace().windows()
- for A in C:
-  if window_name in A.title():D=NSScreen.mainScreen().frame();A.setFrame_display_(D,True);return
- raise ValueError(_A)
-def set_window_position_mac(window_name,x,y,width,height):
- C=NSWorkspace.sharedWorkspace();D=C.activeSpace().windows()
- for B in D:
-  if window_name in B.title():A=B.frame();A.origin.x=x;A.origin.y=y;A.size.width=width;A.size.height=height;B.setFrame_display_(A,True);return
- raise ValueError(_A)
+from AppKit import NSWorkspace,NSApplication,NSApp,NSWindow
+def is_window_minimized(window):return window.isMiniaturized()
+def minimize_window(window):window.performMiniaturize_(None)
+def get_window_position(window):A=window.frame();B,C=A.origin.x,A.origin.y;return B,C
+def maximize_window(window):A=window;B=A.mainScreen().frame();A.setFrame_display_(B,True)
+def set_window_position(window,x,y,width,height):B=window;A=B.frame();A.origin.x=x;A.origin.y=y;A.size.width=width;A.size.height=height;B.setFrame_display_(A,True)
+def get_window_by_title(title):
+ B=CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly,kCGNullWindowID)
+ for A in B:
+  C=A.get('kCGWindowName','')
+  if title in C:D=A['kCGWindowNumber'];E=NSApp.windowWithWindowNumber_(D);return E

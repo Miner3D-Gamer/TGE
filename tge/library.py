@@ -1,5 +1,5 @@
 import importlib.util
-from typing import List, Union, Tuple, Any, Optional, Dict
+from typing import Union, Tuple, NoReturn, List
 import subprocess
 
 
@@ -15,7 +15,7 @@ def is_library_installed(library_name: str) -> bool:
     return spec is not None
 
 
-def download_library(library_name: str) -> "Tuple[bool, str]":
+def download_library(library_name: str) -> Tuple[bool, str]:
     """
     Downloads and installs a Python library using pip.
 
@@ -99,7 +99,7 @@ def install_library_from_github(github_repo_url: str) -> None:
 from collections.abc import Iterable
 
 
-def install_all_libraries(libs: "Iterable[str]") -> "list[tuple[bool, str]]":
+def install_all_libraries(libs: "Iterable[str]") -> List[Tuple[bool, str]]:
     """
     Install a list of libraries and return a list of installation results.
 
@@ -127,23 +127,18 @@ def install_all_libraries(libs: "Iterable[str]") -> "list[tuple[bool, str]]":
     return output
 
 
-def are_all_required_libraries_installed() -> None:
+def install_missing_tge_libraries() -> Union[None, NoReturn]:
     """
     Check if all libraries listed in the 'requirements.txt' file are installed.
 
-    This function reads the 'requirements.txt' file, which should contain a list of library names. It checks whether 
+    This function reads the 'requirements.txt' file, which should contain a list of library names. It checks whether
     each library is installed and raises a `ModuleNotFoundError` if any library is missing.
 
     Raises:
         ModuleNotFoundError: If any library listed in 'requirements.txt' is not installed.
-
-    Examples:
-        >>> are_all_required_libraries_installed()
-        # This will check the libraries listed in 'requirements.txt' and raise an exception if any are missing.
     """
-    with open("requirements.txt", "r") as f:
+    with open(os.path.dirname(__file__) + "/requirements.txt", "r") as f:
         libs = f.readlines()
     for lib in libs:
-        if not is_library_installed(lib.strip()):  # Use strip() to remove any leading/trailing whitespace
+        if not is_library_installed(lib.strip()):
             raise ModuleNotFoundError(f"Library not found: {lib.strip()}")
-

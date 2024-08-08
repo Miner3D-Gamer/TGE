@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import concurrent.futures
 import datetime
 from collections.abc import Iterable
-from typing import Union
+from typing import Union, Dict
 import vdf
 
 def get_game_name(session:requests.Session, game_id:int)->str:
@@ -163,7 +163,7 @@ def is_valid_game_id(session:requests.Session, game_id:int)->bool:
     
     return False
 
-def check_game_ids(game_ids:Iterable)->"dict[Union[bool,None]]":
+def check_game_ids(game_ids:Iterable)->Dict[Union[bool,None]]:
     """
     Check the validity of a list of game IDs using multi-threading.
     

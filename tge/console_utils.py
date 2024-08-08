@@ -1,28 +1,25 @@
-
 import time
 import os
-from typing import List, Union, Tuple , Any
+from typing import List, Union, Tuple, Any
 from random import random, choice
 import sys
 from collections.abc import Iterable
 from numbers import Number
 
 
-from .tbe import determine_affirmative#, pass_func
+from .tbe import determine_affirmative
 
 
-__all__ = ["typingPrint"]
 
-if os.name == 'nt':
-    
-    def clear() -> "Tuple[bool, str]":
-        os.system('cls')
+if os.name == "nt":
+
+    def clear() -> None:
+        os.system("cls")
+
 else:
-    def clear() -> "Tuple[bool, str]":
-        os.system('clear')
 
-
-
+    def clear() -> None:
+        os.system("clear")
 
 
 def typingPrint(text: str, delay: Number) -> None:
@@ -35,13 +32,14 @@ def typingPrint(text: str, delay: Number) -> None:
     Returns:
         None
     """
-    
+
     if not delay > 0:
         delay = 0.05
     for character in text:
         sys.stdout.write(character)
         sys.stdout.flush()
         time.sleep(delay)
+
 
 def typingInput(text: str, delay: Number = 0) -> str:
     """
@@ -60,10 +58,13 @@ def typingInput(text: str, delay: Number = 0) -> str:
         sys.stdout.write(character)
         sys.stdout.flush()
         time.sleep(delay)
-    value = input("")  
+    value = input("")
     return value
 
-def writeSentencesToConsole(punctuations:"list[str]", o_text: str, type_delay: Number, line_delay: Number) -> "Tuple[bool, str]":
+
+def writeSentencesToConsole(
+    punctuations: List[str], o_text: str, type_delay: Number, line_delay: Number
+) -> Tuple[bool, str]:
     """
     Writes text and splits it into sentences with punctuations and prints them
 
@@ -78,7 +79,7 @@ def writeSentencesToConsole(punctuations:"list[str]", o_text: str, type_delay: N
     try:
         o_text = str(o_text)
         if type(punctuations) != list:
-            punctuations [punctuations]
+            punctuations[punctuations]
     except:
         return False
 
@@ -94,20 +95,21 @@ def writeSentencesToConsole(punctuations:"list[str]", o_text: str, type_delay: N
 
     # print(" ")
     # time.sleep(0.05)
-    typingPrint(o_text[t_idx:len(text[idx])+t_idx], type_delay)
+    typingPrint(o_text[t_idx : len(text[idx]) + t_idx], type_delay)
     time.sleep(line_delay)
-    t_idx += len(text[idx])+1
+    t_idx += len(text[idx]) + 1
     idx += 1
 
-    for i in range(o_text.count("Þ")-1):
+    for i in range(o_text.count("Þ") - 1):
         print(" ")
         time.sleep(line_delay)
-        write = (o_text[t_idx:len(text[idx])+t_idx])[1:]
+        write = (o_text[t_idx : len(text[idx]) + t_idx])[1:]
         if not write == "":
             typingPrint(write, type_delay)
-        t_idx += len(text[idx])+1
+        t_idx += len(text[idx]) + 1
         idx += 1
     return True
+
 
 def chooseFromTextMenu(text: Iterable, prompt: str, ans_prompt: str) -> int:
     """
@@ -142,7 +144,7 @@ def chooseFromTextMenu(text: Iterable, prompt: str, ans_prompt: str) -> int:
             time.sleep(0.05)
         time.sleep(0.25)
         answer = typingInput(ans_prompt)
-            
+
         try:
             if answer in text:
                 return text.index(answer)
@@ -154,26 +156,28 @@ def chooseFromTextMenu(text: Iterable, prompt: str, ans_prompt: str) -> int:
             if answer <= len(text) and answer >= 0:
                 chooseMenu = False
                 return int(answer)
-            
+
+
 def skip_line() -> None:
     """Prints a newline character to skip to the next line."""
     print("\n")
 
-def print_table(data: "Iterable[list[str]]") -> "Tuple[bool, str]":
+
+def print_table(data: "Iterable[list[str]]") -> Tuple[bool, str]:
     """
     Prints a table representation of the provided data.
 
     Args:
         data (list): A list of lists containing the data to be printed as a table.
-    
+
     Returns:
         tuple: A tuple containing a boolean value and a string message.
             - The boolean value indicates the success or failure of the table printing.
             - The string message provides additional information in case of failure.
-    
+
     Raises:
         None
-    
+
     Example:
         data = [['Name', 'Age', 'Country'],
                 ['John', 25, 'USA'],
@@ -186,24 +190,41 @@ def print_table(data: "Iterable[list[str]]") -> "Tuple[bool, str]":
     """
     try:
         # Determine the maximum length of each column
-        column_widths = [max(len(str(item)) for item in column) for column in zip(*data)]
+        column_widths = [
+            max(len(str(item)) for item in column) for column in zip(*data)
+        ]
 
         # Print the table header
         header = "+" + "+".join("-" * (width + 2) for width in column_widths) + "+"
         print(header)
-        
+
         # Print the table rows
         for row in data:
-            formatted_row = "| " + " | ".join(str(item).ljust(width) for item, width in zip(row, column_widths)) + " |"
+            formatted_row = (
+                "| "
+                + " | ".join(
+                    str(item).ljust(width) for item, width in zip(row, column_widths)
+                )
+                + " |"
+            )
             print(formatted_row)
-        
+
         # Print the table footer
         print(header)
         return True, ""
     except:
         return False, "Unable to print table, make sure the data is a list of lists"
-    
-def progress_bar(progress_name: str, current: int, total: int, length, show_float: bool = True, empty_tile: str = '-', full_tile: str = '#') -> None:
+
+
+def progress_bar(
+    progress_name: str,
+    current: int,
+    total: int,
+    length,
+    show_float: bool = True,
+    empty_tile: str = "-",
+    full_tile: str = "#",
+) -> None:
     """
     Displays a progress bar indicating the completion of a task.
 
@@ -230,14 +251,14 @@ def progress_bar(progress_name: str, current: int, total: int, length, show_floa
         percent = int(current / total * 100)
     filled_length = int(length * current // total)
 
-
-    bar = f'{full_tile}' * filled_length + f'{empty_tile}' * (length - filled_length)
+    bar = f"{full_tile}" * filled_length + f"{empty_tile}" * (length - filled_length)
     if progress_name == "":
-        sys.stdout.write(f'\r[{bar}] {percent}%')
+        sys.stdout.write(f"\r[{bar}] {percent}%")
         sys.stdout.flush()
     else:
-        sys.stdout.write(f'\r{progress_name}: [{bar}] {percent}%')
+        sys.stdout.write(f"\r{progress_name}: [{bar}] {percent}%")
         sys.stdout.flush()
+
 
 def colorize_text(text: str, color: str) -> str:
     """
@@ -261,45 +282,46 @@ def colorize_text(text: str, color: str) -> str:
         ValueError: If an invalid color is specified.
     """
     colors = {
-        'black': '\033[30m',
-        'red': '\033[31m',
-        'green': '\033[32m',
-        'yellow': '\033[33m',
-        'blue': '\033[34m',
-        'magenta': '\033[35m',
-        'cyan': '\033[36m',
-        'white': '\033[37m',
-        'bright_black': '\033[90m',
-        'bright_red': '\033[91m',
-        'bright_green': '\033[92m',
-        'bright_yellow': '\033[93m',
-        'bright_blue': '\033[94m',
-        'bright_magenta': '\033[95m',
-        'bright_cyan': '\033[96m',
-        'bright_white': '\033[97m',
-        'bg_black': '\033[40m',
-        'bg_red': '\033[41m',
-        'bg_green': '\033[42m',
-        'bg_yellow': '\033[43m',
-        'bg_blue': '\033[44m',
-        'bg_magenta': '\033[45m',
-        'bg_cyan': '\033[46m',
-        'bg_white': '\033[47m',
-        'bg_bright_black': '\033[100m',
-        'bg_bright_red': '\033[101m',
-        'bg_bright_green': '\033[102m',
-        'bg_bright_yellow': '\033[103m',
-        'bg_bright_blue': '\033[104m',
-        'bg_bright_magenta': '\033[105m',
-        'bg_bright_cyan': '\033[106m',
-        'bg_bright_white': '\033[107m',
-        'reset': '\033[0m'
+        "black": "\033[30m",
+        "red": "\033[31m",
+        "green": "\033[32m",
+        "yellow": "\033[33m",
+        "blue": "\033[34m",
+        "magenta": "\033[35m",
+        "cyan": "\033[36m",
+        "white": "\033[37m",
+        "bright_black": "\033[90m",
+        "bright_red": "\033[91m",
+        "bright_green": "\033[92m",
+        "bright_yellow": "\033[93m",
+        "bright_blue": "\033[94m",
+        "bright_magenta": "\033[95m",
+        "bright_cyan": "\033[96m",
+        "bright_white": "\033[97m",
+        "bg_black": "\033[40m",
+        "bg_red": "\033[41m",
+        "bg_green": "\033[42m",
+        "bg_yellow": "\033[43m",
+        "bg_blue": "\033[44m",
+        "bg_magenta": "\033[45m",
+        "bg_cyan": "\033[46m",
+        "bg_white": "\033[47m",
+        "bg_bright_black": "\033[100m",
+        "bg_bright_red": "\033[101m",
+        "bg_bright_green": "\033[102m",
+        "bg_bright_yellow": "\033[103m",
+        "bg_bright_blue": "\033[104m",
+        "bg_bright_magenta": "\033[105m",
+        "bg_bright_cyan": "\033[106m",
+        "bg_bright_white": "\033[107m",
+        "reset": "\033[0m",
     }
     if color not in colors:
         raise ValueError("Invalid color specified.")
-    return colors[color] + text + colors['reset']
+    return colors[color] + text + colors["reset"]
 
-def visualize_directory(path, prefix='', lines=None) -> None:
+
+def visualize_directory(path, prefix="", lines=None) -> None:
     """
     Recursively visualizes the directory structure of a given path.
 
@@ -335,7 +357,7 @@ def visualize_directory(path, prefix='', lines=None) -> None:
     if lines is None:
         lines = []
 
-    if prefix == '':
+    if prefix == "":
         base_name = os.path.basename(path)
         lines.append(f"[{base_name}]")
 
@@ -345,7 +367,7 @@ def visualize_directory(path, prefix='', lines=None) -> None:
         with os.scandir(path) as entries:
             entries = list(entries)
             for i, entry in enumerate(entries):
-                is_last = (i == len(entries) - 1)
+                is_last = i == len(entries) - 1
                 marker = "└──" if is_last else "├──"
 
                 if entry.is_dir():
@@ -355,10 +377,11 @@ def visualize_directory(path, prefix='', lines=None) -> None:
                 else:
                     lines.append(f"{prefix}{marker}/{entry.name}")
     except PermissionError:
-        marker = "└──" if is_last else "├──"  
+        marker = "└──" if is_last else "├──"
         lines.append(f"{prefix}{marker}(Access Denied)")
 
     return lines
+
 
 def clear_lines(num_lines: int, move_front: bool = False) -> None:
     """
@@ -380,16 +403,22 @@ def clear_lines(num_lines: int, move_front: bool = False) -> None:
     clear_lines(3)
     This will move the cursor up 3 lines and clear the current line, effectively clearing 3 lines on the console screen.
     """
-    sys.stdout.write('\033[F' * num_lines) # Move the cursor up `num_lines` lines
-    sys.stdout.write('\033[K') # Clear the current line and move the cursor to the beginning
-    #if move_front is true, the cursor should be moved by 1 character
+    sys.stdout.write("\033[F" * num_lines)  # Move the cursor up `num_lines` lines
+    sys.stdout.write(
+        "\033[K"
+    )  # Clear the current line and move the cursor to the beginning
+    # if move_front is true, the cursor should be moved by 1 character
     if move_front:
-        sys.stdout.write('\033[F')
-        
-    
+        sys.stdout.write("\033[F")
 
 
-def prompt_bool(question: str, allow_undeterminable:bool=False, tries: int=0, delete_lines = True, return_value_when_tries_are_depleted=None) -> bool:
+def prompt_bool(
+    question: str,
+    allow_undeterminable: bool = False,
+    tries: int = 0,
+    delete_lines=True,
+    return_value_when_tries_are_depleted=None,
+) -> bool:
     tries_count = 0
     while True:
         tries_count += 1
@@ -397,7 +426,7 @@ def prompt_bool(question: str, allow_undeterminable:bool=False, tries: int=0, de
         ans = determine_affirmative(input_ans)
         if ans is not None:
             return ans, input_ans
-        else: 
+        else:
             if allow_undeterminable:
                 return ans, input_ans
         if tries > 0:
@@ -407,7 +436,17 @@ def prompt_bool(question: str, allow_undeterminable:bool=False, tries: int=0, de
         if delete_lines:
             clear_lines(1)
 
-def prompt_number(question: str, min: int=None, max: int=None, incorrect=None, error=None, delete_lines = True, tries=0, try_return=None) -> int:
+
+def prompt_number(
+    question: str,
+    min: int = None,
+    max: int = None,
+    incorrect=None,
+    error=None,
+    delete_lines=True,
+    tries=0,
+    try_return=None,
+) -> int:
     """
     Asks the user a number question and validates the input.
 
@@ -437,7 +476,7 @@ def prompt_number(question: str, min: int=None, max: int=None, incorrect=None, e
                 return input_ans
             elif min <= input_ans <= max:
                 return input_ans
-            else: 
+            else:
                 if tries > 0:
                     if tries_count >= tries:
                         if try_return is not None:
@@ -461,7 +500,14 @@ def prompt_number(question: str, min: int=None, max: int=None, incorrect=None, e
                 return error(input_ans)
 
 
-def matrix_rain(rows: int, columns: int, speed: Number=0.1, density: Number=0.2, duration: Number = None, symbols: Iterable = ['0', '1']) -> None:
+def matrix_rain(
+    rows: int,
+    columns: int,
+    speed: Number = 0.1,
+    density: Number = 0.2,
+    duration: Number = None,
+    symbols: Iterable = ["0", "1"],
+) -> None:
     """
     Displays a matrix rain animation on the console.
 
@@ -486,9 +532,8 @@ def matrix_rain(rows: int, columns: int, speed: Number=0.1, density: Number=0.2,
     tge_matrix_console_stop = False
     mat_time = time.time()
 
-
     # Create an empty matrix
-    matrix = [[' ' for _ in range(columns)] for _ in range(rows)]
+    matrix = [[" " for _ in range(columns)] for _ in range(rows)]
 
     while True:
         # Generate a new row of raindrops
@@ -496,46 +541,37 @@ def matrix_rain(rows: int, columns: int, speed: Number=0.1, density: Number=0.2,
             if random() < density:
                 matrix[0][i] = choice(symbols)
             else:
-                matrix[0][i] = ' '
+                matrix[0][i] = " "
 
         # Move the raindrops down the matrix
         for i in range(rows - 1, 0, -1):
             for j in range(columns):
-                matrix[i][j] = matrix[i-1][j]
-
+                matrix[i][j] = matrix[i - 1][j]
 
         # Print the matrix
-        
-        
+
         matrix_str = ""
         idx = 0
         for row in matrix[1:]:
-            matrix_str += ''.join(row) + "\n"
+            matrix_str += "".join(row) + "\n"
             idx += 1
-        
-        clear_lines(rows+1)
+
+        clear_lines(rows + 1)
         print(matrix_str)
         # print(rows, idx)
         # quit()
-            
+
         if duration is not None:
             if time.time() - mat_time > duration:
                 break
         elif tge_matrix_console_stop:
-            break   
-            
+            break
+
         time.sleep(speed)
-        
-
-
-
-
-
-
-
 
 
 from io import StringIO
+
 
 class ConsoleCapture:
     def __init__(self) -> None:
@@ -553,7 +589,7 @@ class ConsoleCapture:
         self.original_stdout = sys.stdout
         self.captured_output = StringIO()
         self.capturing = False
-    
+
     def start_capture(self) -> None:
         """
         Start capturing the standard output if capturing is not already active.
@@ -566,7 +602,7 @@ class ConsoleCapture:
         """
         if self.capturing == False:
             sys.stdout = self.captured_output
-    
+
     def stop_capture(self) -> None:
         """
         Stops capturing the standard output and restores the original stdout if capturing is currently active.
@@ -580,7 +616,7 @@ class ConsoleCapture:
         """
         if self.capturing == True:
             sys.stdout = self.original_stdout
-    
+
     def get_captured_output(self) -> StringIO:
         """
         Retrieve the content from the captured output buffer.
@@ -596,12 +632,13 @@ class ConsoleCapture:
         self.captured_output.seek(0)
         return self.captured_output.read()
 
+
 def suppress_print() -> None:
     """
     Temporarily suppresses the standard output (print statements) by capturing
     and redirecting them. This function initializes a global 'console_capture'
     object of type 'ConsoleCapture' and starts capturing the console output.
-    
+
     Usage:
     suppress_print()
     # ... code block where print statements should be suppressed ...
@@ -610,6 +647,7 @@ def suppress_print() -> None:
     global console_capture
     console_capture = ConsoleCapture()
     console_capture.start_capture()
+
 
 def enable_print() -> StringIO:
     """
@@ -627,6 +665,3 @@ def enable_print() -> StringIO:
     console_capture.stop_capture()
     captured_output = console_capture.get_captured_output()
     return captured_output
-
-
-

@@ -184,7 +184,7 @@ response.raise_for_status()
 
 def decompress_directory_list(
     compressed: dict,
-) -> "list[str]":
+) :
     # FIXME: THIS IS BROKEN FOR PATHS WHERE THERE IS ONLY ONE FILE AND I HAVE NO IDEA HOW TO FIX IT
     paths = []
 
@@ -214,7 +214,7 @@ files = [
     for file in decompress_directory_list(json.loads(response.text))
 ]
 
-urls: "list[str]" = [github_url + file for file in files]
+urls = [github_url + file for file in files]
 
 for dir in dirs:
     if os.path.exists(dir):

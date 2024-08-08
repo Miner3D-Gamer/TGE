@@ -34,7 +34,7 @@ def create_missing_directory(directory: str) -> bool:
         return False
 
 
-def delete_directory(directory: str) -> "Tuple[bool, str]":
+def delete_directory(directory: str) -> Tuple[bool, str]:
     """
     Deletes a directory and its contents.
 
@@ -59,7 +59,7 @@ def delete_directory(directory: str) -> "Tuple[bool, str]":
         return False, "Error deleting directory"
 
 
-def write_save_data(name: str, dir: str, data) -> "Tuple[bool, str]":
+def write_save_data(name: str, dir: str, data) -> Tuple[bool, str]:
     """
     Saves data to a file with the given name in the specified directory.
 
@@ -80,7 +80,7 @@ def write_save_data(name: str, dir: str, data) -> "Tuple[bool, str]":
         return False, f"Error saving file: {str(e)}"
 
 
-def load_save_data(name: str, dir: str) -> "Tuple[bool, str]":
+def load_save_data(name: str, dir: str) -> Tuple[bool, str]:
     """
     Loads a file and returns the data.
 
@@ -626,7 +626,7 @@ def get_file_creation_time(file_path: str) -> str:
         return ""
 
 
-def count_functions_in_file(file_path: str) -> "Tuple[int, list]":
+def count_functions_in_file(file_path: str) -> Tuple[int, list]:
     """
     Count and retrieve the names of top-level functions defined in the specified Python file.
 
@@ -656,7 +656,7 @@ def count_functions_in_file(file_path: str) -> "Tuple[int, list]":
         return 0, []
 
 
-def count_functions_in_directory(directory_path: str) -> "Tuple[int, dict, list]":
+def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
     """
     Counts the number of functions in all Python files within a directory and its subdirectories.
     Returns a dictionary where the keys are the file paths and the values are tuples with the count and names of functions.
@@ -707,7 +707,7 @@ def count_functions_in_directory(directory_path: str) -> "Tuple[int, dict, list]
     return total_function_count, function_counts, error_files
 
 
-def count_function_names_in_directory(directory_path: str) -> "Tuple[int, list]":
+def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
     """
     Count the total number of function names in Python files within the specified directory.
 
@@ -821,7 +821,7 @@ def input_directory_path() -> str:
 
 def unzip_file(
     zip_path: str, extract_dir: str, create_missing_directory_bool: bool = False
-) -> "Tuple[bool, bool]":
+) -> Tuple[bool, bool]:
     """
     Unzips a zip file to the specified extract directory.
 
@@ -848,7 +848,7 @@ def unzip_file(
 
 def zip_directory(
     directory_path: str, output_path: str, create_missing_directory_bool: bool = False
-) -> "Tuple[bool, bool]":
+) -> Tuple[bool, bool]:
     """
     Zip a given directory and save the resulting zip file to the output path.
 
@@ -959,7 +959,10 @@ def is_directory_empty(directory_path: str) -> bool:
 def get_filesize(directory: str):
     return os.path.getsize(directory)
 
-def get_file_size_of_directory(directory: str, blacklisted_file_extensions: list = [], chunk_size: int = 4096) -> int:
+
+def get_file_size_of_directory(
+    directory: str, blacklisted_file_extensions: list = [], chunk_size: int = 4096
+) -> int:
     total_size = 0
 
     for dirpath, dirnames, filenames in os.walk(directory):
@@ -972,24 +975,19 @@ def get_file_size_of_directory(directory: str, blacklisted_file_extensions: list
                 file_size = os.path.getsize(fp)
                 rounded_size = math.ceil(file_size / chunk_size) * chunk_size
                 total_size += rounded_size
-    
+
     return total_size
+
 
 def get_user_directory():
     return pathlib_path.home()
-
-
-
-
-
-
-
 
 
 from . import SYSTEM_NAME
 
 
 if SYSTEM_NAME == "windows":
+
     def add_to_path_to_system_path_variables(path):
 
         current_path = os.getenv("PATH")
@@ -998,22 +996,21 @@ if SYSTEM_NAME == "windows":
 
 elif SYSTEM_NAME == "darwin":
     import subprocess
+
     def add_to_path_to_system_path_variables(path):
-            with open(os.path.expanduser("~/.bash_profile"), "a") as file:
-                file.write(f'\nexport PATH="{path}:$PATH"\n')
-            subprocess.run(["source", "~/.bash_profile"], shell=True, check=True)
+        with open(os.path.expanduser("~/.bash_profile"), "a") as file:
+            file.write(f'\nexport PATH="{path}:$PATH"\n')
+        subprocess.run(["source", "~/.bash_profile"], shell=True, check=True)
+
 elif SYSTEM_NAME == "linux":
     import subprocess
+
     def add_to_path_to_system_path_variables(path):
-            with open(os.path.expanduser("~/.bashrc"), "a") as file:
-                file.write(f'\nexport PATH="{path}:$PATH"\n')
-            subprocess.run(["source", "~/.bashrc"], shell=True, check=True)
+        with open(os.path.expanduser("~/.bashrc"), "a") as file:
+            file.write(f'\nexport PATH="{path}:$PATH"\n')
+        subprocess.run(["source", "~/.bashrc"], shell=True, check=True)
+
 else:
+
     def add_to_path_to_system_path_variables(path):
         raise BaseException("Unknown System")
-
-
-
-
-
-

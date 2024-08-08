@@ -1,6 +1,6 @@
 from itertools import permutations as itertools_permutations
 from collections.abc import Iterable
-from typing import Any
+from typing import Any, Union, List
 
 def list_mul(lst: Iterable) -> tuple:
     """
@@ -290,14 +290,14 @@ def compress_list(list_to_compress: list):
     return new_sub_list
 
 
-def compress_list_of_lists(list_to_compress: list[list]) -> list[list]:
+def compress_list_of_lists(list_to_compress: List[list]) -> List[list]:
     new_list = []
     for sub_list in list_to_compress:
         new_list.append(compress_list(sub_list))
     return new_list
 
 
-def decompress_list(list_to_decompress: list | Any, width: int):
+def decompress_list(list_to_decompress: Union[list, Any], width: int):
     if not isinstance(list_to_decompress, list):
         return [list_to_decompress] * width
 
@@ -313,7 +313,7 @@ def decompress_list(list_to_decompress: list | Any, width: int):
     return new_sub_list
 
 
-def decompress_list_of_lists(list_to_decompress: list[list], width: int) -> list[list]:
+def decompress_list_of_lists(list_to_decompress: List[list], width: int) -> List[list]:
     new_list = []
     for sub_list in list_to_decompress:
         new_list.append(decompress_list(sub_list, width))

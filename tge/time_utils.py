@@ -126,7 +126,7 @@ from time import sleep, timezone
 #     years_diff = year - past_year; months_diff = month - past_month; days_diff = day - past_day; hours_diff = hour - past_hour; minutes_diff = minute - past_minute; seconds_diff = second - past_second
 #     return (years_diff, months_diff, days_diff, hours_diff, minutes_diff, seconds_diff), True
 
-def get_date() -> "Tuple[int, int, int, int, int, int, int]":
+def get_date() -> Tuple[int, int, int, int, int, int, int]:
     """
     Get the current date and time.
 

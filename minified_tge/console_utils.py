@@ -5,7 +5,6 @@ import time,os
 from random import random,choice
 import sys
 from.tbe import determine_affirmative
-__all__=['typingPrint']
 if os.name=='nt':
  def clear():os.system('cls')
 else:

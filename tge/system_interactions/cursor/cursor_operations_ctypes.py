@@ -1,5 +1,5 @@
 from ..shared import ctypes
-
+from typing import Tuple
 
 class POINT(ctypes.Structure):
     _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
@@ -33,7 +33,7 @@ OPEN_EXISTING = 3
 GMEM_ZEROINIT = 0x0040
 
 
-def getScreenDimensions() -> "tuple[int, int]":
+def getScreenDimensions() -> Tuple[int, int]:
     "Retrieve the dimensions of the screen as a tuple (width, height)."
     return ctypes.windll.user32.GetSystemMetrics(
         0
@@ -44,7 +44,7 @@ SCREEN_WIDTH, SCREEN_HEIGHT = getScreenDimensions()
 
 
 def set_mouse_to(
-    coords: "tuple[int, int]",
+    coords: Tuple[int, int],
     screen_width: int = SCREEN_WIDTH,
     screen_height: int = SCREEN_HEIGHT,
 ) -> None:
@@ -60,7 +60,7 @@ def set_mouse_to(
     )
 
 
-def get_mouse_position() -> "tuple[int, int]":
+def get_mouse_position() -> Tuple[int, int]:
     "Retrieve the current mouse cursor position as a tuple (x, y)."
     ctypes.windll.user32.GetCursorPos(ctypes.byref(CURSOR_POINT))
     return CURSOR_POINT.x, CURSOR_POINT.y

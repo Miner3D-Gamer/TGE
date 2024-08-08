@@ -1,5 +1,6 @@
 WHEEL_DELTA = 120
 import pynput
+from typing import Tuple
 
 MOUSE = pynput.mouse.Controller()
 
@@ -23,12 +24,12 @@ from pyautogui import size as getScreenDimensions
 SCREEN_WIDTH, SCREEN_HEIGHT = getScreenDimensions()
 
 
-def set_mouse_to(coords: "tuple[int, int]") -> None:
+def set_mouse_to(coords: Tuple[int, int]) -> None:
     "Move the mouse cursor to the specified coordinates (x, y)."
     MOUSE.position = coords
 
 
-def get_mouse_position() -> "tuple[int, int]":
+def get_mouse_position() -> Tuple[int, int]:
     "Retrieve the current mouse cursor position as a tuple (x, y)."
     return MOUSE.position
 

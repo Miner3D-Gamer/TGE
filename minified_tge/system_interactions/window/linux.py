@@ -5,14 +5,14 @@ _C='wmctrl'
 _B=None
 _A=True
 import subprocess,sys
-def is_window_minimized_linux(window_id):
+def is_window_minimized(window_id):
  A=window_id
  if A is _B:return _E
  C=subprocess.run([_C,'-lG'],stdout=subprocess.PIPE,text=_A);D=C.stdout.splitlines()
  for B in D:
   if A in B:E=B.split();F=E[8];return F=='0'
  return _E
-def minimize_window_linux(window_id):
+def minimize_window(window_id):
  A=window_id
  if A is _B:raise ValueError(_D)
  subprocess.run([_C,'-i','-r',A,'-b','add,hidden'])

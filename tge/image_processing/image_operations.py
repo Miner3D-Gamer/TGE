@@ -1,9 +1,10 @@
 from PIL import Image
-from typing import Union, Tuple, Any, List
+from typing import Union, Tuple, Any
 from numbers import Number
 
-from .math_functions.math_functions import clamp, math
-from .file_operations import doesDirectoryFileExist
+from ..math_functions.math_functions import clamp, math
+from ..file_operations import doesDirectoryFileExist
+from .middle_man import *
 
 def rotate_image(image_path: str, angle: int) -> bool:
     """

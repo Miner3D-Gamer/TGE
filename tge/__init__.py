@@ -133,7 +133,7 @@ from . import file_operations
 from . import formatting_utils as formatting
 from . import bool_operations
 from . import bitwise
-from . import image_processing
+from .image_processing import image_operations
 # from .file_system import SimDirFilSystem
 
 import subprocess

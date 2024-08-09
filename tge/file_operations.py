@@ -911,9 +911,6 @@ def create_shortcut(
         - The 'executable' parameter is set to 'target_path', indicating the executable to run
         when the shortcut is activated.
 
-    Example:
-        create_shortcut("MyScriptShortcut", "/path/to/myscript.py", "/desktop/shortcuts/",
-                        "Shortcut to run my custom script.")
     """
     target_parent_folder = os.path.dirname(target_path)
     pyshortcuts.make_shortcut(

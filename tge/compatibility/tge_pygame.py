@@ -8,7 +8,7 @@ from ..random_generators import generate_random_string
 
 from ..tbe import pass_func
 
-from ..image_processing import count_gif_frames
+from ..image_processing.image_operations import count_gif_frames
 
 
 def update_screen(clock: pygame.time.Clock, fps: int = 0) -> None:

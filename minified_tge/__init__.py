@@ -59,7 +59,7 @@ from.import file_operations
 from.import formatting_utils as formatting
 from.import bool_operations
 from.import bitwise
-from.import image_processing
+from.image_processing import image_operations
 import subprocess,shutil
 def is_ffmpeg_installed():
  B='ffmpeg';A=False

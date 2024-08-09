@@ -113,14 +113,14 @@ import minified_tge
 
 with open(".gitignore", "w") as f:
     f.write(
-        "\n".join(
+         "\n".join(
             [
                 file[2:].replace("\\", "/")
                 for file in tge.tbe.find_files_with_extension(".", ".pyc")
             ]
         )
     )
-    
+
 print()
 print("Import time of TGE:", tge.INIT_TIME)
 print("Size of TGE: %s kb" % tge_size)

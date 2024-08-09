@@ -5,7 +5,7 @@ from importlib import import_module as importlib_import_module
 import pygame
 from..random_generators import generate_random_string
 from..tbe import pass_func
-from..image_processing import count_gif_frames
+from..image_processing.image_operations import count_gif_frames
 def update_screen(clock,fps=0):pygame.display.update();clock.tick(fps)
 def render_text(screen,text,font_name,size,color,position):A=pygame.font.SysFont(font_name,size);B=A.render(text,_B,color);screen.blit(B,position)
 def load_images_from_directory(directory_path):

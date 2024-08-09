@@ -1,7 +1,7 @@
 import subprocess, sys
 
 
-def is_window_minimized_linux(window_id):
+def is_window_minimized(window_id):
     """Check if the window is minimized."""
     if window_id is None:
         return False
@@ -16,7 +16,7 @@ def is_window_minimized_linux(window_id):
     return False
 
 
-def minimize_window_linux(window_id):
+def minimize_window(window_id):
     """Minimize the specified window."""
     if window_id is None:
         raise ValueError("Window not found")

@@ -13,7 +13,7 @@ from . import json
 # To make sure the imports stay when minifying
 html, json
 
-def encode(x: str) -> Tuple[bool, str]:
+def encode(x: str) -> str:
     """
     Encode a string using base64 and hexadecimal encoding.
 
@@ -25,15 +25,12 @@ def encode(x: str) -> Tuple[bool, str]:
             the encoding was successful or not, and either the encoded string or an error message
             if the encoding failed.
     """
-    try:
-        x = base.encode_base64(bytes(x, "latin-1"))
-        x = hexlify(x).decode("latin-1")
-        return x
-    except:
-        return ""
+    x = base.encode_base64(x)
+    x = hexlify(x.encode()).decode("utf8")
+    return x
 
 
-def decode(data: str) -> Tuple[str, bool]:
+def decode(data: str) -> str:
     """
     Decodes a string from hexadecimal and base64 encoding.
 
@@ -44,16 +41,9 @@ def decode(data: str) -> Tuple[str, bool]:
         A tuple containing a boolean indicating whether the decoding was successful and
         the decoded string if successful, or an error message if unsuccessful.
     """
-    try:
-        data = unhexlify(data)
-        decoded_data = base.decode_base64(data)
-        return decoded_data.decode("latin-1"), True
-    except BinasciiError as e:
-        return f"Error decoding string (BinasciiError): {e}", False
-    except UnicodeError as e:
-        return f"Error decoding string (UnicodeError): {e}", False
-    except Exception as e:
-        return f"Unknown error decoding string (UnknownError): {e}", False
+    data = unhexlify(data)
+    decoded_data = base.decode_base64(data)
+    return decoded_data
 
 
 

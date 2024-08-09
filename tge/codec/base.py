@@ -1,4 +1,5 @@
 from base64 import b64encode as e64, b64decode as d64
+from typing import Union
 def encode_base64(string: str) -> str:
     """
     Encodes a given string in base64 format.
@@ -12,7 +13,7 @@ def encode_base64(string: str) -> str:
     return e64(string.encode()).decode()
 
 
-def decode_base64(string: str) -> str:
+def decode_base64(string: Union[str,bytes]) -> str:
     """
     This function decodes a given string in base64 format and returns the decoded string.
 
@@ -22,4 +23,4 @@ def decode_base64(string: str) -> str:
     Returns:
         str: The decoded string.
     """
-    return d64(string.encode()).decode()
+    return d64(string.encode() if isinstance(string, str) else string).decode()

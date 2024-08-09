@@ -294,9 +294,7 @@ if not dont_download_dependencies:
         except Exception as A:
             return D, f"An unexpected error occurred: {str(A)}"
 
-    if give_feedback < 1:
-        print("Directories tge will download into:")
-        print(*dirs, sep="\n", end="\n\n")
+    
 
     def install_all_libraries(libs):
         A = []

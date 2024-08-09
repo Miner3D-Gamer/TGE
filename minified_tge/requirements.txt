@@ -4,7 +4,6 @@ gtts
 requests
 Pillow
 bs4
-pygetwindow
 screeninfo
 pynput
 pyshortcuts
@@ -14,7 +13,6 @@ python-minifier
 hjson
 json5
 autoflake
-py7zr
 pyobjc
 python-xlib
 pydub

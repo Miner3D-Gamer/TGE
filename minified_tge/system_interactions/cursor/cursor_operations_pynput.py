@@ -1,7 +1,9 @@
 WHEEL_DELTA=120
 import pynput
 MOUSE=pynput.mouse.Controller()
-from pyautogui import size as getScreenDimensions
+def getScreenDimensions():...
+from screeninfo import get_monitors
+getScreenDimensions=lambda:get_monitors()[0].width,get_monitors()[0].width
 SCREEN_WIDTH,SCREEN_HEIGHT=getScreenDimensions()
 def set_mouse_to(coords):MOUSE.position=coords
 def get_mouse_position():return MOUSE.position

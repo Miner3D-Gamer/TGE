@@ -4,10 +4,13 @@ from typing import Tuple
 
 MOUSE = pynput.mouse.Controller()
 
-from pyautogui import size as getScreenDimensions
+
+def getScreenDimensions() -> tuple[int, int]: ...
 
 
-# from screeninfo import get_monitors
+from screeninfo import get_monitors
+
+getScreenDimensions = lambda: get_monitors()[0].width, get_monitors()[0].width
 
 # def getScreenDimensions() -> tuple[int, int]:
 #     monitors = get_monitors()
@@ -124,4 +127,3 @@ def _is_button_pressed(button):
             if isinstance(event, pynput.mouse.Events.Click) and event.button == button:
                 return event.pressed
         return False
-

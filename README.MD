@@ -34,18 +34,18 @@ The downloader supports additional inputs to customize the installation:
 
 ### `-install_option` (Default: Asks user)
 
-- **1**: Install TGE for all installed Python installations in the default Python directory (`{default_python_installation}`).
+- **1**: Install TGE for all installed Python installations in the default Python directory (`{C:\Users\{Username}\AppData\Local\Programs\Python}`).
 - **2**: Select a `.exe` file in the Python folder or use the path provided by `-path`.
 - **3**: Select a folder to install TGE into or use the path provided by `-path`.
 
 ### `-install_minified` (Default: N)
 
-- **y**, **1**, **sure**: Installs the minified version of TGE.
-- **n**, **2**, **nope**: Installs the normal version of TGE.
+- `y`, `1`, `sure`: Installs the minified version of TGE.
+- `n`, `2`, `nope`: Installs the normal version of TGE.
 
-### `-hasty`
+### `-clingy`
 
-- If not set and `-suppression_level` is below 3, the script will wait for user input before closing.
+- If set and `-suppression_level` is below 3, the script will wait for user input before closing.
 
 ### `-skip_dependencies`
 

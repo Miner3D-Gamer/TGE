@@ -54,8 +54,8 @@ if sl.isdigit():
 else:
     give_feedback = 0
 
-wait_for_reaction = not (
-    argument_handler.has_argument("-hasty", delete=True) or give_feedback > 2
+wait_for_reaction = (
+    argument_handler.has_argument("-clingy", delete=True) and give_feedback < 3
 )
 
 
@@ -184,7 +184,7 @@ response.raise_for_status()
 
 def decompress_directory_list(
     compressed: dict,
-) :
+):
     # FIXME: THIS IS BROKEN FOR PATHS WHERE THERE IS ONLY ONE FILE AND I HAVE NO IDEA HOW TO FIX IT
     paths = []
 

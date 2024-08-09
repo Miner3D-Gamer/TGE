@@ -1,4 +1,4 @@
-from math import sqrt, factorial as math_factorial
+from math import sqrt,factorial as math_factorial
 from typing import overload
 def reverse_number(number):return int(str(number)[::-1])
 def exponent(base,exponent):
@@ -121,3 +121,4 @@ def clamp(min,max,value):
  elif A>max:return max
  else:return A
 def sign(x):return 1 if x>0 else-1 if x<0 else 0
+def is_number_similar(a,b,similarity):return abs(a-b)<=similarity

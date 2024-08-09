@@ -1,4 +1,4 @@
-from math import sqrt, factorial as math_factorial, modf
+from math import sqrt, factorial as math_factorial
 
 # from typing import List, Union, Tuple, Any
 from numbers import Number
@@ -698,3 +698,18 @@ def sign(x: Number) -> Literal[-1, 0, 1]:
         Literal[-1, 0, 1]: -1 if `x` is negative, 1 if `x` is positive, 0 if `x` is zero.
     """
     return 1 if x > 0 else -1 if x < 0 else 0
+
+
+def is_number_similar(a: Number, b: Number, similarity: Number) -> bool:
+    """
+    Determines if two numbers are similar within a given similarity threshold.
+    
+    Parameters:
+    a (Number): The first number.
+    b (Number): The second number.
+    similarity (Number): The similarity threshold. Should be a positive number.
+    
+    Returns:
+    bool: True if the numbers are similar within the threshold, False otherwise.
+    """
+    return abs(a - b) <= similarity

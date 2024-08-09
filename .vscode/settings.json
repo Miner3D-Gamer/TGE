@@ -42,6 +42,7 @@
         "pydub",
         "pyobjc",
         "RBUTTON",
+        "RRGGBB",
         "simpleaudio",
         "subtractor",
         "syscmd",

@@ -4,7 +4,7 @@ _C=False
 _B=None
 _A=True
 from PIL import Image
-from.math_functions.math_functions import clamp
+from.math_functions.math_functions import clamp,math
 from.file_operations import doesDirectoryFileExist
 def rotate_image(image_path,angle):
  A=image_path
@@ -79,7 +79,7 @@ def count_image_colors(image=_B,image_path=_B):
  else:return[]
  F=set()
  for G in range(D):
-  for H in range(E):I=C[G,H];F.add(I)
+  for H in range(E):I=C[(G,H)];F.add(I)
  return list(F)
 def hex_to_rgb(hex_color):A=hex_color;A=A.lstrip('#');B=int(A[0:2],16);C=int(A[2:4],16);D=int(A[4:6],16);return B,C,D
 def hex_list_to_rgb_list(hex_list):
@@ -90,5 +90,6 @@ class Color:
  def __init__(B,color):A=color;B.color=[clamp(0,255,A[0]),clamp(0,255,A[1]),clamp(0,255,A[2])]
  def __repr__(A):return'r%s b%s g%s'%(A.color[0],A.color[1],A.color[2])
  def __iter__(A):return iter(A.color)
- def get(A):return tuple(A.color)
+ def get(A):return A.color
  def __call__(A):return A.get()
+def is_color_similar(a,b,similarity):return math.sqrt(sum((a[A]-b[A])**2 for A in range(3)))<=similarity

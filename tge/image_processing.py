@@ -1,10 +1,9 @@
 from PIL import Image
-from typing import List, Union, Tuple, Any
+from typing import Union, Tuple, Any, List
+from numbers import Number
 
-
-from .math_functions.math_functions import clamp
+from .math_functions.math_functions import clamp, math
 from .file_operations import doesDirectoryFileExist
-
 
 def rotate_image(image_path: str, angle: int) -> bool:
     """
@@ -447,12 +446,12 @@ class Color:
 
     def get(self) -> Tuple[int, int, int]:
         """
-        Returns the RGB color components as a tuple.
+        Returns the RGB color components as a list.
 
         Returns:
-            Tuple[int, int, int]: A tuple containing the red, green, and blue values.
+            list[int, int, int]: A list containing the red, green, and blue values.
         """
-        return tuple(self.color)
+        return self.color
 
     def __call__(self):
         """
@@ -462,3 +461,22 @@ class Color:
             Tuple[int, int, int]: A tuple containing the red, green, and blue values.
         """
         return self.get()
+
+
+def is_color_similar(
+    a: Tuple[Number, Number, Number],
+    b: Tuple[Number, Number, Number],
+    similarity: Number,
+) -> bool:
+    """
+    Determines if two RGB colors are similar within a given similarity threshold.
+
+    Parameters:
+    a (tuple[Number, Number, Number]): The first RGB color, as a tuple of three numbers.
+    b (tuple[Number, Number, Number]): The second RGB color, as a tuple of three numbers.
+    similarity (Number): The similarity threshold from a number range of 0 to 442.
+
+    Returns:
+    bool: True if the colors are similar within the threshold, False otherwise.
+    """
+    return math.sqrt(sum((a[i] - b[i]) ** 2 for i in range(3))) <= similarity

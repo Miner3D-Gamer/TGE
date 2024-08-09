@@ -1,55 +1,52 @@
-# tge - Text Game Engine
+# Text Game Engine (TGE)
 
+Originally designed for console-based games, TGE has evolved into a versatile general-purpose library. Since 2021, it has expanded significantly, now offering over 900 functions for various applications, including file manipulation, UI handling, audio playback, and more.
 
-Originally made for displaying and creating console-based games but has evolved into a general-purpose library.
+## Installation Instructions
 
-This library provides a wide range of functions and utilities for text-based game development, console operations,
-data manipulation, conversions, math calculations, user interfaces, file operations, and more.
+1. Download the `.py` downloader from the [releases](#).
+2. Execute the downloader.
+3. Enjoy (or don't) TGE.
 
-With a collection of over 800 functions, tge tries to simplify the development process and offers capabilities for
-building text-based games, console applications, file manipulation, and various quality of life functions. (yay)
+## Comparison: TGE vs. Minified TGE
 
-## How to install:
-  1. Download the .py or .exe from the releases
+| Feature           | Normal      | Minified    |
+|-------------------|-------------|-------------|
+| **Import Time**   | ~500ms      | ~150ms      |
+| **Size**          | ~500kb      | ~300kb      |
+| **Docstrings**    | ~80%        | Removed     |
+| **Type Notation** | ~90%        | Removed     |
 
-  2. Execute the downloaded file
+## Downloader Options
 
+The downloader supports additional inputs to customize the installation:
 
+### `-suppression_level` (Default: 0)
 
+- **0**: Logs all messages
+- **1**: Logs warnings and errors only
+- **2**: Logs errors only
+- **3**: Completely silent
 
-## If you use the .py you can use additional inputs to predefine options:
-  If something is inputted what isn't suspected, the default is used
+### `-path` (No Default)
 
+- **{str}**: The directory to a file or folder, based on `-install_option`.
 
-### -suppression_level (Default:0):
-  0: Logs all messages
+### `-install_option` (Default: Asks user)
 
-  1: Only log warnings and errors
+- **1**: Install TGE for all installed Python installations in the default Python directory (`{default_python_installation}`).
+- **2**: Select a `.exe` file in the Python folder or use the path provided by `-path`.
+- **3**: Select a folder to install TGE into or use the path provided by `-path`.
 
-  2: Only log errors
+### `-install_minified` (Default: N)
 
-  3: No completely quiet
+- **y**, **1**, **sure**: Installs the minified version of TGE.
+- **n**, **2**, **nope**: Installs the normal version of TGE.
 
+### `-hasty`
 
-### -path (No Default)
-  The directory to a file or folder depending on if the -install_option is set to 1 or 2
+- If not set and `-suppression_level` is below 3, the script will wait for user input before closing.
 
+### `-skip_dependencies`
 
-### -install_option (Default:Asks user)
-  1: Install TGE for all installed python installations in the default python installation ({default_python_installation})
-
-  2: Select a file (.exe) in the python folder you wanna install TGE in (Or use what is inside -path)
-
-  3: Select a folder to install TGE into (Or use what is inside -path)
-
-
-### -install_minified (Default:N)
-  Anything from this list: ["y", "1", "sure"]: Installs the minified version of TGE. The minified version is ~200kb instead of ~1.1mb (All notations and docstrings have been removed)
-  
-  Anything from this list: ["n", "2", "nope"]: Will install the normal version of TGE
-
-### -hasty 
-  If this flag isn't set and -suppression_level is below 3, the script will wait for human input before closing
-
-### -skip_dependencies
- If this flag is set, no dependencies will be checked for or downloaded
+- If set, skips checking for and downloading dependencies.

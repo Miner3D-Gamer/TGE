@@ -1,6 +1,7 @@
 import ctypes.wintypes
 from ..shared import *
 from ctypes import wintypes
+from typing import Tuple, Optional
 
 class RECT(ctypes.Structure):
     _fields_ = [
@@ -22,7 +23,7 @@ def maximize_window(hwnd: int) -> None:
     """Maximize the specified window."""
     ctypes.windll.user32.ShowWindow(hwnd, 3)  # 3 = SW_MAXIMIZE
 
-def get_window_position(hwnd: int) -> tuple[int, int, int, int] | None:
+def get_window_position(hwnd: int) -> Optional[Tuple[int, int, int, int]]:
     """Get the position and size of the window. Return None if minimized."""
     rect = RECT()
     ctypes.windll.user32.GetWindowRect(hwnd, ctypes.byref(rect))

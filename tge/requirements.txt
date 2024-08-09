@@ -14,7 +14,6 @@ pytube
 re
 pyperclip
 tkinter
-pathlib
 python-minifier
 hjson
 json5

@@ -10,9 +10,7 @@ from typing import get_type_hints
 import ast,os,sys,importlib
 from difflib import get_close_matches
 from collections import defaultdict
-import inspect
-from pathlib import Path
-import getpass
+import inspect,getpass
 import uuid,hashlib,cProfile,pstats,io
 version=sys.version_info
 if version.minor<12:import python_minifier
@@ -176,7 +174,6 @@ def repeat(func,times):
  for i in range(times):val=func()
  return val
 def get_username():return getpass.getuser()
-def get_original_username():return Path.home()[9:]
 def profile(func):
  def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_G;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
  return wrapper

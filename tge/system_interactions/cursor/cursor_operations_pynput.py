@@ -99,15 +99,18 @@ def middle_mouse_up() -> None:
     MOUSE.release(2)
 
 
-def is_left_pressed():
+def is_left_button_pressed():
+    """Check if the left mouse button is pressed."""
     return _is_button_pressed(1)
 
 
-def is_right_pressed():
+def is_right_button_pressed():
+    """Check if the right mouse button is pressed."""
     return _is_button_pressed(3)
 
 
-def is_middle_pressed():
+def is_middle_button_pressed():
+    """Check if the middle mouse button is pressed."""
     return _is_button_pressed(2)
 
 
@@ -115,6 +118,7 @@ MOUSE
 
 
 def _is_button_pressed(button):
+    """Checks if the inputted button is pressed"""
     with pynput.mouse.Events() as events:
         for event in events:
             if isinstance(event, pynput.mouse.Events.Click) and event.button == button:

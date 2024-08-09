@@ -2,6 +2,7 @@ from typing import List, Union, Tuple, Any, Tuple, Dict, Optional
 import re
 import pytube
 
+
 def is_url(url: str) -> bool:
     """
     Check if a given string is a valid URL.
@@ -18,13 +19,14 @@ def is_url(url: str) -> bool:
         bool: True if the input string appears to be a valid URL, False otherwise.
     """
     pattern = re.compile(
-        r'^(?:http|https)://'
-        r'(?:[\w-]+\.)*[\w-]+'
-        r'(?:\.[a-zA-Z]{2,})'
-        r'(?:/?|(?:/[^\s]+)+)?$'
+        r"^(?:http|https)://"
+        r"(?:[\w-]+\.)*[\w-]+"
+        r"(?:\.[a-zA-Z]{2,})"
+        r"(?:/?|(?:/[^\s]+)+)?$"
     )
 
     return bool(re.match(pattern, url))
+
 
 def remove_html_tags(string: str) -> str:
     """
@@ -46,21 +48,29 @@ def remove_html_tags(string: str) -> str:
 
 
 def get_youtube_video_id(input_string: str) -> str:
-    # Regex pattern to match YouTube video IDs
+    """
+    Extracts the YouTube video ID from a given string.
+
+    This function supports various YouTube URL formats and directly provided video IDs.
+    It returns an empty string if no valid video ID is found.
+
+    Args:
+        input_string (str): The input string containing a YouTube URL or video ID.
+
+    Returns:
+        str: The extracted YouTube video ID or an empty string if no ID is found.
+    """
     video_id_pattern = r"^[a-zA-Z0-9_-]{11}$"
 
-    # Regex pattern to match YouTube URLs and extract the video ID
     url_patterns = [
         r"(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})",
         r"(?:https?://)?(?:www\.)?youtube\.com/.*[?&]v=([a-zA-Z0-9_-]{11})",
         r"(?:https?://)?(?:www\.)?youtube\.com/.*[&?]vi?=([a-zA-Z0-9_-]{11})",
     ]
 
-    # Check if the input string is a video ID
     if re.match(video_id_pattern, input_string):
         return input_string
 
-    # Check if the input string is a YouTube URL and extract the video ID
     for pattern in url_patterns:
         match = re.search(pattern, input_string)
         if match:
@@ -254,6 +264,8 @@ def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
             return True
     except:
         return False
+
+
 def is_url_available(url: str, check_url: bool = True) -> bool:
     """
     Check the availability of a URL by sending a GET request and evaluating the response status code.

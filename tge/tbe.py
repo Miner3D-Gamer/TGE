@@ -94,7 +94,6 @@ import importlib
 from difflib import get_close_matches
 from collections import defaultdict
 import inspect
-from pathlib import Path
 import getpass
 from numbers import Number
 import uuid, hashlib
@@ -1199,10 +1198,6 @@ def get_username() -> str:
     """Return the current system username."""
     return getpass.getuser()
 
-def get_original_username() -> str:
-    """Return the original system username."""
-    return Path.home()[9:]
-
 
 
 
@@ -1299,7 +1294,7 @@ def profile(func):
         function: The wrapped function with profiling enabled.
     """
     def wrapper(*args, **kwargs):
-        ""
+        "The profile wrapper"
         pr = cProfile.Profile()
         pr.enable()
         result = func(*args, **kwargs)
@@ -1480,8 +1475,12 @@ Returns:
 
 
 
-def burn_value_into_function(x):
-    def burned_value_function():
+def burn_value_into_function(x)->FunctionType:
+    """
+Creates a function that returns the value of `x` when called.
+"""
+    def burned_value_function()->Any:
+        "Return a value"
         return x
     return burned_value_function
 

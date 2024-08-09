@@ -5,14 +5,12 @@ from ast import parse as ast_parse, walk as ast_walk, FunctionDef as ast_Functio
 import zipfile
 import math
 
-from pathlib import Path as pathlib_path
-from typing import List, Union, Tuple, Any
-
-
+from typing import  Union, Tuple
 import tkinter as tk
 import pyshortcuts
 
 from .codec.codec import decode, base
+from . import SYSTEM_NAME
 
 
 def create_missing_directory(directory: str) -> bool:
@@ -47,7 +45,7 @@ def delete_directory(directory: str) -> Tuple[bool, str]:
         indicating the result of the operation.
     """
     try:
-        parent_dir = pathlib_path(__file__).resolve().parent
+        parent_dir = os.path.dirname(__file__)
         full_path = os.path.join(parent_dir, directory)
 
         if os.path.exists(full_path):
@@ -409,14 +407,14 @@ def doesDirectoryFileExist(is_file: bool, directory: str) -> bool:
     """
     if is_file:
         if os.path.isfile(
-            rf"{pathlib_path(__file__).resolve().parent}/{directory}"
+            rf"{os.path.dirname(__file__)}/{directory}"
         ) or os.path.isfile(directory):
             return True
         else:
             return False
     else:
         if os.path.exists(
-            rf"{pathlib_path(__file__).resolve().parent}/{directory}"
+            rf"{os.path.dirname(__file__)}/{directory}"
         ) or os.path.exists(directory):
             return True
         else:
@@ -460,8 +458,8 @@ def delete_file(name: str, dir: str) -> bool:
     Returns:
         bool: True if the file was deleted, False otherwise.
     """
-    if os.path.isfile(rf"{pathlib_path(__file__).resolve().parent}/{dir}/{name}"):
-        os.system(f"rm {fr'{pathlib_path(__file__).resolve().parent}/{dir}/{name}'}")
+    if os.path.isfile(rf"{os.path.dirname(__file__)}/{dir}/{name}"):
+        os.system(f"rm {fr'{os.path.dirname(__file__)}/{dir}/{name}'}")
         return True
     else:
         return False
@@ -826,7 +824,7 @@ def unzip_file(
     Unzips a zip file to the specified extract directory.
 
     Args:
-        zip_path (str): pathlib_path to the zip file.
+        zip_path (str): path to the zip file.
         extract_dir (str): Directory to extract the contents of the zip file to.
     """
     if zip_path == "":
@@ -853,8 +851,8 @@ def zip_directory(
     Zip a given directory and save the resulting zip file to the output path.
 
     Args:
-        directory_path (str): pathlib_path to the directory to be zipped.
-        output_path (str): pathlib_path to save the resulting zip file.
+        directory_path (str): path to the directory to be zipped.
+        output_path (str): path to save the resulting zip file.
 
     Returns:
         None
@@ -931,7 +929,19 @@ def create_shortcut(
 def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(
     path: str,
 ) -> Union[str, None]:
-    files = os.listdir(path)  # Get a list of files in the specified directory
+    """
+    Finds the latest file in a directory where the filename is a real number.
+
+    The function assumes filenames that are valid integers represent file versions or sequence numbers.
+
+    Args:
+        path (str): The path to the directory.
+
+    Returns:
+        Union[str, None]: The name of the latest file (with the highest integer value in its name)
+                          or None if no such file is found.
+    """
+    files = os.listdir(path)
     max_num = -1
     latest_file = None
 
@@ -944,25 +954,51 @@ def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(
                     max_num = file_number
                     latest_file = file
             except ValueError:
-                continue  # Skip files that don't have a valid numeric name
+                continue
 
-    if latest_file is not None:
-        return latest_file
-    else:
-        return None  # No valid files found in the directory
+    return latest_file
 
 
 def is_directory_empty(directory_path: str) -> bool:
+    """
+    Checks if a directory is empty.
+
+    Args:
+        directory_path (str): The path to the directory.
+
+    Returns:
+        bool: True if the directory is empty, False otherwise.
+    """
     return not os.listdir(directory_path)
 
 
-def get_filesize(directory: str):
-    return os.path.getsize(directory)
+def get_filesize(file_path: str) -> int:
+    """
+    Gets the size of a file.
+
+    Args:
+        file_path (str): The path to the file.
+
+    Returns:
+        int: The size of the file in bytes.
+    """
+    return os.path.getsize(file_path)
 
 
 def get_file_size_of_directory(
     directory: str, blacklisted_file_extensions: list = [], chunk_size: int = 4096
 ) -> int:
+    """
+    Calculates the total size of files in a directory, excluding those with blacklisted extensions.
+
+    Args:
+        directory (str): The path to the directory.
+        blacklisted_file_extensions (list, optional): A list of file extensions to exclude from size calculation.
+        chunk_size (int, optional): The chunk size to round file sizes to.
+
+    Returns:
+        int: The total size of the files in the directory, rounded to the nearest chunk size.
+    """
     total_size = 0
 
     for dirpath, dirnames, filenames in os.walk(directory):
@@ -979,17 +1015,23 @@ def get_file_size_of_directory(
     return total_size
 
 
-def get_user_directory():
-    return pathlib_path.home()
 
 
-from . import SYSTEM_NAME
+
 
 
 if SYSTEM_NAME == "windows":
 
     def add_to_path_to_system_path_variables(path):
+        """
+        Adds a new path to the system PATH environment variable on Windows.
 
+        Args:
+            path (str): The path to add to the system PATH.
+
+        Note:
+            Uses the `setx` command to update the PATH environment variable permanently.
+        """
         current_path = os.getenv("PATH")
         new_path = f"{current_path};{path}"
         os.system(f'setx PATH "{new_path}"')
@@ -998,6 +1040,15 @@ elif SYSTEM_NAME == "darwin":
     import subprocess
 
     def add_to_path_to_system_path_variables(path):
+        """
+        Adds a new path to the system PATH environment variable on macOS (Darwin).
+
+        Args:
+            path (str): The path to add to the system PATH.
+
+        Notes:
+            Appends the path to the `~/.bash_profile` file and reloads it using the `source` command.
+        """
         with open(os.path.expanduser("~/.bash_profile"), "a") as file:
             file.write(f'\nexport PATH="{path}:$PATH"\n')
         subprocess.run(["source", "~/.bash_profile"], shell=True, check=True)
@@ -1006,11 +1057,28 @@ elif SYSTEM_NAME == "linux":
     import subprocess
 
     def add_to_path_to_system_path_variables(path):
+        """
+        Adds a new path to the system PATH environment variable on Linux.
+
+        Args:
+            path (str): The path to add to the system PATH.
+
+        Notes:
+            Appends the path to the `~/.bashrc` file and reloads it using the `source` command.
+        """
         with open(os.path.expanduser("~/.bashrc"), "a") as file:
             file.write(f'\nexport PATH="{path}:$PATH"\n')
         subprocess.run(["source", "~/.bashrc"], shell=True, check=True)
 
 else:
-
     def add_to_path_to_system_path_variables(path):
+        """
+        Raises an exception for unknown system types.
+
+        Args:
+            path (str): The path to add to the system PATH (not used).
+
+        Raises:
+            BaseException: If the system type is unknown.
+        """
         raise BaseException("Unknown System")

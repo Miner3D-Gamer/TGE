@@ -75,6 +75,7 @@ def get_window_by_title(title: str) -> str:
 
 
 def is_xdotool_installed():
+    """Check if xdotool is installed"""
     try:
         subprocess.run(
             ["xdotool", "version"], capture_output=True, text=True, check=True
@@ -86,7 +87,7 @@ def is_xdotool_installed():
 
 
 def install_xdotool():
-    """Check if xdotool is installed, and install it if it's not."""
+    """Installs xdotool"""
     try:
         if sys.platform.startswith("linux"):
             subprocess.run(["sudo", "apt-get", "update"], check=True)

@@ -10,15 +10,24 @@ from numbers import Number
 from .tbe import determine_affirmative
 
 
-
 if os.name == "nt":
 
     def clear() -> None:
+        """
+        Clears the terminal screen on Windows (NT-based systems).
+
+        Uses the `cls` command to clear the screen.
+        """
         os.system("cls")
 
 else:
 
     def clear() -> None:
+        """
+        Clears the terminal screen on Unix-like systems (Linux, macOS, etc.).
+
+        Uses the `clear` command to clear the screen.
+        """
         os.system("clear")
 
 
@@ -419,6 +428,20 @@ def prompt_bool(
     delete_lines=True,
     return_value_when_tries_are_depleted=None,
 ) -> bool:
+    """
+    Prompts the user with a yes/no question and returns their response.
+
+    Args:
+        question (str): The question to display to the user.
+        allow_undeterminable (bool, optional): If True, returns None for invalid answers instead of retrying. Defaults to False.
+        tries (int, optional): Number of attempts allowed for a valid response. Defaults to 0 (no limit).
+        delete_lines (bool, optional): If True, clears the input lines after each prompt. Defaults to True.
+        return_value_when_tries_are_depleted (bool, optional): Value to return if the maximum number of tries is exceeded. Defaults to None.
+
+    Returns:
+        bool: The user's response, or the specified return_value_when_tries_are_depleted if the number of tries is exceeded.
+        str: The raw user input.
+    """
     tries_count = 0
     while True:
         tries_count += 1
@@ -435,6 +458,7 @@ def prompt_bool(
 
         if delete_lines:
             clear_lines(1)
+
 
 
 def prompt_number(

@@ -6,16 +6,16 @@ import os,shutil
 from filecmp import dircmp as file_dircmp,cmp as file_cmp
 from ast import parse as ast_parse,walk as ast_walk,FunctionDef as ast_FunctionDef
 import zipfile,math
-from pathlib import Path as pathlib_path
 import tkinter as tk,pyshortcuts
 from.codec.codec import decode,base
+from.import SYSTEM_NAME
 def create_missing_directory(directory):
  A=directory
  if not os.path.exists(A):os.makedirs(A);return _B
  else:return _A
 def delete_directory(directory):
  try:
-  B=pathlib_path(__file__).resolve().parent;A=os.path.join(B,directory)
+  B=os.path.dirname(__file__);A=os.path.join(B,directory)
   if os.path.exists(A):shutil.rmtree(A);return _B,'Directory deleted'
   else:return _A,'Directory not found'
  except:return _A,'Error deleting directory'
@@ -101,14 +101,14 @@ def split_file(directory,output_directory):
 def doesDirectoryFileExist(is_file,directory):
  A=directory
  if is_file:
-  if os.path.isfile(f"{pathlib_path(__file__).resolve().parent}/{A}")or os.path.isfile(A):return _B
+  if os.path.isfile(f"{os.path.dirname(__file__)}/{A}")or os.path.isfile(A):return _B
   else:return _A
- elif os.path.exists(f"{pathlib_path(__file__).resolve().parent}/{A}")or os.path.exists(A):return _B
+ elif os.path.exists(f"{os.path.dirname(__file__)}/{A}")or os.path.exists(A):return _B
  else:return _A
 def doesFileExist(directory):A=directory;return os.path.exists(A)and os.path.isfile(A)
 def doesDirectoryExist(directory):A=directory;return os.path.exists(A)and os.path.isdir(A)
 def delete_file(name,dir):
- if os.path.isfile(f"{pathlib_path(__file__).resolve().parent}/{dir}/{name}"):os.system(f"rm {f'{pathlib_path(__file__).resolve().parent}/{dir}/{name}'}");return _B
+ if os.path.isfile(f"{os.path.dirname(__file__)}/{dir}/{name}"):os.system(f"rm {f'{os.path.dirname(__file__)}/{dir}/{name}'}");return _B
  else:return _A
 def compare_file(directory1,directory2):
  try:
@@ -203,18 +203,17 @@ def zip_directory(directory_path,output_path,create_missing_directory_bool=_A):
 def get_appdata_path():return os.path.expanduser('~\\AppData')
 def create_shortcut(name,target_path,shortcut_path,description=''):A=target_path;B=os.path.dirname(A);pyshortcuts.make_shortcut(name=name,script=A,working_dir=B,folder=shortcut_path,description=description,executable=A)
 def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path):
- E=os.listdir(path);C=-1;A=None
- for B in E:
-  if os.path.isfile(os.path.join(path,B)):
-   F,G=os.path.splitext(B)
+ E=os.listdir(path);B=-1;C=None
+ for A in E:
+  if os.path.isfile(os.path.join(path,A)):
+   F,G=os.path.splitext(A)
    try:
     D=int(F)
-    if D>C:C=D;A=B
+    if D>B:B=D;C=A
    except ValueError:continue
- if A is not None:return A
- else:return
+ return C
 def is_directory_empty(directory_path):return not os.listdir(directory_path)
-def get_filesize(directory):return os.path.getsize(directory)
+def get_filesize(file_path):return os.path.getsize(file_path)
 def get_file_size_of_directory(directory,blacklisted_file_extensions=[],chunk_size=4096):
  A=chunk_size;B=0
  for(E,I,F)in os.walk(directory):
@@ -223,8 +222,6 @@ def get_file_size_of_directory(directory,blacklisted_file_extensions=[],chunk_si
    D=os.path.join(E,C)
    if not os.path.islink(D):G=os.path.getsize(D);H=math.ceil(G/A)*A;B+=H
  return B
-def get_user_directory():return pathlib_path.home()
-from.import SYSTEM_NAME
 if SYSTEM_NAME=='windows':
  def add_to_path_to_system_path_variables(path):A=os.getenv('PATH');B=f"{A};{path}";os.system(f'setx PATH "{B}"')
 elif SYSTEM_NAME=='darwin':

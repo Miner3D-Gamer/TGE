@@ -1,4 +1,16 @@
 def encode(text: str) -> str:
+    """
+    Encodes a string by replacing each character with a corresponding symbol from a predefined table.
+
+    Args:
+        text (str): The input string to be encoded.
+
+    Returns:
+        str: The encoded string with characters replaced by symbols.
+
+    Notes:
+        Characters not found in the encoding table remain unchanged.
+    """
     table = {
         "a": "ᔑ",
         "b": "ܠ",
@@ -41,6 +53,18 @@ def encode(text: str) -> str:
 
 
 def decode(text: str) -> str:
+    """
+    Decodes a string by replacing each symbol with the corresponding character from a predefined table.
+
+    Args:
+        text (str): The encoded string to be decoded.
+
+    Returns:
+        str: The decoded string with symbols replaced by characters.
+
+    Notes:
+        Symbols not found in the decoding table remain unchanged.
+    """
     table = {
         "ᔑ": "a",
         "ܠ": "b",

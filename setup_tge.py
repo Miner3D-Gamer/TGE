@@ -120,13 +120,17 @@ with open(".gitignore", "w") as f:
             ]
         )
     )
-
+    
+print()
+print("Import time of TGE:", tge.INIT_TIME)
 print("Size of TGE: %s kb" % tge_size)
+print("Import time of minified TGE:", minified_tge.INIT_TIME)
 print("Size of minified TGE: %s kb" % minified_size)
 print(
     "The minified TGE is %sx smaller"
     % str(tge_size / (minified_size if minified_size != 0 else tge_size))
 )
+print()
 
 print("Is github version of tge up to date:", not tge.is_tge_outdated())
 # the hash is smiling b'[\xa5d(\\!\xb7\xd0P&\xaf\xec(:>\xde'

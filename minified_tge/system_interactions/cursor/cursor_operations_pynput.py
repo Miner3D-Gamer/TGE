@@ -17,9 +17,9 @@ def middle_mouse_down():MOUSE.press(2)
 def left_mouse_up():MOUSE.release(1)
 def right_mouse_up():MOUSE.release(3)
 def middle_mouse_up():MOUSE.release(2)
-def is_left_pressed():return _is_button_pressed(1)
-def is_right_pressed():return _is_button_pressed(3)
-def is_middle_pressed():return _is_button_pressed(2)
+def is_left_button_pressed():return _is_button_pressed(1)
+def is_right_button_pressed():return _is_button_pressed(3)
+def is_middle_button_pressed():return _is_button_pressed(2)
 MOUSE
 def _is_button_pressed(button):
  with pynput.mouse.Events()as B:

@@ -11,7 +11,7 @@ def append_to_clipboard(text):clip=get_clipboard();clip+=text;copy_to_clipboard(
 def prepend_to_clipboard(text):clip=get_clipboard();clip=text+clip;copy_to_clipboard(clip)
 def get_clipboard_size():return len(get_clipboard())
 def get_clipboard_file_extension():return get_clipboard().split('.')[-1]
-def paste_clipboard():
+def write_out_clipboard():
  clipboard=get_clipboard()
  for line in clipboard.splitlines(True):
   for character in line:press_key(key_to_virtual_key(character))

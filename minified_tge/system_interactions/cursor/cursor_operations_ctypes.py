@@ -35,8 +35,8 @@ def hold_mouse_button_4():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN,0,0
 def release_mouse_button_4():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP,0,0,VK_XBUTTON1,0)
 def hold_mouse_button_5():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN,0,0,VK_XBUTTON2,0)
 def release_mouse_button_5():ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP,0,0,VK_XBUTTON2,0)
-def is_mouse_button_4_pressed(button):return ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON1)&32768!=0
-def is_mouse_button_5_pressed(button):return ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON2)&32768!=0
+def is_mouse_button_4_pressed():return ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON1)&32768!=0
+def is_mouse_button_5_pressed():return ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON2)&32768!=0
 def scroll_vertical(clicks,wheel_delta=WHEEL_DELTA):ctypes.windll.user32.mouse_event(MOUSEEVENTF_WHEEL,0,0,wheel_delta*clicks,0)
 def scroll_horizontal(clicks,wheel_delta=WHEEL_DELTA):ctypes.windll.user32.mouse_event(MOUSEEVENTF_HWHEEL,0,0,wheel_delta*clicks,0)
 def scroll(dx=None,dy=None,wheel_delta_x=WHEEL_DELTA,wheel_delta_y=WHEEL_DELTA):

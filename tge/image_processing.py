@@ -1,9 +1,10 @@
 from PIL import Image
-from typing import List, Union, Tuple , Any
+from typing import List, Union, Tuple, Any
 
 
 from .math_functions.math_functions import clamp
 from .file_operations import doesDirectoryFileExist
+
 
 def rotate_image(image_path: str, angle: int) -> bool:
     """
@@ -86,7 +87,7 @@ def flip_image_horizontally(image_path: str) -> bool:
 def add_anti_aliasing(image_path: str) -> bool:
     """
     Applies anti-aliasing to an image using a two-step resizing process.
-    
+
     This function takes an image file path as input, opens the image, and applies
     anti-aliasing through a two-step process. The image is initially resized to
     double its dimensions and then back to its original dimensions, which helps
@@ -96,7 +97,7 @@ def add_anti_aliasing(image_path: str) -> bool:
 
     Args:
         image_path (str): The file path of the image to which anti-aliasing will be applied.
-        
+
     Returns:
         bool: True if anti-aliasing is successfully applied and saved, False otherwise.
     """
@@ -112,6 +113,7 @@ def add_anti_aliasing(image_path: str) -> bool:
     except:
         image_backup.save(image_path)
         return False
+
 
 def count_gif_frames(file_path) -> Union[bool, int, str]:
     """
@@ -138,7 +140,7 @@ def count_gif_frames(file_path) -> Union[bool, int, str]:
         try:
             with Image.open(file_path) as im:
                 # Check if the image is animated (a GIF)
-                if hasattr(im, 'is_animated') and im.is_animated:
+                if hasattr(im, "is_animated") and im.is_animated:
                     # Iterate through all frames and count them
                     frame_count = 0
                     while True:
@@ -147,13 +149,18 @@ def count_gif_frames(file_path) -> Union[bool, int, str]:
                             frame_count += 1
                         except EOFError:
                             break
-                    return True, frame_count, "The file at " + file_path + " is animated"
+                    return (
+                        True,
+                        frame_count,
+                        "The file at " + file_path + " is animated",
+                    )
                 else:
                     return True, 1, "The file at " + file_path + " is not animated"
         except IOError:
             return False, 0, "An error occurred while opening the file at " + file_path
     else:
         return False, 0, "The file at " + file_path + " does not exist"
+
 
 def get_image_metadata(file_path: str = None, image: str = None) -> Tuple[Any, str]:
     """
@@ -201,6 +208,7 @@ def get_image_metadata(file_path: str = None, image: str = None) -> Tuple[Any, s
     except:
         return {}, "An error occurred while getting the image metadata"
 
+
 def convert_image(file_path: str, extension: str, output_path: str = None) -> bool:
     """
     Convert and save an image to a different format.
@@ -238,7 +246,14 @@ def convert_image(file_path: str, extension: str, output_path: str = None) -> bo
 from PIL import Image
 import numpy as np
 
-def image_to_ascii(image_path: str = "", image=None, width: int = None, unicode: bool = False, ascii_chars: str = "") -> str:
+
+def image_to_ascii(
+    image_path: str = "",
+    image=None,
+    width: int = None,
+    unicode: bool = False,
+    ascii_chars: str = "",
+) -> str:
     """
     Convert an image into ASCII art.
 
@@ -270,7 +285,9 @@ def image_to_ascii(image_path: str = "", image=None, width: int = None, unicode:
     if width is None:
         width = image.width
     height = int(width * aspect_ratio)
-    image = image.resize((width, height)).convert('L')  # Resize and convert to grayscale
+    image = image.resize((width, height)).convert(
+        "L"
+    )  # Resize and convert to grayscale
     image_array = np.array(image)
 
     if ascii_chars == "":
@@ -282,18 +299,33 @@ def image_to_ascii(image_path: str = "", image=None, width: int = None, unicode:
     pixel_intensity = 255 - image_array
     ascii_chars_indices = (pixel_intensity / 255 * (len(ascii_chars) - 1)).astype(int)
     ascii_art_array = np.array(list(ascii_chars))[ascii_chars_indices]
-    ascii_art = '\n'.join(''.join(row) for row in ascii_art_array)
+    ascii_art = "\n".join("".join(row) for row in ascii_art_array)
 
     return ascii_art
 
-def _load_image(image_path, alpha = True):
+
+def _load_image(image_path, alpha=True):
+    """
+    Loads an image and returns pixel data along with its dimensions.
+
+    Args:
+        image_path (str): The path to the image file.
+        alpha (bool, optional): If True, retains the alpha channel (RGBA mode). If False, converts to RGB mode. Defaults to True.
+
+    Returns:
+        tuple: A tuple containing:
+            - pixel_data (PixelAccess): Access object for image pixels.
+            - width (int): Width of the image.
+            - height (int): Height of the image.
+    """
+
     image = Image.open(image_path)
 
     # Access pixels using load()
     pixel_data = image.load()
 
     if not alpha:
-        image = image.convert('RGB')
+        image = image.convert("RGB")
 
     # Get image dimensions
     width, height = image.size
@@ -302,7 +334,21 @@ def _load_image(image_path, alpha = True):
     image.close()
     return pixel_data, width, height
 
+
 def count_image_colors(image=None, image_path=None):
+    """
+    Counts unique colors in an image.
+
+    Args:
+        image (tuple, optional): A tuple containing the image data, width, and height. If not provided, `image_path` must be specified.
+        image_path (str, optional): Path to the image file. Used if `image` is not provided.
+
+    Returns:
+        list: A list of unique colors in the image. Each color is represented as a tuple of RGB values.
+
+    Notes:
+        The image data should be in a format where `loaded_image[x, y]` returns an RGB tuple.
+    """
     if image is None and image_path is None:
         return []
 
@@ -323,37 +369,96 @@ def count_image_colors(image=None, image_path=None):
 
     return list(unique_colors)
 
+
 def hex_to_rgb(hex_color):
-    # Remove the '#' if present
-    hex_color = hex_color.lstrip('#')
-    
-    # Convert hex to RGB
+    """
+    Converts a hexadecimal color string to an RGB tuple.
+
+    Args:
+        hex_color (str): A color string in hexadecimal format (e.g., "#RRGGBB").
+
+    Returns:
+        Tuple[int, int, int]: A tuple containing the RGB components of the color.
+    """
+    hex_color = hex_color.lstrip("#")
+
     red = int(hex_color[0:2], 16)
     green = int(hex_color[2:4], 16)
     blue = int(hex_color[4:6], 16)
-    
-    return (red, green, blue) 
+
+    return (red, green, blue)
+
 
 def hex_list_to_rgb_list(hex_list):
+    """
+    Converts a list of hexadecimal color strings to a list of RGB tuples.
+
+    Args:
+        hex_list (list): A list of color strings in hexadecimal format.
+
+    Returns:
+        list: A list of tuples, each containing the RGB components of a color.
+    """
     rgb_list = []
     for i in hex_list:
         rgb_list.append(hex_to_rgb(i))
-    
+
     return rgb_list
 
 
 class Color:
+    """
+    A class representing an RGB color.
+
+    Attributes:
+        color (list): A list containing the RGB values of the color, each clamped between 0 and 255.
+    """
+
     def __init__(self, color: Tuple[int, int, int]) -> None:
-        self.color = [clamp(0, 255, color[0]),clamp(0, 255, color[1]),clamp(0, 255, color[2])]
-    
+        """
+        Initializes a Color instance with RGB values.
+
+        Args:
+            color (Tuple[int, int, int]): A tuple containing the RGB values of the color.
+        """
+        self.color = [
+            clamp(0, 255, color[0]),
+            clamp(0, 255, color[1]),
+            clamp(0, 255, color[2]),
+        ]
+
     def __repr__(self) -> str:
-        return "r%s b%s g%s"%(self.color[0],self.color[1],self.color[2])
-    
+        """
+        Returns a string representation of the Color instance.
+
+        Returns:
+            str: A string in the format "r{R} b{B} g{G}", where R, B, and G are the red, blue, and green components respectively.
+        """
+        return "r%s b%s g%s" % (self.color[0], self.color[1], self.color[2])
+
     def __iter__(self):
+        """
+        Returns an iterator over the RGB color components.
+
+        Returns:
+            iterator: An iterator for the RGB color values.
+        """
         return iter(self.color)
-    
+
     def get(self) -> Tuple[int, int, int]:
+        """
+        Returns the RGB color components as a tuple.
+
+        Returns:
+            Tuple[int, int, int]: A tuple containing the red, green, and blue values.
+        """
         return tuple(self.color)
-    
+
     def __call__(self):
+        """
+        Calls the instance to return the RGB color components.
+
+        Returns:
+            Tuple[int, int, int]: A tuple containing the red, green, and blue values.
+        """
         return self.get()

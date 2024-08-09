@@ -252,18 +252,25 @@ def sort_list_of_dictionaries(lst: Iterable, key: str) -> tuple:
 
 
 def zipper_insert(list1: list, list2: list) -> list:
-    # Find the length of the shorter list
+    """
+    Merges two lists by alternating elements from each list.
+
+    Args:
+        list1 (list): The first list.
+        list2 (list): The second list.
+
+    Returns:
+        list: A new list with elements from `list1` and `list2` interleaved. 
+              Remaining elements from the longer list are appended at the end.
+    """
     min_length = min(len(list1), len(list2))
 
-    # Initialize the result list
     result = []
 
-    # Add elements from both lists in alternating fashion
     for i in range(min_length):
         result.append(list1[i])
         result.append(list2[i])
 
-    # Append any remaining elements from the longer list
     result.extend(list1[min_length:])
     result.extend(list2[min_length:])
 
@@ -271,6 +278,16 @@ def zipper_insert(list1: list, list2: list) -> list:
 
 
 def compress_list(list_to_compress: list) -> Union[Any, list]:
+    """
+    Compresses a list by converting consecutive identical elements into a count-value pair.
+
+    Args:
+        list_to_compress (list): The list to compress.
+
+    Returns:
+        Union[Any, list]: A compressed list where consecutive identical elements are represented as [count, value],
+                          or a single value if the compressed list has only one element.
+    """
     width = len(list_to_compress)
     new_sub_list = []
     char = list_to_compress[0]
@@ -294,6 +311,15 @@ def compress_list(list_to_compress: list) -> Union[Any, list]:
 
 
 def compress_list_of_lists(list_to_compress: List[list]) -> List[list]:
+    """
+    Compresses a list of lists by applying `compress_list` to each sublist.
+
+    Args:
+        list_to_compress (List[list]): A list containing sublists to compress.
+
+    Returns:
+        List[list]: A list of compressed sublists.
+    """
     new_list = []
     for sub_list in list_to_compress:
         new_list.append(compress_list(sub_list))
@@ -301,6 +327,16 @@ def compress_list_of_lists(list_to_compress: List[list]) -> List[list]:
 
 
 def decompress_list(list_to_decompress: Union[list, Any], width: int) -> list:
+    """
+    Decompresses a list by expanding count-value pairs into repeated elements.
+
+    Args:
+        list_to_decompress (Union[list, Any]): The list or single value to decompress.
+        width (int): The width used to repeat single values.
+
+    Returns:
+        list: A decompressed list with expanded count-value pairs or repeated single values.
+    """
     if not isinstance(list_to_decompress, list):
         return [list_to_decompress] * width
 
@@ -317,6 +353,16 @@ def decompress_list(list_to_decompress: Union[list, Any], width: int) -> list:
 
 
 def decompress_list_of_lists(list_to_decompress: List[list], width: int) -> List[list]:
+    """
+    Decompresses a list of lists by applying `decompress_list` to each sublist.
+
+    Args:
+        list_to_decompress (List[list]): A list containing sublists to decompress.
+        width (int): The width used to repeat single values.
+
+    Returns:
+        List[list]: A list of decompressed sublists.
+    """
     new_list = []
     for sub_list in list_to_decompress:
         new_list.append(decompress_list(sub_list, width))

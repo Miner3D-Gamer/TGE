@@ -128,7 +128,12 @@ def get_clipboard_file_extension() -> str:
     return get_clipboard().split(".")[-1]
 
 
-def paste_clipboard():
+def write_out_clipboard():
+    """
+    Simulates typing out the contents of the clipboard.
+
+    Retrieves the text from the clipboard and simulates key presses for each character, including newlines.
+    """
     clipboard: str = get_clipboard()
     for line in clipboard.splitlines(True):
         for character in line:

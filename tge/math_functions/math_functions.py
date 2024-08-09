@@ -1,7 +1,9 @@
 from math import sqrt, factorial as math_factorial, modf
-#from typing import List, Union, Tuple, Any
+
+# from typing import List, Union, Tuple, Any
 from numbers import Number
-from typing import overload
+from typing import overload, Literal
+
 
 def reverse_number(number: Number) -> int:
     """
@@ -265,7 +267,9 @@ def fibonacci(n: Number) -> list:
             fibonacci_sequence.append(next_number)
         return fibonacci_sequence
 
+
 from builtins import range as builtin_range
+
 
 @overload
 def range(stop: int) -> range:
@@ -280,6 +284,7 @@ def range(stop: int) -> range:
     """
     return builtin_range(stop)
 
+
 @overload
 def range(start: int, stop: int) -> range:
     """
@@ -293,6 +298,7 @@ def range(start: int, stop: int) -> range:
         range: A range object from start to stop.
     """
     return builtin_range(start, stop)
+
 
 @overload
 def range(start: int, stop: int) -> range:
@@ -634,14 +640,45 @@ class Vector:
 
 
 def bottom_clamp(min: Number, value: Number) -> int:
+    """
+    Clamps the value to be no less than the minimum.
+
+    Args:
+        min (Number): The minimum value.
+        value (Number): The value to be clamped.
+
+    Returns:
+        int: The clamped value, which is at least `min`.
+    """
     return value if value > min else min
 
 
 def top_clamp(max: Number, value: Number) -> int:
+    """
+    Clamps the value to be no greater than the maximum.
+
+    Args:
+        max (Number): The maximum value.
+        value (Number): The value to be clamped.
+
+    Returns:
+        int: The clamped value, which is at most `max`.
+    """
     return value if value < max else max
 
 
 def clamp(min: Number, max: Number, value: Number) -> int:
+    """
+    Clamps the value to be within the specified range [min, max].
+
+    Args:
+        min (Number): The minimum value of the range.
+        max (Number): The maximum value of the range.
+        value (Number): The value to be clamped.
+
+    Returns:
+        int: The clamped value, which is between `min` and `max`.
+    """
     if value < min:
         return min
     elif value > max:
@@ -650,8 +687,14 @@ def clamp(min: Number, max: Number, value: Number) -> int:
         return value
 
 
-from typing import Literal
-
-
 def sign(x: Number) -> Literal[-1, 0, 1]:
+    """
+    Returns the sign of the number.
+
+    Args:
+        x (Number): The number to determine the sign of.
+
+    Returns:
+        Literal[-1, 0, 1]: -1 if `x` is negative, 1 if `x` is positive, 0 if `x` is zero.
+    """
     return 1 if x > 0 else -1 if x < 0 else 0

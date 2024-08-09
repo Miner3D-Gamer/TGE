@@ -89,7 +89,7 @@ def convert_hexadecimal_to_decimal(hexadecimal: str) -> int:
     for hex_digit in reversed(hexadecimal):
         decimal = decimal * 16 + HEX_CHARACTERS.index(hex_digit)
 
-def convert_bytes(value: int, from_unit: str, to_unit: str) -> float:
+def convert_bytes(value: int, from_unit: str, to_unit: str) -> int:
     units = [
         "bytes",
         "kilobytes",
@@ -114,13 +114,40 @@ def convert_bytes(value: int, from_unit: str, to_unit: str) -> float:
     return ceil(bytes_value / (1024 ** units.index(to_unit)))
 
 
-def convert_byte_to_kilobyte(bytes: int) -> float:
+def convert_byte_to_kilobyte(bytes: int) -> int:
+    """
+    Converts a value from bytes to kilobytes.
+
+    Args:
+        bytes (int): The value in bytes.
+
+    Returns:
+        float: The equivalent value in kilobytes.
+    """
     return convert_bytes(bytes, "bytes", "kilobytes")
 
 
-def convert_kilobyte_to_megabyte(kilobytes: int) -> float:
+def convert_kilobyte_to_megabyte(kilobytes: int) -> int:
+    """
+    Converts a value from kilobytes to megabytes.
+
+    Args:
+        kilobytes (int): The value in kilobytes.
+
+    Returns:
+        float: The equivalent value in megabytes.
+    """
     return convert_bytes(kilobytes, "kilobytes", "megabytes")
 
 
-def convert_megabyte_to_gigabyte(megabytes: int) -> float:
+def convert_megabyte_to_gigabyte(megabytes: int) -> int:
+    """
+    Converts a value from megabytes to gigabytes.
+
+    Args:
+        megabytes (int): The value in megabytes.
+
+    Returns:
+        float: The equivalent value in gigabytes.
+    """
     return convert_bytes(megabytes, "megabytes", "gigabytes")

@@ -102,31 +102,58 @@ MOUSEEVENTF_XUP = 0x0100
 
 
 def click_mouse_button_4():
+    """
+    Simulates a click of the XButton1 mouse button (usually button 4).
+    """
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON1, 0)
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON1, 0)
 
 def click_mouse_button_5():
+    """
+    Simulates a click of the XButton2 mouse button (usually button 5).
+    """
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON2, 0)
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON2, 0)
 
 def hold_mouse_button_4():
+    """
+    Simulates holding down the XButton1 mouse button (usually button 4).
+    """
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON1, 0)
 
 def release_mouse_button_4():
+    """
+    Simulates releasing the XButton1 mouse button (usually button 4).
+    """
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON1, 0)
 
 def hold_mouse_button_5():
+    """
+    Simulates holding down the XButton2 mouse button (usually button 5).
+    """
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XDOWN, 0, 0, VK_XBUTTON2, 0)
 
 def release_mouse_button_5():
+    """
+    Simulates releasing the XButton2 mouse button (usually button 5).
+    """
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_XUP, 0, 0, VK_XBUTTON2, 0)
 
-
-
-def is_mouse_button_4_pressed(button):
+def is_mouse_button_4_pressed():
+    """
+    Checks if the XButton1 mouse button (usually button 4) is currently pressed.
+    Returns:
+        bool: True if button 4 is pressed, False otherwise.
+    """
     return (ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON1) & 0x8000) != 0
 
-def is_mouse_button_5_pressed(button):
+def is_mouse_button_5_pressed():
+    """
+    Checks if the XButton2 mouse button (usually button 5) is currently pressed.
+
+    Returns:
+        bool: True if button 5 is pressed, False otherwise.
+    """
     return (ctypes.windll.user32.GetAsyncKeyState(VK_XBUTTON2) & 0x8000) != 0
 
 

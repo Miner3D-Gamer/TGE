@@ -1,15 +1,15 @@
-import requests, os, subprocess, sys, random, getpass
+import requests, os, random#, getpass, subprocess, sys
 
 print("Downloading...")
 response = requests.get(
-    "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/installer/download_tge.py"
+    "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/installer/install_tge.py"
 )
 
 response.raise_for_status()
 
 current_dir = os.path.dirname(__file__) + "/"
 
-file = "download_tge.py"
+file = "install_tge.py"
 
 total_download_path = current_dir + file
 

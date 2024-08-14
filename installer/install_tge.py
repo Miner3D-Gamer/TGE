@@ -97,11 +97,14 @@ while True:
         inp = input(
             f"""Choose how to install TGE (Enter Number):
         1. Install TGE for all installed python installations in the default python installation ({default_python_installation})
-                    
-        2. Select a file (.exe) in the python folder you wanna install TGE in
+
+        2. Select a file (.exe) in the python folder you wanna install TGE in (Visual Window)
+
+        3. Select a folder to install TGE into (Visual Window)
+
+        4. Input folder or file you want to install tge into (Console)
         
-        3. Select a folder to install TGE into
-        
+        5. Cancel Installation
         Your Input: """
         ).strip()
         if inp.startswith("&"):
@@ -144,6 +147,19 @@ while True:
             break
         dirs = [path + "/tge"]
         break
+    elif inp == "4":
+        path = input("Directory: ")
+        if not os.path.exists(path):
+            if give_feedback < 1:
+                print("Directory does not exist, canceling.")
+            quit()
+        if is_directory_empty(path):
+            dirs = [path]
+            break
+        dirs = [path + "/tge"]
+        break
+    elif inp == "5":
+        quit()
 
 if give_feedback < 1:
     print()
@@ -293,8 +309,6 @@ if not dont_download_dependencies:
             return D, G
         except Exception as A:
             return D, f"An unexpected error occurred: {str(A)}"
-
-    
 
     def install_all_libraries(libs):
         A = []

@@ -19,8 +19,7 @@ def get_clipboard(user32 = USER32, kernel32 = KERNEL32) -> str: # About 20% fast
         user32.CloseClipboard()
 
         return data
-    
-#set_clipboard_text
+
 def copy_to_clipboard(text, user32 = USER32, kernel32 = KERNEL32): # Roughly 95% to 1515% faster on Windows than pyperclip
     """
     Copy text to the system clipboard.

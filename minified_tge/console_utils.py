@@ -1,3 +1,4 @@
+_D='\n'
 _C=False
 _B=True
 _A=None
@@ -9,7 +10,7 @@ if os.name=='nt':
  def clear():os.system('cls')
 else:
  def clear():os.system('clear')
-def typingPrint(text,delay):
+def typing_print(text,delay):
  A=delay
  if not A>0:A=.05
  for B in text:sys.stdout.write(B);sys.stdout.flush();time.sleep(A)
@@ -18,43 +19,31 @@ def typingInput(text,delay=0):
  if not A>0:A=.05
  for B in text:sys.stdout.write(B);sys.stdout.flush();time.sleep(A)
  C=input('');return C
-def writeSentencesToConsole(punctuations,o_text,type_delay,line_delay):
- H=type_delay;G='Þ';E=line_delay;D=punctuations;A=o_text
- try:
-  A=str(A)
-  if type(D)!=list:D[D]
- except:return _C
- D=['.','!','?',':',';']
- for I in D:A=A.replace(I,I+G)
- F=A.split(G);B=0;C=0
- if not E>=0:E=.7
- typingPrint(A[C:len(F[B])+C],H);time.sleep(E);C+=len(F[B])+1;B+=1
- for K in range(A.count(G)-1):
-  print(' ');time.sleep(E);J=A[C:len(F[B])+C][1:]
-  if not J=='':typingPrint(J,H)
-  C+=len(F[B])+1;B+=1
- return _B
-def chooseFromTextMenu(text,prompt,ans_prompt):
- B=text;C=_B;print(prompt)
- while C:
-  for D in range(len(B)):typingPrint(f"{D}: {B[D]}");print(' ');time.sleep(.05)
-  time.sleep(.25);A=typingInput(ans_prompt)
-  try:
-   if A in B:return B.index(A)
-   A=int(A);print('')
-  except:print('')
-  if type(A)==int:
-   if A<=len(B)and A>=0:C=_C;return int(A)
-def skip_line():print('\n')
+def write_sentences_to_console(text,type_delay,line_delay=.7):
+ for A in text:typing_print(A,type_delay);time.sleep(line_delay)
+def choose_from_text_menu(menu_list,prompt='',destroy=_C):
+ H=destroy;G=prompt;B=menu_list;C='';D=C.count(_D)+G.count(_D)+2
+ for(E,F)in enumerate(B):C+=f"{E+1}: {F}\n"
+ while _B:
+  print(C);A=input(G)
+  if A.isdigit():
+   A=int(A)
+   if A>0 and A<len(B)+1:
+    if H:clear_lines(D)
+    return A-1
+  else:
+   for(E,F)in enumerate(B):
+    if A==F:
+     if H:clear_lines(D)
+     return E
+  clear_lines(D)
+def skip_line():print(_D)
 def print_table(data):
- A='+'
- try:
-  B=[max(len(str(A))for A in A)for A in zip(*data)];C=A+A.join('-'*(A+2)for A in B)+A;print(C)
-  for D in data:E='| '+' | '.join(str(A).ljust(B)for(A,B)in zip(D,B))+' |';print(E)
-  print(C);return _B,''
- except:return _C,'Unable to print table, make sure the data is a list of lists'
+ A='+';B=[max(len(str(A))for A in A)for A in zip(*data)];C=A+A.join('-'*(A+2)for A in B)+A;print(C)
+ for D in data:E='| '+' | '.join(str(A).ljust(B)for(A,B)in zip(D,B))+' |';print(E)
+ print(C)
 def progress_bar(progress_name,current,total,length,show_float=_B,empty_tile='-',full_tile='#'):
- E=length;D=progress_name;B=total;A=current
+ E=length;D=progress_name;B=total;A=current;A+=1
  if show_float:C=float(int(float(A/B*100)*10)/10)
  else:C=int(A/B*100)
  F=int(E*A//B);G=f"{full_tile}"*F+f"{empty_tile}"*(E-F)
@@ -121,7 +110,7 @@ def matrix_rain(rows,columns,speed=.1,density=.2,duration=_A,symbols=['0','1']):
   for B in range(C-1,0,-1):
    for F in range(D):A[B][F]=A[B-1][F]
   G='';I=0
-  for J in A[1:]:G+=''.join(J)+'\n';I+=1
+  for J in A[1:]:G+=''.join(J)+_D;I+=1
   clear_lines(C+1);print(G)
   if E is not _A:
    if time.time()-H>E:break
@@ -136,4 +125,4 @@ class ConsoleCapture:
   if A.capturing==_B:sys.stdout=A.original_stdout
  def get_captured_output(A):A.captured_output.seek(0);return A.captured_output.read()
 def suppress_print():global console_capture;console_capture=ConsoleCapture();console_capture.start_capture()
-def enable_print():global console_capture;console_capture.stop_capture();A=console_capture.get_captured_output();return A
+def restore_print():global console_capture;console_capture.stop_capture();A=console_capture.get_captured_output();return A

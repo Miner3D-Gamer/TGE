@@ -10,7 +10,7 @@ __license__='LGPL, GNU Lesser General Public License'
 __url__='https://github.com/Miner3DGaming/TGE'
 __doc__='https://github.com/Miner3DGaming/TGE/blob/main/README.MD'
 import sys
-import requests
+import subprocess,shutil,requests
 def is_tge_outdated():
  A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
  with open(os.path.dirname(__file__)+'/update.hashed','r')as B:C=B.read();D=str(A.content)[2:-1];return C!=D
@@ -58,9 +58,8 @@ from.import time_utils
 from.import file_operations
 from.import formatting_utils as formatting
 from.import bool_operations
-from.import bitwise
 from.image_processing import image_operations
-import subprocess,shutil
+from.import function_utils
 def is_ffmpeg_installed():
  B='ffmpeg';A=False
  if shutil.which(B)is None:return A

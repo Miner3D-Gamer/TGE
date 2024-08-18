@@ -1,4 +1,3 @@
-def format_number(number):return'{:,}'.format(number)
 def format_seconds(duration):A=duration;B=A//3600;C=A%3600//60;D=A%60;E=f"{B}h {C}m {D}s";return E
 def format_minutes(duration):A=duration;B=A//60//60;C=A//60%60;D=A%60;E=f"{B}h {C}m {D}s";return E
 def format_hours(duration):A=duration;B=A//3600;C=A%3600//60;D=A%60;E=f"{B}h {C}m {D}s";return E

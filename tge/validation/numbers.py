@@ -63,4 +63,4 @@ def is_odd(number: int) -> bool:
     Returns:
         bool: True if the input integer is odd, False if it's even.
     """
-    return number % 2 == 1 # not is_even(number)
+    return number % 2 == 1

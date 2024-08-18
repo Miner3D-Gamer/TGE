@@ -19,7 +19,6 @@ def convert_binary_to_decimal(binary: str) -> int:
     decimal = 0
     power = 0
 
-    # Iterate over the binary digits in reverse order
     for digit in reversed(str(binary)):
         if digit == '1':
             decimal += 2 ** power
@@ -53,11 +52,9 @@ def convert_decimal_to_hexadecimal(decimal: int) -> str:
     Returns:
     str: The hexadecimal representation of the input decimal number.
     """
-    # Handle special case when the decimal number is 0
     if decimal == 0:
         return "0"
 
-    # Convert decimal to hexadecimal
     hex_string = ""
     while decimal > 0:
         remainder = decimal % 16
@@ -80,11 +77,9 @@ def convert_hexadecimal_to_decimal(hexadecimal: str) -> int:
     Raises:
     ValueError: If the input is not a valid hexadecimal string.
     """
-    # Handle special case when the hexadecimal number is 0
     if hexadecimal == "0":
         return 0
 
-    # Convert hexadecimal to decimal
     decimal = 0
     for hex_digit in reversed(hexadecimal):
         decimal = decimal * 16 + HEX_CHARACTERS.index(hex_digit)
@@ -109,7 +104,6 @@ def convert_bytes(value: int, from_unit: str, to_unit: str) -> int:
     if from_unit not in units or to_unit not in units:
         raise ValueError("Invalid unit specified")
 
-    # Convert the value to bytes and then to the desired unit
     bytes_value = value * (1024 ** units.index(from_unit))
     return ceil(bytes_value / (1024 ** units.index(to_unit)))
 

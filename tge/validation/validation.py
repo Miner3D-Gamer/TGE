@@ -7,8 +7,7 @@ from . import minecraft
 from . import numbers
 
 
-
-def is_empty(text:Union[str, Iterable]) -> bool:
+def is_empty(text: Union[str, Iterable]) -> bool:
     """
     Returns a boolean indicating whether the given text is empty or not.
 
@@ -20,17 +19,6 @@ def is_empty(text:Union[str, Iterable]) -> bool:
     return not text
 
 
-
-
-
-
-
-
-
-        
-
-
-    
 def validate_email(email: str) -> bool:
     """
     Validate an email address using a regular expression pattern match.
@@ -40,10 +28,19 @@ def validate_email(email: str) -> bool:
     :return: A boolean indicating whether the email address is valid or not.
     :rtype: bool
     """
-    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
     return re.match(pattern, email) is not None
 
-def validate_password(password, length: int, upper: bool, lower: bool, digit: bool, overwrite_special_characters: bool, overwritten_special_characters: str) -> bool:
+
+def validate_password(
+    password,
+    length: int,
+    upper: bool,
+    lower: bool,
+    digit: bool,
+    overwrite_special_characters: bool,
+    overwritten_special_characters: str,
+) -> bool:
     """
     Validates a password based on specified criteria.
 
@@ -61,27 +58,22 @@ def validate_password(password, length: int, upper: bool, lower: bool, digit: bo
     Returns:
         bool: True if the password is valid based on the specified criteria, False otherwise.
     """
-    # Check if password length is at least 8 characters
     if len(password) < length:
         return False
 
-    # Check if password contains at least one uppercase letter
     if upper:
         if not any(char.isupper() for char in password):
             return False
 
-    # Check if password contains at least one lowercase letter
     if lower:
         if not any(char.islower() for char in password):
             return False
 
-    # Check if password contains at least one digit
     if digit:
         if not any(char.isdigit() for char in password):
             return False
 
-    # Check if password contains at least one special character
-    
+
     if overwrite_special_characters:
         special_characters = overwritten_special_characters
     else:
@@ -89,8 +81,8 @@ def validate_password(password, length: int, upper: bool, lower: bool, digit: bo
     if not any(char in special_characters for char in password):
         return False
 
-    # All criteria passed, password is valid
     return True
+
 
 def validate_strong_password(password: str) -> bool:
     """
@@ -109,7 +101,16 @@ def validate_strong_password(password: str) -> bool:
     Returns:
         bool: True if the password meets the strong password criteria, False otherwise.
     """
-    return validate_password(password, 12, upper=True, lower=True, digit=True, overwrite_special_characters=True, overwritten_special_characters="!@#$%^&*()_-+=<>?/\\")
+    return validate_password(
+        password,
+        12,
+        upper=True,
+        lower=True,
+        digit=True,
+        overwrite_special_characters=True,
+        overwritten_special_characters="!@#$%^&*()_-+=<>?/\\",
+    )
+
 
 def validate_credit_card(number: int) -> bool:
     """
@@ -131,33 +132,27 @@ def validate_credit_card(number: int) -> bool:
         bool: True if the credit card number is valid according to the Luhn algorithm,
             False otherwise.
     """
-    # Remove any spaces or dashes from the credit card number
     number = number.replace(" ", "").replace("-", "")
-    
-    # Check if the number contains only digits
+
     if not number.isdigit():
         return False
-    
-    # Reverse the number
+
     reversed_number = number[::-1]
-    
-    # Calculate the Luhn checksum
+
     checksum = 0
     for i in range(len(reversed_number)):
         digit = int(reversed_number[i])
-        
-        # Double every second digit
+
         if i % 2 == 1:
             digit *= 2
-            
-        # Subtract 9 from digits greater than 9
+
         if digit > 9:
             digit -= 9
-            
+
         checksum += digit
-    
-    # The number is valid if the checksum is divisible by 10
+
     return checksum % 10 == 0
+
 
 def check_valid_ipv6(ip_address: str) -> bool:
     """
@@ -180,6 +175,7 @@ def check_valid_ipv6(ip_address: str) -> bool:
     else:
         return True
 
+
 def check_valid_ipv4(ip_address: str) -> bool:
     """
     Check the validity of an IPv4 address.
@@ -197,7 +193,7 @@ def check_valid_ipv4(ip_address: str) -> bool:
     """
     try:
         ip = IPv4Address(ip_address)
-        return True
     except AddressValueError:
         return False
-    
+    else:
+        return True

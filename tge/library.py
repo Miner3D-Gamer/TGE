@@ -3,7 +3,6 @@ from typing import Union, Tuple, NoReturn, List
 import subprocess
 
 
-# Function to Test for Library Existence
 def is_library_installed(library_name: str) -> bool:
     """
     Tests for the accessability of a library using a custom mini
@@ -60,7 +59,6 @@ def get_installed_python_versions() -> list:
                     full_path = os.path.join(path, entry)
                     if os.access(full_path, os.X_OK):
                         try:
-                            # Ensure the file is a Python executable by checking the version
                             version_info = (
                                 subprocess.check_output(
                                     [full_path, "--version"], stderr=subprocess.STDOUT

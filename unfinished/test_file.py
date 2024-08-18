@@ -60,10 +60,77 @@ import os, sys, time
 sys.path.append(os.path.dirname(os.getcwd()))
 import tge # type: ignore
 print(tge.INIT_TIME)
+# tge.system_interactions.clipboard_operations.append_to_clipboard(str) -> None
+
+def get_all_folders(directory):
+    folders = []
+    try:
+        for root, dirs, files in os.walk(directory):
+            for dir_name in dirs:
+                folders.append(os.path.join(root, dir_name))
+    except FileNotFoundError:
+        print(f"The directory '{directory}' does not exist.")
+    except PermissionError:
+        print(f"Permission denied to access the directory '{directory}'.")
+    
+    return folders
+
+def get_all_files(directory):
+    files_list = []
+    try:
+        for root, dirs, files in os.walk(directory):
+            for file_name in files:
+                # Append the full path of the file to the list
+                files_list.append(os.path.join(root, file_name))
+    except FileNotFoundError:
+        print(f"The directory '{directory}' does not exist.")
+    except PermissionError:
+        print(f"Permission denied to access the directory '{directory}'.")
+    
+    return files_list
 
 
 
 
+f = get_all_files('./tge')
+[print(s) for s in f if not s.endswith(".pyc")]
+
+# import inspect
+# import pkgutil
+# import importlib
+
+# def full_function_paths(module):
+#     def get_functions_with_paths(module):
+#         functions = inspect.getmembers(module, inspect.isfunction)
+#         function_paths = []
+#         for name, func in functions:
+#             if func.__module__ == module.__name__:
+#                 sig = inspect.signature(func)
+#                 parameters = [
+#                     f"{param_name}:{param.annotation.__name__}" if param.annotation != inspect.Parameter.empty else param_name
+#                     for param_name, param in sig.parameters.items()
+#                 ]
+#                 parameters_str = ", ".join(parameters)
+                
+#                 return_annotation = sig.return_annotation
+                
+#                 if return_annotation == inspect.Signature.empty:
+#                     return_annotation = 'None'
+#                 else:
+#                     return_annotation = return_annotation.__name__
+
+#                 function_paths.append(f"{func.__module__}.{name}({parameters_str}) -> {return_annotation}")
+#         return function_paths
+
+#     for func_path in get_functions_with_paths(module):
+#         print(func_path)
+
+#     for submodule_info in pkgutil.walk_packages(module.__path__, module.__name__ + "."):
+#         submodule = importlib.import_module(submodule_info.name)
+#         for func_path in get_functions_with_paths(submodule):
+#             print(func_path)
+
+# full_function_paths(tge)
 
 # while True:
     

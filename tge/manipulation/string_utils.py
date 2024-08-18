@@ -126,20 +126,16 @@ def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
     if not s:
         return 0
 
-    max_length = 0  # stores the length of the longest substring
-    start = 0  # starting index of the current substring
-    char_index_map = {}  # stores the most recent index of each character
+    max_length = 0  
+    start = 0 
+    char_index_map = {}  
 
     for i in range(len(s)):
         if s[i] in char_index_map and start <= char_index_map[s[i]]:
-            # If the current character is already present in the substring,
-            # update the starting index of the substring to the next index of the repeated character.
             start = char_index_map[s[i]] + 1
         else:
-            # Calculate the length of the current substring and update the maximum length if necessary.
             max_length = max(max_length, i - start + 1)
 
-        # Update the most recent index of the current character.
         char_index_map[s[i]] = i
 
     return max_length
@@ -157,16 +153,13 @@ def find_first_non_repeating_character(string: str) -> str:
     """
     char_count = {}
 
-    # Count the occurrences of each character in the string
     for char in string:
         char_count[char] = char_count.get(char, 0) + 1
 
-    # Find the first non-repeating character
     for char in string:
         if char_count[char] == 1:
             return char
 
-    # If no non-repeating character is found, return None
     return None
 
 
@@ -236,16 +229,12 @@ def find_longest_substring(string: str) -> str:
 
     for char in string:
         if char in current_substring:
-            # Found a repeating character, update the longest substring if needed
             if len(current_substring) > len(longest_substring):
                 longest_substring = current_substring
-            # Reset the current substring after the repeated character
             current_substring = current_substring.split(char)[-1]
 
-        # Add the current character to the current substring
         current_substring += char
 
-    # Check if the current substring is longer than the longest substring
     if len(current_substring) > len(longest_substring):
         longest_substring = current_substring
 
@@ -262,13 +251,10 @@ def check_pangram(string: str) -> bool:
         bool: True if the string is a pangram, False otherwise.
     """
     import string as st
-    alphabet = set(st.ascii_lowercase)  # Create a set of all lowercase letters
+    alphabet = set(st.ascii_lowercase)  
 
-    # Convert the string to lowercase and remove any non-alphabetic characters
-    # by using only the characters present in the alphabet set
     filtered_string = "".join(filter(lambda c: c in alphabet, string.lower()))
 
-    # Check if the filtered string contains all the letters of the alphabet
     return set(filtered_string) == alphabet
 
 
@@ -373,12 +359,10 @@ def left_replace(s, chars: Iterable, replacement: str)->str:
     Returns:
     str: The modified string with leading characters replaced.
     """
-    # Find the first character that is not in `chars`
     index = 0
     while index < len(s) and s[index] in chars:
         index += 1
 
-    # Create the replaced string
     replaced_part = replacement * index
     remaining_part = s[index:]
 
@@ -397,12 +381,10 @@ def right_replace(s, chars, replacement)->str:
     Returns:
     str: The modified string with trailing characters replaced.
     """
-    # Find the last character that is not in `chars`
     index = len(s) - 1
     while index >= 0 and s[index] in chars:
         index -= 1
 
-    # Create the replaced string
     replaced_part = replacement * (len(s) - index - 1)
     remaining_part = s[: index + 1]
 

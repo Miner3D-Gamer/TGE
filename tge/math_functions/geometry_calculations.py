@@ -190,10 +190,8 @@ def surface_area_of_cylinder(radius: Number, height: Number) -> Number:
     Returns:
         Number: The surface area of the cone using π ≈ 3.14159.
     """
-    # Calculate the slant height
     slant_height = sqrt(radius**2 + height**2)
 
-    # Calculate the surface area
     surface_area = 3.14159 * radius * slant_height
 
     return surface_area
@@ -211,10 +209,8 @@ def surface_area_of_cylinder_with_accuracy(
 
     Returns:
         Number: The surface area of the cone using the provided π accuracy."""
-    # Calculate the slant height
     slant_height = sqrt(radius**2 + height**2)
 
-    # Calculate the surface area
     surface_area = get_pi(accuracy) * radius * slant_height
 
     return surface_area
@@ -229,7 +225,6 @@ def surface_area_of_sphere(radius: Number) -> Number:
     Returns:
         Number: The surface area of the sphere using π ≈ 3.14159.
     """
-    # Calculate the surface area
     surface_area = 4 * 3.14159 * (radius**2)
 
     return surface_area
@@ -246,7 +241,6 @@ def surface_area_of_sphere_with_accuracy(
 
     Returns:
         Number: The surface area of the sphere using the provided π accuracy."""
-    # Calculate the surface area
     surface_area = get_pi(accuracy) * (radius**2)
 
     return surface_area
@@ -467,7 +461,7 @@ def calculate_distance_between_points(*points: Iterable) -> int:
         int: The total distance between the points. Returns 0 if fewer than two points are provided.
     """
     if len(points) < 2:
-        return 0.0  # Return 0 if there are less than two points
+        return 0.0  
 
     total_distance = 0.0
     for i in range(len(points) - 1):

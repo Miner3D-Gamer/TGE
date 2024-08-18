@@ -167,10 +167,10 @@ def post_to_discord_webhook(
     Posts a message to a Discord webhook. Returns the response code and the content of the message.
     """
     data = {
-        "content": message_content,  # Contents of the message
-        "username": name,  # Name for the user
-        "tts": activate_voice,  # Activate TTS (Automatic reading voice)
-        "allowed_mentions": {"parse": []} if mention else {},  # Allow mentions
+        "content": message_content, 
+        "username": name,  
+        "tts": activate_voice,  
+        "allowed_mentions": {"parse": []} if mention else {},
     }
     if avatar_url is not None:
         data["avatar_url"] = avatar_url

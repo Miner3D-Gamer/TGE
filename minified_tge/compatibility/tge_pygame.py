@@ -36,12 +36,6 @@ def handle_events(quit_callback=exit,key_callback=pass_func,mouse_button_callbac
   elif A.type==pygame.KEYDOWN:key_callback(A.key)
   elif A.type==pygame.MOUSEBUTTONDOWN:mouse_button_callback(A.button)
   else:misc_callback(A)
-class SpriteAnimator:
- def __init__(A,images,frame_delay):B=images;A.images=B;A.frame_delay=frame_delay;A.num_frames=len(B);A.frame_index=0;A.frame_counter=0
- def animate_sprite(A,sprite):
-  B=A.images[A.frame_index];sprite.image=B;A.frame_counter+=1
-  if A.frame_counter>=A.frame_delay:A.frame_index=(A.frame_index+1)%A.num_frames;A.frame_counter=0
-  pygame.time.delay(A.frame_delay)
 def check_collision(*A):
  for B in range(len(A)):
   for C in range(B+1,len(A)):

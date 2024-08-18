@@ -68,7 +68,7 @@ def calculate_average(lst: Iterable) -> float:
     length = len(lst)
 
     if length == 0:
-        return 0  # To avoid division by zero
+        return 0  
 
     total = sum(lst)
     average = total / length
@@ -103,7 +103,7 @@ def median(lst: Iterable) -> float:
     Returns:
         float: The median of the numbers in the list.
     """
-    sorted_lst = sorted(lst)  # Ensure the list is sorted
+    sorted_lst = sorted(lst) 
     n = len(sorted_lst)
     if n % 2 == 0:
         return (sorted_lst[n // 2 - 1] + sorted_lst[n // 2]) / 2

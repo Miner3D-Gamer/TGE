@@ -16,10 +16,7 @@ def show_message_box(message, title, style):
     """
     return user32.MessageBoxW(None, message, title, style)
 
-#print(show_message_box("text", "title", 6))
 
-
-# Define necessary structures
 
 
 

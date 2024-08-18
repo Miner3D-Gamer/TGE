@@ -1,14 +1,15 @@
+from typing import List, Union, Tuple, Any
+import random
 
-from typing import List, Union, Tuple , Any
-import uuid
-from random import randint, choice, shuffle, uniform, getrandbits
-from string import ascii_letters as string_ascii_letters, digits as string_digits, ascii_lowercase
-from collections.abc import Iterable
 from requests import get as requests_get
+from .codec.codec import html
 
-from .codec.codec import html 
+# number between 0 and 1:
 
-def generate_name(gen: int, ) -> str:
+
+def generate_name(
+    gender: int,
+) -> str:
     """
     Generate a random name based on the specified gender or unisex option.
 
@@ -27,101 +28,46 @@ def generate_name(gen: int, ) -> str:
         This function uses the "https://www.behindthename.com/random/random.php" endpoint to
         generate random names.
 
-    Example:
-        >>> generate_name(0)
-        'John'
-        >>> generate_name(1)
-        'Emily'
-        >>> generate_name(2)
-        'Alex'
-        >>> generate_name(3)
-        'Jordan'
     """
 
-    if gen == 0 or "m" or "male":
+    if gender == 0 or "m" or "male":
         gender = "m"
-    elif gen == 1 or "f" or "female":
+    elif gender == 1 or "f" or "female":
         gender = "f"
-    elif gen == 2 or "u" or "unisex" or "unidentified":
+    elif gender == 2 or "u" or "unisex" or "unidentified":
         gender = "u"
-    elif gen == 3 or "both" or "b":
+    elif gender == 3 or "both" or "b":
         gender = "both"
     else:
-        return ""
+        raise ValueError("Invalid gender input.")
     url = "https://www.behindthename.com/random/random.php"
-    params = {
-        "gender": gender,
-        "number": "1",
-        "sets": "1",
-        "surname": "",
-        "all": "yes"
-    }
+    params = {"gender": gender, "number": "1", "sets": "1", "surname": "", "all": "yes"}
     response = requests_get(url, params=params)
     name_text = str(response.text.split("\n")[165])
     idx = name_text.find('class="plain">') + 14
     name_text = name_text[idx:]
-    idx2 = name_text.find('<')
-
-    # middle_name = name_text[:idx2]
-    # middle_name = decode_html_character(middle_name)
-    # idx = name_text.find('class="plain">') + 14
-    # name_text = name_text[idx:]
-    # idx2 = name_text.find('<')
+    idx2 = name_text.find("<")
 
     name = name_text[:idx2]
     name = html.decode(name)
     return name
 
-def generate_uuid5() -> str:
-    """
-    Generate a Universally Unique Identifier (UUID) using the uuid4() function.
-
-    Returns:
-        str: A string representation of the generated UUID.
-    """
-    return str(uuid.uuid5())
-
-def generate_uuid1() -> str:
-    """
-    Generate a Universally Unique Identifier (UUID) using the uuid4() function.
-
-    Returns:
-        str: A string representation of the generated UUID.
-    """
-    return str(uuid.uuid1())
-
-def generate_uuid3() -> str:
-    """
-    Generate a Universally Unique Identifier (UUID) using the uuid4() function.
-
-    Returns:
-        str: A string representation of the generated UUID.
-    """
-    return str(uuid.uuid3())
-
-def generate_uuid4() -> str:
-    """
-    Generate a Universally Unique Identifier (UUID) using the uuid4() function.
-
-    Returns:
-        str: A string representation of the generated UUID.
-    """
-    return str(uuid.uuid4())
 
 def generate_password(length: int) -> str:
     """
     Generates a random password of the given length.
-    
+
     :param length: An integer representing the length of the password.
     :type length: int
-    
+
     :return: A string representing the generated password.
     :rtype: str
     """
-    chars = string_ascii_letters + string_digits
-    return ''.join(choice(chars) for _ in range(length))
+    chars = """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
+    return "".join(random.choice(chars) for _ in range(length))
 
-def randomBool() -> bool:
+
+def random_bool() -> bool:
     """
     Returns a random boolean value.
 
@@ -133,57 +79,29 @@ def randomBool() -> bool:
     :return: A random boolean value (`True` or `False`).
     :rtype: bool
     """
-    return bool(getrandbits(1))
+    return bool(random.getrandbits(1))
 
-def randomStringFromList(input_list: Iterable) -> str:
-    """
-    Returns a random item from the input list.
-
-    Args:
-        input_list (list): Iterable of items to choose from.
-
-    Returns:
-        str: A randomly selected item from input_list.
-    """
-    return choice(input_list)
-
-def shuffleList(input_list: Iterable) -> list:
-    """Shuffles the elements of the input list and returns the shuffled list.
-
-    Args:
-        input_list (list): The list to be shuffled.
-
-    Returns:
-        list: A new list containing the same elements as input_list, but in a
-            random order.
-
-    Example:
-        >> shuffleList([1, 2, 3, 4, 5])
-        [4, 2, 5, 1, 3]
-    """
-    return shuffle(input_list)
 
 def generate_random_hex_color() -> str:
     """
     Generates a random hex color code.
-    
+
     :return: A string representing a hex color code.
     :rtype: str
     """
-    return "#" + "".join(choice("0123456789ABCDEF") for _ in range(6))
+    return "#" + "".join(random.choice("0123456789ABCDEF") for _ in range(6))
 
-def generate_random_color() -> tuple:
+
+def generate_random_color() -> Tuple[int, int, int]:
     """
     Generates a random color by generating three random integers between 0 and 255, inclusive.
     No parameters are taken in.
     Returns a tuple of three integers representing the RGB values of the generated color.
     """
-    randint1 = randint(0, 255)
-    randint2 = randint(0, 255)
-    randint3 = randint(0, 255)
-    return (randint1, randint2, randint3)
+    return random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
 
-def generate_random_string(length: int=1) -> str:
+
+def generate_random_string(length: int = 1) -> str:
     """
     Generates a random string of specified length.
 
@@ -193,9 +111,15 @@ def generate_random_string(length: int=1) -> str:
     Returns:
         str: A random string of specified length.
     """
-    return ''.join(choice(string_ascii_letters + string_digits) for _ in range(length))
+    return "".join(
+        random.choice(
+            """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
+        )
+        for _ in range(length)
+    )
 
-def randomInt(min: int, max: int, float: bool = False) -> Union[Tuple[bool, Union[int, float]], Tuple[bool, str]]:
+
+def random_int(min: int, max: int, float: bool = False) -> int:
     """
     Returns a random integer between `min` and `max`, inclusive.
 
@@ -205,18 +129,18 @@ def randomInt(min: int, max: int, float: bool = False) -> Union[Tuple[bool, Unio
         float (bool): If True, returns a float instead of an integer.
 
     Returns:
-        Tuple[bool, Union[int, float]] or Tuple[bool, str]: 
+        Tuple[bool, Union[int, float]] or Tuple[bool, str]:
             If the function succeeds, returns a tuple with the first element False and the random integer or float as the second element.
             If the function fails because `min` is greater than `max`, returns a tuple with the first element True and a message as the second element.
     """
 
     if min < max:
         if float:
-            return uniform(min, max)
-        else: 
-            return randint(min, max)
-    else: 
+            return random.uniform(min, max)
+        else:
+            return random.randint(min, max)
+    else:
         if min == max:
-            return (min)
+            return min
         else:
             return 0

@@ -1,25 +1,27 @@
 import os, json
 
 import tge
+import tge.function_utils
+import tge.library
+import base64
 
 tge.console.clear()
 
-total_functions = tge.tbe.count_functions_in_library("tge")
+total_functions = tge.function_utils.count_functions_in_library("tge")
 print("TGE has %s functions" % total_functions)
 undocumented = tge.tbe.print_undocumented_functions_in_directory()
 print(
     f"{total_functions-undocumented}/{total_functions} Functions are documented, that means {((total_functions-undocumented)/total_functions)*100}% of functions are documented and {undocumented} are still missing"
 )
 print()
-tge.tbe.print_check_for_functions_in_module_with_missing_notations(tge.list_utils)
+tge.function_utils.print_check_for_functions_in_module_with_missing_notations(tge.list_utils)
 # print("lines:", tge.tbe.count_lines_in_directory("./tge"))
 dir = f"{os.getcwd()}/tge/"
 
 for i in range(2):
-    generated_uuid = tge.tbe.generate_uuid_from_directory(dir, ["hashed"])
 
     with open("tge/update.hashed", "w") as f:
-        f.write(tge.codec.base.encode_base64(str(generated_uuid.bytes)[2:-1]))
+        f.write(base64.b64encode((tge.file_operations.generate_uuid_from_directory(dir, ["hashed"]).bytes)).decode())
 
 
 print()
@@ -37,7 +39,7 @@ for root, dirs, files in os.walk(dir, topdown=False):
         directories.append(file)
 
 
-compressed = tge.tbe.compress_directory_list(directories)
+compressed = tge.file_operations.compress_directory_list(directories)
 
 with open("directory.json", "w") as f:  #
     compressed = json.dumps(compressed)
@@ -109,14 +111,14 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
 #     )
 #     with open("minified_downloader.py", "w") as w:
 #         w.write(data)
-import minified_tge
+import minified_tge # type: ignore
 
 with open(".gitignore", "w") as f:
     f.write(
          "\n".join(
             [
                 file[2:].replace("\\", "/")
-                for file in tge.tbe.find_files_with_extension(".", ".pyc")
+                for file in tge.file_operations.find_files_with_extension(".", ".pyc")
             ]
         )
     )

@@ -28,7 +28,6 @@ def get_window_position(hwnd: int) -> Optional[Tuple[int, int, int, int]]:
     rect = RECT()
     ctypes.windll.user32.GetWindowRect(hwnd, ctypes.byref(rect))
     
-    # Check if the window is minimized
     if rect.left == -32000 and rect.top == -32000:
         return None
     

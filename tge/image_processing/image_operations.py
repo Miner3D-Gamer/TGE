@@ -1,12 +1,12 @@
 from PIL import Image
 from typing import Union, Tuple, Any
 from numbers import Number
-
+import numpy as np
 from ..math_functions.math_functions import clamp, math
-from ..file_operations import doesDirectoryFileExist
 from .middle_man import *
 
-def rotate_image(image_path: str, angle: int) -> bool:
+
+def rotate_image_file(image_path: str, angle: int) -> bool:
     """
     Rotate an image by the specified angle and save the rotated image back to the original path.
 
@@ -27,16 +27,13 @@ def rotate_image(image_path: str, angle: int) -> bool:
         else:
             print("Image rotation failed")
     """
-    try:
-        image = Image.open(image_path)
-        rotated_image = image.rotate(angle)
-        rotated_image.save(image_path)
-        return True
-    except:
-        return False
+
+    image = Image.open(image_path)
+    rotated_image = image.rotate(angle)
+    rotated_image.save(image_path)
 
 
-def flip_image_vertically(image_path: str) -> bool:
+def flip_image_file_vertically(image_path: str) -> bool:
     """
     Flips an image vertically and saves the result to the same file path.
 
@@ -52,18 +49,13 @@ def flip_image_vertically(image_path: str) -> bool:
         - If an exception occurs during the flipping process, the function attempts to restore
           the original image from the backup and returns False.
     """
-    try:
-        image = Image.open(image_path)
-        image_backup = image.copy()
-        image = image.transpose(Image.FLIP_TOP_BOTTOM)
-        image.save(image_path)
-        return True
-    except Exception:
-        image_backup.save(image_path)
-        return False
+
+    image = Image.open(image_path)
+    image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    image.save(image_path)
 
 
-def flip_image_horizontally(image_path: str) -> bool:
+def flip_image_file_horizontally(image_path: str) -> bool:
     """
     Flips an image horizontally and saves the result back to the original file path.
 
@@ -73,18 +65,14 @@ def flip_image_horizontally(image_path: str) -> bool:
     Returns:
         bool: True if the image was successfully flipped and saved, False otherwise.
     """
-    try:
-        image = Image.open(image_path)
-        image_backup = image.copy()
-        image = image.transpose(Image.FLIP_LEFT_RIGHT)
-        image.save(image_path)
-        return True
-    except Exception as e:
-        image_backup.save(image_path)
-        return False
+
+    image = Image.open(image_path)
+    image = image.transpose(Image.FLIP_LEFT_RIGHT)
+    image.save(image_path)
+    return True
 
 
-def add_anti_aliasing(image_path: str) -> bool:
+def add_anti_aliasing_to_image_file(image_path: str) -> bool:
     """
     Applies anti-aliasing to an image using a two-step resizing process.
 
@@ -101,21 +89,16 @@ def add_anti_aliasing(image_path: str) -> bool:
     Returns:
         bool: True if anti-aliasing is successfully applied and saved, False otherwise.
     """
-    try:
-        image = Image.open(image_path)
-        image_backup = image
-        image = image.resize((image.width * 2, image.height * 2))
-        image.save(image_path)
-        image = Image.open(image_path)
-        image = image.resize((image.width // 2, image.height // 2))
-        image.save(image_path)
-        return True
-    except:
-        image_backup.save(image_path)
-        return False
+
+    image = Image.open(image_path)
+    image = image.resize((image.width * 2, image.height * 2))
+    image.save(image_path)
+    image = Image.open(image_path)
+    image = image.resize((image.width // 2, image.height // 2))
+    image.save(image_path)
 
 
-def count_gif_frames(file_path) -> Union[bool, int, str]:
+def count_gif_frames(file_path) -> int:
     """
     Counts the number of frames in a GIF file.
 
@@ -123,128 +106,23 @@ def count_gif_frames(file_path) -> Union[bool, int, str]:
         file_path (str): The path to the GIF file.
 
     Returns:
-        tuple: A tuple containing three elements:
-            - success (bool): Indicates if the file was processed successfully.
-            - frame_count (int): The number of frames in the GIF file.
-            - message (str): A message indicating the result of the operation.
 
-            Possible messages:
-                - If success is True:
-                    - If the file is animated: "The file at [file_path] is animated".
-                    - If the file is not animated: "The file at [file_path] is not animated".
-                - If success is False:
-                    - If the file does not exist: "The file at [file_path] does not exist".
-                    - If an error occurred while opening the file: "An error occurred while opening the file at [file_path]".
     """
-    if doesDirectoryFileExist(True, file_path):
-        try:
-            with Image.open(file_path) as im:
-                # Check if the image is animated (a GIF)
-                if hasattr(im, "is_animated") and im.is_animated:
-                    # Iterate through all frames and count them
-                    frame_count = 0
-                    while True:
-                        try:
-                            im.seek(frame_count)
-                            frame_count += 1
-                        except EOFError:
-                            break
-                    return (
-                        True,
-                        frame_count,
-                        "The file at " + file_path + " is animated",
-                    )
-                else:
-                    return True, 1, "The file at " + file_path + " is not animated"
-        except IOError:
-            return False, 0, "An error occurred while opening the file at " + file_path
-    else:
-        return False, 0, "The file at " + file_path + " does not exist"
 
-
-def get_image_metadata(file_path: str = None, image: str = None) -> Tuple[Any, str]:
-    """
-    Retrieve metadata from an image file.
-
-    This function takes either an image file path or an image object as input and
-    returns the extracted EXIF metadata along with an error message string, if applicable.
-
-    Args:
-        file_path (str, optional): The path to the image file. If provided, the function
-            attempts to open the image file and extract its EXIF metadata.
-        image (str, optional): An alternative to providing a file_path. If an image
-            object is passed, this function directly attempts to extract its EXIF metadata.
-
-    Returns:
-        Tuple[Any, str]: A tuple containing two elements. The first element is a dictionary
-        containing the extracted EXIF metadata of the image. The second element is a string
-        that provides an error message if any issues occur during the process.
-
-    Note:
-        The function internally uses the `doesDirectoryFileExist` function to check the
-        existence of the provided file path.
-
-    Raises:
-        None. Exceptions are caught internally, and error messages are returned.
-
-    Example:
-        exif_data, error_msg = get_image_metadata(file_path="path/to/image.jpg")
-        if not error_msg:
-            print("Image EXIF metadata:", exif_data)
+    with Image.open(file_path) as im:
+        if hasattr(im, "is_animated") and im.is_animated:
+            frame_count = 0
+            while True:
+                try:
+                    im.seek(frame_count)
+                    frame_count += 1
+                except EOFError:
+                    break
+            return frame_count
         else:
-            print("Error:", error_msg)
-    """
-    if image:
-        pass
-    elif file_path:
-        if doesDirectoryFileExist(True, file_path):
-            image = Image.open(image)
-        else:
-            return {}, "The file at " + file_path + " does not exist"
-    else:
-        return {}, "No valid image/file path was provided"
-    try:
-        return image.getexif(), ""
-    except:
-        return {}, "An error occurred while getting the image metadata"
+            return -1
 
 
-def convert_image(file_path: str, extension: str, output_path: str = None) -> bool:
-    """
-    Convert and save an image to a different format.
-
-    This function takes the input image file, converts it to the specified format,
-    and saves the converted image to the specified output path. If no output path
-    is provided, the converted image will be saved in the same location as the
-    input file. The function returns True if the conversion and saving are
-    successful, and False otherwise.
-
-    Args:
-        file_path (str): The path to the input image file.
-        extension (str): The desired format to which the image should be converted
-            (e.g., 'JPEG', 'PNG', 'GIF').
-        output_path (str, optional): The path where the converted image should be
-            saved. If not provided, the converted image will be saved in the same
-            location as the input file.
-
-    Returns:
-        bool: True if the conversion and saving are successful, False otherwise.
-    """
-    if doesDirectoryFileExist(True, file_path):
-        try:
-            if not output_path:
-                output_path = file_path
-            image = Image.open(file_path)
-            image.save(output_path, extension)
-            return True
-        except:
-            return False
-    else:
-        return False
-
-
-from PIL import Image
-import numpy as np
 
 
 def image_to_ascii(
@@ -285,9 +163,7 @@ def image_to_ascii(
     if width is None:
         width = image.width
     height = int(width * aspect_ratio)
-    image = image.resize((width, height)).convert(
-        "L"
-    )  # Resize and convert to grayscale
+    image = image.resize((width, height)).convert("L")
     image_array = np.array(image)
 
     if ascii_chars == "":
@@ -321,16 +197,13 @@ def _load_image(image_path, alpha=True):
 
     image = Image.open(image_path)
 
-    # Access pixels using load()
     pixel_data = image.load()
 
     if not alpha:
         image = image.convert("RGB")
 
-    # Get image dimensions
     width, height = image.size
 
-    # Close the image
     image.close()
     return pixel_data, width, height
 

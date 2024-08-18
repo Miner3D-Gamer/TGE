@@ -29,30 +29,6 @@ def click_mouse_button(button_number: int, x: int, y: int) -> None:
     ClickMouseButton_atList[button_number](x, y)
 
 
-# if True: #// Variants of setting the mouse position
-#     def set_mouse_pos(x: int,y: int) -> None:
-#         set_mouse_to(x, y)
-
-#     def moveTo(x: int, y: int) -> None:
-#         set_mouse_to(x, y)
-
-#     def set_mouse_location(x: int, y: int) -> None:
-#         set_mouse_to(x, y)
-
-#     def move_mouse(x: int, y: int) -> None:
-#         set_mouse_to(x, y)
-
-#     def set_mouse_position(x: int, y: int) -> None:
-#         set_mouse_to(x, y)
-
-#     def move_cursor(x: int, y: int) -> None:
-#         set_mouse_to(x, y)
-
-#     def set_pointer_position(x: int, y: int) -> None:
-#         set_mouse_to(x, y)
-
-#     def move_pointer(x: int, y: int) -> None:
-#         set_mouse_to(x, y)
 
 
 
@@ -109,8 +85,6 @@ def drag_obj_to(x, y, a, b):
     drag_to(a, b)
 
 
-# def is_valid_mouse_buttons(x):
-#     return x in ["left", "right", "middle"]
 
 
 ClickMouseButtonList = [left_click, middle_click, right_click]

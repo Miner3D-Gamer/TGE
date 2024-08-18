@@ -18,14 +18,14 @@ __url__ = "https://github.com/Miner3DGaming/TGE"
 __doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.MD"
 
 "Yep"
-"At this point that python takes about a whole 0.1 seconds to skip over all the documentation/docstring (tested using compile function with consistent results)"
-"That's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
+"This's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
 "I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear them (well not actually since they are bugs and bugs are usually not good in these situations)"
 
 
 import sys
 from typing import Literal
-
+import subprocess
+import shutil
 import requests
 
 
@@ -94,11 +94,8 @@ from .manipulation import list_utils
 from .manipulation import dictionary_utils as dict_utils
 from .manipulation import expansions
 
-
 from .compatibility import tge_pygame
 from .compatibility import tge_tkinter
-
-
 
 from .conversion import binary as binary_conversion
 from .conversion import temperature as temperature_conversion
@@ -106,23 +103,19 @@ from .conversion import time as time_conversion
 from .conversion import units as units_conversion
 from .conversion import data as data_conversion
 
-
-
 from .math_functions import financial_calculations
 from .math_functions import geometry_calculations
 from .math_functions import math_functions
 from .math_functions import statistics_calculations
-
-
 
 from .system_interactions import clipboard_operations as clipboard
 from .system_interactions import cursor_operations as cursor
 from .system_interactions import keyboard_operations as keyboard
 from .system_interactions import window_manager
 
-
 from .validation import validation
 from .codec import codec
+
 from . import console_utils as console
 from . import random_generators as random
 from . import internet
@@ -132,12 +125,9 @@ from . import time_utils
 from . import file_operations
 from . import formatting_utils as formatting
 from . import bool_operations
-from . import bitwise
 from .image_processing import image_operations
-# from .file_system import SimDirFilSystem
+from . import function_utils
 
-import subprocess
-import shutil
 
 def is_ffmpeg_installed():
     """Checks if the generic audio library FFmpeg in installed"""

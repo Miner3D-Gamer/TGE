@@ -35,5 +35,6 @@ def check_valid_ipv6(ip_address):
  except AddressValueError:return _A
  else:return _B
 def check_valid_ipv4(ip_address):
- try:A=IPv4Address(ip_address);return _B
+ try:A=IPv4Address(ip_address)
  except AddressValueError:return _A
+ else:return _B

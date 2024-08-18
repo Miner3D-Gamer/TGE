@@ -1,6 +1,5 @@
 from math import sqrt, factorial as math_factorial
 
-# from typing import List, Union, Tuple, Any
 from numbers import Number
 from typing import overload, Literal
 
@@ -415,17 +414,17 @@ def fast_inverse_sqrt(x: Number) -> float:
     - Inverse square root of x.
     """
     one_and_a_half = 1.5
-    y = x  # initial guess
-    packed_y = struct.pack("f", y)  # interpret y as a 32-bit floating-point number
+    y = x  
+    packed_y = struct.pack("f", y)  
     i = struct.unpack("i", packed_y)[
         0
-    ]  # extract the 32-bit integer representation of y
-    i = 0x5F3759DF - (i >> 1)  # apply the fast inverse square root algorithm
-    packed_i = struct.pack("i", i)  # convert the modified integer back to bytes
+    ]  
+    i = 0x5F3759DF - (i >> 1)
+    packed_i = struct.pack("i", i)
     y = struct.unpack("f", packed_i)[
         0
-    ]  # interpret the result as a floating-point number
-    y = y * (one_and_a_half - (0.5 * x * y * y))  # refine the result with one iteration
+    ]  
+    y = y * (one_and_a_half - (0.5 * x * y * y))  
     return y
 
 

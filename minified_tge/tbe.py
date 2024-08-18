@@ -1,17 +1,12 @@
-_G='cumulative'
-_F='function_name'
-_E='type'
+_E='cumulative'
 _D='.py'
 _C=None
 _B=True
 _A=False
-from types import FunctionType
-from typing import get_type_hints
-import ast,os,sys,importlib
+import ast,os,sys
 from difflib import get_close_matches
-from collections import defaultdict
-import inspect,getpass
-import uuid,hashlib,cProfile,pstats,io
+import getpass
+import cProfile,pstats,io
 version=sys.version_info
 if version.minor<12:import python_minifier
 def pass_func(*args,**more_args):0
@@ -33,9 +28,6 @@ def get_available_variables():
  local_vars=locals()
  for(var_name,var_value)in local_vars.items():l_variables[var_name]=var_value
  return g_variables,l_variables
-def get_docstring(obj):
- try:return inspect.getdoc(obj)
- except:return''
 def convert_number_to_words_less_than_thousand(n,dash=_B):
  TINY_NUMBERS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];SMALL_NUMBERS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety']
  if n>=100:
@@ -108,49 +100,8 @@ def analyze_text(text):
  total_comma_count=0
  for comma_amount in comma_amounts:total_comma_count+=comma_amount
  return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
-def generate_uuid_from_directory(directory,blacklisted_extensions=[]):
- hash_md5=hashlib.md5()
- for(root,_,files)in os.walk(directory):
-  for file in sorted(files):
-   blacklisted=_B
-   for ext in blacklisted_extensions:
-    if file.endswith(ext):break
-   else:blacklisted=_A
-   if blacklisted:continue
-   file_path=os.path.join(root,file)
-   if os.path.isfile(file_path):
-    with open(file_path,'rb')as f:
-     for chunk in iter(lambda:f.read(4096),b''):hash_md5.update(chunk)
- unique_hash=hash_md5.hexdigest();unique_uuid=uuid.UUID(unique_hash[:32]);return unique_uuid
-def check_for_functions_in_module_with_missing_notations(library_module):
- functions_with_missing_annotations=[]
- for(name,obj)in inspect.getmembers(library_module):
-  if isinstance(obj,FunctionType):
-   input_parameters=get_function_inputs(obj);missing_input_types=[param for param in input_parameters if param[_E]is NoInputType];return_type=get_return_type(obj)
-   if missing_input_types or return_type is MissingReturnType:functions_with_missing_annotations.append({_F:name,'missing_input_types':missing_input_types,'return_type':return_type})
- return functions_with_missing_annotations
-def print_check_for_functions_in_module_with_missing_notations(library_module):
- data=check_for_functions_in_module_with_missing_notations(library_module)
- for i in data:print(f"Function '{i[_F]}' of type {'Missing Return'if i[_F]is MissingReturnType else'Missing Input type'}")
-def get_function_id_by_name(func_name):
- if func_name in globals():
-  func_obj=globals()[func_name]
-  if callable(func_obj):return func_obj
 class DualInfinite:0
 def divide(a,b):return a/b if b!=0 else DualInfinite
-class NoInputType:0
-def get_function_inputs(func):
- B='default';A='name';signature=inspect.signature(func);type_hints=get_type_hints(func);input_parameters=[]
- for(param_name,param)in signature.parameters.items():
-  param_type=type_hints.get(param_name,_C)
-  if param.default is not inspect.Parameter.empty:default_value=param.default;input_parameters.append({A:param_name,_E:param_type,B:default_value})
-  else:input_parameters.append({A:param_name,_E:param_type,B:NoInputType})
- return input_parameters
-class MissingReturnType:0
-def get_return_type(func):
- signature=inspect.signature(func);return_type=signature.return_annotation
- if return_type==inspect.Signature.empty:return MissingReturnType
- else:return return_type
 import subprocess,tempfile
 def remove_unused_libraries(code_str):
  with tempfile.NamedTemporaryFile(delete=_A,suffix=_D)as temp_file:temp_file.write(code_str.encode('utf-8'));temp_file_path=temp_file.name
@@ -160,36 +111,16 @@ def remove_unused_libraries(code_str):
   with open(temp_file_path,'r',encoding='utf8')as temp_file:cleaned_code=temp_file.read()
   return cleaned_code
  finally:os.remove(temp_file_path)
-def find_files_with_extension(root_dir,file_extension):
- file_paths=[]
- for(root,dirs,files)in os.walk(root_dir):
-  for file in files:
-   if file.endswith(file_extension):file_paths.append(os.path.join(root,file))
- return file_paths
-def find_files_with_extensions(root_dir,file_extensions):
- files=[]
- for file_extension in file_extensions:files.extend(find_files_with_extension(root_dir,file_extension))
- return files
 def repeat(func,times):
  for i in range(times):val=func()
  return val
 def get_username():return getpass.getuser()
 def profile(func):
- def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_G;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
+ def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_E;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
  return wrapper
 def profile_function(function,filename):
  profile=cProfile.Profile();profile.enable();function();profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
- with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_G);stats.print_stats()
-def count_functions_in_module(module,library_name):
- function_count=0
- for(name,obj)in inspect.getmembers(module):
-  if inspect.isfunction(obj):function_count+=1
-  elif inspect.ismodule(obj)and obj.__package__.startswith(library_name):function_count+=count_functions_in_module(obj,library_name)
- return function_count
-def count_functions_in_library(library_name):
- try:module=importlib.import_module(library_name)
- except ModuleNotFoundError:return-1
- function_count=count_functions_in_module(module,library_name);return function_count
+ with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_E);stats.print_stats()
 class ArgumentHandler:
  def __init__(self,arguments=_C):
   if arguments is _C:arguments=sys.argv[1:]
@@ -240,39 +171,16 @@ def get_from_dict_by_list(data_dict,keys):
 def set_in_dict_by_list(data_dict,keys,value):
  for key in keys[:-1]:data_dict=data_dict.setdefault(key,{})
  data_dict[keys[-1]]=value
-class TrieNode:
- def __init__(self):self.children=defaultdict(TrieNode);self.is_end_of_path=_A
-def _insert_path(root,path):
- node=root
- for part in path:node=node.children[part]
- node.is_end_of_path=_B
-def _build_trie(paths):
- root=TrieNode()
- for path in paths:_insert_path(root,path.split('/'))
- return root
-def _serialize_trie(node):
- if not node.children:return[]
- if len(node.children)==1 and node.is_end_of_path==_A:
-  key,child=next(iter(node.children.items()));serialized_child=_serialize_trie(child)
-  if isinstance(serialized_child,list)and not serialized_child:return key
-  if isinstance(serialized_child,str):return f"{key}/{serialized_child}"
-  return{key:serialized_child}
- result={}
- for(key,child)in node.children.items():
-  serialized_child=_serialize_trie(child)
-  if isinstance(serialized_child,list)and not serialized_child:result.setdefault('files',[]).append(key)
-  else:result[key]=serialized_child
- return result
-def compress_directory_list(paths):trie=_build_trie(paths);compressed=_serialize_trie(trie);return compressed
 def decompress_directory_list(compressed):
  paths=[]
  def dfs(node,current_path=''):
-  if isinstance(node,list):paths.append(f"{current_path}/{node[0]}".strip('/'));return
+  A='/'
+  if isinstance(node,list):paths.append(f"{current_path}/{node[0]}".strip(A));return
   if isinstance(node,str):paths.append(node);return
   for(key,value)in node.items():
    if key=='files':
-    for file_path in value:paths.append(f"{current_path}/{file_path}".strip('/'))
-   else:dfs(value,f"{current_path}/{key}".strip('/'))
+    for file_path in value:paths.append(f"{current_path}/{file_path}".strip(A))
+   else:dfs(value,f"{current_path}/{key}".strip(A))
  dfs(compressed);return paths
 if version.minor<12:
  def minify(text,rename_important_names=_A,remove_docstrings=_B):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)

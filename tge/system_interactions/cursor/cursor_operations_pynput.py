@@ -2,6 +2,7 @@ WHEEL_DELTA = 120
 import pynput
 from typing import Tuple
 
+
 MOUSE = pynput.mouse.Controller()
 
 

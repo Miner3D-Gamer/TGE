@@ -18,7 +18,6 @@ class ExpandedString(str):
             This method uses the __new__ method of the str class to create a new string instance.
             It then returns this instance as an ExpandedString object.
         """
-        # Call the __new__ method of str and pass the value
         instance = super(ExpandedString, cls).__new__(cls, value)
         return instance
 
@@ -34,7 +33,6 @@ class ExpandedString(str):
             The superclass __init__ method is not explicitly called because str objects are immutable and 
             their initialization is handled by the __new__ method.
         """
-        # Any additional initialization can be done here
         super().__init__()
 
     def get_scrambled(self) -> str:
@@ -186,20 +184,16 @@ class ExpandedString(str):
         if not self:
             return 0
 
-        max_length = 0  # stores the length of the longest substring
-        start = 0  # starting index of the current substring
-        char_index_map = {}  # stores the most recent index of each character
+        max_length = 0  
+        start = 0 
+        char_index_map = {}  
 
         for i in range(len(self)):
             if self[i] in char_index_map and start <= char_index_map[self[i]]:
-                # If the current character is already present in the substring,
-                # update the starting index of the substring to the next index of the repeated character.
                 start = char_index_map[self[i]] + 1
             else:
-                # Calculate the length of the current substring and update the maximum length if necessary.
                 max_length = max(max_length, i - start + 1)
 
-            # Update the most recent index of the current character.
             char_index_map[self[i]] = i
 
         return max_length
@@ -216,16 +210,13 @@ class ExpandedString(str):
         """
         char_count = {}
 
-        # Count the occurrences of each character in the string
         for char in self:
             char_count[char] = char_count.get(char, 0) + 1
 
-        # Find the first non-repeating character
         for char in self:
             if char_count[char] == 1:
                 return char
 
-        # If no non-repeating character is found, return None
         return None
 
     def count_consonants(self) -> int:
@@ -446,12 +437,10 @@ class ExpandedString(str):
         chars (str): A string of characters to be replaced.
         replacement (str): The character to replace with.
         """
-        # Find the first character that is not in `chars`
         index = 0
         while index < len(self) and self[index] in chars:
             index += 1
 
-        # Create the replaced string
         replaced_part = replacement * index
         remaining_part = self[index:]
 
@@ -468,12 +457,10 @@ class ExpandedString(str):
         Returns:
         str: The modified string with leading characters replaced.
         """
-        # Find the first character that is not in `chars`
         index = 0
         while index < len(self) and self[index] in chars:
             index += 1
 
-        # Create the replaced string
         replaced_part = replacement * index
         remaining_part = self[index:]
 
@@ -490,12 +477,10 @@ class ExpandedString(str):
         Returns:
         str: The modified string with trailing characters replaced.
         """
-        # Find the last character that is not in `chars`
         index = len(self) - 1
         while index >= 0 and self[index] in chars:
             index -= 1
 
-        # Create the replaced string
         replaced_part = replacement * (len(self) - index - 1)
         remaining_part = self[: index + 1]
 
@@ -509,12 +494,10 @@ class ExpandedString(str):
         chars (str): A string of characters to be replaced.
         replacement (str): The character to replace with.
         """
-        # Find the last character that is not in `chars`
         index = len(self) - 1
         while index >= 0 and self[index] in chars:
             index -= 1
 
-        # Create the replaced string
         replaced_part = replacement * (len(self) - index - 1)
         remaining_part = self[: index + 1]
 

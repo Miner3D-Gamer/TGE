@@ -1,20 +1,4 @@
 _A=False
-def and_three(a,b,c):return a and b and c
-def and_four(a,b,c,d):return a and b and c and d
-def and_five(a,b,c,d,e):return a and b and c and d and e
-def and_six(a,b,c,d,e,f):return a and b and c and d and e and f
-def and_seven(a,b,c,d,e,f,g):return a and b and c and d and e and f and g
-def and_eight(a,b,c,d,e,f,g,h):return a and b and c and d and e and f and g and h
-def and_nine(a,b,c,d,e,f,g,h,i):return a and b and c and d and e and f and g and h and i
-def and_ten(a,b,c,d,e,f,g,h,i,j):return a and b and c and d and e and f and g and h and i and j
-def or_three(a,b,c):return a or b or c
-def or_four(a,b,c,d):return a or b or c or d
-def or_five(a,b,c,d,e):return a or b or c or d or e
-def or_six(a,b,c,d,e,f):return a or b or c or d or e or f
-def or_seven(a,b,c,d,e,f,g):return a or b or c or d or e or f or g
-def or_eight(a,b,c,d,e,f,g,h):return a or b or c or d or e or f or g or h
-def or_nine(a,b,c,d,e,f,g,h,i):return a or b or c or d or e or f or g or h or i
-def or_ten(a,b,c,d,e,f,g,h,i,j):return a or b or c or d or e or f or g or h or i or j
 def nand(a,b):return not(a and b)
 def nand_three(a,b,c):return not(a and b and c)
 def nand_any(*A):return not all(A)

@@ -84,18 +84,14 @@
 #             return -1
 
 from collections.abc import Iterable
-from types import FunctionType, ModuleType, MethodType
-from typing import List, Union, Tuple, Any, get_type_hints, Iterator, Dict
+from types import FunctionType
+from typing import List, Union, Tuple, Any, Iterator, Dict
 import ast
 import os
 import sys
-import importlib
 from difflib import get_close_matches
-from collections import defaultdict
-import inspect
 import getpass
 from numbers import Number
-import uuid, hashlib
 import cProfile
 import pstats
 import io
@@ -103,10 +99,10 @@ import io
 version = sys.version_info
 
 if version.minor < 12:
-    import python_minifier
+    import python_minifier # type: ignore
 
 
-def pass_func(*args: Any, **more_args:Any) -> None:
+def pass_func(*args: Any, **more_args:Any) -> None: 
     """This function does nothing and has no side effects."""
     pass
 
@@ -125,14 +121,6 @@ def execute_function(func=pass_func, *args: Any, **kwargs: Any) -> Any:
     Returns:
         Any: The result of executing the function.
 
-    Example:
-        # Define a sample function
-        def add_numbers(a, b):
-            return a + b
-
-        # Call the 'execute_function' with the 'add_numbers' function
-        result = execute_function(add_numbers, 5, 3)
-        # The result will be 8
     """
     return func(*args, **kwargs)
 
@@ -286,22 +274,7 @@ def get_available_variables() -> Tuple:
 #hi = "post_to_discord_webhook"
 
 
-def get_docstring(obj: object) -> str:
-    """
-    Retrieve the docstring of a given object.
 
-    This function attempts to extract and return the docstring of the provided object.
-    
-    Args:
-        obj (object): The object for which the docstring is to be retrieved.
-
-    Returns:
-        str: The docstring of the object if available, otherwise an empty string.
-    """
-    try:
-        return inspect.getdoc(obj)
-    except:
-        return ""
 
 
 
@@ -701,39 +674,9 @@ Returns:
 
 
 
-def generate_uuid_from_directory(directory, blacklisted_extensions:list=[]):
-    """Generate a UUID based on the content of all files in a directory, excluding files with specified extensions.
 
-Args:
-    directory (str): Path to the directory to scan.
-    blacklisted_extensions (list, optional): List of file extensions to exclude from hashing. Defaults to an empty list.
 
-Returns:
-    UUID: A UUID generated from the MD5 hash of the file contents."""
-    hash_md5 = hashlib.md5()
 
-    # Traverse all files in the directory
-    for root, _, files in os.walk(directory):
-        for file in sorted(files):  # Sort files to ensure consistent order
-            blacklisted = True
-            for ext in blacklisted_extensions:
-                if file.endswith(ext):
-                    break
-            else:
-                blacklisted = False
-            if blacklisted:
-                continue
-            file_path = os.path.join(root, file)
-            if os.path.isfile(file_path):  # Ensure it's a file
-                with open(file_path, 'rb') as f:
-                    for chunk in iter(lambda: f.read(4096), b""):
-                        hash_md5.update(chunk)
-    
-    # Generate UUID from the MD5 hash
-    unique_hash = hash_md5.hexdigest()
-    unique_uuid = uuid.UUID(unique_hash[:32])
-    
-    return unique_uuid
 
 
 
@@ -882,45 +825,6 @@ Returns:
 
 
 
-
-
-
-def check_for_functions_in_module_with_missing_notations(library_module: ModuleType) -> List[dict]:
-    """
-    Check all functions in a given library module for missing input type or return type annotations.
-    Parameters:
-    library_module (module): The library module to analyze.
-    Returns:
-    list: A list of dictionaries containing information about functions with missing type annotations.
-    """
-    functions_with_missing_annotations = []
-
-    for name, obj in inspect.getmembers(library_module):
-        if isinstance(obj, FunctionType):
-            input_parameters = get_function_inputs(obj)
-            missing_input_types = [param for param in input_parameters if param['type'] is NoInputType]
-
-            return_type = get_return_type(obj)
-            if missing_input_types or return_type is MissingReturnType:
-                functions_with_missing_annotations.append({
-                    'function_name': name,
-                    'missing_input_types': missing_input_types,
-                    'return_type': return_type
-                })
-
-    return functions_with_missing_annotations
-
-def print_check_for_functions_in_module_with_missing_notations(library_module: ModuleType)->None:
-    """Print details of functions in a module that are missing type annotations.
-
-Args:
-    library_module (ModuleType): The module to check for missing type annotations.
-    
-Details:
-    Prints each function with missing type annotations, specifying whether the issue is a missing return type or missing input type."""
-    data = check_for_functions_in_module_with_missing_notations(library_module)
-    for i in data:
-        print(f"Function '{i['function_name']}' of type {'Missing Return' if i['function_name'] is MissingReturnType else 'Missing Input type'}")
 
 
 
@@ -985,23 +889,7 @@ Details:
 
 
 
-def get_function_id_by_name(func_name)->Union[None,ModuleType]:
-    """
-    Retrieve the function object (ID) from its name.
 
-    Parameters:
-    func_name (str): The name of the function to retrieve.
-
-    Returns:
-    callable or None: The function object if found, None if not found.
-    """
-    # Check if the function name exists in the global namespace
-    if func_name in globals():
-        func_obj = globals()[func_name]
-        # Ensure the retrieved object is callable (a function or method)
-        if callable(func_obj):
-            return func_obj
-    return None
 
 
 
@@ -1048,77 +936,20 @@ def divide(a:Number, b:Number)->Union[float,DualInfinite]:
 
 
 
-class NoInputType:
-    """Custom class to indicate that no input type annotation is specified."""
-    pass
-
-def get_function_inputs(func:MethodType)->List[dict]:
-    """
-    Retrieve all input parameters of a given function along with their types and default values.
-
-    Parameters:
-    func (callable): The function to analyze.
-
-    Returns:
-    list: A list of dictionaries containing {'name': parameter_name, 'type': parameter_type, 'default': default_value}.
-    """
-    # Get the signature of the function
-    signature = inspect.signature(func)
-    
-    # Get type hints (annotations) for the function parameters
-    type_hints = get_type_hints(func)
-    
-    # Extract parameter names, types, and default values from the signature
-    input_parameters = []
-    for param_name, param in signature.parameters.items():
-        param_type = type_hints.get(param_name, None)
-        
-        if param.default is not inspect.Parameter.empty:
-            default_value = param.default
-            
-            input_parameters.append({
-            'name': param_name,
-            'type': param_type,
-            'default': default_value
-        })
-        else:
-            input_parameters.append({
-            'name': param_name,
-            'type': param_type,
-            'default':NoInputType
-        })
-        
-        
-    
-    return input_parameters
-
-
-class MissingReturnType:
-    """Custom class to indicate that no return type annotation is specified."""
-    pass
 
 
 
-def get_return_type(func:MethodType)->Any:
-    """
-    Retrieve the return type annotation of a given function.
 
-    Parameters:
-    func (callable): The function to analyze.
 
-    Returns:
-    type: The return type of the function. Returns `NoReturnType` if no type annotation is specified.
-    """
-    # Get the signature of the function
-    signature = inspect.signature(func)
-    
-    # Get the return type annotation
-    return_type = signature.return_annotation
-    
-    if return_type == inspect.Signature.empty:
-        return MissingReturnType
-    else:
-        return return_type
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1157,33 +988,7 @@ def remove_unused_libraries(code_str:str)->str:
 
 
 
-def find_files_with_extension(root_dir:str, file_extension:str)->List[str]:
-    """
-    Returns a list of all file directories with the specified extension.
 
-    :param root_dir: The root directory to start searching from.
-    :param file_extension: The file extension to search for (e.g., '.txt').
-    :return: A list of file paths with the specified extension.
-    """
-    file_paths = []
-    for root, dirs, files in os.walk(root_dir):
-        for file in files:
-            if file.endswith(file_extension):
-                file_paths.append(os.path.join(root, file))
-    return file_paths
-
-def find_files_with_extensions(root_dir:str, file_extensions:List[str])->List[str]:
-    """
-    Returns a list of all file directories with the specified extensions.
-
-    :param root_dir: The root directory to start searching from.
-    :param file_extensions: The file extensions to search.
-    :return: A list of file paths with the specified extension.
-    """
-    files = []
-    for file_extension in file_extensions:
-        files.extend(find_files_with_extension(root_dir, file_extension))
-    return files
 
 
 
@@ -1348,39 +1153,6 @@ def profile_function(function:FunctionType, filename:str)->None:
 
 
 
-def count_functions_in_module(module:ModuleType, library_name:str)->int:
-    """Count the number of functions in a module and its submodules.
-
-Args:
-    module (ModuleType): The module to analyze.
-    library_name (str): The library name to use for identifying submodules.
-
-Returns:
-    int: The total number of functions in the module and its submodules.
-"""
-    function_count = 0
-    for name, obj in inspect.getmembers(module):
-        if inspect.isfunction(obj):
-            function_count += 1
-        elif inspect.ismodule(obj) and obj.__package__.startswith(library_name):
-            function_count+=count_functions_in_module(obj, library_name)
-    return function_count
-
-def count_functions_in_library(library_name:str)->int:
-    """Count the number of functions in a library by importing it and analyzing its modules.
-
-Args:
-    library_name (str): The name of the library to import and analyze.
-
-Returns:
-    int: The total number of functions in the library, or -1 if the library could not be found."""
-    try:
-        module = importlib.import_module(library_name)
-    except ModuleNotFoundError:
-        return -1
-    function_count = count_functions_in_module(module,library_name)
-    
-    return function_count
 
 
 
@@ -1721,55 +1493,7 @@ def set_in_dict_by_list(data_dict:dict, keys:Iterable, value:Any)->None:
 
 
 
-class TrieNode:
-    def __init__(self):
-        "Node in a Trie data structure with a dictionary of child nodes and a boolean flag to mark the end of a path."
-        self.children = defaultdict(TrieNode)
-        self.is_end_of_path = False
 
-def _insert_path(root:TrieNode, path:Iterable)->None:
-    "Insert a path into a Trie data structure."
-    node = root
-    for part in path:
-        node = node.children[part]
-    node.is_end_of_path = True
-
-def _build_trie(paths:Iterable)->TrieNode:
-    "Build a Trie from a list of file paths."
-    root = TrieNode()
-    for path in paths:
-        _insert_path(root, path.split('/'))
-    return root
-
-def _serialize_trie(node:TrieNode)->dict:
-    "Serialize a Trie into a compressed dictionary format representing a directory structure."
-    if not node.children:
-        return []
-
-    if len(node.children) == 1 and node.is_end_of_path == False:
-        key, child = next(iter(node.children.items()))
-        serialized_child = _serialize_trie(child)
-        if isinstance(serialized_child, list) and not serialized_child:
-            return key
-        if isinstance(serialized_child, str):
-            return f"{key}/{serialized_child}"
-        return {key: serialized_child}
-
-    result = {}
-    for key, child in node.children.items():
-        serialized_child = _serialize_trie(child)
-        if isinstance(serialized_child, list) and not serialized_child:
-            result.setdefault('files', []).append(key)
-        else:
-            result[key] = serialized_child
-
-    return result
-
-def compress_directory_list(paths:Iterable)->"dict[Union[list,str]]":
-    "Compress a list of file paths into a dictionary format representing the directory structure."
-    trie = _build_trie(paths)
-    compressed = _serialize_trie(trie)
-    return compressed
 
 
 

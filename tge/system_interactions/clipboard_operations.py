@@ -1,4 +1,3 @@
-#from .shared import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
 from .. import SYSTEM_NAME
 import os
 
@@ -32,7 +31,7 @@ def save_clipboard_to_file(file_path: str) -> bool:
         file = open(file_path, "w", encoding="utf-8")
         file.write(
             get_clipboard()
-        )  # Assumes a 'get_clipboard()' function is defined elsewhere.
+        )  
         file.close()
         return True
     except:

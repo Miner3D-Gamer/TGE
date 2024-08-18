@@ -1,15 +1,16 @@
 import os
 import shutil
-from filecmp import dircmp as file_dircmp, cmp as file_cmp
 from ast import parse as ast_parse, walk as ast_walk, FunctionDef as ast_FunctionDef
 import zipfile
 import math
-
-from typing import  Union, Tuple
+import hashlib
+import uuid
+from typing import Union, Tuple, Iterable, List
+from collections import defaultdict
 import tkinter as tk
 import pyshortcuts
 
-from .codec.codec import decode, base
+from .codec.codec import decode, base_x_decode_to_binary, base_x_encode_binary
 from . import SYSTEM_NAME
 
 
@@ -109,7 +110,7 @@ def load_save_data(name: str, dir: str) -> Tuple[bool, str]:
         return False, f"Error loading file: {str(e)}"
 
 
-def move_file(source_path: str, destination_path: str) -> bool:
+def move_file(source_path: str, destination_path: str) -> None:
     """
     Move a file from the source path to the destination path.
 
@@ -125,16 +126,8 @@ def move_file(source_path: str, destination_path: str) -> bool:
     Returns:
         bool: True if the file is successfully moved, False if the source file doesn't exist.
 
-    Example:
-        >>> move_file('source_folder/file.txt', 'destination_folder/file.txt')
-        True
     """
-    if doesDirectoryFileExist(source_path):
-        create_missing_directory(destination_path)
-        shutil.move(source_path, destination_path)
-        return True
-    else:
-        return False
+    shutil.move(source_path, destination_path)
 
 
 def copy_file(source_path: str, destination_path: str) -> bool:
@@ -148,15 +141,7 @@ def copy_file(source_path: str, destination_path: str) -> bool:
     Returns:
         bool: True if the file was successfully copied, False otherwise.
     """
-    try:
-        if doesDirectoryFileExist(source_path):
-            create_missing_directory(destination_path)
-            shutil.copy(source_path, destination_path)
-            return True
-        else:
-            return False
-    except:
-        return False
+    shutil.copy(source_path, destination_path)
 
 
 def rename_file(source_path: str, name: str) -> bool:
@@ -170,16 +155,9 @@ def rename_file(source_path: str, name: str) -> bool:
     Returns:
         bool: True if the file is successfully renamed, False otherwise.
     """
-    try:
-        if doesDirectoryFileExist(source_path):
-            file_path = os.path.dirname(source_path)
-            new_path = os.path.join(file_path, name)
-            os.rename(source_path, new_path)
-            return True
-        else:
-            return False
-    except:
-        return False
+    file_path = os.path.dirname(source_path)
+    new_path = os.path.join(file_path, name)
+    os.rename(source_path, new_path)
 
 
 def copy_directory(source_path: str, destination_path: str) -> bool:
@@ -198,15 +176,9 @@ def copy_directory(source_path: str, destination_path: str) -> bool:
     Returns:
         bool: True if the copy operation is successful, False otherwise.
     """
-    try:
-        if doesDirectoryFileExist(source_path):
-            create_missing_directory(destination_path)
-            shutil.copytree(source_path, destination_path)
-            return True
-        else:
-            return False
-    except:
-        return False
+
+    create_missing_directory(destination_path)
+    shutil.copytree(source_path, destination_path)
 
 
 def move_directory(source_path: str, destination_path: str) -> bool:
@@ -224,24 +196,10 @@ def move_directory(source_path: str, destination_path: str) -> bool:
 
     Returns:
         bool: True if the move operation is successful, False otherwise.
-
-    Example:
-        source_path = '/path/to/source_directory'
-        destination_path = '/path/to/destination_directory'
-        if move_directory(source_path, destination_path):
-            print("Move successful!")
-        else:
-            print("Move failed or encountered an error.")
     """
-    try:
-        if doesDirectoryFileExist(source_path):
-            create_missing_directory(destination_path)
-            shutil.move(source_path, destination_path)
-            return True
-        else:
-            return False
-    except:
-        return False
+
+    create_missing_directory(destination_path)
+    shutil.move(source_path, destination_path)
 
 
 def rename_directory(source_path: str, name: str) -> bool:
@@ -260,30 +218,12 @@ def rename_directory(source_path: str, name: str) -> bool:
     Returns:
         bool: True if the directory was successfully renamed, False otherwise.
     """
-    try:
-        if doesDirectoryFileExist(source_path):
-            file_path = os.path.dirname(source_path)
-            new_path = os.path.join(file_path, name)
-            os.rename(source_path, new_path)
-            return True
-        else:
-            return False
-    except:
-        return False
+    file_path = os.path.dirname(source_path)
+    new_path = os.path.join(file_path, name)
+    os.rename(source_path, new_path)
 
 
-def get_parent_path(path: str) -> str:
-    """
-    Returns the parent directory of a given path.
-    param path: A string representing a path.
-    type path: str
-    return: A string representing the parent directory of the given path.
-    rtype: str
-    """
-    return os.path.dirname(path)
-
-
-def get_parent_folder(path: str) -> str:
+def get_folder_name(path: str) -> str:
     """
     Get the parent folder name from the given path.
 
@@ -312,11 +252,6 @@ def get_parent_folder(path: str) -> str:
         return file_path.split("/")[-1]
     else:
         final_file_path = file_path.split("/")[-2]
-        # file_path = file_path.split("\\")[-1]
-        # print(final_file_path)
-        # print(file_path)
-        # if os.path.isfile(file_path):
-        #     return os.path.dirname(path)
         return final_file_path
 
 
@@ -350,7 +285,7 @@ def combine_files(directory: str, output_directory: str, name: str) -> bool:
         for file_name, file_bytes in file_data:
             combined_data += file_name.encode() + b":" + file_bytes + b"|"
 
-        encoded_data = base.encode_base64(combined_data)
+        encoded_data = base_x_encode_binary(combined_data)
 
         output_file = os.path.join(output_directory, name + ".encrypted")
         with open(output_file, "wb") as file:
@@ -380,9 +315,9 @@ def split_file(directory: str, output_directory: str) -> bool:
         with open(directory, "rb") as file:
             encoded_data = file.read()
 
-        combined_data = base.decode_base64(encoded_data)
+        combined_data = base_x_decode_to_binary(encoded_data).decode("utf-8")
 
-        file_data = combined_data.split(b"|")[:-1]  # Remove the last empty element
+        file_data = combined_data.split(b"|")[:-1] 
 
         for data in file_data:
             file_name, file_bytes = data.split(b":", 1)
@@ -394,34 +329,9 @@ def split_file(directory: str, output_directory: str) -> bool:
         return False
 
 
-def doesDirectoryFileExist(is_file: bool, directory: str) -> bool:
-    """
-    Check if a file or directory exists in the given path.
-
-    Args:
-        is_file (bool): True if checking for a file, False if checking for a directory.
-        directory (str): The path to the file or directory.
-
-    Returns:
-        bool: True if the file or directory exists, False otherwise.
-    """
-    if is_file:
-        if os.path.isfile(
-            rf"{os.path.dirname(__file__)}/{directory}"
-        ) or os.path.isfile(directory):
-            return True
-        else:
-            return False
-    else:
-        if os.path.exists(
-            rf"{os.path.dirname(__file__)}/{directory}"
-        ) or os.path.exists(directory):
-            return True
-        else:
-            return False
 
 
-def doesFileExist(directory: str) -> bool:
+def does_file_exist(directory: str) -> bool:
     """
     Check if a file exists at the specified directory.
 
@@ -434,7 +344,7 @@ def doesFileExist(directory: str) -> bool:
     return os.path.exists(directory) and os.path.isfile(directory)
 
 
-def doesDirectoryExist(directory: str) -> bool:
+def does_directory_exist(directory: str) -> bool:
     """
     Check if the specified directory exists and is a valid directory.
 
@@ -447,7 +357,7 @@ def doesDirectoryExist(directory: str) -> bool:
     return os.path.exists(directory) and os.path.isdir(directory)
 
 
-def delete_file(name: str, dir: str) -> bool:
+def delete_file(directory: str) -> bool:
     """
     Deletes a file from a directory.
 
@@ -455,17 +365,11 @@ def delete_file(name: str, dir: str) -> bool:
         name (str): The name of the file to delete.
         dir (str): The name of the directory where the file is located.
 
-    Returns:
-        bool: True if the file was deleted, False otherwise.
     """
-    if os.path.isfile(rf"{os.path.dirname(__file__)}/{dir}/{name}"):
-        os.system(f"rm {fr'{os.path.dirname(__file__)}/{dir}/{name}'}")
-        return True
-    else:
-        return False
+    os.remove(directory)
 
 
-def compare_file(directory1, directory2) -> Union[bool, str]:
+def compare_file(directory1: str, directory2: str) -> bool:
     """
     Compares the contents of two files and returns True if they are identical, False otherwise.
 
@@ -476,20 +380,19 @@ def compare_file(directory1, directory2) -> Union[bool, str]:
     Returns:
         bool: True if the contents of the files are identical, False otherwise.
 
-    Raises:
-        Any exception raised while opening or reading the files will be caught and the function will return False.
 
     """
-    try:
-        with open(directory1, "r") as f1, open(directory2, "r") as f2:
-            return f1.read() == f2.read(), True
-    except:
-        return False, False
+    with open(directory1, "rb") as f1, open(directory2, "rb") as f2:
+        return f1.read() == f2.read()
 
 
-def compare_directory(directory1: str, directory2: str) -> Union[bool, str]:
+def are_directories_the_same(
+    directory1: str,
+    directory2: str,
+    dir1_blacklist: list = [],
+    dir2_blacklist: list = [],
+) -> bool:
     """
-    Recursively compares the files in two directories and their subdirectories.
 
     Args:
         directory1 (str): The path to the first directory.
@@ -497,31 +400,13 @@ def compare_directory(directory1: str, directory2: str) -> Union[bool, str]:
 
     Returns:
         Union[bool, str]:
-        - If the directories are the same, returns True and a success message.
-        - If the directories are different, returns False and an error message.
+        - If the directories are the same, returns True
+        - If the directories are different, returns False
     """
 
-    try:
-        cmp = file_dircmp(directory1, directory2)
-
-        for file in cmp.common_files:  # Compare the files in the current directory
-            file1 = os.path.join(directory1, file)
-            file2 = os.path.join(directory2, file)
-            if not file_cmp(file1, file2):
-                return False
-
-        for (
-            sub_cmp
-        ) in cmp.subdirs.values():  # Recursively compare the files in subdirectories
-            if not compare_directory(
-                os.path.join(directory1, sub_cmp.left),
-                os.path.join(directory2, sub_cmp.right),
-            ):
-                return False
-
-        return True, "Files are compared successfully"
-    except OSError as e:
-        return False, "Error: " + str(e)
+    return generate_uuid_from_directory(
+        directory1, dir1_blacklist
+    ) == generate_uuid_from_directory(directory2, dir2_blacklist)
 
 
 def count_items_in_directory(directory_path) -> int:
@@ -699,7 +584,6 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
                         function_counts[file_path] = (len(functions), functions)
                         total_function_count += len(functions)
                 except IOError:
-                    # Handle file read error
                     error_files.append(file_path)
 
     return total_function_count, function_counts, error_files
@@ -1012,9 +896,37 @@ def get_file_size_of_directory(
     return total_size
 
 
+def generate_uuid_from_directory(directory, blacklisted_extensions: list = []):
+    """Generate a UUID based on the content of all files in a directory, excluding files with specified extensions.
 
+    Args:
+        directory (str): Path to the directory to scan.
+        blacklisted_extensions (list, optional): List of file extensions to exclude from hashing. Defaults to an empty list.
 
+    Returns:
+        UUID: A UUID generated from the MD5 hash of the file contents."""
+    hash_md5 = hashlib.md5()
 
+    for root, _, files in os.walk(directory):
+        for file in sorted(files):  
+            blacklisted = True
+            for ext in blacklisted_extensions:
+                if file.endswith(ext):
+                    break
+            else:
+                blacklisted = False
+            if blacklisted:
+                continue
+            file_path = os.path.join(root, file)
+            if os.path.isfile(file_path): 
+                with open(file_path, "rb") as f:
+                    for chunk in iter(lambda: f.read(4096), b""):
+                        hash_md5.update(chunk)
+
+    unique_hash = hash_md5.hexdigest()
+    unique_uuid = uuid.UUID(unique_hash[:32])
+
+    return unique_uuid
 
 
 if SYSTEM_NAME == "windows":
@@ -1068,6 +980,7 @@ elif SYSTEM_NAME == "linux":
         subprocess.run(["source", "~/.bashrc"], shell=True, check=True)
 
 else:
+
     def add_to_path_to_system_path_variables(path):
         """
         Raises an exception for unknown system types.
@@ -1079,3 +992,94 @@ else:
             BaseException: If the system type is unknown.
         """
         raise BaseException("Unknown System")
+
+
+class _compress_directory_list_trie_node:
+    def __init__(self):
+        "Node in a Trie data structure with a dictionary of child nodes and a boolean flag to mark the end of a path."
+        self.children = defaultdict(_compress_directory_list_trie_node)
+        self.is_end_of_path = False
+
+
+def _compress_directory_list_insert_path(
+    root: _compress_directory_list_trie_node, path: Iterable
+) -> None:
+    "Insert a path into a Trie data structure."
+    node = root
+    for part in path:
+        node = node.children[part]
+    node.is_end_of_path = True
+
+
+def _compress_directory_list_build_trie(
+    paths: Iterable,
+) -> _compress_directory_list_trie_node:
+    "Build a Trie from a list of file paths."
+    root = _compress_directory_list_trie_node()
+    for path in paths:
+        _compress_directory_list_insert_path(root, path.split("/"))
+    return root
+
+
+def _compress_directory_list_serialize_trie(
+    node: _compress_directory_list_trie_node,
+) -> dict:
+    "Serialize a Trie into a compressed dictionary format representing a directory structure."
+    if not node.children:
+        return []
+
+    if len(node.children) == 1 and node.is_end_of_path == False:
+        key, child = next(iter(node.children.items()))
+        serialized_child = _compress_directory_list_serialize_trie(child)
+        if isinstance(serialized_child, list) and not serialized_child:
+            return key
+        if isinstance(serialized_child, str):
+            return f"{key}/{serialized_child}"
+        return {key: serialized_child}
+
+    result = {}
+    for key, child in node.children.items():
+        serialized_child = _compress_directory_list_serialize_trie(child)
+        if isinstance(serialized_child, list) and not serialized_child:
+            result.setdefault("files", []).append(key)
+        else:
+            result[key] = serialized_child
+
+    return result
+
+
+def compress_directory_list(paths: Iterable) -> "dict[Union[list,str]]":
+    "Compress a list of file paths into a dictionary format representing the directory structure."
+    trie = _compress_directory_list_build_trie(paths)
+    compressed = _compress_directory_list_serialize_trie(trie)
+    return compressed
+
+
+def find_files_with_extension(root_dir: str, file_extension: str) -> List[str]:
+    """
+    Returns a list of all file directories with the specified extension.
+
+    :param root_dir: The root directory to start searching from.
+    :param file_extension: The file extension to search for (e.g., '.txt').
+    :return: A list of file paths with the specified extension.
+    """
+    file_paths = []
+    for root, dirs, files in os.walk(root_dir):
+        for file in files:
+            if file.endswith(file_extension):
+                file_paths.append(os.path.join(root, file))
+    return file_paths
+
+
+def find_files_with_extensions(root_dir: str, file_extensions: List[str]) -> List[str]:
+    """
+    Returns a list of all file directories with the specified extensions.
+
+    :param root_dir: The root directory to start searching from.
+    :param file_extensions: The file extensions to search.
+    :return: A list of file paths with the specified extension.
+    """
+    files = []
+    for file_extension in file_extensions:
+        files.extend(find_files_with_extension(root_dir, file_extension))
+    return files

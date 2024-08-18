@@ -3,100 +3,8 @@
 from typing import List, Tuple
 from collections.abc import Iterable
 
-# and
-def and_three(a: bool, b: bool, c: bool) -> bool:
-    return a and b and c
 
 
-def and_four(a: bool, b: bool, c: bool, d: bool) -> bool:
-    return a and b and c and d
-
-
-def and_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    return a and b and c and d and e
-
-
-def and_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    return a and b and c and d and e and f
-
-
-def and_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    return a and b and c and d and e and f and g
-
-
-def and_eight(
-    a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool
-) -> bool:
-    return a and b and c and d and e and f and g and h
-
-
-def and_nine(
-    a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool
-) -> bool:
-    return a and b and c and d and e and f and g and h and i
-
-
-def and_ten(
-    a: bool,
-    b: bool,
-    c: bool,
-    d: bool,
-    e: bool,
-    f: bool,
-    g: bool,
-    h: bool,
-    i: bool,
-    j: bool,
-) -> bool:
-    return a and b and c and d and e and f and g and h and i and j
-
-
-# or
-def or_three(a: bool, b: bool, c: bool) -> bool:
-    return a or b or c
-
-
-def or_four(a: bool, b: bool, c: bool, d: bool) -> bool:
-    return a or b or c or d
-
-
-def or_five(a: bool, b: bool, c: bool, d: bool, e: bool) -> bool:
-    return a or b or c or d or e
-
-
-def or_six(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool) -> bool:
-    return a or b or c or d or e or f
-
-
-def or_seven(a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool) -> bool:
-    return a or b or c or d or e or f or g
-
-
-def or_eight(
-    a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool
-) -> bool:
-    return a or b or c or d or e or f or g or h
-
-
-def or_nine(
-    a: bool, b: bool, c: bool, d: bool, e: bool, f: bool, g: bool, h: bool, i: bool
-) -> bool:
-    return a or b or c or d or e or f or g or h or i
-
-
-def or_ten(
-    a: bool,
-    b: bool,
-    c: bool,
-    d: bool,
-    e: bool,
-    f: bool,
-    g: bool,
-    h: bool,
-    i: bool,
-    j: bool,
-) -> bool:
-    return a or b or c or d or e or f or g or h or i or j
 
 
 # nand
@@ -193,6 +101,7 @@ def nor_any(*args: bool) -> bool:
     return not any(args)
 
 
+# 
 def binary_to_gray(
     b3: bool, b2: bool, b1: bool, b0: bool
 ) -> Tuple[bool, bool, bool, bool]:
@@ -238,9 +147,7 @@ def four_bit_adder(
 
 
 def two_complement(b: Tuple[bool, bool, bool, bool]) -> Tuple[bool, bool, bool, bool]:
-    # Invert the bits
     inverted_b = tuple((not (bit)) for bit in b)
-    # Add 1 to the inverted bits
     one = (False, False, False, True)
     return four_bit_adder(inverted_b, one)[0:4]
 

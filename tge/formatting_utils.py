@@ -2,17 +2,6 @@
 
 
 
-def format_number(number: int) -> str:
-    """
-    Formats an integer number with commas as thousands separators.
-
-    Args:
-        number (int): An integer that needs to be formatted.
-
-    Returns:
-        str: A string representation of the formatted number with commas as thousands separators.
-    """
-    return "{:,}".format(number)
 
 def format_seconds(duration: int) -> str:
     """

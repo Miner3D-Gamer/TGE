@@ -31,7 +31,7 @@ else:
         os.system("clear")
 
 
-def typingPrint(text: str, delay: Number) -> None:
+def typing_print(text: str, delay: Number) -> None:
     """
     Prints the given text with a typing effect.
 
@@ -71,56 +71,26 @@ def typingInput(text: str, delay: Number = 0) -> str:
     return value
 
 
-def writeSentencesToConsole(
-    punctuations: List[str], o_text: str, type_delay: Number, line_delay: Number
-) -> Tuple[bool, str]:
+def write_sentences_to_console(
+    text: List[str], type_delay: Number, line_delay: Number = 0.7
+) -> None:
     """
-    Writes text and splits it into sentences with punctuations and prints them
+    Writes a list of sentences
 
     Args:
     - punctuations: a list of valid sentence-ending punctuations
     - o_text: the input text to split into sentences and print
 
-    Returns:
-    - A tuple containing a boolean indicating if the function succeeded and a message string
     """
 
-    try:
-        o_text = str(o_text)
-        if type(punctuations) != list:
-            punctuations[punctuations]
-    except:
-        return False
-
-    punctuations = [".", "!", "?", ":", ";"]
-    for punctuation in punctuations:
-        o_text = o_text.replace(punctuation, punctuation + "Þ")
-    text = o_text.split("Þ")
-    idx = 0
-    t_idx = 0
-
-    if not line_delay >= 0:
-        line_delay = 0.7
-
-    # print(" ")
-    # time.sleep(0.05)
-    typingPrint(o_text[t_idx : len(text[idx]) + t_idx], type_delay)
-    time.sleep(line_delay)
-    t_idx += len(text[idx]) + 1
-    idx += 1
-
-    for i in range(o_text.count("Þ") - 1):
-        print(" ")
+    for line in text:
+        typing_print(line, type_delay)
         time.sleep(line_delay)
-        write = (o_text[t_idx : len(text[idx]) + t_idx])[1:]
-        if not write == "":
-            typingPrint(write, type_delay)
-        t_idx += len(text[idx]) + 1
-        idx += 1
-    return True
 
 
-def chooseFromTextMenu(text: Iterable, prompt: str, ans_prompt: str) -> int:
+def choose_from_text_menu(
+    menu_list: "Iterable[str]", prompt: str = "", destroy: bool = False
+) -> int:
     """
     Displays a text menu and prompts the user to choose an option.
 
@@ -135,36 +105,29 @@ def chooseFromTextMenu(text: Iterable, prompt: str, ans_prompt: str) -> int:
     Raises:
         None.
 
-    Example:
-        text = ['Option 1', 'Option 2', 'Option 3']
-        prompt = "Please select an option:"
-        ans_prompt = "Enter the option number:"
-
-        index = chooseFromTextMenu(text, prompt, ans_prompt)
-        # User is prompted with the menu and enters an option number
-        # Returns the index of the chosen option
     """
-    chooseMenu = True
-    print(prompt)
-    while chooseMenu:
-        for i in range(len(text)):
-            typingPrint(f"{i}: {text[i]}")
-            print(" ")
-            time.sleep(0.05)
-        time.sleep(0.25)
-        answer = typingInput(ans_prompt)
+    print_string = ""
+    line_count = print_string.count("\n") + prompt.count("\n") + 2
+    for idx, item in enumerate(menu_list):
+        print_string += f"{idx+1}: {item}\n"
+    while True:
 
-        try:
-            if answer in text:
-                return text.index(answer)
-            answer = int(answer)
-            print("")
-        except:
-            print("")
-        if type(answer) == int:
-            if answer <= len(text) and answer >= 0:
-                chooseMenu = False
-                return int(answer)
+        print(print_string)
+
+        user_input = input(prompt)
+        if user_input.isdigit():
+            user_input = int(user_input)
+            if user_input > 0 and user_input < (len(menu_list) + 1):
+                if destroy:
+                    clear_lines(line_count)
+                return user_input - 1
+        else:
+            for idx, item in enumerate(menu_list):
+                if user_input == item:
+                    if destroy:
+                        clear_lines(line_count)
+                    return idx
+        clear_lines(line_count)
 
 
 def skip_line() -> None:
@@ -197,39 +160,32 @@ def print_table(data: "Iterable[list[str]]") -> Tuple[bool, str]:
         else:
             print("Error:", message)
     """
-    try:
-        # Determine the maximum length of each column
-        column_widths = [
-            max(len(str(item)) for item in column) for column in zip(*data)
-        ]
 
-        # Print the table header
-        header = "+" + "+".join("-" * (width + 2) for width in column_widths) + "+"
-        print(header)
+    column_widths = [max(len(str(item)) for item in column) for column in zip(*data)]
 
-        # Print the table rows
-        for row in data:
-            formatted_row = (
-                "| "
-                + " | ".join(
+    header = "+" + "+".join("-" * (width + 2) for width in column_widths) + "+"
+    print(header)
+
+    for row in data:
+        formatted_row = (
+            "| "
+            + (
+                " | ".join(
                     str(item).ljust(width) for item, width in zip(row, column_widths)
                 )
-                + " |"
             )
-            print(formatted_row)
+            + " |"
+        )
+        print(formatted_row)
 
-        # Print the table footer
-        print(header)
-        return True, ""
-    except:
-        return False, "Unable to print table, make sure the data is a list of lists"
+    print(header)
 
 
 def progress_bar(
     progress_name: str,
     current: int,
     total: int,
-    length,
+    length:int,
     show_float: bool = True,
     empty_tile: str = "-",
     full_tile: str = "#",
@@ -253,6 +209,7 @@ def progress_bar(
     >>> progress_bar("Loading", 50, 100, 20, False,'-', '#')
     Loading: [##########----------] 50%
     """
+    current+=1
     if show_float:
         percent = float(int(float(current / total * 100) * 10) / 10)
 
@@ -370,7 +327,7 @@ def visualize_directory(path, prefix="", lines=None) -> None:
         base_name = os.path.basename(path)
         lines.append(f"[{base_name}]")
 
-    is_last = False  # Define a default value for is_last
+    is_last = False
 
     try:
         with os.scandir(path) as entries:
@@ -458,7 +415,6 @@ def prompt_bool(
 
         if delete_lines:
             clear_lines(1)
-
 
 
 def prompt_number(
@@ -556,23 +512,18 @@ def matrix_rain(
     tge_matrix_console_stop = False
     mat_time = time.time()
 
-    # Create an empty matrix
     matrix = [[" " for _ in range(columns)] for _ in range(rows)]
 
     while True:
-        # Generate a new row of raindrops
         for i in range(columns):
             if random() < density:
                 matrix[0][i] = choice(symbols)
             else:
                 matrix[0][i] = " "
 
-        # Move the raindrops down the matrix
         for i in range(rows - 1, 0, -1):
             for j in range(columns):
                 matrix[i][j] = matrix[i - 1][j]
-
-        # Print the matrix
 
         matrix_str = ""
         idx = 0
@@ -582,8 +533,6 @@ def matrix_rain(
 
         clear_lines(rows + 1)
         print(matrix_str)
-        # print(rows, idx)
-        # quit()
 
         if duration is not None:
             if time.time() - mat_time > duration:
@@ -663,17 +612,13 @@ def suppress_print() -> None:
     and redirecting them. This function initializes a global 'console_capture'
     object of type 'ConsoleCapture' and starts capturing the console output.
 
-    Usage:
-    suppress_print()
-    # ... code block where print statements should be suppressed ...
-    release_print()  # To release the suppressed print statements
     """
     global console_capture
     console_capture = ConsoleCapture()
     console_capture.start_capture()
 
 
-def enable_print() -> StringIO:
+def restore_print() -> StringIO:
     """
     Reverses the effect of a previously enabled console output capture,
     allowing the standard output to be displayed in the console again.

@@ -36,12 +36,12 @@ def get_window_by_title(title):
  except subprocess.CalledProcessError:return
 def is_xdotool_installed():
  try:subprocess.run([_F,'version'],capture_output=_A,text=_A,check=_A)
- except subprocess.CalledProcessError:return _E
+ except(subprocess.CalledProcessError,FileNotFoundError):return _E
  else:return _A
 def install_xdotool():
  B='apt-get';A='sudo'
  try:
   if sys.platform.startswith('linux'):subprocess.run([A,B,'update'],check=_A);subprocess.run([A,B,'install','-y',_F],check=_A);return''
   else:return'Unsupported platform for automatic installation of xdotool.'
- except subprocess.CalledProcessError as C:return f"An error occurred while installing xdotool: {C}"
+ except(subprocess.CalledProcessError,FileNotFoundError)as C:return f"An error occurred while installing xdotool: {C}"
 if not is_xdotool_installed()and(error:=install_xdotool()):print(error)

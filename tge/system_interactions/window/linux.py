@@ -80,7 +80,7 @@ def is_xdotool_installed():
         subprocess.run(
             ["xdotool", "version"], capture_output=True, text=True, check=True
         )
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         return False
     else:
         return True
@@ -95,7 +95,7 @@ def install_xdotool():
             return ""
         else:
             return "Unsupported platform for automatic installation of xdotool."
-    except subprocess.CalledProcessError as e:
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
         return f"An error occurred while installing xdotool: {e}"
 
 

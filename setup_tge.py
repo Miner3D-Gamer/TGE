@@ -2,7 +2,7 @@ import os, json
 
 import tge
 import tge.function_utils
-import tge.library
+import tge.library_utils
 import base64
 
 tge.console.clear()
@@ -103,14 +103,8 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
     tge.file_operations.get_file_size_of_directory("./minified_tge", [".pyc"])
 )
 
-# with open("download_tge.py", "r") as f:
-#     data = tge.tbe.minify(
-#         f.read(),
-#         rename_important_names=False,
-#         remove_docstrings=True,
-#     )
-#     with open("minified_downloader.py", "w") as w:
-#         w.write(data)
+
+
 import minified_tge # type: ignore
 
 with open(".gitignore", "w") as f:

@@ -242,7 +242,8 @@ if give_feedback < 1:
 
 requirements = []
 start = time.time()
-for file_id in range(len(urls)):
+total_urls = len(urls)
+for file_id in range(total_urls):
     url = urls[file_id]
     file_name = files[file_id]
     if give_feedback < 1:
@@ -260,7 +261,8 @@ for file_id in range(len(urls)):
         requirements = file.text.split("\n")
 
     dir_offset = 0
-    for idx in range(len(dirs)):
+    total_dirs = len(dirs)
+    for idx in range(total_dirs):
         try:  # TODO: THIS IS BOUND TO GO WRONG CHANGE THIS TO BE BETTER
             installation_directory = dirs[idx - dir_offset]
         except ValueError:
@@ -281,7 +283,8 @@ for file_id in range(len(urls)):
             dir_offset += 1
             continue
         os.makedirs(parent_dir, exist_ok=True)
-        print(f"Writing to {path}")
+        if give_feedback < 1:
+            print(f"Writing to {path} ({file_id+1}/{total_urls})")
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
     if give_feedback < 1:
@@ -297,13 +300,28 @@ if not dont_download_dependencies:
         print("Checking and downloading dependencies")
 
     def download_library(library_name):
-        G=False;E='pip';D=True;C='install';A=library_name;H=[['python','-m',E,C,A],['python3','-m',E,C,A],[E,C,A],['pip3',C,A]]
+        G = False
+        E = "pip"
+        D = True
+        C = "install"
+        A = library_name
+        H = [
+            ["python", "-m", E, C, A],
+            ["python3", "-m", E, C, A],
+            [E, C, A],
+            ["pip3", C, A],
+        ]
         for F in H:
-            try:I=subprocess.run(F,check=D,capture_output=D,text=D);return D,I.stdout
-            except subprocess.CalledProcessError as B:J=f"Failed to install {A} using command: {' '.join(F)}. Return code: {B.returncode}. Output: {B.output}. Error: {B.stderr}."
-            except FileNotFoundError:continue
-            except Exception as B:return G,f"An unexpected error occurred: {str(B)}"
-        return G,f"All installation attempts failed. Last error: {J}"
+            try:
+                I = subprocess.run(F, check=D, capture_output=D, text=D)
+                return D, I.stdout
+            except subprocess.CalledProcessError as B:
+                J = f"Failed to install {A} using command: {' '.join(F)}. Return code: {B.returncode}. Output: {B.output}. Error: {B.stderr}."
+            except FileNotFoundError:
+                continue
+            except Exception as B:
+                return G, f"An unexpected error occurred: {str(B)}"
+        return G, f"All installation attempts failed. Last error: {J}"
 
     def install_all_libraries(libs):
         A = []

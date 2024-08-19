@@ -21,7 +21,7 @@ dir = f"{os.getcwd()}/tge/"
 for i in range(2):
 
     with open("tge/update.hashed", "w") as f:
-        f.write(base64.b64encode((tge.file_operations.generate_uuid_from_directory(dir, ["hashed"]).bytes)).decode())
+        f.write(base64.b64encode((tge.file_operations.generate_uuid_from_directory(dir, ["hashed", "pyc"]).bytes)).decode())
 
 
 print()

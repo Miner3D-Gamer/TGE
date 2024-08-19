@@ -297,18 +297,13 @@ if not dont_download_dependencies:
         print("Checking and downloading dependencies")
 
     def download_library(library_name):
-        D = False
-        C = library_name
-        B = True
-        E = ["python", "-m", "pip", "install", C]
-        try:
-            F = subprocess.run(E, check=B, capture_output=B, text=B)
-            return B, F.stdout
-        except subprocess.CalledProcessError as A:
-            G = f"Failed to install {C}. Return code: {A.returncode}. Output: {A.output}. Error: {A.stderr}."
-            return D, G
-        except Exception as A:
-            return D, f"An unexpected error occurred: {str(A)}"
+        G=False;E='pip';D=True;C='install';A=library_name;H=[['python','-m',E,C,A],['python3','-m',E,C,A],[E,C,A],['pip3',C,A]]
+        for F in H:
+            try:I=subprocess.run(F,check=D,capture_output=D,text=D);return D,I.stdout
+            except subprocess.CalledProcessError as B:J=f"Failed to install {A} using command: {' '.join(F)}. Return code: {B.returncode}. Output: {B.output}. Error: {B.stderr}."
+            except FileNotFoundError:continue
+            except Exception as B:return G,f"An unexpected error occurred: {str(B)}"
+        return G,f"All installation attempts failed. Last error: {J}"
 
     def install_all_libraries(libs):
         A = []

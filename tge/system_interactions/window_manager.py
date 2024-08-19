@@ -6,7 +6,7 @@ if SYSTEM_NAME == "windows":
 elif SYSTEM_NAME == "linux":
     from .window.linux import *
 elif SYSTEM_NAME == "darwin":
-    from .window.linux import *
+    from .window.mac import *
 else:
     ...
     # Nope, sorry. No idea what you're running. Can't help you.

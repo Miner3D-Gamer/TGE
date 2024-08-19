@@ -142,7 +142,7 @@ while True:
             if give_feedback < 1:
                 print("Path not found.")
             continue
-        if is_directory_empty(path):
+        if is_directory_empty(path) or path.endswith("\\tge"):
             dirs = [path]
             break
         dirs = [path + "/tge"]
@@ -153,7 +153,7 @@ while True:
             if give_feedback < 1:
                 print("Directory does not exist, canceling.")
             quit()
-        if is_directory_empty(path):
+        if is_directory_empty(path) or path.endswith("\\tge"):
             dirs = [path]
             break
         dirs = [path + "/tge"]

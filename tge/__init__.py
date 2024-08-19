@@ -167,6 +167,11 @@ else:
     pyshortcuts_installed = library_utils.is_library_installed("pyshortcuts")
     pillow_installed = library_utils.is_library_installed("PIL")
     gtts_installed = library_utils.is_library_installed("gtts")
+    pyperclip_installed = library_utils.is_library_installed("pyperclip")
+    pynput_installed = library_utils.is_library_installed("pynput")
+    xlib_installed = library_utils.is_library_installed("Xlib")
+    quartz_installed = library_utils.is_library_installed("Quartz")
+    appKit_installed = library_utils.is_library_installed("AppKit")
 
     from .manipulation import string_utils
     from .manipulation import list_utils
@@ -190,10 +195,14 @@ else:
         from .math_functions import math_functions
         from .math_functions import statistics_calculations
 
-    from .system_interactions import clipboard_operations as clipboard
-    from .system_interactions import cursor_operations as cursor
-    from .system_interactions import keyboard_operations as keyboard
-    from .system_interactions import window_manager
+    if SYSTEM_NAME == "windows" or pyperclip_installed:
+        from .system_interactions import clipboard_operations as clipboard
+    if SYSTEM_NAME == "windows" or pynput_installed:
+        from .system_interactions import cursor_operations as cursor
+    if SYSTEM_NAME == "windows" or xlib_installed:
+        from .system_interactions import keyboard_operations as keyboard
+    if SYSTEM_NAME == "windows" or  SYSTEM_NAME == "linux" or (quartz_installed and appKit_installed):
+        from .system_interactions import window_manager
 
     from .validation import validation
 

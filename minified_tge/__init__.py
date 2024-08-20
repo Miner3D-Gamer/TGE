@@ -60,7 +60,7 @@ else:
  from.import time_utils
  if pyshortcuts_installed:from.import file_operations
  from.import formatting_utils as formatting;from.import bool_operations
- if pillow_installed:from.image_processing import image_operations
+ if pillow_installed and numpy_installed:from.image_processing import image_operations
  from.import function_utils
  if gtts_installed:
   if is_ffmpeg_installed():from.import audio
@@ -71,7 +71,7 @@ else:
   if not python_minifier_installed:print('(tge.tbe) Missing Library: python_minifier')
   if not pytube_installed:print('(tge.internet) Missing Library: pytube')
   if not pyshortcuts_installed:print('(tge.file_operations) Missing Library: pyshortcuts')
-  if not pillow_installed:print('(tge.image_processing.image_operations) Missing Library: PIL')
+  if not pillow_installed:print('(tge.image_processing.image_operations) Missing Library: pillow')
   if not gtts_installed:print('(tge.audio) Missing Library: gtts')
 tim=tm.time()
 IMPORT_TIME=tim-INIT_TIME_BEFORE_IMPORTING

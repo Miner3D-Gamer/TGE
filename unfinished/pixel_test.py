@@ -62,5 +62,3 @@ def get_window_by_id(window_id:int):
     return wanted_window
 
 
-
-screenshot_window("ChatGPT - Brave").save("hi.png")

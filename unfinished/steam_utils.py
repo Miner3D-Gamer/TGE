@@ -1,6 +1,7 @@
-
 if __name__ == "__main__":
-    import time; very_start = time.time()
+    import time
+
+    very_start = time.time()
 import requests
 from bs4 import BeautifulSoup
 import concurrent.futures
@@ -9,7 +10,8 @@ from collections.abc import Iterable
 from typing import Union, Dict
 import vdf
 
-def get_game_name(session:requests.Session, game_id:int)->str:
+
+def get_game_name(session: requests.Session, game_id: int) -> str:
     """
     Fetches the name of a game from Steam's website using its game ID.
 
@@ -44,50 +46,57 @@ def get_game_name(session:requests.Session, game_id:int)->str:
     try:
         response = session.get(url, timeout=20)
         response.raise_for_status()
-        soup = BeautifulSoup(response.content, 'html.parser')
-        title_element = soup.find('title')
+        soup = BeautifulSoup(response.content, "html.parser")
+        title_element = soup.find("title")
         if title_element:
             title_text = title_element.get_text()
             if "Welcome to Steam" not in title_text:
-                game_name = title_text.replace(" on Steam", "").replace("Steam Community :: ", "")
+                game_name = title_text.replace(" on Steam", "").replace(
+                    "Steam Community :: ", ""
+                )
                 return game_name
     except requests.exceptions.RequestException:
         pass
     return None
 
-def check_game_ids_with_names(game_ids:Iterable, results:dict = {})->dict:
+
+def check_game_ids_with_names(game_ids: Iterable, results: dict = {}) -> dict:
     """
     Retrieves game names associated with the provided game IDs using multi-threading.
-    
+
     This function takes a list of game IDs and optionally a dictionary of results. It uses multi-threading
     to concurrently fetch the game names corresponding to the given game IDs by calling the 'get_game_name'
     function. The fetched game names are stored in the 'results' dictionary under the corresponding game ID.
-    
+
     Args:
         game_ids (list): A list of game IDs for which to retrieve game names.
         results (dict, optional): A dictionary to store the results. The keys are game IDs and the values
             are dictionaries containing game information. If not provided, an empty dictionary is used.
-            
+
     Returns:
         dict: A dictionary containing the results of the operation. The keys are game IDs and the values are
             dictionaries containing game information, including the fetched game name if available.
     """
     with requests.Session() as session, concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = {executor.submit(get_game_name, session, game_id): game_id for game_id in game_ids}
+        futures = {
+            executor.submit(get_game_name, session, game_id): game_id
+            for game_id in game_ids
+        }
 
         for future in concurrent.futures.as_completed(futures):
             game_id = futures[future]
             try:
                 game_name = future.result()
                 if game_name:
-                    results[game_id]['name'] = game_name
-                    
+                    results[game_id]["name"] = game_name
+
             except Exception:
                 pass
 
     return results
 
-def get_valid_game_ids_with_names()->list:
+
+def get_valid_game_ids_with_names() -> list:
     """
     Retrieves a list of valid game IDs along with their corresponding names from Steam.
 
@@ -102,7 +111,8 @@ def get_valid_game_ids_with_names()->list:
     valid_game_ids_with_names = check_game_ids_with_names(game_ids, result)
     return valid_game_ids_with_names
 
-def get_response(session:requests.Session, game_id:int)->Union[bytes,None]:
+
+def get_response(session: requests.Session, game_id: int) -> Union[bytes, None]:
     """
     Retrieve the HTTP response content for a specific game on Steam Community.
 
@@ -136,7 +146,8 @@ def get_response(session:requests.Session, game_id:int)->Union[bytes,None]:
     except requests.exceptions.RequestException:
         return None
 
-def is_valid_game_id(session:requests.Session, game_id:int)->bool:
+
+def is_valid_game_id(session: requests.Session, game_id: int) -> bool:
     """
     Check the validity of a game ID by retrieving the response content
     for the provided game ID using the given session object.
@@ -152,21 +163,22 @@ def is_valid_game_id(session:requests.Session, game_id:int)->bool:
         the phrase "Welcome to Steam".
     """
     response_content = get_response(session, game_id)
-    
+
     if response_content:
-        soup = BeautifulSoup(response_content, 'html.parser')
-        title_element = soup.find('title')
-        
+        soup = BeautifulSoup(response_content, "html.parser")
+        title_element = soup.find("title")
+
         if title_element:
             title_text = title_element.get_text()
             return "Welcome to Steam" not in title_text
-    
+
     return False
 
-def check_game_ids(game_ids:Iterable)->Dict[Union[bool,None]]:
+
+def check_game_ids(game_ids: Iterable) -> Dict[Union[bool, None]]:
     """
     Check the validity of a list of game IDs using multi-threading.
-    
+
     This function takes a list of game IDs and utilizes a ThreadPoolExecutor to concurrently check the validity of each
     game ID using the 'is_valid_game_id' function. The results are stored in a dictionary where keys are game IDs and
     values indicate whether each game ID is valid or not.
@@ -181,10 +193,13 @@ def check_game_ids(game_ids:Iterable)->Dict[Union[bool,None]]:
             - None: An exception occurred while processing the game ID.
     """
     results = {}
-    
+
     with requests.Session() as session, concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = {executor.submit(is_valid_game_id, session, game_id): game_id for game_id in game_ids}
-        
+        futures = {
+            executor.submit(is_valid_game_id, session, game_id): game_id
+            for game_id in game_ids
+        }
+
         for future in concurrent.futures.as_completed(futures):
             game_id = futures[future]
             try:
@@ -192,13 +207,11 @@ def check_game_ids(game_ids:Iterable)->Dict[Union[bool,None]]:
                 results[game_id] = valid
             except Exception:
                 results[game_id] = None
-    
+
     return results
 
 
-
-
-def get_steam_folders()->list:
+def get_steam_folders() -> list:
     """
     Retrieves a list of Steam library folders from the configuration file.
 
@@ -218,18 +231,19 @@ def get_steam_folders()->list:
     except:
         return steam_folders
 
-    lines = data.split('\n')
+    lines = data.split("\n")
     for line in lines:
         line = line.strip()
 
         if line.startswith('"path"'):
             path = line.split('"')[3]
-            path = path.replace('\\\\', '/')
+            path = path.replace("\\\\", "/")
             steam_folders.append(path)
 
     return steam_folders
 
-def get_steam_accounts()->dict:
+
+def get_steam_accounts() -> dict:
     """
     Retrieves Steam account information from the 'loginusers.vdf' file located in the Steam configuration directory.
 
@@ -251,10 +265,10 @@ def get_steam_accounts()->dict:
 
     brackets = 0
     account = {}
-    
+
     for line in lines:
         line = line.lstrip("\t")
-        
+
         if line == "{":
             brackets += 1
         elif line == "}":
@@ -276,7 +290,8 @@ def get_steam_accounts()->dict:
                 account[elements[1]] = boolean
     return account
 
-def get_steam_games(result:dict={})->tuple:
+
+def get_steam_games(result: dict = {}) -> tuple:
     """
     Retrieves Steam game information from the localconfig.vdf file.
 
@@ -310,14 +325,16 @@ def get_steam_games(result:dict={})->tuple:
             ...
         }
     """
-    steam_config_path = r"C:\Program Files (x86)\Steam\userdata\1093663613\config\localconfig.vdf"
-    
+    steam_config_path = (
+        r"C:\Program Files (x86)\Steam\userdata\1093663613\config\localconfig.vdf"
+    )
+
     try:
         with open(steam_config_path, "r", encoding="utf-8") as f:
             data = f.read()
     except:
         return result
-    
+
     lines = data.split("\n")
     brackets = 0
     last_bracket = 0
@@ -340,38 +357,47 @@ def get_steam_games(result:dict={})->tuple:
                     variable, value = line_section[0][1:-1], line_section[-1][1:-1]
                     if last_game not in result:
                         result[last_game] = {}
-                    if 'cloud' not in result[last_game]:
-                        result[last_game]['cloud'] = {}
+                    if "cloud" not in result[last_game]:
+                        result[last_game]["cloud"] = {}
 
                     if variable == "last_sync_state":
-                        result[last_game]['cloud']['state'] = value
+                        result[last_game]["cloud"]["state"] = value
                         cloud = False
                     else:
-                        special = ["quota_bytes", "quota_files", "used_bytes", "used_files"]
+                        special = [
+                            "quota_bytes",
+                            "quota_files",
+                            "used_bytes",
+                            "used_files",
+                        ]
                         if variable in special:
-                            result[last_game]['cloud'][variable] = value
+                            result[last_game]["cloud"][variable] = value
                         else:
                             print(variable, "Cloud")
                             quit()
 
                 elif autocloud:
-                    if 'cloud' not in result[last_game]:
-                        result[last_game]['cloud'] = {}
+                    if "cloud" not in result[last_game]:
+                        result[last_game]["cloud"] = {}
                     line_section = line.split("\t")
                     variable, value = line_section[0][1:-1], line_section[-1][1:-1]
                     if variable == "lastlaunch":
                         date = datetime.datetime.fromtimestamp(value)
-                        date = date.strftime("%Y %m %d %H %M %S")  # YYYY MM DD HH MM SS, Year Month Day Hour Minute Second
+                        date = date.strftime(
+                            "%Y %m %d %H %M %S"
+                        )  # YYYY MM DD HH MM SS, Year Month Day Hour Minute Second
                         date = date.split(" ")
 
-                        result[last_game]['cloud']['lastlaunch'] = date
+                        result[last_game]["cloud"]["lastlaunch"] = date
 
                     elif variable == "lastexit":
                         date = datetime.datetime.fromtimestamp(value)
-                        date = date.strftime("%Y %m %d %H %M %S")  # YYYY MM DD HH MM SS, Year Month Day Hour Minute Second
+                        date = date.strftime(
+                            "%Y %m %d %H %M %S"
+                        )  # YYYY MM DD HH MM SS, Year Month Day Hour Minute Second
                         date = date.split(" ")
 
-                        result[last_game]['cloud']['lastexit'] = date
+                        result[last_game]["cloud"]["lastexit"] = date
                         autocloud = False
                     else:
                         print(variable, "AutoCloud")
@@ -401,19 +427,21 @@ def get_steam_games(result:dict={})->tuple:
                 variable, value = line_section[0][1:-1], int(line_section[-1][1:-1])
                 result[last_game] = {}
 
-                result[last_game]['last_played'] = []
-                result[last_game]['Playtime2wks'] = 0
-                result[last_game]['playtime'] = 0
-                result[last_game]['BadgeData'] = 0
+                result[last_game]["last_played"] = []
+                result[last_game]["Playtime2wks"] = 0
+                result[last_game]["playtime"] = 0
+                result[last_game]["BadgeData"] = 0
 
                 num_val = ["playtime", "Playtime2wks", "BadgeData"]
                 if variable == "LastPlayed":
                     value = datetime.datetime.fromtimestamp(value)
-                    value = value.strftime("%Y %m %d %H %M %S")  # YYYY MM DD HH MM SS, Year Month Day Hour Minute Second
+                    value = value.strftime(
+                        "%Y %m %d %H %M %S"
+                    )  # YYYY MM DD HH MM SS, Year Month Day Hour Minute Second
                     date = value.split(" ")
-                    result[last_game]['last_played'] = date
+                    result[last_game]["last_played"] = date
                 elif variable in num_val:
-                    result[last_game]['playtime'] = value
+                    result[last_game]["playtime"] = value
                 elif "_eula_" in variable:
                     pass
                 else:
@@ -425,13 +453,14 @@ def get_steam_games(result:dict={})->tuple:
     checked_game_ids = check_game_ids(game_ids)
     game_ids = [game_id for game_id in game_ids if checked_game_ids[game_id]]
     try:
-        game_ids.remove('0')
+        game_ids.remove("0")
     except:
         pass
 
     return game_ids, result
 
-def get_steam_friends()->tuple: 
+
+def get_steam_friends() -> tuple:
     """
     Retrieve Steam friends and groups information from the localconfig.vdf file.
 
@@ -452,18 +481,20 @@ def get_steam_friends()->tuple:
         If there is any issue reading the file or parsing the data, two empty
         dictionaries are returned.
     """
-    steam_config_path = r"C:\Program Files (x86)\Steam\userdata\1093663613\config\localconfig.vdf"
+    steam_config_path = (
+        r"C:\Program Files (x86)\Steam\userdata\1093663613\config\localconfig.vdf"
+    )
     try:
         with open(steam_config_path, "r", encoding="utf-8") as f:
             data = f.read()
     except:
         return {}, {}
-    
+
     lines = data.split("\n")
     brackets = 0
     reading_friends = False
     friends = {}
-    
+
     for line in lines:
         line = line.lstrip("\t")
 
@@ -497,23 +528,23 @@ def get_steam_friends()->tuple:
                     line = line.split("\t")
                     variable, value = line[0][1:-1], line[-1][1:-1]
                     friends[user][content][variable] = value
-                        
-    
+
     groups = {}
-    
+
     for i in friends:
         try:
             friends[i]["tag"]
             groups[i] = friends[i]
         except:
             pass
-    
+
     for i in groups:
         del friends[i]
-    
+
     return friends, groups
 
-def get_steam_data()->dict:
+
+def get_steam_data() -> dict:
     """
     Retrieve Steam-related data for folders, accounts, games, and social connections.
 
@@ -534,12 +565,16 @@ def get_steam_data()->dict:
     steam_data["accounts"] = get_steam_accounts()
     steam_data["games"] = get_valid_game_ids_with_names()
     steam_data["social"] = {}
-    steam_data["social"]["friends"], steam_data["social"]["groups"] = get_steam_friends()
+    steam_data["social"]["friends"], steam_data["social"]["groups"] = (
+        get_steam_friends()
+    )
     return steam_data
+
+
 from numbers import Number
 
 
-def convert_to_datetime(timestamp:Number)->datetime.datetime:
+def convert_to_datetime(timestamp: Number) -> datetime.datetime:
     """
     Converts a Unix timestamp to a datetime object.
 
@@ -556,52 +591,13 @@ def convert_to_datetime(timestamp:Number)->datetime.datetime:
     """
     return datetime.datetime.fromtimestamp(timestamp)
 
+
 if __name__ == "__main__":
     print(f"Initialized in {time.time() - very_start}")
     start = time.time()
-
 
     steam_data = get_steam_data()
     for i in steam_data:
         print(steam_data[i])
 
     print(f"Finished in {time.time() - start}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

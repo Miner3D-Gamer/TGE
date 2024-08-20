@@ -222,7 +222,7 @@ else:
     from . import formatting_utils as formatting
     from . import bool_operations
 
-    if pillow_installed:
+    if pillow_installed and numpy_installed:
         from .image_processing import image_operations
     from . import function_utils
 
@@ -248,7 +248,7 @@ else:
         if not pyshortcuts_installed:
             print("(tge.file_operations) Missing Library: pyshortcuts")
         if not pillow_installed:
-            print("(tge.image_processing.image_operations) Missing Library: PIL")
+            print("(tge.image_processing.image_operations) Missing Library: pillow")
         if not gtts_installed:
             print("(tge.audio) Missing Library: gtts")
 

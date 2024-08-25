@@ -1,6 +1,10 @@
 import os
 import win32com.client
 from typing import Any
+import ctypes, sys
+
+
+
 def create_shortcut(source_path: str, shortcut_path: str, shortcut_name: str) -> str:
     shell = win32com.client.Dispatch("WScript.Shell")
 
@@ -20,7 +24,6 @@ def create_symlink(source_path: str, link_path: str, link_name: str) -> str:
         return f"Error: {e}"
 
 
-import ctypes, sys
 
 def is_admin():
     try:

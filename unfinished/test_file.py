@@ -93,8 +93,11 @@ def get_all_files(directory):
 
 
 f = get_all_files('./tge')
-[print(s) for s in f if not s.endswith(".pyc")]
+f = [s for s in f if not s.endswith(".pyc")]
 
+[print(s) for s in f]
+print(len([print(s) for s in f if s.endswith(".py")]))
+print(tge.platform_mini.system())
 # import inspect
 # import pkgutil
 # import importlib

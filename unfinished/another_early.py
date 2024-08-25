@@ -17,7 +17,9 @@ def show_message_box(message, title, style):
     int: The result of the message box.
     """
     selected = user32.MessageBoxW(None, message, title, style)
-    return ["invalid style", "ok", "cancel", "abort", "retry", "ignore", "yes", "no", "unused (8)", "unused (9)", "try again", "continue"][selected]
+    return [selected]
 
+def reaction_to_text(selected:int):
+    return ["invalid style", "ok", "cancel", "abort", "retry", "ignore", "yes", "no", "unused (8)", "unused (9)", "try again", "continue"][selected]
 
 print(show_message_box("hi", "title", 6))

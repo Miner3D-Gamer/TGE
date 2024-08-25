@@ -45,7 +45,7 @@ if assured_libraries:
  from.manipulation import string_utils,list_utils,dictionary_utils as dict_utils,expansions;from.compatibility import tge_pygame;from.compatibility import tge_tkinter;from.conversion import binary as binary_conversion;from.conversion import temperature as temperature_conversion;from.conversion import time as time_conversion;from.conversion import units as units_conversion;from.conversion import data as data_conversion;from.math_functions import financial_calculations;from.math_functions import geometry_calculations;from.math_functions import math_functions;from.math_functions import statistics_calculations;from.system_interactions import clipboard_operations as clipboard;from.system_interactions import cursor_operations as cursor;from.system_interactions import keyboard_operations as keyboard;from.system_interactions import window_manager;from.validation import validation;from.codec import codec;from.import console_utils as console;from.import random_generators as random;from.import internet;from.import tbe;from.import time_utils;from.import file_operations;from.import formatting_utils as formatting;from.import bool_operations;from.image_processing import image_operations;from.import function_utils
  if is_ffmpeg_installed():from.import audio
 else:
- pygame_installed=library_utils.is_library_installed('pygame');numpy_installed=library_utils.is_library_installed('numpy');json5_installed=library_utils.is_library_installed('json5');hjson_installed=library_utils.is_library_installed('hjson');python_minifier_installed=library_utils.is_library_installed('python_minifier');pytube_installed=library_utils.is_library_installed('pytube');pyshortcuts_installed=library_utils.is_library_installed('pyshortcuts');pillow_installed=library_utils.is_library_installed('PIL');gtts_installed=library_utils.is_library_installed('gtts');pyperclip_installed=library_utils.is_library_installed('pyperclip');pynput_installed=library_utils.is_library_installed('pynput');xlib_installed=library_utils.is_library_installed('Xlib');quartz_installed=library_utils.is_library_installed('Quartz');appKit_installed=library_utils.is_library_installed('AppKit');from.manipulation import string_utils,list_utils,dictionary_utils as dict_utils,expansions
+ pygame_installed=library_utils.is_library_installed('pygame');numpy_installed=library_utils.is_library_installed('numpy');json5_installed=library_utils.is_library_installed('json5');hjson_installed=library_utils.is_library_installed('hjson');python_minifier_installed=library_utils.is_library_installed('python_minifier');pytube_installed=library_utils.is_library_installed('pytube');pillow_installed=library_utils.is_library_installed('PIL');gtts_installed=library_utils.is_library_installed('gtts');pyperclip_installed=library_utils.is_library_installed('pyperclip');pynput_installed=library_utils.is_library_installed('pynput');xlib_installed=library_utils.is_library_installed('Xlib');quartz_installed=library_utils.is_library_installed('Quartz');appKit_installed=library_utils.is_library_installed('AppKit');from.manipulation import string_utils,list_utils,dictionary_utils as dict_utils,expansions
  if pygame_installed:from.compatibility import tge_pygame
  from.compatibility import tge_tkinter;from.conversion import binary as binary_conversion;from.conversion import temperature as temperature_conversion;from.conversion import time as time_conversion;from.conversion import units as units_conversion;from.conversion import data as data_conversion;from.math_functions import financial_calculations;from.math_functions import geometry_calculations
  if numpy_installed:from.math_functions import math_functions,statistics_calculations
@@ -57,9 +57,7 @@ else:
  if json5_installed and hjson_installed:from.codec import codec;from.import random_generators as random
  if python_minifier_installed:from.import tbe,console_utils as console
  if pytube_installed:from.import internet
- from.import time_utils
- if pyshortcuts_installed:from.import file_operations
- from.import formatting_utils as formatting;from.import bool_operations
+ from.import time_utils;from.import file_operations;from.import formatting_utils as formatting;from.import bool_operations
  if pillow_installed and numpy_installed:from.image_processing import image_operations
  from.import function_utils
  if gtts_installed:
@@ -70,7 +68,6 @@ else:
   if not(json5_installed and hjson_installed):print('(tge.codec.codec, tge.random_generators) Missing Libraries: hjson, json5')
   if not python_minifier_installed:print('(tge.tbe) Missing Library: python_minifier')
   if not pytube_installed:print('(tge.internet) Missing Library: pytube')
-  if not pyshortcuts_installed:print('(tge.file_operations) Missing Library: pyshortcuts')
   if not pillow_installed:print('(tge.image_processing.image_operations) Missing Library: pillow')
   if not gtts_installed:print('(tge.audio) Missing Library: gtts')
 tim=tm.time()

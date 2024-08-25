@@ -780,40 +780,40 @@ def get_appdata_path() -> str:
     return os.path.expanduser("~\AppData")
 
 
-def create_shortcut(
-    name: str, target_path: str, shortcut_path: str, description: str = ""
-) -> None:
-    """
-    Creates a shortcut to a target file or script.
+# def create_shortcut(
+#     name: str, target_path: str, shortcut_path: str, description: str = ""
+# ) -> None:
+#     """
+#     Creates a shortcut to a target file or script.
 
-    This function generates a shortcut (or symbolic link) to a specified target file or script
-    at the specified shortcut path location. Additional properties like the working directory,
-    description, and execution settings can be customized for the shortcut.
+#     This function generates a shortcut (or symbolic link) to a specified target file or script
+#     at the specified shortcut path location. Additional properties like the working directory,
+#     description, and execution settings can be customized for the shortcut.
 
-    Args:
-        name (str): The name of the shortcut (without the file extension).
-        target_path (str): The path to the target file or script that the shortcut points to.
-        shortcut_path (str): The path where the shortcut should be created.
-        description (str, optional): An optional description for the shortcut (default is "").
+#     Args:
+#         name (str): The name of the shortcut (without the file extension).
+#         target_path (str): The path to the target file or script that the shortcut points to.
+#         shortcut_path (str): The path where the shortcut should be created.
+#         description (str, optional): An optional description for the shortcut (default is "").
 
-    Returns:
-        None
+#     Returns:
+#         None
 
-    Note:
-        - The 'pyshortcuts' library is used to create the shortcut. Make sure it is installed.
-        - The 'executable' parameter is set to 'target_path', indicating the executable to run
-        when the shortcut is activated.
+#     Note:
+#         - The 'pyshortcuts' library is used to create the shortcut. Make sure it is installed.
+#         - The 'executable' parameter is set to 'target_path', indicating the executable to run
+#         when the shortcut is activated.
 
-    """
-    target_parent_folder = os.path.dirname(target_path)
-    pyshortcuts.make_shortcut(
-        name=name,
-        script=target_path,
-        working_dir=target_parent_folder,
-        folder=shortcut_path,
-        description=description,
-        executable=target_path,
-    )
+#     """
+#     target_parent_folder = os.path.dirname(target_path)
+#     pyshortcuts.make_shortcut(
+#         name=name,
+#         script=target_path,
+#         working_dir=target_parent_folder,
+#         folder=shortcut_path,
+#         description=description,
+#         executable=target_path,
+#     )
 
 
 def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(

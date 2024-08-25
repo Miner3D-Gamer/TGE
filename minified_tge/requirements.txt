@@ -6,7 +6,6 @@ Pillow
 bs4
 screeninfo
 pynput
-pyshortcuts
 pytube
 pyperclip
 python-minifier

@@ -69,43 +69,45 @@ except PermissionError:
 except FileNotFoundError:
     ...
 
+if True:
+    for root, dirs, files in os.walk(dir, topdown=False):
+        root = root
+        for file in files:
+            file_path = os.path.join(root[len(dir) :].lstrip("\\"), file)
+            total_file_path = os.path.join(root, file)
+            if file.endswith(".pyc"):
+                continue
+            if file.endswith(".hash"):
+                with open(total_file_path, "rb") as f:
+                    with open(output + file_path, "wb") as o:
+                        data = f.read()
 
-for root, dirs, files in os.walk(dir, topdown=False):
-    root = root
-    for file in files:
-        file_path = os.path.join(root[len(dir) :].lstrip("\\"), file)
-        total_file_path = os.path.join(root, file)
-        if file.endswith(".pyc"):
-            continue
-        if file.endswith(".hash"):
-            with open(total_file_path, "rb") as f:
-                with open(output + file_path, "wb") as o:
-                    data = f.read()
+                        o.write(data)
+                continue
+            with open(total_file_path, "r", encoding="utf8") as f:
 
-                    o.write(data)
-            continue
-        with open(total_file_path, "r", encoding="utf8") as f:
+                os.makedirs(os.path.dirname(output + file_path), exist_ok=True)
 
-            os.makedirs(os.path.dirname(output + file_path), exist_ok=True)
-
-            with open(output + file_path, "w", encoding="utf8") as o:
-                data = (
-                    tge.tbe.remove_unused_libraries(
-                        "".join(
-                            [
-                                tge.string_utils.left_replace(line, "	", " ")
-                                for line in tge.tbe.minify(
-                                    f.read(),
-                                    rename_important_names=False,
-                                    remove_docstrings=True,
-                                )
-                            ]
+                with open(output + file_path, "w", encoding="utf8") as o:
+                    data = (
+                        tge.tbe.remove_unused_libraries(
+                            "".join(
+                                [
+                                    tge.string_utils.left_replace(line, "	", " ")
+                                    for line in tge.tbe.minify(
+                                        f.read(),
+                                        rename_important_names=False,
+                                        remove_docstrings=True,
+                                    )
+                                ]
+                            )
                         )
+                        if file.endswith(".py")
+                        else f.read()
                     )
-                    if file.endswith(".py")
-                    else f.read()
-                )
-                o.write(data)
+                    o.write(data)
+                    
+                    
 tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
     tge.file_operations.get_file_size_of_directory("./tge", [".pyc"])
 )

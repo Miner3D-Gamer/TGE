@@ -165,7 +165,6 @@ else:
     hjson_installed = library_utils.is_library_installed("hjson")
     python_minifier_installed = library_utils.is_library_installed("python_minifier")
     pytube_installed = library_utils.is_library_installed("pytube")
-    pyshortcuts_installed = library_utils.is_library_installed("pyshortcuts")
     pillow_installed = library_utils.is_library_installed("PIL")
     gtts_installed = library_utils.is_library_installed("gtts")
     pyperclip_installed = library_utils.is_library_installed("pyperclip")
@@ -173,6 +172,7 @@ else:
     xlib_installed = library_utils.is_library_installed("Xlib")
     quartz_installed = library_utils.is_library_installed("Quartz")
     appKit_installed = library_utils.is_library_installed("AppKit")
+    
 
     from .manipulation import string_utils
     from .manipulation import list_utils
@@ -218,8 +218,7 @@ else:
         from . import internet
     from . import time_utils
 
-    if pyshortcuts_installed:
-        from . import file_operations
+    from . import file_operations
     from . import formatting_utils as formatting
     from . import bool_operations
 
@@ -246,8 +245,6 @@ else:
             print("(tge.tbe) Missing Library: python_minifier")
         if not pytube_installed:
             print("(tge.internet) Missing Library: pytube")
-        if not pyshortcuts_installed:
-            print("(tge.file_operations) Missing Library: pyshortcuts")
         if not pillow_installed:
             print("(tge.image_processing.image_operations) Missing Library: pillow")
         if not gtts_installed:

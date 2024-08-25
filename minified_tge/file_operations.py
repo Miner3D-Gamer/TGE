@@ -7,7 +7,9 @@ import os,shutil
 from ast import parse as ast_parse,walk as ast_walk,FunctionDef as ast_FunctionDef
 import zipfile,math,hashlib,uuid
 from collections import defaultdict
-import tkinter as tk,pyshortcuts,re
+import tkinter as tk
+import pyshortcuts
+import re
 from.codec.codec import decode,base_x_decode_to_binary,base_x_encode_binary
 from.import SYSTEM_NAME
 def make_legal_filename(filename):B='[\\\\/*?"<>|:]';A=re.sub(B,'_',filename);A=A.strip();return A
@@ -153,7 +155,6 @@ def zip_directory(directory_path,output_path,create_missing_directory_bool=_A):
   return _B,_B
  except:return _A,_B
 def get_appdata_path():return os.path.expanduser('~\\AppData')
-def create_shortcut(name,target_path,shortcut_path,description=''):A=target_path;B=os.path.dirname(A);pyshortcuts.make_shortcut(name=name,script=A,working_dir=B,folder=shortcut_path,description=description,executable=A)
 def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(path):
  E=os.listdir(path);B=-1;C=None
  for A in E:

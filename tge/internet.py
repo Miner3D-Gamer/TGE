@@ -5,7 +5,6 @@ import os
 import re
 import pytube
 import ffmpeg
-from typing import Tuple, Union
 
 import requests
 

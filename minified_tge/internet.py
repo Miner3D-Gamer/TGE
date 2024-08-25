@@ -1,8 +1,7 @@
 _C=False
 _B=None
 _A=True
-import re,pytube,os,re,pytube,ffmpeg
-import requests,urllib.request
+import re,pytube,os,re,pytube,ffmpeg,requests,urllib.request
 from.file_operations import make_legal_filename
 def download_youtube_playlist(url,dir,quality,audio_type=_B):
  B=pytube.Playlist(url)

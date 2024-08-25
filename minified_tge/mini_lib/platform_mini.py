@@ -2,9 +2,10 @@ _D='2003Server'
 _C='Vista'
 _B='win32'
 _A=None
-import itertools,os,sys,functools,collections,re
+import itertools,os,sys,functools,collections
+from.import mini_re
 _uname_cache=_A
-_ver_output=re.compile('(?:([\\w ]+) ([\\w.]+) .*\\[.* ([\\d.]+)\\])')
+_ver_output=mini_re.compile('(?:([\\w ]+) ([\\w.]+) .*\\[.* ([\\d.]+)\\])')
 _WIN32_SERVER_RELEASES={(5,2):_D,(6,0):'2008Server',(6,1):'2008ServerR2',(6,2):'2012Server',(6,3):'2012ServerR2',(6,_A):'post2012ServerR2'}
 _WIN32_CLIENT_RELEASES={(5,0):'2000',(5,1):'XP',(5,2):_D,(5,_A):'post2003',(6,0):_C,(6,1):'7',(6,2):'8',(6,3):'8.1',(6,_A):'post8.1',(10,0):'10',(10,_A):'post10'}
 def system():return uname().system

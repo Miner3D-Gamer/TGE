@@ -18,8 +18,9 @@ __url__ = "https://github.com/Miner3DGaming/TGE"
 __doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.MD"
 
 "Yep"
+"Over 900 functions in almost 60 files"
 "This's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
-"I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear them (well not actually since they are bugs and bugs are usually not good in these situations)"
+"I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear your feedback"
 
 
 import sys
@@ -46,7 +47,7 @@ def is_tge_outdated() -> bool:
         return file != content
 
 
-from .mini_lib import platform_mini
+from .mini_lib import platform_mini # For faster import time
 
 if sys.platform.startswith("java"):
 

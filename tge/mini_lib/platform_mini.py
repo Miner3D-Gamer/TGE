@@ -3,12 +3,12 @@ import os
 import sys
 import functools
 import collections
-from . import mini_re
+import re
 
 
 _uname_cache = None
 
-_ver_output = mini_re.compile(r"(?:([\w ]+) ([\w.]+) " r".*" r"\[.* ([\d.]+)\])")
+_ver_output = re.compile(r"(?:([\w ]+) ([\w.]+) " r".*" r"\[.* ([\d.]+)\])")
 
 _WIN32_SERVER_RELEASES = {
     (5, 2): "2003Server",

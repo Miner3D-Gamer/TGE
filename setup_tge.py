@@ -14,14 +14,24 @@ print(
     f"{total_functions-undocumented}/{total_functions} Functions are documented, that means {((total_functions-undocumented)/total_functions)*100}% of functions are documented and {undocumented} are still missing"
 )
 print()
-tge.function_utils.print_check_for_functions_in_module_with_missing_notations(tge.list_utils)
+tge.function_utils.print_check_for_functions_in_module_with_missing_notations(
+    tge.list_utils
+)
 # print("lines:", tge.tbe.count_lines_in_directory("./tge"))
 dir = f"{os.getcwd()}/tge/"
 
 for i in range(2):
 
     with open("tge/update.hashed", "w") as f:
-        f.write(base64.b64encode((tge.file_operations.generate_uuid_from_directory(dir, ["hashed", "pyc"]).bytes)).decode())
+        f.write(
+            base64.b64encode(
+                (
+                    tge.file_operations.generate_uuid_from_directory(
+                        dir, ["hashed", "pyc"]
+                    ).bytes
+                )
+            ).decode()
+        )
 
 
 print()
@@ -104,12 +114,11 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
 )
 
 
-
-import minified_tge # type: ignore
+import minified_tge  # type: ignore
 
 with open(".gitignore", "w") as f:
     f.write(
-         "\n".join(
+        "\n".join(
             [
                 file[2:].replace("\\", "/")
                 for file in tge.file_operations.find_files_with_extension(".", ".pyc")

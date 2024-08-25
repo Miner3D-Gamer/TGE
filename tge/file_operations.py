@@ -9,10 +9,19 @@ from typing import Union, Tuple, Iterable, List
 from collections import defaultdict
 import tkinter as tk
 import pyshortcuts
+import re
 
 from .codec.codec import decode, base_x_decode_to_binary, base_x_encode_binary
 from . import SYSTEM_NAME
 
+def make_legal_filename(filename: str) -> str:
+    illegal_chars = r'[\\/*?"<>|:]'
+    
+    legal_filename = re.sub(illegal_chars, '_', filename)
+    
+    legal_filename = legal_filename.strip()
+    
+    return legal_filename
 
 def create_missing_directory(directory: str) -> bool:
     """

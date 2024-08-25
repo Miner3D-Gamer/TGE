@@ -2,9 +2,13 @@ _D='2003Server'
 _C='Vista'
 _B='win32'
 _A=None
-import itertools,os,sys,functools,collections,re
+from itertools import chain
+import os,sys
+from functools import cached_property
+from collections import namedtuple
+from re import compile
 _uname_cache=_A
-_ver_output=re.compile('(?:([\\w ]+) ([\\w.]+) .*\\[.* ([\\d.]+)\\])')
+_ver_output=compile('(?:([\\w ]+) ([\\w.]+) .*\\[.* ([\\d.]+)\\])')
 _WIN32_SERVER_RELEASES={(5,2):_D,(6,0):'2008Server',(6,1):'2008ServerR2',(6,2):'2012Server',(6,3):'2012ServerR2',(6,_A):'post2012ServerR2'}
 _WIN32_CLIENT_RELEASES={(5,0):'2000',(5,1):'XP',(5,2):_D,(5,_A):'post2003',(6,0):_C,(6,1):'7',(6,2):'8',(6,3):'8.1',(6,_A):'post8.1',(10,0):'10',(10,_A):'post10'}
 def system():return uname().system
@@ -98,11 +102,11 @@ def uname():
   if not B or B=='0':B=C;C=''
  if A==H and B==D:A=D;B=_C
  K=A,F,B,C,E;_uname_cache=uname_result(*map(_unknown_as_blank,K));return _uname_cache
-class uname_result(collections.namedtuple('uname_result_base','system node release version machine')):
+class uname_result(namedtuple('uname_result_base','system node release version machine')):
  _fields='system','node','release','version','machine','processor'
- @functools.cached_property
+ @cached_property
  def processor(self):return _unknown_as_blank(_Processor.get())
- def __iter__(A):return itertools.chain(super().__iter__(),(A.processor,))
+ def __iter__(A):return chain(super().__iter__(),(A.processor,))
  @classmethod
  def _make(A,iterable):
   C=len(A._fields)-1;B=A.__new__(A,*iterable)

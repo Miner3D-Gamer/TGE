@@ -1,7 +1,41 @@
 from typing import List, Union, Tuple, Any, Tuple, Dict, Optional
 import re
 import pytube
+import os
+import re
+import pytube
+import ffmpeg
+from typing import Tuple, Union
 
+import requests
+
+
+import urllib.request
+from .file_operations import make_legal_filename
+
+def download_youtube_playlist(url: str, dir: str, quality:str, audio_type:str|None = None) -> None:
+    """
+    Downloads all the videos from a YouTube playlist and saves them to the specified directory.
+
+    Args:
+        url (str): The URL of the YouTube playlist.
+        dir (str): The directory where the downloaded videos will be saved.
+        create (bool): If True, creates the directory if it doesn't exist.
+
+    Returns:
+        None
+
+    Raises:
+        Any exceptions raised during the download and file write process are caught,
+        and the function returns False if an exception occurs.
+
+    Note:
+        This function uses the 'pytube' library to download the videos. If 'create' is True, it creates the missing directory structure before saving the files.
+    """
+
+    playlist = pytube.Playlist(url)
+    for video in playlist.videos:
+        download_youtube_video(video.watch_url, dir, make_legal_filename(video.title), quality, audio_type)
 
 def is_url(url: str) -> bool:
     """
@@ -79,7 +113,6 @@ def get_youtube_video_id(input_string: str) -> str:
     return ""
 
 
-import urllib.request
 
 
 def is_internet_connected(
@@ -99,6 +132,7 @@ def is_internet_connected(
         return False
 
 
+
 def download_youtube_video(
     url_or_id: str,
     save_path: str,
@@ -107,53 +141,53 @@ def download_youtube_video(
     audio_type: Union[str, None] = None,
 ) -> Tuple[bool, str]:
     """
-    Download a YouTube video as audio from the given URL and save it to the specified location.
-
+    Download a YouTube video as audio or video from the given URL and save it to the specified location.
+    
     Args:
         url_or_id (str): The YouTube video URL or video ID. If a video ID is provided, it should be exactly 11 characters long.
-                If a URL is provided, the function handles short URLs and non-standard formats.
         save_path (str): The directory path where the downloaded video will be saved.
-        file_name (str): The desired name for the downloaded video file. If no file extension is provided, '.mp4' will be added.
+        file_name (str): The desired name for the downloaded file. If no file extension is provided, '.mp4' or '.mp3' will be added.
+        quality (str): Quality specification for video download. Can be 'audio', 'highest', 'lowest', or a specific resolution (e.g., '720p').
+        audio_type (Union[str, None]): Audio file type to download ('mp4' or 'webm'). If `None`, defaults to 'mp4'.
 
     Returns:
         Tuple[bool, str]: A tuple containing a boolean indicating the success of the download (True for success, False for failure)
                         and a string describing the outcome.
-
-    Note:
-        The function uses the 'pytube' library to download YouTube videos. It attempts to download the audio-only stream,
-        but you can modify the stream selection based on your preferences.
-
-    Example:
-        success, message = download_youtube_video("https://www.youtube.com/watch?v=VIDEO_ID", "/path/to/save", "my_audio")
-        if success:
-            print("Download successful")
-        else:
-            print("Download failed:", message)
     """
     id = get_youtube_video_id(url_or_id)
-    if not re.search(r".\..", file_name):
-        file_name += ".mp4"
+    if not re.search(r"\..+", file_name):
+        file_extension = ".mp3" if quality == "audio" else ".mp4"
+        file_name += file_extension
+
     try:
         yt = pytube.YouTube(id)
-        if quality[-1] == "p":
-            video = yt.streams.get_by_resolution(quality)
-        elif quality == "audio":
-            if audio_type == None:
+        if quality == "audio":
+            if audio_type is None:
                 audio_type = "mp4"
-            video = yt.streams.get_audio_only(audio_type)
+            audio_stream = yt.streams.filter(only_audio=True, file_extension=audio_type).first()
+            audio_file_path = os.path.join(save_path, file_name)
+            audio_stream.download(output_path=save_path, filename=file_name)
+
+            # Convert audio to MP3 format using ffmpeg
+            if audio_type != "mp3":
+                mp3_file_path = os.path.splitext(audio_file_path)[0] + ".mp3"
+                ffmpeg.input(audio_file_path).output(mp3_file_path).run()
+                os.remove(audio_file_path)
+                file_name = os.path.basename(mp3_file_path)
+
         elif quality == "highest":
             video = yt.streams.get_highest_resolution()
         elif quality == "lowest":
             video = yt.streams.get_lowest_resolution()
+        else:
+            video = yt.streams.get_by_resolution(quality)
 
-        video.download(output_path=save_path, filename=file_name)
-        return True, "True"
+        if quality != "audio":
+            video.download(output_path=save_path, filename=file_name)
+
+        return True, "Download successful"
     except Exception as e:
         return False, str(e)
-
-
-import requests
-
 
 def post_to_discord_webhook(
     message_content: str,
@@ -291,3 +325,18 @@ def is_url_available(url: str, check_url: bool = True) -> bool:
             return False
     except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout:
         return None
+
+
+def get_youtube_playlist_links(playlist_url):
+    try:
+        # Create a Playlist object using the URL
+        playlist = pytube.Playlist(playlist_url)
+        
+        # Fetch all video URLs in the playlist
+        video_links = playlist.video_urls
+        
+        return video_links
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []

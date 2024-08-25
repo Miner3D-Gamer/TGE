@@ -1,14 +1,14 @@
-import itertools
+from itertools import chain
 import os
 import sys
-import functools
-import collections
-import re
+from functools import cached_property
+from collections import namedtuple
+from re import compile
 
 
 _uname_cache = None
 
-_ver_output = re.compile(r"(?:([\w ]+) ([\w.]+) " r".*" r"\[.* ([\d.]+)\])")
+_ver_output = compile(r"(?:([\w ]+) ([\w.]+) " r".*" r"\[.* ([\d.]+)\])")
 
 _WIN32_SERVER_RELEASES = {
     (5, 2): "2003Server",
@@ -256,19 +256,19 @@ def uname():
 
 
 class uname_result(
-    collections.namedtuple("uname_result_base", "system node release version machine")
+    namedtuple("uname_result_base", "system node release version machine")
 ):
 
     _fields = ("system", "node", "release", "version", "machine", "processor")
 
-    @functools.cached_property
+    @cached_property
     def processor(self):
         ":/"
         return _unknown_as_blank(_Processor.get())
 
     def __iter__(self):
         ":/"
-        return itertools.chain(super().__iter__(), (self.processor,))
+        return chain(super().__iter__(), (self.processor,))
 
     @classmethod
     def _make(cls, iterable):

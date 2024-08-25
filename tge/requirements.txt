@@ -18,3 +18,4 @@ python-xlib
 pydub
 simpleaudio
 vdf
+ffmpeg-python

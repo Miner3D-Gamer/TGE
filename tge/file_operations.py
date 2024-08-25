@@ -8,7 +8,6 @@ import uuid
 from typing import Union, Tuple, Iterable, List
 from collections import defaultdict
 import tkinter as tk
-import pyshortcuts
 import re
 
 from .codec.codec import decode, base_x_decode_to_binary, base_x_encode_binary

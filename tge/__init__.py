@@ -172,7 +172,7 @@ else:
     xlib_installed = library_utils.is_library_installed("Xlib")
     quartz_installed = library_utils.is_library_installed("Quartz")
     appKit_installed = library_utils.is_library_installed("AppKit")
-    
+    simpleaudio_installed = library_utils.is_library_installed("simpleaudio")
 
     from .manipulation import string_utils
     from .manipulation import list_utils
@@ -226,7 +226,7 @@ else:
         from .image_processing import image_operations
     from . import function_utils
 
-    if gtts_installed:
+    if gtts_installed and simpleaudio_installed:
         if is_ffmpeg_installed():
             from . import audio
 

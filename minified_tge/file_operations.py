@@ -7,9 +7,7 @@ import os,shutil
 from ast import parse as ast_parse,walk as ast_walk,FunctionDef as ast_FunctionDef
 import zipfile,math,hashlib,uuid
 from collections import defaultdict
-import tkinter as tk
-import pyshortcuts
-import re
+import tkinter as tk,re
 from.codec.codec import decode,base_x_decode_to_binary,base_x_encode_binary
 from.import SYSTEM_NAME
 def make_legal_filename(filename):B='[\\\\/*?"<>|:]';A=re.sub(B,'_',filename);A=A.strip();return A

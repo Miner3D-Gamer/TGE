@@ -173,6 +173,8 @@ else:
     quartz_installed = library_utils.is_library_installed("Quartz")
     appKit_installed = library_utils.is_library_installed("AppKit")
     simpleaudio_installed = library_utils.is_library_installed("simpleaudio")
+    yt_dlp_installed = library_utils.is_library_installed("yt_dlp")
+    
 
     from .manipulation import string_utils
     from .manipulation import list_utils
@@ -210,15 +212,16 @@ else:
     if json5_installed and hjson_installed:
         from .codec import codec
         from . import random_generators as random
+        from . import file_operations
 
     if python_minifier_installed:
         from . import tbe
         from . import console_utils as console
-    if pytube_installed:
+    if pytube_installed and yt_dlp_installed:
         from . import internet
     from . import time_utils
 
-    from . import file_operations
+    
     from . import formatting_utils as formatting
     from . import bool_operations
 

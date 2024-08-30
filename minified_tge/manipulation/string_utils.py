@@ -51,7 +51,7 @@ def find_longest_substring(string):
   A+=C
  if len(A)>len(B):B=A
  return B
-def check_pangram(string):import string as B;A=set(B.ascii_lowercase);C=''.join(filter(lambda c:c in A,string.lower()));return set(C)==A
+def check_pangram(string):A=set('abcdefghijklmnopqrstuvwxyz');B=''.join(filter(lambda c:c in A,string.lower()));return set(B)==A
 def find_common_characters(string1,string2):return''.join(set(string1)&set(string2))
 def split_text(text,chunk_size):A=chunk_size;return[text[B:B+A]for B in range(0,len(text),A)]
 def lchop(string,substring):

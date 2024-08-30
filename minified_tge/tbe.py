@@ -1,4 +1,5 @@
-_E='cumulative'
+_F='cumulative'
+_E='import '
 _D='.py'
 _C=None
 _B=True
@@ -6,7 +7,7 @@ _A=False
 import ast,os,sys
 from difflib import get_close_matches
 import getpass
-import cProfile,pstats,io
+import cProfile,pstats,io,subprocess,tempfile
 version=sys.version_info
 if version.minor<12:import python_minifier
 def pass_func(*args,**more_args):0
@@ -102,7 +103,6 @@ def analyze_text(text):
  return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
 class DualInfinite:0
 def divide(a,b):return a/b if b!=0 else DualInfinite
-import subprocess,tempfile
 def remove_unused_libraries(code_str):
  with tempfile.NamedTemporaryFile(delete=_A,suffix=_D)as temp_file:temp_file.write(code_str.encode('utf-8'));temp_file_path=temp_file.name
  try:
@@ -116,11 +116,12 @@ def repeat(func,times):
  return val
 def get_username():return getpass.getuser()
 def profile(func):
- def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_E;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
+ def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_F;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
  return wrapper
-def profile_function(function,filename):
- profile=cProfile.Profile();profile.enable();function();profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
- with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_E);stats.print_stats()
+def profile_function(function,filename,*inputs,**extra):
+ profile=cProfile.Profile();profile.enable();return_=function(*inputs,**extra);profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
+ with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_F);stats.print_stats()
+ return return_
 class ArgumentHandler:
  def __init__(self,arguments=_C):
   if arguments is _C:arguments=sys.argv[1:]
@@ -186,3 +187,21 @@ if version.minor<12:
  def minify(text,rename_important_names=_A,remove_docstrings=_B):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
 else:
  def minify(text,rename_important_names=_A,remove_docstrings=_B):return text
+from.manipulation.list_utils import zipper_insert
+def separate_imports(lines):
+ import_lines=[];other_lines=[]
+ for line in lines:
+  stripped_line=line.strip()
+  if stripped_line.startswith(_E)or stripped_line.startswith('from '):
+   if not line.startswith(' '):import_lines.append(line)
+   else:other_lines.append(line)
+  else:other_lines.append(line)
+ return import_lines,other_lines
+def compress_imports(import_lines):
+ from_imports=[];import_imports=[]
+ for line in import_lines:
+  line=line.strip()
+  if line.startswith('from '):from_imports.append(line)
+  elif line.startswith(_E):import_imports.extend(line.replace(_E,'').split(','))
+ import_imports=sorted(set(import_imports));compressed_import_line=f"import {','.join(import_imports)}";output_lines=from_imports+([compressed_import_line]if import_imports else[]);return output_lines
+def compress_imports_in_code(code):imports,rest=separate_imports(code);imports=compress_imports(imports);return zipper_insert(imports,['\n']*len(imports))+rest

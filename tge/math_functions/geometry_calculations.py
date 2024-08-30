@@ -3,6 +3,7 @@ from math import sqrt
 from .math_functions import get_pi
 
 from numbers import Number
+from collections.abc import Iterable
 
 
 def volume_of_cuboid(
@@ -448,7 +449,6 @@ def calculate_distance_between_four_points(
     return ((x - a) ** 2 + (y - a) ** 2 + (z - a) ** 2) ** 0.5
 
 
-from collections.abc import Iterable
 
 
 def calculate_distance_between_points(*points: Iterable) -> int:

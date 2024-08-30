@@ -3,38 +3,15 @@ import re
 import pytube
 import os
 import re
-import pytube
-import ffmpeg
 
+import yt_dlp
 import requests
+from urllib.parse import urlparse, parse_qs
+from .file_operations import create_missing_directory
 
 
 import urllib.request
-from .file_operations import make_legal_filename
 
-def download_youtube_playlist(url: str, dir: str, quality:str, audio_type:str|None = None) -> None:
-    """
-    Downloads all the videos from a YouTube playlist and saves them to the specified directory.
-
-    Args:
-        url (str): The URL of the YouTube playlist.
-        dir (str): The directory where the downloaded videos will be saved.
-        create (bool): If True, creates the directory if it doesn't exist.
-
-    Returns:
-        None
-
-    Raises:
-        Any exceptions raised during the download and file write process are caught,
-        and the function returns False if an exception occurs.
-
-    Note:
-        This function uses the 'pytube' library to download the videos. If 'create' is True, it creates the missing directory structure before saving the files.
-    """
-
-    playlist = pytube.Playlist(url)
-    for video in playlist.videos:
-        download_youtube_video(video.watch_url, dir, make_legal_filename(video.title), quality, audio_type)
 
 def is_url(url: str) -> bool:
     """
@@ -132,61 +109,28 @@ def is_internet_connected(
 
 
 
-def download_youtube_video(
-    url_or_id: str,
-    save_path: str,
-    file_name: str,
-    quality: str,
-    audio_type: Union[str, None] = None,
-) -> Tuple[bool, str]:
-    """
-    Download a YouTube video as audio or video from the given URL and save it to the specified location.
-    
-    Args:
-        url_or_id (str): The YouTube video URL or video ID. If a video ID is provided, it should be exactly 11 characters long.
-        save_path (str): The directory path where the downloaded video will be saved.
-        file_name (str): The desired name for the downloaded file. If no file extension is provided, '.mp4' or '.mp3' will be added.
-        quality (str): Quality specification for video download. Can be 'audio', 'highest', 'lowest', or a specific resolution (e.g., '720p').
-        audio_type (Union[str, None]): Audio file type to download ('mp4' or 'webm'). If `None`, defaults to 'mp4'.
+def download_list_of_youtube_videos(urls: list, directory: str, preferred_format: str="mp3", preferred_quality: str="192"):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-    Returns:
-        Tuple[bool, str]: A tuple containing a boolean indicating the success of the download (True for success, False for failure)
-                        and a string describing the outcome.
-    """
-    id = get_youtube_video_id(url_or_id)
-    if not re.search(r"\..+", file_name):
-        file_extension = ".mp3" if quality == "audio" else ".mp4"
-        file_name += file_extension
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': preferred_format,
+            'preferredquality': preferred_quality,
+        }],
+        'outtmpl': os.path.join(directory, '%(title)s.%(ext)s'),
+    }
 
-    try:
-        yt = pytube.YouTube(id)
-        if quality == "audio":
-            if audio_type is None:
-                audio_type = "mp4"
-            audio_stream = yt.streams.filter(only_audio=True, file_extension=audio_type).first()
-            audio_file_path = os.path.join(save_path, file_name)
-            audio_stream.download(output_path=save_path, filename=file_name)
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        for url in urls:
+            try:
+                ydl.download([url])
+                print(f"Downloaded and converted: {url}")
 
-            # Convert audio to MP3 format using ffmpeg
-            if audio_type != "mp3":
-                mp3_file_path = os.path.splitext(audio_file_path)[0] + ".mp3"
-                ffmpeg.input(audio_file_path).output(mp3_file_path).run()
-                os.remove(audio_file_path)
-                file_name = os.path.basename(mp3_file_path)
-
-        elif quality == "highest":
-            video = yt.streams.get_highest_resolution()
-        elif quality == "lowest":
-            video = yt.streams.get_lowest_resolution()
-        else:
-            video = yt.streams.get_by_resolution(quality)
-
-        if quality != "audio":
-            video.download(output_path=save_path, filename=file_name)
-
-        return True, "Download successful"
-    except Exception as e:
-        return False, str(e)
+            except Exception as e:
+                print(f"An error occurred with URL {url}: {e}")
 
 def post_to_discord_webhook(
     message_content: str,
@@ -195,7 +139,7 @@ def post_to_discord_webhook(
     avatar_url: str = None,
     mention: bool = True,
     activate_voice: bool = False,
-) -> Any:
+) -> Tuple[int, bytes]:
     """
     Posts a message to a Discord webhook. Returns the response code and the content of the message.
     """
@@ -212,7 +156,6 @@ def post_to_discord_webhook(
     return response.status_code, response.content
 
 
-from urllib.parse import urlparse, parse_qs
 
 
 def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
@@ -255,10 +198,9 @@ def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
     }
 
 
-from .file_operations import create_missing_directory
 
 
-def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
+def download_from_url_to_dir(url: str, dir: str, create: bool=True) -> None:
     """
     Downloads a file from the given URL and saves it to the specified directory.
 
@@ -278,23 +220,14 @@ def download_from_url_to_dir(url: str, dir: str, create: bool) -> None:
         This function uses the 'requests' library to download the file. If 'create' is
         set to True, it creates the missing directory structure before saving the file.
         The file is saved with the same name as the last part of the URL.
-
-    Example:
-        download_from_url_to_dir(
-            'https://example.com/file.txt', '/path/to/directory/', create=True
-        )
     """
     r = requests.get(url)
     try:
         if create:
             create_missing_directory(dir)
-            with open(dir + r.url.split("/")[-1], "wb", encoding="utf-8") as f:
-                f.write(r.content)
-            return True
-        else:
-            with open(dir + r.url.split("/")[-1], "wb", encoding="utf-8") as f:
-                f.write(r.content)
-            return True
+        with open(dir + r.url.split("/")[-1], "wb", encoding="utf-8") as f:
+            f.write(r.content)
+        return True
     except:
         return False
 
@@ -326,16 +259,13 @@ def is_url_available(url: str, check_url: bool = True) -> bool:
         return None
 
 
-def get_youtube_playlist_links(playlist_url):
+def get_all_videos_from_youtube_playlist(playlist_url: str) -> Union[List[str], str]:
     try:
-        # Create a Playlist object using the URL
         playlist = pytube.Playlist(playlist_url)
-        
-        # Fetch all video URLs in the playlist
+    
         video_links = playlist.video_urls
         
         return video_links
     
     except Exception as e:
-        print(f"An error occurred: {e}")
-        return []
+        return e

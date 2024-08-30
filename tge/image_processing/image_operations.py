@@ -2,7 +2,8 @@ from PIL import Image
 from typing import Union, Tuple, Any
 from numbers import Number
 import numpy as np
-from ..math_functions.math_functions import clamp, math
+from ..math_functions.math_functions import clamp
+import math
 from .middle_man import *
 
 

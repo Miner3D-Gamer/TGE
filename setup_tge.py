@@ -69,7 +69,8 @@ except PermissionError:
 except FileNotFoundError:
     ...
 
-if True:
+
+if tge.tbe.determine_affirmative(input("Minify?: ")):
     for root, dirs, files in os.walk(dir, topdown=False):
         root = root
         for file in files:
@@ -89,25 +90,27 @@ if True:
                 os.makedirs(os.path.dirname(output + file_path), exist_ok=True)
 
                 with open(output + file_path, "w", encoding="utf8") as o:
-                    data = (
-                        tge.tbe.remove_unused_libraries(
-                            "".join(
-                                [
-                                    tge.string_utils.left_replace(line, "	", " ")
-                                    for line in tge.tbe.minify(
-                                        f.read(),
-                                        rename_important_names=False,
-                                        remove_docstrings=True,
-                                    )
-                                ]
+                    data = tge.tbe.compress_imports_in_code(
+                        
+                            tge.tbe.remove_unused_libraries(
+                                "".join(
+                                    [
+                                        tge.string_utils.left_replace(line, "	", " ")
+                                        for line in tge.tbe.minify(
+                                            f.read(),
+                                            rename_important_names=False,
+                                            remove_docstrings=True,
+                                        )
+                                    ]
+                                )
                             )
-                        )
-                        if file.endswith(".py")
-                        else f.read()
+                            if file.endswith(".py")
+                            else f.read()
+                        
                     )
-                    o.write(data)
-                    
-                    
+                    o.write("".join(data))
+
+
 tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
     tge.file_operations.get_file_size_of_directory("./tge", [".pyc"])
 )

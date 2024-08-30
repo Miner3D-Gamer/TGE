@@ -250,8 +250,7 @@ def check_pangram(string: str) -> bool:
     Returns:
         bool: True if the string is a pangram, False otherwise.
     """
-    import string as st
-    alphabet = set(st.ascii_lowercase)  
+    alphabet = set('abcdefghijklmnopqrstuvwxyz')  
 
     filtered_string = "".join(filter(lambda c: c in alphabet, string.lower()))
 

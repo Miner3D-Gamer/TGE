@@ -65,7 +65,6 @@ def median(grades: Iterable) -> float:
         float: The median grade of the given grades.
     """
     return sorted(grades)[len(grades) // 2]
-from collections.abc import Iterable
 def median_absolute_deviation(data:Iterable)->float:
     """
     Calculate the Median Absolute Deviation (MAD) of a given dataset.

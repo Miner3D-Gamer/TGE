@@ -5,6 +5,7 @@ _A=None
 import time,os
 from random import random,choice
 import sys
+from io import StringIO
 from.tbe import determine_affirmative
 if os.name=='nt':
  def clear():os.system('cls')
@@ -116,7 +117,6 @@ def matrix_rain(rows,columns,speed=.1,density=.2,duration=_A,symbols=['0','1']):
    if time.time()-H>E:break
   elif tge_matrix_console_stop:break
   time.sleep(speed)
-from io import StringIO
 class ConsoleCapture:
  def __init__(A):A.original_stdout=sys.stdout;A.captured_output=StringIO();A.capturing=_C
  def start_capture(A):

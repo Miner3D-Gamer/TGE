@@ -5,6 +5,7 @@ from random import random, choice
 import sys
 from collections.abc import Iterable
 from numbers import Number
+from io import StringIO
 
 
 from .tbe import determine_affirmative
@@ -543,7 +544,6 @@ def matrix_rain(
         time.sleep(speed)
 
 
-from io import StringIO
 
 
 class ConsoleCapture:

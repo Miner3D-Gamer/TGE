@@ -95,6 +95,7 @@ from numbers import Number
 import cProfile
 import pstats
 import io
+import subprocess, tempfile
 
 version = sys.version_info
 
@@ -955,7 +956,6 @@ def divide(a:Number, b:Number)->Union[float,DualInfinite]:
 
 
 
-import subprocess, tempfile
 
 
 def remove_unused_libraries(code_str:str)->str:
@@ -1122,7 +1122,7 @@ def profile(func):
 
 
 
-def profile_function(function:FunctionType, filename:str)->None:
+def profile_function(function:FunctionType, filename:str, *inputs, **extra)->Any:
     """Profile a function and save performance stats to files."""
 
 
@@ -1130,7 +1130,7 @@ def profile_function(function:FunctionType, filename:str)->None:
     profile = cProfile.Profile()
     profile.enable()
 
-    function()
+    return_ = function(*inputs, **extra)
 
     profile.disable()
 
@@ -1143,6 +1143,8 @@ def profile_function(function:FunctionType, filename:str)->None:
         stats = pstats.Stats(profile_filename, stream=f)
         stats.sort_stats("cumulative")
         stats.print_stats()
+    
+    return return_
 
 
 
@@ -1583,10 +1585,48 @@ else:
 
 
 
+from .manipulation.list_utils import zipper_insert
 
 
+def separate_imports(lines: "Iterable[str]") -> Tuple[list, list]:
+    import_lines = []
+    other_lines = []
+    for line in lines:
+        stripped_line = line.strip()
+
+        if stripped_line.startswith("import ") or stripped_line.startswith("from "):
+            if not line.startswith(" "):
+                import_lines.append(line)
+            else:
+                other_lines.append(line)
+        else:
+            other_lines.append(line)
+
+    return import_lines, other_lines
 
 
+def compress_imports(import_lines: Iterable) -> list:
+    from_imports = []
+    import_imports = []
+
+    for line in import_lines:
+        line = line.strip()
+
+        if line.startswith("from "):
+            from_imports.append(line)
+        elif line.startswith("import "):
+            import_imports.extend(line.replace("import ", "").split(","))
+
+    import_imports = sorted(set(import_imports))
+    compressed_import_line = f"import {','.join(import_imports)}"
+    output_lines = from_imports + ([compressed_import_line] if import_imports else [])
+    return output_lines
+
+
+def compress_imports_in_code(code: Iterable) -> List[str]:
+    imports, rest = separate_imports(code)
+    imports = compress_imports(imports)
+    return zipper_insert(imports, ["\n"]*len(imports)) + rest
 
 
 

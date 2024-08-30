@@ -18,3 +18,4 @@ pydub
 simpleaudio
 vdf
 ffmpeg-python
+yt_dlp

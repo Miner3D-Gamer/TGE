@@ -1,8 +1,8 @@
 import os
 from importlib import import_module as importlib_import_module
-from collections.abc import Iterable
 import pygame
 from types import FunctionType
+from typing import NoReturn
 
 from ..random_generators import generate_random_string
 
@@ -231,7 +231,6 @@ def draw_texture_at(
     surface.blit(texture, position)
 
 
-from typing import NoReturn
 
 
 def exit() -> NoReturn:

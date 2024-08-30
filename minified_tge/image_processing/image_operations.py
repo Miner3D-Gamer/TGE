@@ -1,7 +1,8 @@
 _A=None
 from PIL import Image
 import numpy as np
-from..math_functions.math_functions import clamp,math
+from..math_functions.math_functions import clamp
+import math
 from.middle_man import*
 def rotate_image_file(image_path,angle):image=Image.open(image_path);rotated_image=image.rotate(angle);rotated_image.save(image_path)
 def flip_image_file_vertically(image_path):image=Image.open(image_path);image=image.transpose(Image.FLIP_TOP_BOTTOM);image.save(image_path)
@@ -39,7 +40,7 @@ def count_image_colors(image=_A,image_path=_A):
  else:return[]
  unique_colors=set()
  for x in range(width):
-  for y in range(height):pixel_value=loaded_image[x,y];unique_colors.add(pixel_value)
+  for y in range(height):pixel_value=loaded_image[(x,y)];unique_colors.add(pixel_value)
  return list(unique_colors)
 def hex_to_rgb(hex_color):hex_color=hex_color.lstrip('#');red=int(hex_color[0:2],16);green=int(hex_color[2:4],16);blue=int(hex_color[4:6],16);return red,green,blue
 def hex_list_to_rgb_list(hex_list):

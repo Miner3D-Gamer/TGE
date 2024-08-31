@@ -122,10 +122,17 @@ def profile_function(function,filename,*inputs,**extra):
  profile=cProfile.Profile();profile.enable();return_=function(*inputs,**extra);profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
  with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_F);stats.print_stats()
  return return_
-def get_current_pip_path():
- python_dir=os.path.dirname(sys.executable);pip_path=os.path.join(python_dir,'Scripts','pip.exe')
- if os.path.isfile(pip_path):return pip_path
- else:return
+if os.name=='nt':
+ def get_current_pip_path():
+  python_executable=sys.executable
+  if os.name=='nt':pip_path=os.path.join(os.path.dirname(python_executable),'Scripts','pip.exe')
+  if os.path.isfile(pip_path):return pip_path
+  else:return
+else:
+ def get_current_pip_path():
+  python_executable=sys.executable;pip_path=os.path.join(os.path.dirname(python_executable),'bin','pip')
+  if os.path.isfile(pip_path):return pip_path
+  else:return
 class ArgumentHandler:
  def __init__(self,arguments=_C):
   if arguments is _C:arguments=sys.argv[1:]

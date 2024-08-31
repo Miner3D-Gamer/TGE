@@ -1155,7 +1155,15 @@ def profile_function(function:FunctionType, filename:str, *inputs, **extra)->Any
 
 
 
-
+def get_current_pip_path():
+    python_dir = os.path.dirname(sys.executable)
+    
+    pip_path = os.path.join(python_dir, 'Scripts', 'pip.exe')
+    
+    if os.path.isfile(pip_path):
+        return pip_path
+    else:
+        return None
 
 
 

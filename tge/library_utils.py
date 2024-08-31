@@ -4,6 +4,8 @@ import subprocess
 from collections.abc import Iterable
 import os
 
+from .tbe import get_current_pip_path
+
 
 def is_library_installed(library_name: str) -> bool:
     """
@@ -27,12 +29,16 @@ def download_library(library_name: str) -> Tuple[bool, str]:
         tuple: A tuple containing a boolean indicating whether the installation was successful
         and a message string providing additional information in case of an error.
     """
-    commands = [
-        ["python", "-m", "pip", "install", library_name],
-        ["python3", "-m", "pip", "install", library_name],
-        ["pip", "install", library_name],
-        ["pip3", "install", library_name],
-    ]
+    commands = get_current_pip_path()
+    if not commands:
+        commands = [
+            ["python", "-m", "pip", "install", library_name],
+            ["python3", "-m", "pip", "install", library_name],
+            ["pip", "install", library_name],
+            ["pip3", "install", library_name],
+        ]
+    else:
+        commands = [commands, "install", library_name]
 
     for command in commands:
         try:
@@ -46,7 +52,6 @@ def download_library(library_name: str) -> Tuple[bool, str]:
                 f"Error: {e.stderr}."
             )
         except FileNotFoundError:
-            # If the command is not found, try the next one.
             continue
         except Exception as e:
             return False, f"An unexpected error occurred: {str(e)}"

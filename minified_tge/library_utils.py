@@ -5,15 +5,18 @@ _A='install'
 import importlib.util
 import subprocess
 import os
+from.tbe import get_current_pip_path
 def is_library_installed(library_name):A=importlib.util.find_spec(library_name);return A is not None
 def download_library(library_name):
- E=False;C=True;A=library_name;F=[[_C,'-m',_B,_A,A],['python3','-m',_B,_A,A],[_B,_A,A],['pip3',_A,A]]
- for D in F:
-  try:G=subprocess.run(D,check=C,capture_output=C,text=C);return C,G.stdout
-  except subprocess.CalledProcessError as B:H=f"Failed to install {A} using command: {' '.join(D)}. Return code: {B.returncode}. Output: {B.output}. Error: {B.stderr}."
+ F=False;D=True;A=library_name;B=get_current_pip_path()
+ if not B:B=[[_C,'-m',_B,_A,A],['python3','-m',_B,_A,A],[_B,_A,A],['pip3',_A,A]]
+ else:B=[B,_A,A]
+ for E in B:
+  try:G=subprocess.run(E,check=D,capture_output=D,text=D);return D,G.stdout
+  except subprocess.CalledProcessError as C:H=f"Failed to install {A} using command: {' '.join(E)}. Return code: {C.returncode}. Output: {C.output}. Error: {C.stderr}."
   except FileNotFoundError:continue
-  except Exception as B:return E,f"An unexpected error occurred: {str(B)}"
- return E,f"All installation attempts failed. Last error: {H}"
+  except Exception as C:return F,f"An unexpected error occurred: {str(C)}"
+ return F,f"All installation attempts failed. Last error: {H}"
 def get_installed_python_versions():
  E=os.getenv('PATH').split(os.pathsep);C=[]
  for D in E:

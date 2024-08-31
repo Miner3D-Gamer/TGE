@@ -52,6 +52,16 @@ def number_to_words(number):
  for(i,group)in enumerate(groups):
   if group!=0:result_parts.append(convert_number_to_words_less_than_thousand(group)+' '+big_numbers[i])
  return', '.join(reversed(result_parts))
+def letter_to_number(letter):
+ number=0
+ for char in letter:number=number*26+(ord(char.lower())-ord('a'))+1
+ return number-1
+def number_to_letter(number):
+ letters=''
+ while number>=0:
+  letters=chr(number%26+ord('A'))+letters;number=number//26-1
+  if number<0:break
+ return letters
 def find_undocumented_functions(file_path):
  undocumented_functions=[]
  with open(file_path,'r',encoding='utf8')as file:tree=ast.parse(file.read())

@@ -431,7 +431,20 @@ def number_to_words(number:int) -> str:
 
 
 
+def letter_to_number(letter:str)->int:
+        number = 0
+        for char in letter:
+            number = number * 26 + (ord(char.lower()) - ord('a')) + 1
+        return number - 1
 
+def number_to_letter(number:int)->str:
+        letters = ""
+        while number >= 0:
+            letters = chr((number % 26) + ord('A')) + letters
+            number = number // 26 - 1
+            if number < 0:
+                break
+        return letters
 
 
 

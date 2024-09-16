@@ -126,7 +126,7 @@ while True:
             path = filedialog.askopenfilename()
         path = os.path.dirname(path) + "/Lib/site-packages"
         if os.path.exists(path):
-            dirs = [path + "/tge"]
+            dirs = [path + "/tge" if not path.replace("\\","/").endswith("/tge") else ""]
             break
         else:
             if give_feedback < 1:

@@ -1,1 +1,1 @@
-import requests as C;A=C.get('https://raw.githubusercontent.com/Miner3DGaming/TGE/main/installer/install_tge_installer.py');A.raise_for_status();D='\\'.join(__file__.replace("/","\\").split('\\')[:-1])+'/install_tge_installer.py';B=open(D,'w');B.write(A.text);B.close();print(D)
+import requests as C;A=C.get('https://raw.githubusercontent.com/Miner3DGaming/TGE/main/installer/install_tge_installer.py');A.raise_for_status();D='\\'.join(__file__.replace("/",D).split(D)[:-1])+'/install_tge_installer.py';B=open(D,'w');B.write(A.text);B.close();print(D)

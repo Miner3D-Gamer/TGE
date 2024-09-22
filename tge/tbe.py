@@ -840,15 +840,16 @@ Returns:
 
 
 
+class TimeoutResult:
+    ...
 
-
-def run_with_timeout(func, timeout, *args, **kwargs):
+def run_function_with_timeout(func:FunctionType, timeout:Number, *args, **kwargs)->Union[Any, TimeoutResult]:
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future = executor.submit(func, *args, **kwargs)
         try:
             return future.result(timeout=timeout)
         except concurrent.futures.TimeoutError:
-            return "Function timed out"
+            return TimeoutResult
 
 
 

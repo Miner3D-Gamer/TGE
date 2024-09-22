@@ -96,6 +96,7 @@ import cProfile
 import pstats
 import io
 import subprocess, tempfile
+import concurrent
 
 version = sys.version_info
 
@@ -841,7 +842,13 @@ Returns:
 
 
 
-
+def run_with_timeout(func, timeout, *args, **kwargs):
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(func, *args, **kwargs)
+        try:
+            return future.result(timeout=timeout)
+        except concurrent.futures.TimeoutError:
+            return "Function timed out"
 
 
 

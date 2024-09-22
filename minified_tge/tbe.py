@@ -7,7 +7,7 @@ _A=False
 import ast,os,sys
 from difflib import get_close_matches
 import getpass
-import cProfile,pstats,io,subprocess,tempfile
+import cProfile,pstats,io,subprocess,tempfile,concurrent
 version=sys.version_info
 if version.minor<12:import python_minifier
 def pass_func(*args,**more_args):0
@@ -111,6 +111,11 @@ def analyze_text(text):
  total_comma_count=0
  for comma_amount in comma_amounts:total_comma_count+=comma_amount
  return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
+def run_with_timeout(func,timeout,*args,**kwargs):
+ with concurrent.futures.ThreadPoolExecutor()as executor:
+  future=executor.submit(func,*args,**kwargs)
+  try:return future.result(timeout=timeout)
+  except concurrent.futures.TimeoutError:return'Function timed out'
 class DualInfinite:0
 def divide(a,b):return a/b if b!=0 else DualInfinite
 def remove_unused_libraries(code_str):

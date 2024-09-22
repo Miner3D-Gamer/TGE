@@ -69,3 +69,11 @@ def decompress_list_of_lists(list_to_decompress,width):
  A=[]
  for B in list_to_decompress:A.append(decompress_list(B,width))
  return A
+class MaxSizeList(list):
+ def __init__(A,max_size):super().__init__();A.max_size=max_size
+ def append(A,item):
+  super().append(item)
+  if len(A)>A.max_size:A.pop(0)
+ def extend(A,iterable):
+  super().extend(iterable)
+  while len(A)>A.max_size:A.pop(0)

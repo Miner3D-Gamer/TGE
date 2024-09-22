@@ -315,10 +315,10 @@ def compress_list_of_lists(list_to_compress: List[list]) -> List[list]:
     Compresses a list of lists by applying `compress_list` to each sublist.
 
     Args:
-        list_to_compress (List[list]): A list containing sublists to compress.
+        list_to_compress (List[list]): A list containing sub-lists to compress.
 
     Returns:
-        List[list]: A list of compressed sublists.
+        List[list]: A list of compressed sub-lists.
     """
     new_list = []
     for sub_list in list_to_compress:
@@ -357,13 +357,28 @@ def decompress_list_of_lists(list_to_decompress: List[list], width: int) -> List
     Decompresses a list of lists by applying `decompress_list` to each sublist.
 
     Args:
-        list_to_decompress (List[list]): A list containing sublists to decompress.
+        list_to_decompress (List[list]): A list containing sub-lists to decompress.
         width (int): The width used to repeat single values.
 
     Returns:
-        List[list]: A list of decompressed sublists.
+        List[list]: A list of decompressed sub-lists.
     """
     new_list = []
     for sub_list in list_to_decompress:
         new_list.append(decompress_list(sub_list, width))
     return new_list
+
+class MaxSizeList(list):
+    def __init__(self, max_size):
+        super().__init__()
+        self.max_size = max_size
+
+    def append(self, item):
+        super().append(item)
+        if len(self) > self.max_size:
+            self.pop(0)
+
+    def extend(self, iterable):
+        super().extend(iterable)
+        while len(self) > self.max_size:
+            self.pop(0)

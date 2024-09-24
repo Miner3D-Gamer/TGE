@@ -1,9 +1,10 @@
-_F='cumulative'
-_E='import '
+_G='cumulative'
+_F='import '
+_E='hdiutil'
 _D='.py'
 _C=None
-_B=True
-_A=False
+_B=False
+_A=True
 import ast,os,sys
 from difflib import get_close_matches
 import getpass
@@ -14,11 +15,11 @@ def pass_func(*args,**more_args):0
 def execute_function(func=pass_func,*args,**kwargs):return func(*args,**kwargs)
 def determine_affirmative(text):
  B="i can't go along with that";A='not really';text=text.strip().lower();positives=['y','yes','yeah','yup','uh-huh','sure','affirmative','absolutely','indeed','certainly','of course','definitely','you bet','roger','right on','no doubt','by all means','most certainly','positively','without a doubt','naturally','indubitably','sure thing','yuppers','aye','ok','okey-dokey','all right','righto','very well','exactly','precisely','no problem','for sure','most assuredly','you got it',"that's right",'sure as shooting','all righty','of course, my dear',"couldn't agree more",'a thousand times, yes',"i'm in","it's a go","i'll go along with that",'count me in',"i'm on board",'without hesitation','undoubtedly','yeye'];negatives=['n','no','nope','nah','nuh-uh','negative','not at all','absolutely not','certainly not','no way','never','i disagree',"i'm afraid not","i can't agree with that",'i beg to differ',"i'm not convinced",A,"i'm not so sure",'i have my doubts',"that's not correct","that's incorrect","i don't think so","i'm not on board with that","i'm not buying it",B,"i can't support that","i'm opposed to that","i'm against it","i'm not in favor of that","that's a negative",'no chance','not a chance','no siree',"i can't see that happening","i'm not inclined to agree","i can't accept that","i'm not on the same page","i'm not feeling it",'i have reservations',"i can't endorse that","that's out of the question","i can't support that notion","i'm skeptical","that doesn't work for me","i don't agree with that assessment","i'm not persuaded","i'm not buying into that","i don't subscribe to that view",B,"i'm not swayed by that argument","i don't believe so","i'm not on board","i can't back that up","i'm not convinced of its validity","that's not my understanding","i'm not sold on that idea","i can't vouch for that","i don't really feel like it",A]
- if text in positives:return _B
- if text in negatives:return _A
+ if text in positives:return _A
+ if text in negatives:return _B
  closest_positive_match=get_close_matches(text,positives,n=1,cutoff=.8);closest_negative_match=get_close_matches(text,negatives,n=1,cutoff=.8)
- if closest_positive_match:return _B
- if closest_negative_match:return _A
+ if closest_positive_match:return _A
+ if closest_negative_match:return _B
 def categorize_responses(text_list):
  response_list=[]
  for text in text_list:response_list.append(determine_affirmative(text))
@@ -29,7 +30,7 @@ def get_available_variables():
  local_vars=locals()
  for(var_name,var_value)in local_vars.items():l_variables[var_name]=var_value
  return g_variables,l_variables
-def convert_number_to_words_less_than_thousand(n,dash=_B):
+def convert_number_to_words_less_than_thousand(n,dash=_A):
  TINY_NUMBERS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];SMALL_NUMBERS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety']
  if n>=100:
   hundreds_digit=n//100;rest=n%100;result=TINY_NUMBERS[hundreds_digit]+' hundred'
@@ -117,12 +118,23 @@ def run_function_with_timeout(func,timeout,*args,**kwargs):
   future=executor.submit(func,*args,**kwargs)
   try:return future.result(timeout=timeout)
   except concurrent.futures.TimeoutError:return TimeoutResult
+from.import SYSTEM_NAME
+if SYSTEM_NAME=='windows':
+ def create_virtual_drive(drive_letter,folder_path,size_mb=_C):command=f"subst {drive_letter}: {folder_path}";subprocess.run(command,shell=_A)
+ def remove_virtual_drive(drive_letter):command=f"subst {drive_letter}: /d";subprocess.run(command,shell=_A)
+elif SYSTEM_NAME=='linux':
+ def create_virtual_disk(drive_letter,folder_path,size_mb=100):subprocess.run(['dd','if=/dev/zero',f"of={drive_letter}",'bs=1M',f"count={size_mb}"]);subprocess.run(['mkfs.ext4',drive_letter]);subprocess.run(['mkdir','-p',folder_path]);subprocess.run(['sudo','mount','-o','loop',drive_letter,folder_path])
+ def remove_virtual_disk(folder_path):subprocess.run(['sudo','umount',folder_path])
+elif SYSTEM_NAME=='darwin':
+ def create_virtual_drive(drive_letter,folder_path,size_mb=100):subprocess.run([_E,'create','-size',f"{size_mb}m",'-fs','HFS+','-volname','VirtualDrive',drive_letter]);subprocess.run([_E,'attach',drive_letter,'-mountpoint',folder_path])
+ def remove_virtual_drive(folder_path):subprocess.run([_E,'detach',folder_path])
+else:...
 class DualInfinite:0
 def divide(a,b):return a/b if b!=0 else DualInfinite
 def remove_unused_libraries(code_str):
- with tempfile.NamedTemporaryFile(delete=_A,suffix=_D)as temp_file:temp_file.write(code_str.encode('utf-8'));temp_file_path=temp_file.name
+ with tempfile.NamedTemporaryFile(delete=_B,suffix=_D)as temp_file:temp_file.write(code_str.encode('utf-8'));temp_file_path=temp_file.name
  try:
-  command=['autoflake','--in-place','--remove-unused-variables',temp_file_path];result=subprocess.run(command,capture_output=_B,text=_B)
+  command=['autoflake','--in-place','--remove-unused-variables',temp_file_path];result=subprocess.run(command,capture_output=_A,text=_A)
   if result.returncode!=0:raise RuntimeError(f"Error running autoflake: {result.stderr}")
   with open(temp_file_path,'r',encoding='utf8')as temp_file:cleaned_code=temp_file.read()
   return cleaned_code
@@ -132,11 +144,11 @@ def repeat(func,times):
  return val
 def get_username():return getpass.getuser()
 def profile(func):
- def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_F;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
+ def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_G;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
  return wrapper
 def profile_function(function,filename,*inputs,**extra):
  profile=cProfile.Profile();profile.enable();return_=function(*inputs,**extra);profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
- with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_F);stats.print_stats()
+ with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_G);stats.print_stats()
  return return_
 if os.name=='nt':
  def get_current_pip_path():
@@ -153,12 +165,12 @@ class ArgumentHandler:
  def __init__(self,arguments=_C):
   if arguments is _C:arguments=sys.argv[1:]
   self.arguments=arguments;self.argument_list_length=len(arguments)
- def has_argument(self,argument,delete=_A):
+ def has_argument(self,argument,delete=_B):
   value_id=self.get_id(argument)
   if value_id<0:0
   if delete:self.arguments.remove(value_id);self.argument_list_length-=1
-  return _A
- def get_argument_by_flag(self,flag,delete=_A,default=_C):
+  return _B
+ def get_argument_by_flag(self,flag,delete=_B,default=_C):
   value_id=self.get_id(flag)
   if value_id<0:return default
   if value_id+1==len(self.arguments):return default
@@ -211,15 +223,15 @@ def decompress_directory_list(compressed):
    else:dfs(value,f"{current_path}/{key}".strip(A))
  dfs(compressed);return paths
 if version.minor<12:
- def minify(text,rename_important_names=_A,remove_docstrings=_B):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
+ def minify(text,rename_important_names=_B,remove_docstrings=_A):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
 else:
- def minify(text,rename_important_names=_A,remove_docstrings=_B):return text
+ def minify(text,rename_important_names=_B,remove_docstrings=_A):return text
 from.manipulation.list_utils import zipper_insert
 def separate_imports(lines):
  import_lines=[];other_lines=[]
  for line in lines:
   stripped_line=line.strip()
-  if stripped_line.startswith(_E)or stripped_line.startswith('from '):
+  if stripped_line.startswith(_F)or stripped_line.startswith('from '):
    if not line.startswith(' '):import_lines.append(line)
    else:other_lines.append(line)
   else:other_lines.append(line)
@@ -229,6 +241,6 @@ def compress_imports(import_lines):
  for line in import_lines:
   line=line.strip()
   if line.startswith('from '):from_imports.append(line)
-  elif line.startswith(_E):import_imports.extend(line.replace(_E,'').split(','))
+  elif line.startswith(_F):import_imports.extend(line.replace(_F,'').split(','))
  import_imports=sorted(set(import_imports));compressed_import_line=f"import {','.join(import_imports)}";output_lines=from_imports+([compressed_import_line]if import_imports else[]);return output_lines
 def compress_imports_in_code(code):imports,rest=separate_imports(code);imports=compress_imports(imports);return zipper_insert(imports,['\n']*len(imports))+rest

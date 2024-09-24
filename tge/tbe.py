@@ -851,59 +851,48 @@ def run_function_with_timeout(func:FunctionType, timeout:Number, *args, **kwargs
         except concurrent.futures.TimeoutError:
             return TimeoutResult
 
+from . import SYSTEM_NAME
 
+if SYSTEM_NAME == "windows":
+    def create_virtual_drive(drive_letter, folder_path, size_mb=None):
+        """Creates a virtual drive that appears as a drive letter on Windows. The drive though is just a shortcut to the specified folder."""
+        command = f"subst {drive_letter}: {folder_path}"
+        subprocess.run(command, shell=True)
 
+    def remove_virtual_drive(drive_letter):
+        """Removes a virtual drive that appears as a drive letter on Windows."""
+        command = f"subst {drive_letter}: /d"
+        subprocess.run(command, shell=True)
+        
+elif SYSTEM_NAME == "linux":
+    def create_virtual_disk(drive_letter, folder_path, size_mb=100):
+        # Create an empty file to act as the virtual disk
+        subprocess.run(['dd', 'if=/dev/zero', f'of={drive_letter}', 'bs=1M', f'count={size_mb}'])
+        
+        # Format the file as ext4 (or any other filesystem)
+        subprocess.run(['mkfs.ext4', drive_letter])
 
+        subprocess.run(['mkdir', '-p', folder_path])
 
+        # Mount the file as a loopback device
+        subprocess.run(['sudo', 'mount', '-o', 'loop', drive_letter, folder_path])
 
+    def remove_virtual_disk(folder_path):
+        
+        subprocess.run(['sudo', 'umount', folder_path])
 
+elif SYSTEM_NAME == "darwin":
+    def create_virtual_drive(drive_letter, folder_path, size_mb=100):
+        # Create an empty DMG file
+        subprocess.run(['hdiutil', 'create', '-size', f'{size_mb}m', '-fs', 'HFS+', '-volname', 'VirtualDrive', drive_letter])
 
+        # Mount the DMG file
+        subprocess.run(['hdiutil', 'attach', drive_letter, '-mountpoint', folder_path])
 
-
-
-# class AutocompleteTrie:
-#     def __init__(self):
-#         self.root = TrieNode()
-
-#     def insert(self, word):
-#         current_node = self.root
-#         for letter in word:
-#             if letter not in current_node.children:
-#                 current_node.children[letter] = TrieNode()
-#             current_node = current_node.children[letter]
-#         current_node.is_end_of_word = True
-
-#     def _find_node(self, prefix):
-#         current_node = self.root
-#         for letter in prefix:
-#             if letter not in current_node.children:
-#                 return None
-#             current_node = current_node.children[letter]
-#         return current_node
-
-#     def _autocomplete_helper(self, node, prefix):
-#         words = []
-#         if node.is_end_of_word:
-#             words.append(prefix)
-#         for letter, next_node in node.children.items():
-#             words.extend(self._autocomplete_helper(next_node, prefix + letter))
-#         return words
-
-#     def autocomplete(self, prefix):
-#         current_node = self._find_node(prefix)
-#         if not current_node:
-#             return []
-#         return self._autocomplete_helper(current_node, prefix)
-
-# def autocomplete(word_list):
-#     "Apparently this is faster than just checking for the prefix in a list comprehension one-liner"
-#     trie = AutocompleteTrie()
-#     for word in word_list:
-#         trie.insert(word)
-#     return trie.autocomplete
-
-
-
+    def remove_virtual_drive(folder_path):
+        subprocess.run(['hdiutil', 'detach', folder_path])
+else:... # ¯\_(ツ)_/¯
+    
 
 
 

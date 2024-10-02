@@ -3,7 +3,7 @@ _A='type'
 import inspect
 from types import FunctionType
 from typing import get_type_hints
-import importlib
+import importlib,os
 def get_docstring(obj):
  try:return inspect.getdoc(obj)
  except:return''
@@ -44,3 +44,11 @@ def count_functions_in_library(library_name):
  function_count=count_functions_in_module(module,library_name);return function_count
 class NoInputType:0
 class MissingReturnType:0
+def restrict_to_directory(allowed_dir):
+ def decorator(func):
+  def wrapper(file_path,*args,**kwargs):
+   real_allowed_dir=os.path.realpath(allowed_dir);real_file_path=os.path.realpath(file_path)
+   if not real_file_path.startswith(real_allowed_dir):raise PermissionError(f"Access denied: {file_path} is outside the allowed directory")
+   return func(file_path,*args,**kwargs)
+  return wrapper
+ return decorator

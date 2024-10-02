@@ -1,1 +1,1 @@
-iwr -Uri https://raw.githubusercontent.com/Miner3DGaming/TGE/main/installer/install_tge.py -OutFile install_tge.py
+iwr -Uri https://raw.githubusercontent.com/Miner3D-Gamer/TGE/main/installer/install_tge.py -OutFile install_tge.py

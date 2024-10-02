@@ -1,1 +1,1 @@
-curl -o install_tge.py https://raw.githubusercontent.com/Miner3DGaming/TGE/main/installer/install_tge.py
+curl -o install_tge.py https://raw.githubusercontent.com/Miner3D-Gamer/TGE/main/installer/install_tge.py

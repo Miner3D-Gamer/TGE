@@ -163,7 +163,7 @@ while True:
 
 if give_feedback < 1:
     print()
-base_github_url = "https://raw.githubusercontent.com/Miner3DGaming/TGE/main/"
+base_github_url = "https://raw.githubusercontent.com/Miner3D-Gamer/TGE/main/"
 while True:
 
     inp = argument_handler.get_argument_by_flag(

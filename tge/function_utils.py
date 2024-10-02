@@ -2,6 +2,7 @@ import inspect
 from types import FunctionType, ModuleType, MethodType
 from typing import Any, List, get_type_hints, Union
 import importlib
+import os
 
 def get_docstring(obj: object) -> str:
     """
@@ -183,3 +184,18 @@ class MissingReturnType:
     """Custom class to indicate that no return type annotation is specified."""
 
     pass
+
+def restrict_to_directory(allowed_dir):
+    def decorator(func):
+        def wrapper(file_path, *args, **kwargs):
+            # Get absolute paths to compare
+            real_allowed_dir = os.path.realpath(allowed_dir)
+            real_file_path = os.path.realpath(file_path)
+
+            # Check if the file is within the allowed directory
+            if not real_file_path.startswith(real_allowed_dir):
+                raise PermissionError(f"Access denied: {file_path} is outside the allowed directory")
+
+            return func(file_path, *args, **kwargs)
+        return wrapper
+    return decorator

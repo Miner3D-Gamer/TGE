@@ -3,7 +3,7 @@
 import time as tm
 
 start_import = tm.time()
-import os
+
 
 importing = __name__ != "__main__"
 
@@ -28,6 +28,7 @@ from typing import Literal
 import subprocess
 import shutil
 import requests
+import os
 
 
 def is_tge_outdated() -> bool:
@@ -47,7 +48,7 @@ def is_tge_outdated() -> bool:
         return file != content
 
 
-from .mini_lib import platform_mini # For faster import time
+from .mini_lib import platform_mini  # For faster import time
 
 if sys.platform.startswith("java"):
 
@@ -116,8 +117,56 @@ INIT_TIME_BEFORE_IMPORTING = tm.time() - start_import
 
 from . import library_utils
 
+__all__ = [
+    "library_utils",
+    "is_ffmpeg_installed",
+    "get_system",
+    "is_tge_outdated",
+    "__name__",
+    "__author__",
+    "__license__",
+    "__url__",
+    "__doc__",
+    "SYSTEM_NAME",
+]
+
 
 if assured_libraries:
+    __all__.extend(
+        [
+            "string_utils",
+            "list_utils",
+            "dict_utils",
+            "expansions",
+            "tge_pygame",
+            "tge_tkinter",
+            "binary_conversion",
+            "temperature_conversion",
+            "time_conversion",
+            "units_conversion",
+            "data_conversion",
+            "financial_calculations",
+            "geometry_calculations",
+            "math_functions",
+            "statistics_calculations",
+            "clipboard",
+            "cursor",
+            "keyboard",
+            "window_manager",
+            "validation",
+            "codec",
+            "console",
+            "random",
+            "internet",
+            "tbe",
+            "time_utils",
+            "file_operations",
+            "formatting",
+            "bool_operations",
+            "image_operations",
+            "function_utils",
+        ]
+    )
     from .manipulation import string_utils
     from .manipulation import list_utils
     from .manipulation import dictionary_utils as dict_utils
@@ -158,6 +207,8 @@ if assured_libraries:
 
     if is_ffmpeg_installed():
         from . import audio
+
+        __all__.append("audio")
 else:
     pygame_installed = library_utils.is_library_installed("pygame")
     numpy_installed = library_utils.is_library_installed("numpy")
@@ -174,63 +225,96 @@ else:
     appKit_installed = library_utils.is_library_installed("AppKit")
     simpleaudio_installed = library_utils.is_library_installed("simpleaudio")
     yt_dlp_installed = library_utils.is_library_installed("yt_dlp")
-    
 
+    __all__.extend(
+        [
+            "string_utils",
+            "list_utils",
+            "dict_utils",
+            "expansions",
+            "binary_conversion",
+            "temperature_conversion",
+            "time_conversion",
+            "units_conversion",
+            "data_conversion",
+            "tge_tkinter",
+            "financial_calculations",
+            "geometry_calculations",
+            "function_utils",
+            "time_utils",
+            "formatting",
+            "bool_operations",
+            "validation",
+        ]
+    )
     from .manipulation import string_utils
     from .manipulation import list_utils
     from .manipulation import dictionary_utils as dict_utils
     from .manipulation import expansions
-
-    if pygame_installed:
-        from .compatibility import tge_pygame
     from .compatibility import tge_tkinter
-
     from .conversion import binary as binary_conversion
     from .conversion import temperature as temperature_conversion
     from .conversion import time as time_conversion
     from .conversion import units as units_conversion
     from .conversion import data as data_conversion
-
     from .math_functions import financial_calculations
     from .math_functions import geometry_calculations
+    from .validation import validation
+    from . import time_utils
+    from . import formatting_utils as formatting
+    from . import bool_operations
+    from . import function_utils
+
+    if pygame_installed:
+        __all__.extend(["tge_pygame"])
+        from .compatibility import tge_pygame
 
     if numpy_installed:
+        __all__.extend(["math_functions", "statistics_calculations"])
         from .math_functions import math_functions
         from .math_functions import statistics_calculations
 
     if SYSTEM_NAME == "windows" or pyperclip_installed:
+        __all__.append("clipboard")
         from .system_interactions import clipboard_operations as clipboard
+    
     if SYSTEM_NAME == "windows" or pynput_installed:
+        __all__.append("cursor")
         from .system_interactions import cursor_operations as cursor
+    
     if SYSTEM_NAME == "windows" or xlib_installed:
+        __all__.append("keyboard")
         from .system_interactions import keyboard_operations as keyboard
-    if SYSTEM_NAME == "windows" or  SYSTEM_NAME == "linux" or (quartz_installed and appKit_installed):
+    
+    if (
+        SYSTEM_NAME == "windows"
+        or SYSTEM_NAME == "linux"
+        or (quartz_installed and appKit_installed)
+    ):
+        __all__.append("window_manager")
         from .system_interactions import window_manager
 
-    from .validation import validation
-
     if json5_installed and hjson_installed:
+        __all__.extend(["codec", "random", "file_operations"])
         from .codec import codec
         from . import random_generators as random
         from . import file_operations
 
     if python_minifier_installed:
+        __all__.extend(["tbe", "console_utils"])
         from . import tbe
         from . import console_utils as console
     if pytube_installed and yt_dlp_installed:
+        __all__.append("internet")
         from . import internet
-    from . import time_utils
-
-    
-    from . import formatting_utils as formatting
-    from . import bool_operations
 
     if pillow_installed and numpy_installed:
+        __all__.append("image_processing")
         from .image_processing import image_operations
-    from . import function_utils
 
     if gtts_installed and simpleaudio_installed:
         if is_ffmpeg_installed():
+            __all__.append("audio")
             from . import audio
 
     if assured_libraries is None:

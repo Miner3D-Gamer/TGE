@@ -15,10 +15,10 @@ def create_shortcut(source_path: str, shortcut_path: str, shortcut_name: str) ->
     shortcut.save()
 
 
-def create_symlink(source_path: str, link_path: str, link_name: str) -> str:
-    """Usually requires admin privileges"""
+def create_symlink(source_path: str, link_path: str) -> str:
+    "link_path is the symlink path, source_path is what your pointing to. Usually requires admin privileges"
     try:
-        os.symlink(source_path, link_path + "\\" + link_name)
+        os.symlink(source_path, link_path)
         return ""
     except OSError as e:
         return f"Error: {e}"

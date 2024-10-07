@@ -131,6 +131,11 @@ elif SYSTEM_NAME=='darwin':
 else:...
 class DualInfinite:0
 def divide(a,b):return a/b if b!=0 else DualInfinite
+def generate_every_capitalization_state(s):
+ def backtrack(index,path):
+  if index==len(s):result.append(''.join(path));return
+  backtrack(index+1,path+[s[index].lower()]);backtrack(index+1,path+[s[index].upper()])
+ result=[];backtrack(0,[]);return list(set(result))
 def remove_unused_libraries(code_str):
  with tempfile.NamedTemporaryFile(delete=_B,suffix=_D)as temp_file:temp_file.write(code_str.encode('utf-8'));temp_file_path=temp_file.name
  try:

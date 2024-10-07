@@ -1,7 +1,7 @@
 WHEEL_DELTA=120
 import pynput
 MOUSE=pynput.mouse.Controller()
-def getScreenDimensions():...
+def getScreenDimensions():0
 from screeninfo import get_monitors
 getScreenDimensions=lambda:get_monitors()[0].width,get_monitors()[0].width
 SCREEN_WIDTH,SCREEN_HEIGHT=getScreenDimensions()

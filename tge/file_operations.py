@@ -13,10 +13,20 @@ import re
 from .codec.codec import decode, base_x_decode_to_binary, base_x_encode_binary
 from . import SYSTEM_NAME
 
-def make_legal_filename(filename: str) -> str:
+def make_legal_filename(filename: str, replacer:str="_") -> str:
+    """
+    Replaces illegal characters in a filename with a specified character and trims whitespace.
+
+    Parameters:
+    filename (str): The input filename to sanitize.
+    replacer (str): The character to replace illegal characters with (default is '_').
+
+    Returns:
+    str: A sanitized filename with illegal characters replaced and leading/trailing whitespace removed.
+    """
     illegal_chars = r'[\\/*?"<>|:]'
     
-    legal_filename = re.sub(illegal_chars, '_', filename)
+    legal_filename = re.sub(illegal_chars, replacer, filename)
     
     legal_filename = legal_filename.strip()
     

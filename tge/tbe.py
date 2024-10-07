@@ -433,19 +433,39 @@ def number_to_words(number:int) -> str:
 
 
 def letter_to_number(letter:str)->int:
-        number = 0
-        for char in letter:
-            number = number * 26 + (ord(char.lower()) - ord('a')) + 1
-        return number - 1
+    """
+    Converts a string of letters to a corresponding integer based on a base-26 system.
+
+    Parameters:
+    letter (str): The input string of letters (e.g., 'A', 'B', 'AA').
+
+    Returns:
+    int: The corresponding integer value of the input string. 
+         For example, 'A' returns 0, 'B' returns 1, 'Z' returns 25, and 'AA' returns 26.
+    """
+    number = 0
+    for char in letter:
+        number = number * 26 + (ord(char.lower()) - ord('a')) + 1
+    return number - 1
 
 def number_to_letter(number:int)->str:
-        letters = ""
-        while number >= 0:
-            letters = chr((number % 26) + ord('A')) + letters
-            number = number // 26 - 1
-            if number < 0:
-                break
-        return letters
+    """
+    Converts an integer to a string of letters based on a base-26 system.
+
+    Parameters:
+    number (int): The input integer value (e.g., 0 for 'A', 1 for 'B', 25 for 'Z').
+
+    Returns:
+    str: The corresponding string of letters. 
+         For example, 0 returns 'A', 1 returns 'B', 25 returns 'Z', and 26 returns 'AA'.
+    """
+    letters = ""
+    while number >= 0:
+        letters = chr((number % 26) + ord('A')) + letters
+        number = number // 26 - 1
+        if number < 0:
+            break
+    return letters
 
 
 
@@ -844,6 +864,22 @@ class TimeoutResult:
     ...
 
 def run_function_with_timeout(func:FunctionType, timeout:Number, *args, **kwargs)->Union[Any, TimeoutResult]:
+    """
+    Executes a function with a specified timeout.
+
+    Parameters:
+    func (FunctionType): The function to execute.
+    timeout (Number): The maximum time to wait for the function to complete, in seconds.
+    *args: Positional arguments to pass to the function.
+    **kwargs: Keyword arguments to pass to the function.
+
+    Returns:
+    Union[Any, TimeoutResult]: The result of the function if it completes within the timeout, 
+                                or a TimeoutResult if the function times out.
+    
+    This function uses a thread pool executor to run the given function asynchronously and 
+    enforces a timeout on its execution.
+    """
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future = executor.submit(func, *args, **kwargs)
         try:
@@ -951,7 +987,33 @@ def divide(a:Number, b:Number)->Union[float,DualInfinite]:
 
 
 
+def generate_every_capitalization_state(s:str)->List[str]:
+    """
+    Generates all possible capitalization combinations of a given string.
 
+    Parameters:
+    s (str): The input string for which to generate capitalization states.
+
+    Returns:
+    List[str]: A list of all unique capitalization combinations of the input string.
+
+    This function uses a backtracking approach to explore every possible way to capitalize 
+    the letters in the input string, including all lowercase and uppercase variations.
+    
+    Example: 
+        > generate_every_capitalization_state('png')
+        > ['PNg', 'pNG', 'png', 'pnG', 'PnG', 'PNG', 'pNg', 'Png']
+    """
+    def backtrack(index:int, path:list)->None:
+        if index == len(s):
+            result.append(''.join(path))
+            return
+        backtrack(index + 1, path + [s[index].lower()])
+        backtrack(index + 1, path + [s[index].upper()])
+
+    result = []
+    backtrack(0, [])
+    return list(set(result))
 
 
 

@@ -6,7 +6,7 @@ from typing import Tuple
 MOUSE = pynput.mouse.Controller()
 
 
-def getScreenDimensions() -> tuple[int, int]: ...
+def getScreenDimensions() -> tuple[int, int]: "A line that tells my code colorizer to color this variable like a function"
 
 
 from screeninfo import get_monitors

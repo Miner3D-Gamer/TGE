@@ -4,6 +4,7 @@ from typing import Any, List, get_type_hints, Union
 import importlib
 import os
 
+
 def get_docstring(obj: object) -> str:
     """
     Retrieve the docstring of a given object.
@@ -123,7 +124,8 @@ def get_function_inputs(func: MethodType) -> List[dict]:
 
     return input_parameters
 
-def get_function_id_by_name(func_name)->Union[None,ModuleType]:
+
+def get_function_id_by_name(func_name) -> Union[None, ModuleType]:
     """
     Retrieve the function object (ID) from its name.
 
@@ -140,39 +142,42 @@ def get_function_id_by_name(func_name)->Union[None,ModuleType]:
     return None
 
 
-def count_functions_in_module(module:ModuleType, library_name:str)->int:
+def count_functions_in_module(module: ModuleType, library_name: str) -> int:
     """Count the number of functions in a module and its submodules.
 
-Args:
-    module (ModuleType): The module to analyze.
-    library_name (str): The library name to use for identifying submodules.
+    Args:
+        module (ModuleType): The module to analyze.
+        library_name (str): The library name to use for identifying submodules.
 
-Returns:
-    int: The total number of functions in the module and its submodules.
-"""
+    Returns:
+        int: The total number of functions in the module and its submodules.
+    """
     function_count = 0
     for name, obj in inspect.getmembers(module):
         if inspect.isfunction(obj):
             function_count += 1
         elif inspect.ismodule(obj) and obj.__package__.startswith(library_name):
-            function_count+=count_functions_in_module(obj, library_name)
+            function_count += count_functions_in_module(obj, library_name)
     return function_count
 
-def count_functions_in_library(library_name:str)->int:
+
+def count_functions_in_library(library_name: str) -> int:
     """Count the number of functions in a library by importing it and analyzing its modules.
 
-Args:
-    library_name (str): The name of the library to import and analyze.
+    Args:
+        library_name (str): The name of the library to import and analyze.
 
-Returns:
-    int: The total number of functions in the library, or -1 if the library could not be found."""
+    Returns:
+        int: The total number of functions in the library, or -1 if the library could not be found.
+    """
     try:
         module = importlib.import_module(library_name)
     except ModuleNotFoundError:
         return -1
-    function_count = count_functions_in_module(module,library_name)
-    
+    function_count = count_functions_in_module(module, library_name)
+
     return function_count
+
 
 class NoInputType:
     """Custom class to indicate that no input type annotation is specified."""
@@ -185,17 +190,59 @@ class MissingReturnType:
 
     pass
 
+
 def restrict_to_directory(allowed_dir):
+    """
+    A decorator factory that restricts a function to only allow file operations
+    within a specified directory.
+
+    Parameters:
+    allowed_dir (str): The directory path to restrict access to.
+
+    Returns:
+    function: A decorator that enforces the directory restriction.
+    """
+
     def decorator(func):
+        """
+        A decorator that wraps a function to ensure file operations are restricted
+        to the allowed directory.
+
+        Parameters:
+        func (function): The function to wrap.
+
+        Returns:
+        function: The wrapped function with directory restrictions applied.
+        """
+
         def wrapper(file_path, *args, **kwargs):
+            """
+            The wrapper function that checks if the provided file path is within the allowed directory.
+
+            Parameters:
+            file_path (str): The file path to validate.
+            *args: Additional arguments passed to the original function.
+            **kwargs: Additional keyword arguments passed to the original function.
+
+            Returns:
+            The result of the wrapped function if the file path is within the allowed directory.
+
+            Raises:
+            PermissionError: If the file path is outside the allowed directory.
+            """
+
             # Get absolute paths to compare
             real_allowed_dir = os.path.realpath(allowed_dir)
             real_file_path = os.path.realpath(file_path)
 
             # Check if the file is within the allowed directory
             if not real_file_path.startswith(real_allowed_dir):
-                raise PermissionError(f"Access denied: {file_path} is outside the allowed directory")
+                raise PermissionError(
+                    f"Access denied: {file_path} is outside the allowed directory"
+                )
 
             return func(file_path, *args, **kwargs)
+
         return wrapper
+
     return decorator

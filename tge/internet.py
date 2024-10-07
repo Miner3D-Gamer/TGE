@@ -109,7 +109,8 @@ def is_internet_connected(
 
 
 
-def download_list_of_youtube_videos(urls: list, directory: str, preferred_format: str="mp3", preferred_quality: str="192"):
+def download_list_of_youtube_videos(urls: list, directory: str, preferred_format: str="mp3", preferred_quality: str="192")->List[Union[None, str]]:
+    errors = []
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -127,10 +128,11 @@ def download_list_of_youtube_videos(urls: list, directory: str, preferred_format
         for url in urls:
             try:
                 ydl.download([url])
-                print(f"Downloaded and converted: {url}")
+                errors.append(None)
 
             except Exception as e:
-                print(f"An error occurred with URL {url}: {e}")
+                errors.append(e)
+    return errors
 
 def post_to_discord_webhook(
     message_content: str,
@@ -260,6 +262,18 @@ def is_url_available(url: str, check_url: bool = True) -> bool:
 
 
 def get_all_videos_from_youtube_playlist(playlist_url: str) -> Union[List[str], str]:
+    """
+    Retrieves all video URLs from a YouTube playlist.
+
+    Parameters:
+    playlist_url (str): The URL of the YouTube playlist.
+
+    Returns:
+    Union[List[str], str]: A list of video URLs if successful, or an error message if an exception occurs.
+
+    This function uses the PyTube library to extract video URLs from the provided playlist URL.
+    In case of an error, the exception is returned as a string.
+    """
     try:
         playlist = pytube.Playlist(playlist_url)
     

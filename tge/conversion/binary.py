@@ -3,9 +3,6 @@ from math import ceil
 HEX_CHARACTERS = "0123456789ABCDEF"
 
 
-
-
-
 def convert_binary_to_decimal(binary: str) -> int:
     """
     Convert a binary number to its decimal equivalent.
@@ -20,11 +17,12 @@ def convert_binary_to_decimal(binary: str) -> int:
     power = 0
 
     for digit in reversed(str(binary)):
-        if digit == '1':
-            decimal += 2 ** power
+        if digit == "1":
+            decimal += 2**power
         power += 1
 
     return decimal
+
 
 def convert_decimal_to_binary(decimal: int) -> str:
     """
@@ -36,11 +34,12 @@ def convert_decimal_to_binary(decimal: int) -> str:
     Returns:
     str: The binary representation of the input decimal integer.
     """
-    binary = ''
+    binary = ""
     while decimal > 0:
         binary += str(decimal % 2)
         decimal //= 2
     return binary[::-1]
+
 
 def convert_decimal_to_hexadecimal(decimal: int) -> str:
     """
@@ -64,6 +63,7 @@ def convert_decimal_to_hexadecimal(decimal: int) -> str:
 
     return hex_string
 
+
 def convert_hexadecimal_to_decimal(hexadecimal: str) -> int:
     """
     Convert a hexadecimal string to its decimal representation.
@@ -84,7 +84,22 @@ def convert_hexadecimal_to_decimal(hexadecimal: str) -> int:
     for hex_digit in reversed(hexadecimal):
         decimal = decimal * 16 + HEX_CHARACTERS.index(hex_digit)
 
+
 def convert_bytes(value: int, from_unit: str, to_unit: str) -> int:
+    """
+    Converts a given value between different byte units.
+
+    Parameters:
+    value (int): The numerical value to convert.
+    from_unit (str): The unit of the input value (e.g., "bytes", "megabytes").
+    to_unit (str): The target unit to convert the value to.
+
+    Returns:
+    int: The converted value in the target unit.
+
+    Raises:
+    ValueError: If an invalid unit is specified.
+    """
     units = [
         "bytes",
         "kilobytes",
@@ -98,7 +113,7 @@ def convert_bytes(value: int, from_unit: str, to_unit: str) -> int:
         "brontobytes",
         "geopbytes",
         "xobibytes",
-        "yobibytes"
+        "yobibytes",
     ]
 
     if from_unit not in units or to_unit not in units:

@@ -68,7 +68,7 @@ def calculate_average(lst: Iterable) -> float:
     length = len(lst)
 
     if length == 0:
-        return 0  
+        return 0
 
     total = sum(lst)
     average = total / length
@@ -103,7 +103,7 @@ def median(lst: Iterable) -> float:
     Returns:
         float: The median of the numbers in the list.
     """
-    sorted_lst = sorted(lst) 
+    sorted_lst = sorted(lst)
     n = len(sorted_lst)
     if n % 2 == 0:
         return (sorted_lst[n // 2 - 1] + sorted_lst[n // 2]) / 2
@@ -260,7 +260,7 @@ def zipper_insert(list1: list, list2: list) -> list:
         list2 (list): The second list.
 
     Returns:
-        list: A new list with elements from `list1` and `list2` interleaved. 
+        list: A new list with elements from `list1` and `list2` interleaved.
               Remaining elements from the longer list are appended at the end.
     """
     min_length = min(len(list1), len(list2))
@@ -368,17 +368,39 @@ def decompress_list_of_lists(list_to_decompress: List[list], width: int) -> List
         new_list.append(decompress_list(sub_list, width))
     return new_list
 
+
 class MaxSizeList(list):
-    def __init__(self, max_size):
+    def __init__(self, max_size: int):
+        """
+        Initializes a MaxSizeList object with a specified maximum size.
+
+        Parameters:
+        max_size (int): The maximum number of elements the list can hold. Once this limit is reached,
+        the oldest elements are removed when new elements are added.
+        """
         super().__init__()
         self.max_size = max_size
 
-    def append(self, item):
+    def append(self, item: Any):
+        """
+        Appends an item to the list, and if the list exceeds the maximum size,
+        removes the oldest element to maintain the size limit.
+
+        Parameters:
+        item: The item to append to the list.
+        """
         super().append(item)
         if len(self) > self.max_size:
             self.pop(0)
 
-    def extend(self, iterable):
+    def extend(self, iterable: Iterable):
+        """
+        Extends the list by appending elements from an iterable, and removes the oldest elements
+        if the list exceeds the maximum size.
+
+        Parameters:
+        iterable (iterable): An iterable containing the elements to extend the list with.
+        """
         super().extend(iterable)
         while len(self) > self.max_size:
             self.pop(0)

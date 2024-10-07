@@ -37,6 +37,19 @@ hbm_old = gdi32.SelectObject(hdc_mem, hbm)
 
 
 def screenshot(position: Tuple[int, int], size: Tuple[int, int]) -> Image.Image:
+    """
+    Captures a screenshot of a specific screen area.
+
+    Parameters:
+    position (Tuple[int, int]): The (x, y) coordinates of the top-left corner of the screen area to capture.
+    size (Tuple[int, int]): The (width, height) of the screen area to capture.
+
+    Returns:
+    Image.Image: An RGBA image of the captured screen area.
+
+    The function uses Win32 APIs to capture the screen. It converts the captured 
+    bitmap from BGRA to RGBA format before returning the image.
+    """
     hdc_screen = user32.GetDC(None)
     hdc_mem = gdi32.CreateCompatibleDC(hdc_screen)
     hbm = gdi32.CreateCompatibleBitmap(hdc_screen, size[0], size[1])
@@ -82,6 +95,18 @@ def screenshot(position: Tuple[int, int], size: Tuple[int, int]) -> Image.Image:
 
 
 def get_pixel_color(pos: Tuple[int, int]) -> Tuple[int, int, int]:
+    """
+    Retrieves the RGB color of a specific pixel on the screen.
+
+    Parameters:
+    pos (Tuple[int, int]): The (x, y) coordinates of the pixel on the screen.
+
+    Returns:
+    Tuple[int, int, int]: The (R, G, B) color values of the pixel at the specified position.
+
+    The function captures a 1x1 pixel area from the screen using Win32 APIs, extracts 
+    the color data, and returns it as an RGB tuple.
+    """
     gdi32.BitBlt(hdc_mem, 0, 0, 1, 1, hdc_screen, pos[0], pos[1], SRCCOPY)
 
     bmi = BITMAPINFO()

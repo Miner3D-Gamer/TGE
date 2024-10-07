@@ -1,3 +1,4 @@
+_C=None
 _B=False
 _A=True
 import re,pytube,os,re,yt_dlp,requests
@@ -17,21 +18,22 @@ def is_internet_connected(max_timeout=5,website='https://www.google.com'):
  try:urllib.request.urlopen(website,timeout=max_timeout);return _A
  except Exception as A:return _B
 def download_list_of_youtube_videos(urls,directory,preferred_format='mp3',preferred_quality='192'):
- A=directory
+ A=directory;B=[]
  if not os.path.exists(A):os.makedirs(A)
  C={'format':'bestaudio/best','postprocessors':[{'key':'FFmpegExtractAudio','preferredcodec':preferred_format,'preferredquality':preferred_quality}],'outtmpl':os.path.join(A,'%(title)s.%(ext)s')}
  with yt_dlp.YoutubeDL(C)as D:
-  for B in urls:
-   try:D.download([B]);print(f"Downloaded and converted: {B}")
-   except Exception as E:print(f"An error occurred with URL {B}: {E}")
-def post_to_discord_webhook(message_content,webhook,name,avatar_url=None,mention=_A,activate_voice=_B):
+  for E in urls:
+   try:D.download([E]);B.append(_C)
+   except Exception as F:B.append(F)
+ return B
+def post_to_discord_webhook(message_content,webhook,name,avatar_url=_C,mention=_A,activate_voice=_B):
  A=avatar_url;B={'content':message_content,'username':name,'tts':activate_voice,'allowed_mentions':{'parse':[]}if mention else{}}
- if A is not None:B['avatar_url']=A
+ if A is not _C:B['avatar_url']=A
  C=requests.post(webhook,json=B);return C.status_code,C.content
 def extract_youtube_info(link):
  C='/shorts/';A=link;D=urlparse(A);B=parse_qs(D.query)
  if A.__contains__(C):A=A.replace(C,'/watch?v=')
- E=B.get('v',[None])[0];F={A:B[0]for(A,B)in B.items()if A!='v'};return{'video_id':E,'params':F}
+ E=B.get('v',[_C])[0];F={A:B[0]for(A,B)in B.items()if A!='v'};return{'video_id':E,'params':F}
 def download_from_url_to_dir(url,dir,create=_A):
  A=requests.get(url)
  try:

@@ -19,7 +19,7 @@ Originally designed for console-based games, TGE has evolved into a versatile ge
 
 ## Downloader Options
 
-The downloader supports additional inputs to customize the installation:
+The downloader supports additional inputs to customize the installation without user intervention:
 
 ### `-suppression_level` (Default: 0)
 

@@ -13,7 +13,7 @@ def mux_four(a,b,c,d,sel_1,sel_0):A=[a,b,c,d];B=sel_1<<1|sel_0;return A[B]
 def mux_eight(a,b,c,d,e,f,g,h,sel_2,sel_1,sel_0):A=[a,b,c,d,e,f,g,h];B=sel_2<<2|sel_1<<1|sel_0;return A[B]
 def mux_any(inputs,selectors):
  B=selectors;A=inputs
- if len(A)!=2**len(B):raise ValueError('Number of inputs must be 2^n where n is the number of selectors.')
+ if len(A)!=2**len(B):raise ValueError('Union[int,float] of inputs must be 2^n where n is the number of selectors.')
  C=0
  for(D,E)in enumerate(reversed(B)):C|=E<<D
  return A[C]
@@ -28,8 +28,9 @@ def demux(input,*B):
 def half_adder(a,b):return xor(a,b),a and b
 def full_adder(a,b,cin=_A):A,B=half_adder(a,b);C,D=half_adder(A,cin);return C,B or D
 def four_bit_adder(a,b,carry=_A):A=carry;A,B=full_adder(a[3],b[3],A);A,C=full_adder(a[2],b[2],A);A,D=full_adder(a[1],b[1],A);A,E=full_adder(a[0],b[0],A);return E,D,C,B,A
-def two_complement(b):A=tuple(not A for A in b);B=_A,_A,_A,True;return four_bit_adder(A,B)[0:4]
-def four_bit_subtractor(a,b,borrow=_A):A=two_complement(b);B,C=four_bit_adder(a,A,borrow);return B+(C,)
+def flip_four_bits(b):return not b[0],not b[1],not b[2],not b[3]
+def two_complement(b):A=flip_four_bits(b);B=_A,_A,_A,True;return four_bit_adder(A,B)
+def four_bit_subtractor(a,b,borrow=_A):A=two_complement(b);B=four_bit_adder(a[:4],A[:4],borrow);return B
 def any_bit_adder(a,b,carry=_A):
  A=carry
  if len(a)!=len(b):raise ValueError('Input lists must have the same length')

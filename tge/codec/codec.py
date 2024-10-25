@@ -19,7 +19,7 @@ html, json
 
 
 
-def base_x_encode_binary(binary_data:bytes, base:int) -> str:
+def base_x_decode_from_binary(binary_data:bytes, base:int) -> str:
     decimal_value = int.from_bytes(binary_data, byteorder='big')
 
     if base < 2 or base > 95:
@@ -34,7 +34,7 @@ def base_x_encode_binary(binary_data:bytes, base:int) -> str:
 
     return result or "0"
 
-def base_x_decode_to_binary(data_in_base_x:str, base:int) -> bytes:
+def base_x_encode_to_binary(data_in_base_x:str, base:int) -> bytes:
     if base < 2 or base > 95:
         raise ValueError("Base must be between 2 and 95 included")
 
@@ -69,8 +69,8 @@ def encode(x: str) -> str:
             the encoding was successful or not, and either the encoded string or an error message
             if the encoding failed.
     """
-    x = base_x_encode_binary(x.encode(), 95)
-    x = hexlify(x.encode()).decode("utf8")
+    y = base_x_encode_to_binary(x, 95)
+    x = hexlify(y).decode("utf8")
     return x
 
 
@@ -85,8 +85,8 @@ def decode(data: str) -> str:
         A tuple containing a boolean indicating whether the decoding was successful and
         the decoded string if successful, or an error message if unsuccessful.
     """
-    data = unhexlify(data)
-    decoded_data = base_x_decode_to_binary(data, 95).decode("utf8")
+    new_data = unhexlify(data)
+    decoded_data = base_x_decode_from_binary(new_data, 95)
     return decoded_data
 
 

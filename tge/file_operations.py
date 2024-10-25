@@ -5,12 +5,12 @@ import zipfile
 import math
 import hashlib
 import uuid
-from typing import Union, Tuple, Iterable, List
+from typing import Union, Tuple, Iterable, List, Dict, Optional
 from collections import defaultdict
-import tkinter as tk
 import re
+from tkinter import filedialog
 
-from .codec.codec import decode, base_x_decode_to_binary, base_x_encode_binary
+from .codec.codec import decode, base_x_encode_to_binary, base_x_decode_from_binary
 from . import SYSTEM_NAME
 
 def make_legal_filename(filename: str, replacer:str="_") -> str:
@@ -76,56 +76,6 @@ def delete_directory(directory: str) -> Tuple[bool, str]:
         return False, "Error deleting directory"
 
 
-def write_save_data(name: str, dir: str, data) -> Tuple[bool, str]:
-    """
-    Saves data to a file with the given name in the specified directory.
-
-    :param name: The name of the file to be saved, without the ".save" extension.
-    :param dir: The directory where the file should be saved.
-    :param data: The data to be written to the file.
-    :return: A tuple (success, message) where success is True if the file was saved
-             successfully and False otherwise, and message is a string with a status
-             message or an error message if an exception occurred.
-    """
-    try:
-        name = name.replace(".save", "")
-        file_path = os.path.join(dir, f"{name}.save")
-        with open(file_path, "w") as f:
-            f.write(data)
-            return True, "File saved"
-    except Exception as e:
-        return False, f"Error saving file: {str(e)}"
-
-
-def load_save_data(name: str, dir: str) -> Tuple[bool, str]:
-    """
-    Loads a file and returns the data.
-
-    Args:
-        name (str): The name of the .save file to load.
-        dir (str): The directory containing the file to load.
-
-    Returns:
-        tuple: A tuple containing a boolean indicating success and the decoded data.
-            The boolean is True if the file was loaded and decoded successfully, and False
-            otherwise. The decoded data is returned as bytes if decoding was successful,
-            or a string containing an error message if decoding was not successful.
-    """
-    try:
-        name = name.rstrip(".save", "")
-        file_path = os.path.join(dir, f"{name}.save")
-        if os.path.exists(file_path):
-            with open(file_path, "rb") as f:
-                data = f.read()
-                success, decoded_data = decode(data)
-                if success:
-                    return True, decoded_data
-                else:
-                    return False, decoded_data
-        else:
-            return False, "File not found"
-    except Exception as e:
-        return False, f"Error loading file: {str(e)}"
 
 
 def move_file(source_path: str, destination_path: str) -> None:
@@ -148,7 +98,7 @@ def move_file(source_path: str, destination_path: str) -> None:
     shutil.move(source_path, destination_path)
 
 
-def copy_file(source_path: str, destination_path: str) -> bool:
+def copy_file(source_path: str, destination_path: str) -> None:
     """
     Copies a file from the source path to the destination path.
 
@@ -162,7 +112,7 @@ def copy_file(source_path: str, destination_path: str) -> bool:
     shutil.copy(source_path, destination_path)
 
 
-def rename_file(source_path: str, name: str) -> bool:
+def rename_file(source_path: str, name: str) -> None:
     """
     Renames a file located at the given source path with the specified name.
 
@@ -178,7 +128,7 @@ def rename_file(source_path: str, name: str) -> bool:
     os.rename(source_path, new_path)
 
 
-def copy_directory(source_path: str, destination_path: str) -> bool:
+def copy_directory(source_path: str, destination_path: str) -> None:
     """
     Copy the contents of a source directory to a destination directory.
 
@@ -199,7 +149,7 @@ def copy_directory(source_path: str, destination_path: str) -> bool:
     shutil.copytree(source_path, destination_path)
 
 
-def move_directory(source_path: str, destination_path: str) -> bool:
+def move_directory(source_path: str, destination_path: str) -> None:
     """
     Move a directory or file from the source path to the destination path.
 
@@ -220,7 +170,7 @@ def move_directory(source_path: str, destination_path: str) -> bool:
     shutil.move(source_path, destination_path)
 
 
-def rename_directory(source_path: str, name: str) -> bool:
+def rename_directory(source_path: str, name: str) -> None:
     """
     Renames a directory at the given source path with the new provided name.
 
@@ -273,78 +223,79 @@ def get_folder_name(path: str) -> str:
         return final_file_path
 
 
-def combine_files(directory: str, output_directory: str, name: str) -> bool:
-    """
-    Combines multiple files from a directory into a single encrypted file.
+# def combine_files(directory: str, output_directory: str, name: str) -> bool:
+#     """
+#     Combines multiple files from a directory into a single encrypted file.
 
-    Args:
-        directory (str): The directory path containing the files to be combined.
-        output_directory (str): The directory path where the combined file will be saved.
-        name (str): The name of the combined file (without extension).
+#     Args:
+#         directory (str): The directory path containing the files to be combined.
+#         output_directory (str): The directory path where the combined file will be saved.
+#         name (str): The name of the combined file (without extension).
 
-    Returns:
-        bool: True if the files are successfully combined and saved as an encrypted file,
-              False if an error occurs during the process.
+#     Returns:
+#         bool: True if the files are successfully combined and saved as an encrypted file,
+#               False if an error occurs during the process.
 
-    Raises:
-        Any exceptions raised during the execution will be caught and cause the function to return False.
-    """
-    try:
-        file_data = []
-        for file_name in os.listdir(directory):
-            file_path = os.path.join(directory, file_name)
+#     Raises:
+#         Any exceptions raised during the execution will be caught and cause the function to return False.
+#     """
+#     try:
+#         file_data = []
+#         for file_name in os.listdir(directory):
+#             file_path = os.path.join(directory, file_name)
 
-            if os.path.isfile(file_path):
-                with open(file_path, "rb") as file:
-                    file_bytes = file.read()
-                    file_data.append((file_name, file_bytes))
+#             if os.path.isfile(file_path):
+#                 with open(file_path, "rb") as file:
+#                     file_bytes = file.read()
+#                     file_data.append((file_name, file_bytes))
 
-        combined_data = b""
-        for file_name, file_bytes in file_data:
-            combined_data += file_name.encode() + b":" + file_bytes + b"|"
+#         combined_data = b""
+#         for file_name, file_bytes in file_data:
+#             combined_data += file_name.encode() + b":" + file_bytes + b"|"
 
-        encoded_data = base_x_encode_binary(combined_data)
+#         encoded_data = base_x_encode_to_binary(combined_data)
 
-        output_file = os.path.join(output_directory, name + ".encrypted")
-        with open(output_file, "wb") as file:
-            file.write(encoded_data)
+#         output_file = os.path.join(output_directory, name + ".encrypted")
+#         with open(output_file, "wb") as file:
+#             file.write(encoded_data)
 
-        return True
-    except:
-        return False
+#         return True
+#     except:
+#         return False
 
 
-def split_file(directory: str, output_directory: str) -> bool:
-    """
-    Splits a combined encrypted file into individual files and saves them to the output directory.
+# def split_file(directory: str, output_directory: str) -> bool:
+#     """
+#     Splits a combined encrypted file into individual files and saves them to the output directory.
 
-    Args:
-        directory (str): The path of the combined encrypted file.
-        output_directory (str): The directory path where the individual files will be saved.
+#     Args:
+#         directory (str): The path of the combined encrypted file.
+#         output_directory (str): The directory path where the individual files will be saved.
 
-    Returns:
-        bool: True if the combined file is successfully split into individual files and saved,
-              False if an error occurs during the process.
+#     Returns:
+#         bool: True if the combined file is successfully split into individual files and saved,
+#               False if an error occurs during the process.
 
-    Raises:
-        Any exceptions raised during the execution will be caught and cause the function to return False.
-    """
-    try:
-        with open(directory, "rb") as file:
-            encoded_data = file.read()
+#     Raises:
+#         Any exceptions raised during the execution will be caught and cause the function to return False.
+#     """
+#     try:
+#         with open(directory, "rb") as file:
+#             encoded_data = file.read()
 
-        combined_data = base_x_decode_to_binary(encoded_data).decode("utf-8")
+#         combined_data:str = base_x_decode_from_binary(encoded_data)
 
-        file_data = combined_data.split(b"|")[:-1] 
+#         file_data = combined_data.split(b"|")[:-1] 
 
-        for data in file_data:
-            file_name, file_bytes = data.split(b":", 1)
-            output_file_path = os.path.join(output_directory, file_name.decode())
-            with open(output_file_path, "wb") as file:
-                file.write(file_bytes)
-        return True
-    except:
-        return False
+#         for data in file_data:
+#             data:str
+#             file_name, file_bytes = data.split(b":", 1)
+#             output_file_path = os.path.join(output_directory, file_name)
+#             with open(output_file_path, "wb") as wfile:
+#                 wfile.write(bytes(file_bytes))
+#         return True
+#     except:
+#         return False
 
 
 
@@ -375,7 +326,7 @@ def does_directory_exist(directory: str) -> bool:
     return os.path.exists(directory) and os.path.isdir(directory)
 
 
-def delete_file(directory: str) -> bool:
+def delete_file(directory: str) -> None:
     """
     Deletes a file from a directory.
 
@@ -426,6 +377,15 @@ def are_directories_the_same(
         directory1, dir1_blacklist
     ) == generate_uuid_from_directory(directory2, dir2_blacklist)
 
+def count_files_in_directory(directory_path, extension_backlist=[]) -> int:
+    file_count = 0
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            if file.endswith(tuple(extension_backlist)):
+                continue
+            file_count += 1
+    return file_count
+            
 
 def count_items_in_directory(directory_path) -> int:
     """
@@ -506,7 +466,7 @@ def get_file_size(file_path: str) -> int:
         return 0
 
 
-def get_file_creation_time(file_path: str) -> str:
+def get_file_creation_time(file_path: str) -> float:
     """
     Retrieve the creation time of a file.
 
@@ -524,7 +484,7 @@ def get_file_creation_time(file_path: str) -> str:
     if os.path.isfile(file_path):
         return os.path.getctime(file_path)
     else:
-        return ""
+        return -1
 
 
 def count_functions_in_file(file_path: str) -> Tuple[int, list]:
@@ -592,8 +552,8 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
             if file.endswith(".py"):
                 file_path = os.path.join(root, file)
                 try:
-                    with open(file_path, "r", encoding="utf-8") as file:
-                        tree = ast_parse(file.read())
+                    with open(file_path, "r", encoding="utf-8") as rfile:
+                        tree = ast_parse(rfile.read())
                         functions = [
                             node.name
                             for node in ast_walk(tree)
@@ -677,7 +637,7 @@ def save_counted_function_names_from_directory(
         return False
 
 
-def input_file_path(extension: str = None) -> str:
+def input_file_path(extension: Optional[str] = None) -> str:
     """
     Prompts the user to select a file path for saving a file.
 
@@ -702,10 +662,10 @@ def input_file_path(extension: str = None) -> str:
         >>> input_file_path(extension=".txt")
         '/path/to/save/file.txt'
     """
-    return tk.filedialog.asksaveasfilename(defaultextension=extension)
+    return filedialog.asksaveasfilename(defaultextension=extension)
 
 
-def input_directory_path() -> str:
+def ask_for_directory_path() -> str:
     """
     Prompt user to select a directory using a file dialog.
 
@@ -715,7 +675,7 @@ def input_directory_path() -> str:
     Returns:
         str: The path of the selected directory.
     """
-    save_path = tk.filedialog.askdirectory()
+    save_path = filedialog.askdirectory()
     return save_path
 
 
@@ -769,11 +729,11 @@ def zip_directory(
         if create_missing_directory_bool:
             create_missing_directory(output_path)
 
-        with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zipfile:
+        with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zipfile_file:
             for root, dirs, files in os.walk(directory_path):
                 for file in files:
                     file_path = os.path.join(root, file)
-                    zipfile.write(file_path, os.path.relpath(file_path, directory_path))
+                    zipfile_file.write(file_path, os.path.relpath(file_path, directory_path))
         return True, True
     except:
         return False, True
@@ -1044,7 +1004,7 @@ def _compress_directory_list_serialize_trie(
 ) -> dict:
     "Serialize a Trie into a compressed dictionary format representing a directory structure."
     if not node.children:
-        return []
+        return {}
 
     if len(node.children) == 1 and node.is_end_of_path == False:
         key, child = next(iter(node.children.items()))
@@ -1066,7 +1026,7 @@ def _compress_directory_list_serialize_trie(
     return result
 
 
-def compress_directory_list(paths: Iterable) -> "dict[Union[list,str]]":
+def compress_directory_list(paths: Iterable) -> Dict[str, Union[List[str], dict]]:
     "Compress a list of file paths into a dictionary format representing the directory structure."
     trie = _compress_directory_list_build_trie(paths)
     compressed = _compress_directory_list_serialize_trie(trie)

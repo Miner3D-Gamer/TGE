@@ -1,7 +1,7 @@
 from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly, kCGNullWindowID  # type: ignore
 from AppKit import NSWorkspace, NSApplication, NSApp, NSWindow  # type: ignore
 
-from typing import Optional
+from typing import Optional, Union, Tuple
 
 
 def is_window_minimized(window: NSWindow):
@@ -14,11 +14,14 @@ def minimize_window(window: NSWindow):
     window.performMiniaturize_(None)
 
 
-def get_window_position(window: NSWindow):
+def get_window_position(window: NSWindow) -> Optional[Tuple[int, int, int, int]]:
     """Get the position and size of the window. Return None if minimized."""
-    frame = window.frame()
-    x, y = frame.origin.x, frame.origin.y
-    return x, y
+    try:
+        frame = window.frame()
+        x, y = frame.origin.x, frame.origin.y
+        return x, y, frame.size.width, frame.size.height
+    except:
+        return None
 
 
 def maximize_window(window: NSWindow):

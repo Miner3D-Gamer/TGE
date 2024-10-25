@@ -1,22 +1,27 @@
+# type: ignore
 import os, json
 
 import tge
-import tge.function_utils
-import tge.library_utils
 import base64
 
 tge.console.clear()
 
 total_functions = tge.function_utils.count_functions_in_library("tge")
 print("TGE has %s functions" % total_functions)
+total_files = tge.file_operations.count_files_in_directory("./tge", extension_backlist=[
+    ".pyc",
+    ".txt",
+    ".hashed",
+])
+print("TGE has %s files" % total_files)
+
+
 undocumented = tge.tbe.print_undocumented_functions_in_directory()
 print(
     f"{total_functions-undocumented}/{total_functions} Functions are documented, that means {((total_functions-undocumented)/total_functions)*100}% of functions are documented and {undocumented} are still missing"
 )
 print()
-tge.function_utils.print_check_for_functions_in_module_with_missing_notations(
-    tge.list_utils
-)
+# tge.function_utils.print_check_for_functions_in_module_with_missing_notations(tge)
 # print("lines:", tge.tbe.count_lines_in_directory("./tge"))
 dir = f"{os.getcwd()}/tge/"
 
@@ -64,7 +69,7 @@ try:
     os.remove(output)
 except PermissionError:
     print(
-        "VS is still using the minified tge folder, delete it manually or just leave it"
+        "Something is still using the minified tge folder, delete it manually or just leave it"
     )
 except FileNotFoundError:
     ...
@@ -91,22 +96,20 @@ if tge.tbe.determine_affirmative(input("Minify?: ")):
 
                 with open(output + file_path, "w", encoding="utf8") as o:
                     data = tge.tbe.compress_imports_in_code(
-                        
-                            tge.tbe.remove_unused_libraries(
-                                "".join(
-                                    [
-                                        tge.string_utils.left_replace(line, "	", " ")
-                                        for line in tge.tbe.minify(
-                                            f.read(),
-                                            rename_important_names=False,
-                                            remove_docstrings=True,
-                                        )
-                                    ]
-                                )
+                        tge.tbe.remove_unused_libraries(
+                            "".join(
+                                [
+                                    tge.string_utils.left_replace(line, "	", " ")
+                                    for line in tge.tbe.minify(
+                                        f.read(),
+                                        rename_important_names=False,
+                                        remove_docstrings=True,
+                                    )
+                                ]
                             )
-                            if file.endswith(".py")
-                            else f.read()
-                        
+                        )
+                        if file.endswith(".py")
+                        else f.read()
                     )
                     o.write("".join(data))
 

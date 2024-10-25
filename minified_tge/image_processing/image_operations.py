@@ -1,22 +1,15 @@
 _A=None
-from PIL import Image
+from PIL import Image,GifImagePlugin
 import numpy as np
 from..math_functions.math_functions import clamp
 import math
 from.middle_man import*
-def rotate_image_file(image_path,angle):image=Image.open(image_path);rotated_image=image.rotate(angle);rotated_image.save(image_path)
-def flip_image_file_vertically(image_path):image=Image.open(image_path);image=image.transpose(Image.FLIP_TOP_BOTTOM);image.save(image_path)
-def flip_image_file_horizontally(image_path):image=Image.open(image_path);image=image.transpose(Image.FLIP_LEFT_RIGHT);image.save(image_path);return True
-def add_anti_aliasing_to_image_file(image_path):image=Image.open(image_path);image=image.resize((image.width*2,image.height*2));image.save(image_path);image=Image.open(image_path);image=image.resize((image.width//2,image.height//2));image.save(image_path)
-def count_gif_frames(file_path):
- with Image.open(file_path)as im:
-  if hasattr(im,'is_animated')and im.is_animated:
-   frame_count=0
-   while True:
-    try:im.seek(frame_count);frame_count+=1
-    except EOFError:break
-   return frame_count
-  else:return-1
+def count_gif_frames(gif):
+ frame_count=0
+ try:
+  while True:gif.seek(frame_count);frame_count+=1
+ except EOFError:pass
+ return frame_count
 def image_to_ascii(image_path='',image=_A,width=_A,unicode=False,ascii_chars=''):
  Image.MAX_IMAGE_PIXELS=_A
  if image_path:

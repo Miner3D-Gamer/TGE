@@ -1,34 +1,30 @@
 from itertools import permutations as itertools_permutations
-from collections.abc import Iterable
 from typing import Any, Union, List
+from collections.abc import Iterable
+import math
 
-
-def list_mul(lst: Iterable) -> tuple:
+def list_mul(lst: List[Union[int, float]]) -> Union[int, float]:
     """
     Multiply all the numbers in the given list and return the result along with a success message.
 
     :param lst: A list of numbers to multiply.
-    :type lst: Iterable
+    :type lst: list
     :return: A tuple containing the product of the numbers in the list and a success message.
     :rtype: tuple
     :raises TypeError: If the list contains non-numeric values.
     """
-    prod = 1
-
-    for item in lst:
-        if isinstance(item, (int, float)):
-            prod = prod * item
-    return prod
+    
+    return math.prod(lst)
 
 
-def remove_duplicates(list: Iterable) -> list:
+def remove_duplicates(list: list) -> list:
     """
     Removes duplicates from a given list and returns it.
 
     :param list: A list of items.
-    :type list: Iterable
+    :type list: list
     :return: A new list containing no duplicates.
-    :rtype: Iterable
+    :rtype: list
     """
     result = []
     for item in list:
@@ -37,12 +33,12 @@ def remove_duplicates(list: Iterable) -> list:
     return result
 
 
-def count_occurrences(list: Iterable, item: str) -> int:
+def count_occurrences(list: list, item: str) -> int:
     """
     Counts the number of occurrences of a given item in a list.
 
     :param list: The list to search for occurrences.
-    :type list: Iterable
+    :type list: list
     :param item: The item to count occurrences of.
     :type item: str
     :return: The number of occurrences of the given item in the list.
@@ -55,12 +51,12 @@ def count_occurrences(list: Iterable, item: str) -> int:
     return count
 
 
-def calculate_average(lst: Iterable) -> float:
+def calculate_average(lst: list) -> float:
     """
     Calculate the average (mean) of a list of numbers.
 
     Args:
-        lst (Iterable): The list of numbers to calculate the average of.
+        lst (list): The list of numbers to calculate the average of.
 
     Returns:
         float: The average of the numbers in the list. Returns 0 if the list is empty.
@@ -75,13 +71,13 @@ def calculate_average(lst: Iterable) -> float:
     return average
 
 
-def find_common_elements(lst1: Iterable, lst2: Iterable) -> list:
+def find_common_elements(lst1: list, lst2: list) -> list:
     """
     Find common elements between two lists.
 
     Args:
-        lst1 (Iterable): The first list of elements.
-        lst2 (Iterable): The second list of elements.
+        lst1 (list): The first list of elements.
+        lst2 (list): The second list of elements.
 
     Returns:
         list: A list of elements that are common to both `lst1` and `lst2`.
@@ -93,12 +89,12 @@ def find_common_elements(lst1: Iterable, lst2: Iterable) -> list:
     return result
 
 
-def median(lst: Iterable) -> float:
+def median(lst: list) -> float:
     """
     Calculate the median of a list of numbers.
 
     Args:
-        lst (Iterable): The list of numbers to find the median of.
+        lst (list): The list of numbers to find the median of.
 
     Returns:
         float: The median of the numbers in the list.
@@ -111,12 +107,12 @@ def median(lst: Iterable) -> float:
         return sorted_lst[n // 2]
 
 
-def reverse_list(lst: Iterable) -> list:
+def reverse_list(lst: list) -> list:
     """
     Reverse the order of elements in a list.
 
     Args:
-        lst (Iterable): The list to reverse.
+        lst (list): The list to reverse.
 
     Returns:
         list: A new list with the elements in reverse order.
@@ -124,12 +120,12 @@ def reverse_list(lst: Iterable) -> list:
     return lst[::-1]
 
 
-def find_max_min_difference(lst: Iterable) -> int:
+def find_max_min_difference(lst: list) -> int:
     """
     Find the difference between the maximum and minimum values in a list.
 
     Args:
-        lst (Iterable): The list of numbers.
+        lst (list): The list of numbers.
 
     Returns:
         int: The difference between the maximum and minimum values in the list.
@@ -137,14 +133,14 @@ def find_max_min_difference(lst: Iterable) -> int:
     return max(lst) - min(lst)
 
 
-def find_missing_number(lst: Iterable) -> int:
+def find_missing_number(lst: list) -> int:
     """
     Find the missing number in a list of consecutive numbers.
 
     Assumes the list contains all numbers from 1 to `n`, except one.
 
     Args:
-        lst (Iterable): The list of consecutive numbers with one missing.
+        lst (list): The list of consecutive numbers with one missing.
 
     Returns:
         int: The missing number.
@@ -152,25 +148,25 @@ def find_missing_number(lst: Iterable) -> int:
     return sum(range(1, len(lst) + 1)) - sum(lst)
 
 
-def remove_whitespace_from_list(lst: Iterable) -> list:
+def remove_whitespace_from_list(lst: list) -> list:
     """
     Removes whitespace characters from all elements in a list of strings.
 
     Args:
-        lst (list): Iterable of strings
+        lst (list): list of strings
 
     Returns:
-        list: Iterable with whitespace removed from all elements
+        list: list with whitespace removed from all elements
     """
     return [string.replace(" ", "") for string in lst]
 
 
-def exponential_average(lst: Iterable) -> float:
+def exponential_average(lst: list) -> float:
     """
     Calculate the average of a list of numbers.
 
     Args:
-        lst (Iterable): The list of numbers to average.
+        lst (list): The list of numbers to average.
 
     Returns:
         float: The average of the numbers in the list.
@@ -178,13 +174,13 @@ def exponential_average(lst: Iterable) -> float:
     return sum(lst) / len(lst)
 
 
-def greatest_product(lst: Iterable, lst2: Iterable) -> int:
+def greatest_product(lst: list, lst2: list) -> int:
     """
     Compute the product of the largest elements from two lists.
 
     Args:
-        lst (Iterable): The first list of numbers.
-        lst2 (Iterable): The second list of numbers.
+        lst (list): The first list of numbers.
+        lst2 (list): The second list of numbers.
 
     Returns:
         int: The product of the maximum values from the two lists.
@@ -192,12 +188,12 @@ def greatest_product(lst: Iterable, lst2: Iterable) -> int:
     return max(lst) * max(lst2)
 
 
-def permutations(lst: Iterable) -> list:
+def permutations(lst: list) -> list:
     """
     Generate all permutations of a list.
 
     Args:
-        lst (Iterable): The list to permute.
+        lst (list): The list to permute.
 
     Returns:
         list: A list of tuples, where each tuple is a permutation of the input list.
@@ -205,12 +201,12 @@ def permutations(lst: Iterable) -> list:
     return list(itertools_permutations(lst))
 
 
-def limit_list(lst: Iterable, limit: int) -> list:
+def limit_list(lst: list, limit: int) -> list:
     """
     Limit a list to a specified number of elements.
 
     Args:
-        lst (Iterable): The list to limit.
+        lst (list): The list to limit.
         limit (int): The maximum number of elements to include in the result.
 
     Returns:
@@ -219,12 +215,12 @@ def limit_list(lst: Iterable, limit: int) -> list:
     return lst[:limit]
 
 
-def get_items_from_list(lst: Iterable, start: int, end: int) -> list:
+def get_items_from_list(lst: list, start: int, end: int) -> list:
     """
     Extract a sublist from a list based on start and end indices.
 
     Args:
-        lst (Iterable): The list to slice.
+        lst (list): The list to slice.
         start (int): The starting index of the sublist.
         end (int): The ending index of the sublist.
 
@@ -234,12 +230,12 @@ def get_items_from_list(lst: Iterable, start: int, end: int) -> list:
     return lst[start:end]
 
 
-def sort_list_of_dictionaries(lst: Iterable, key: str) -> tuple:
+def sort_list_of_dictionaries(lst: list, key: str) -> tuple:
     """
     Sort a list of dictionaries by a specified key.
 
     Args:
-        lst (Iterable): The list of dictionaries to sort.
+        lst (list): The list of dictionaries to sort.
         key (str): The key to sort the dictionaries by.
 
     Returns:
@@ -393,7 +389,7 @@ class MaxSizeList(list):
         if len(self) > self.max_size:
             self.pop(0)
 
-    def extend(self, iterable: Iterable):
+    def extend(self, iterable: "Iterable[Any]"):
         """
         Extends the list by appending elements from an iterable, and removes the oldest elements
         if the list exceeds the maximum size.

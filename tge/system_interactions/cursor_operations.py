@@ -3,10 +3,10 @@ from .. import SYSTEM_NAME
 from.shared import *
 
 if SYSTEM_NAME == "windows":
-    from .cursor.cursor_operations_ctypes import *
+    from .cursor.cursor_operations_ctypes import * # type: ignore
 
 else:
-    from .cursor.cursor_operations_pynput import *
+    from .cursor.cursor_operations_pynput import * # type: ignore
 
 
 def click_mouse_button(button_number: int) -> None:
@@ -24,7 +24,7 @@ def release_mouse_button(button_number: int) -> None:
     ReleaseMouseButtonList[button_number]()
 
 
-def click_mouse_button(button_number: int, x: int, y: int) -> None:
+def click_mouse_button_at(button_number: int, x: int, y: int) -> None:
     "Click the mouse button specified by `button_number` at the coordinates (x, y)."
     ClickMouseButton_atList[button_number](x, y)
 
@@ -36,7 +36,7 @@ def click_mouse_button(button_number: int, x: int, y: int) -> None:
 
 def left_click_at(x: int, y: int) -> None:
     "Move the mouse to the specified coordinates (x, y) and perform a left mouse button click."
-    set_mouse_to(x, y)
+    set_mouse_to((x, y))
     left_click()
 
 
@@ -48,14 +48,14 @@ def double_left_click() -> None:
 
 def double_left_click_at(x: int, y: int) -> None:
     "Move the mouse to the specified coordinates (x, y) and perform two consecutive left mouse button clicks."
-    set_mouse_to(x, y)
+    set_mouse_to((x, y))
     left_click()
     left_click()
 
 
 def right_click_at(x: int, y: int) -> None:
     "Move the mouse to the specified coordinates (x, y) and perform a right mouse button click."
-    set_mouse_to(x, y)
+    set_mouse_to((x, y))
     right_click()
 
 
@@ -67,7 +67,7 @@ def double_right_click() -> None:
 
 def MiddleClick_at(x: int, y: int) -> None:
     "Move the mouse to the specified coordinates (x, y) and perform a middle mouse button click."
-    set_mouse_to(x, y)
+    set_mouse_to((x, y))
     middle_click()
 
 
@@ -75,13 +75,13 @@ def MiddleClick_at(x: int, y: int) -> None:
 def drag_to(x, y):
     "Drag the mouse from its current position to the specified coordinates (x, y)"
     left_mouse_down()
-    set_mouse_to(x, y)
+    set_mouse_to((x, y))
     left_mouse_up()
 
 
 def drag_obj_to(x, y, a, b):
     "Drag an object from the starting coordinates (x, y) to the destination coordinates (a, b)."
-    set_mouse_to(x, y)
+    set_mouse_to((x, y))
     drag_to(a, b)
 
 

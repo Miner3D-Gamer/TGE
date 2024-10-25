@@ -1,36 +1,26 @@
-from math import sqrt,factorial as math_factorial
+from math import sqrt,factorial
 from typing import overload
 from builtins import range as builtin_range
 import struct
 def reverse_number(number):return int(str(number)[::-1])
-def exponent(base,exponent):
- A=exponent;B=1
- if A<0:return 0
- for C in range(A):B*=base
- return B
 def hypotenuse(a,b):return sqrt(a**2+b**2)
 def quadratic_roots(a,b,c):return(-b+sqrt(b**2-4*a*c))/(2*a)
 def check_perfect_number(number):
  A=number
- if A<=0:return False
+ if A<1:return False
  B=0
  for C in range(1,A):
   if A%C==0:B+=C
  return B==A
 def factorial_iterative(number):
  A=1
- for B in range(1,number+1):A*=B
+ for B in builtin_range(1,number+1):A*=B
  return A
-def factorial_recursive(number):
- A=number
- if A==1:return 1
- else:return A*factorial_recursive(A-1)
 def binomial_coefficient(n,k):return factorial(n)/(factorial(k)*factorial(n-k))
-def factorial(n):return math_factorial(n)
 def calculate_combinations(n,k):return factorial(n)/(factorial(k)*factorial(n-k))
 def generate_fibonacci_sequence(number):
  A=[1,1]
- for B in range(2,number):A.append(A[B-1]+A[B-2])
+ for B in builtin_range(2,number):A.append(A[B-1]+A[B-2])
  return A
 def check_armstrong_number(number):A=number;return sum(int(B)**len(str(A))for B in str(A))==A
 def calculate_gcd(a,b):
@@ -49,12 +39,11 @@ def fibonacci(n):
   A=[0,1]
   while len(A)<n:B=A[-1]+A[-2];A.append(B)
   return A
-@overload
-def range(stop):return builtin_range(stop)
-@overload
-def range(start,stop):return builtin_range(start,stop)
-@overload
-def range(start,stop):A=start;return builtin_range(A,stop,-1 if A<stop else 1)
+def range(start,stop=None,step=1):
+ C=step;B=stop;A=start
+ if B is None:B=A;A=0
+ if A>B and C>0 or A<B and C<0:C=-C
+ return builtin_range(A,B,C)
 def divide_by_power_of_2(int,divider):return int>>divider
 def calculate_percentage(value,total):return int(value/total*100)
 def get_pi(amount):
@@ -86,7 +75,7 @@ def hexation(base,exponent):
 def round_with_precision(number,digits=0):A=10**digits;B=int(number*A)/A;return B
 def find_divisors(x):
  A=[]
- for B in range(1,x+1):
+ for B in builtin_range(1,x+1):
   if x%B==0:A.append(B)
  return A
 class Vector:
@@ -94,7 +83,10 @@ class Vector:
  def __repr__(A):return f"Vector{tuple(A.components)}"
  def __len__(A):return len(A.components)
  def __getitem__(A,index):return A.components[index]
- def __eq__(A,other):return A.components==other.components
+ def __eq__(B,other):
+  A=other
+  if not isinstance(A,Vector):return False
+  return B.components==A.components
  def __add__(A,other):
   B=other
   if len(A)!=len(B):raise ValueError('Vectors must have the same dimension for addition.')
@@ -114,6 +106,10 @@ class Vector:
   return Vector(*[A/B for A in A.components])
 def bottom_clamp(min,value):A=value;return A if A>min else min
 def top_clamp(max,value):A=value;return A if A<max else max
+@overload
+def clamp(min,max,value):...
+@overload
+def clamp(min,max,value):...
 def clamp(min,max,value):
  A=value
  if A<min:return min

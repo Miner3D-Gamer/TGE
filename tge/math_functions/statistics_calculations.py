@@ -2,8 +2,10 @@ from math import sqrt, log2
 
 import numpy as np
 from collections.abc import Iterable
+from typing import List, Union
 
-def average_grade(grades: Iterable) -> float:
+
+def average_grade(grades: List[Union[int, float]]) -> float:
     """
     Calculate the average grade from a list of grades.
 
@@ -16,7 +18,7 @@ def average_grade(grades: Iterable) -> float:
     return sum(grades) / len(grades)
 
 
-def median_grade(grades: Iterable) -> float:
+def median_grade(grades: List[Union[int, float]]) -> float:
     """
     Calculate the median grade from a list of grades.
 
@@ -29,7 +31,7 @@ def median_grade(grades: Iterable) -> float:
     return sorted(grades)[len(grades) // 2]
 
 
-def mode_grade(grades: Iterable) -> float:
+def mode_grade(grades: List[Union[int, float]]) -> float:
     """
     Calculate the mode (most frequent grade) from a list of grades.
 
@@ -42,7 +44,7 @@ def mode_grade(grades: Iterable) -> float:
     return max(set(grades), key=grades.count)
 
 
-def standard_deviation(grades: Iterable) -> float:
+def standard_deviation(grades: List[Union[int, float]]) -> float:
     """
     Calculate the standard deviation of a list of grades.
 
@@ -54,7 +56,8 @@ def standard_deviation(grades: Iterable) -> float:
     """
     return sqrt(sum([(x - average_grade(grades)) ** 2 for x in grades]) / len(grades))
 
-def median(grades: Iterable) -> float:
+
+def median(grades: List[Union[int, float]]) -> float:
     """
     Calculate the median value of a list of grades.
 
@@ -65,7 +68,9 @@ def median(grades: Iterable) -> float:
         float: The median grade of the given grades.
     """
     return sorted(grades)[len(grades) // 2]
-def median_absolute_deviation(data:Iterable)->float:
+
+
+def median_absolute_deviation(data: List[Union[int, float]]) -> float:
     """
     Calculate the Median Absolute Deviation (MAD) of a given dataset.
 
@@ -79,12 +84,12 @@ def median_absolute_deviation(data:Iterable)->float:
     float: The Median Absolute Deviation (MAD) of the input data.
     """
     median_a = median(data)
-    deviations = abs(data - median_a)
+    deviations = [abs(x - median_a) for x in data]
     mad = median(deviations)
     return mad
 
 
-def correlation(data1:float, data2:float)->np.ndarray:
+def correlation(data1: float, data2: float) -> np.ndarray:
     """
     Calculate the correlation coefficient between two sets of data.
 
@@ -101,7 +106,8 @@ def correlation(data1:float, data2:float)->np.ndarray:
     """
     return np.corrcoef(data1, data2)[0][1]
 
-def calculate_entropy(grades: Iterable) -> float:
+
+def calculate_entropy(grades: List[Union[int, float]]) -> float:
     """
     Calculate the entropy of a given list of grades.
 
@@ -118,7 +124,8 @@ def calculate_entropy(grades: Iterable) -> float:
     """
     return sum(x * log2(x) for x in grades)
 
-def median_absolute_error(grades: Iterable) -> float:
+
+def median_absolute_error(grades: List[Union[int, float]]) -> float:
     """
     Calculate the Median Absolute Error (MedAE) for a set of grades.
 
@@ -132,4 +139,4 @@ def median_absolute_error(grades: Iterable) -> float:
     Returns:
     float: The Median Absolute Error (MedAE) calculated for the input grades.
     """
-    return median(abs(x - median_grade(grades)) for x in grades)
+    return median([abs(x - median_grade(grades)) for x in grades])

@@ -18,19 +18,21 @@ def download_library(library_name):
   except Exception as C:return F,f"An unexpected error occurred: {str(C)}"
  return F,f"All installation attempts failed. Last error: {H}"
 def get_installed_python_versions():
- E=os.getenv('PATH').split(os.pathsep);C=[]
- for D in E:
+ A=os.getenv('PATH')
+ if A is None:return[]
+ E=A.split(os.pathsep);D=[]
+ for A in E:
   try:
-   for A in os.listdir(D):
-    if A.startswith(_C)and(A.endswith('.exe')or A.endswith('.bat')):
-     B=os.path.join(D,A)
-     if os.access(B,os.X_OK):
+   for B in os.listdir(A):
+    if B.startswith(_C)and(B.endswith('.exe')or B.endswith('.bat')):
+     C=os.path.join(A,B)
+     if os.access(C,os.X_OK):
       try:
-       F=subprocess.check_output([B,_D],stderr=subprocess.STDOUT).decode().strip()
-       if'Python'in F:C.append(B)
+       F=subprocess.check_output([C,_D],stderr=subprocess.STDOUT).decode().strip()
+       if'Python'in F:D.append(C)
       except subprocess.SubprocessError:continue
   except FileNotFoundError:continue
- return C
+ return D
 def install_library_from_github(github_repo_url):
  B=get_installed_python_versions()
  for A in B:
@@ -46,4 +48,4 @@ def install_all_libraries(libs):
 def install_missing_tge_libraries():
  with open(os.path.dirname(__file__)+'/requirements.txt','r')as B:C=B.readlines()
  for A in C:
-  if not is_library_installed(A.strip()):raise ModuleNotFoundError(f"Library not found: {A.strip()}")
+  if not is_library_installed(A.strip()):download_library(A.strip())

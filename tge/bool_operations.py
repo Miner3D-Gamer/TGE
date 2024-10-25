@@ -75,10 +75,10 @@ def mux_eight(
     return inputs[index]
 
 
-def mux_any(inputs: "Iterable[bool]", selectors: "Iterable[bool]") -> bool:
+def mux_any(inputs: List[bool], selectors: List[bool]) -> bool:
     if len(inputs) != 2 ** len(selectors):
         raise ValueError(
-            "Number of inputs must be 2^n where n is the number of selectors."
+            "Union[int,float] of inputs must be 2^n where n is the number of selectors."
         )
 
     index = 0
@@ -139,17 +139,49 @@ def four_bit_adder(
     b: Tuple[bool, bool, bool, bool],
     carry: bool = False,
 ) -> Tuple[bool, bool, bool, bool, bool]:
+    """
+    Adds two 4-bit binary numbers with an optional carry input.
+    
+    Args:
+        a (Tuple[bool, bool, bool, bool]): First 4-bit binary number.
+        b (Tuple[bool, bool, bool, bool]): Second 4-bit binary number.
+        carry (bool, optional): Carry input from previous addition. Defaults to False.
+
+    Returns:
+        Tuple[bool, bool, bool, bool, bool]: 4-bit sum and carry out.
+    """
     carry, sum1 = full_adder(a[3], b[3], carry)
     carry, sum2 = full_adder(a[2], b[2], carry)
     carry, sum3 = full_adder(a[1], b[1], carry)
     carry, sum4 = full_adder(a[0], b[0], carry)
     return sum4, sum3, sum2, sum1, carry
 
+def flip_four_bits(b: Tuple[bool, bool, bool, bool]) -> Tuple[bool, bool, bool, bool]:
+    """
+    Flips the bits of a 4-bit binary number.
+    
+    Args:
+        b (Tuple[bool, bool, bool, bool]): 4-bit binary number to flip.
 
-def two_complement(b: Tuple[bool, bool, bool, bool]) -> Tuple[bool, bool, bool, bool]:
-    inverted_b = tuple((not (bit)) for bit in b)
+    Returns:
+        Tuple[bool, bool, bool, bool]: 4-bit binary number with flipped bits.
+    """
+    return (not b[0], not b[1], not b[2], not b[3])
+
+def two_complement(b: Tuple[bool, bool, bool, bool]) -> Tuple[bool, bool, bool, bool, bool]:
+    """
+    Computes the two's complement of a 4-bit binary number.
+    This means it negates the bits. (3 -> -3, 2 -> -2, etc.)
+    
+    Args:
+        b (Tuple[bool, bool, bool, bool]): 4-bit binary number to negate.
+
+    Returns:
+        Tuple[bool, bool, bool, bool]: 4-bit two's complement representation.
+    """
+    inverted_b = flip_four_bits(b)
     one = (False, False, False, True)
-    return four_bit_adder(inverted_b, one)[0:4]
+    return four_bit_adder(inverted_b, one)
 
 
 def four_bit_subtractor(
@@ -157,11 +189,22 @@ def four_bit_subtractor(
     b:Tuple[bool, bool, bool, bool],
     borrow: bool = False,
 ) ->Tuple[bool, bool, bool, bool, bool]:
-    b_complement = two_complement(b)
-    result, carry_out = four_bit_adder(a, b_complement, borrow)
-    return result + (carry_out,)
+    """
+    Subtracts one 4-bit binary number from another using two's complement.
+    
+    Args:
+        a (Tuple[bool, bool, bool, bool]): Minuend (number to be subtracted from).
+        b (Tuple[bool, bool, bool, bool]): Subtrahend (number to be subtracted).
+        borrow (bool, optional): Borrow input from previous subtraction. Defaults to False.
 
-def any_bit_adder(a: "Iterable[bool]", b: "Iterable[bool]", carry: bool = False) ->Tuple[List[bool], bool]:
+    Returns:
+        Tuple[bool, bool, bool, bool, bool]: 4-bit difference and borrow out.
+    """
+    b_complement = two_complement(b)
+    result = four_bit_adder(a[:4], b_complement[:4], borrow)
+    return result
+
+def any_bit_adder(a: List[bool], b: List[bool], carry: bool = False) ->Tuple[List[bool], bool]:
     if len(a) != len(b):
         raise ValueError("Input lists must have the same length")
 
@@ -190,7 +233,7 @@ def number_to_bools(num: int) -> List[bool]:
 
     return bool_list
 
-def bools_to_number(bools: "Iterable[bool]") -> int:
+def bools_to_number(bools: List[bool]) -> int:
     num = 0
     bit_length = len(bools)
     for i in range(bit_length):

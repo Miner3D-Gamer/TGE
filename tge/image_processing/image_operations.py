@@ -1,135 +1,27 @@
-from PIL import Image
-from typing import Union, Tuple, Any
-from numbers import Number
+from PIL import Image, GifImagePlugin
+from typing import Union, Tuple, Any, List, Optional
 import numpy as np
 from ..math_functions.math_functions import clamp
 import math
 from .middle_man import *
 
 
-def rotate_image_file(image_path: str, angle: int) -> bool:
-    """
-    Rotate an image by the specified angle and save the rotated image back to the original path.
-
-    Args:
-        image_path (str): The file path to the image.
-        angle (int): The angle in degrees by which to rotate the image clockwise.
-
-    Returns:
-        bool: True if the image rotation and saving were successful, False otherwise.
-
-    Raises:
-        This function does not raise any explicit exceptions. Any exceptions encountered during
-        image processing or saving will cause the function to return False.
-
-    Example:
-        if rotate_image("image.jpg", 90):
-            print("Image rotated successfully")
-        else:
-            print("Image rotation failed")
-    """
-
-    image = Image.open(image_path)
-    rotated_image = image.rotate(angle)
-    rotated_image.save(image_path)
-
-
-def flip_image_file_vertically(image_path: str) -> bool:
-    """
-    Flips an image vertically and saves the result to the same file path.
-
-    Args:
-        image_path (str): The file path to the image.
-
-    Returns:
-        bool: True if the image was successfully flipped and saved, False otherwise.
-
-    Notes:
-        - This function uses the Pillow (PIL) library to open, flip, and save the image.
-        - The original image is backed up before any modification attempt.
-        - If an exception occurs during the flipping process, the function attempts to restore
-          the original image from the backup and returns False.
-    """
-
-    image = Image.open(image_path)
-    image = image.transpose(Image.FLIP_TOP_BOTTOM)
-    image.save(image_path)
-
-
-def flip_image_file_horizontally(image_path: str) -> bool:
-    """
-    Flips an image horizontally and saves the result back to the original file path.
-
-    Args:
-        image_path (str): The path to the image file to be flipped.
-
-    Returns:
-        bool: True if the image was successfully flipped and saved, False otherwise.
-    """
-
-    image = Image.open(image_path)
-    image = image.transpose(Image.FLIP_LEFT_RIGHT)
-    image.save(image_path)
-    return True
-
-
-def add_anti_aliasing_to_image_file(image_path: str) -> bool:
-    """
-    Applies anti-aliasing to an image using a two-step resizing process.
-
-    This function takes an image file path as input, opens the image, and applies
-    anti-aliasing through a two-step process. The image is initially resized to
-    double its dimensions and then back to its original dimensions, which helps
-    in reducing aliasing artifacts. If the process is successful, the modified
-    image is saved to the same path, and the function returns True. If any errors
-    occur during the process, the function restores the original image and returns False.
-
-    Args:
-        image_path (str): The file path of the image to which anti-aliasing will be applied.
-
-    Returns:
-        bool: True if anti-aliasing is successfully applied and saved, False otherwise.
-    """
-
-    image = Image.open(image_path)
-    image = image.resize((image.width * 2, image.height * 2))
-    image.save(image_path)
-    image = Image.open(image_path)
-    image = image.resize((image.width // 2, image.height // 2))
-    image.save(image_path)
-
-
-def count_gif_frames(file_path) -> int:
-    """
-    Counts the number of frames in a GIF file.
-
-    Args:
-        file_path (str): The path to the GIF file.
-
-    Returns:
-
-    """
-
-    with Image.open(file_path) as im:
-        if hasattr(im, "is_animated") and im.is_animated:
-            frame_count = 0
-            while True:
-                try:
-                    im.seek(frame_count)
-                    frame_count += 1
-                except EOFError:
-                    break
-            return frame_count
-        else:
-            return -1
-
-
+def count_gif_frames(gif: Image.Image)->int:
+    
+    frame_count = 0
+    try:
+        while True:
+            gif.seek(frame_count)
+            frame_count += 1
+    except EOFError:
+        pass
+    return frame_count
 
 
 def image_to_ascii(
     image_path: str = "",
     image=None,
-    width: int = None,
+    width: Optional[int] = None,
     unicode: bool = False,
     ascii_chars: str = "",
 ) -> str:
@@ -295,7 +187,7 @@ class Color:
         Args:
             color (Tuple[int, int, int]): A tuple containing the RGB values of the color.
         """
-        self.color = [
+        self.color: List[int] = [
             clamp(0, 255, color[0]),
             clamp(0, 255, color[1]),
             clamp(0, 255, color[2]),
@@ -319,7 +211,7 @@ class Color:
         """
         return iter(self.color)
 
-    def get(self) -> Tuple[int, int, int]:
+    def get(self) -> List[int]:
         """
         Returns the RGB color components as a list.
 
@@ -339,17 +231,17 @@ class Color:
 
 
 def is_color_similar(
-    a: Tuple[Number, Number, Number],
-    b: Tuple[Number, Number, Number],
-    similarity: Number,
+    a: Tuple[Union[int, float], Union[int, float], Union[int, float]],
+    b: Tuple[Union[int, float], Union[int, float], Union[int, float]],
+    similarity: Union[int, float],
 ) -> bool:
     """
     Determines if two RGB colors are similar within a given similarity threshold.
 
     Parameters:
-    a (tuple[Number, Number, Number]): The first RGB color, as a tuple of three numbers.
-    b (tuple[Number, Number, Number]): The second RGB color, as a tuple of three numbers.
-    similarity (Number): The similarity threshold from a number range of 0 to 442.
+    a (tuple[Union[int,float], Union[int,float], Union[int,float]]): The first RGB color, as a tuple of three numbers.
+    b (tuple[Union[int,float], Union[int,float], Union[int,float]]): The second RGB color, as a tuple of three numbers.
+    similarity (Union[int,float]): The similarity threshold from a number range of 0 to 442.
 
     Returns:
     bool: True if the colors are similar within the threshold, False otherwise.

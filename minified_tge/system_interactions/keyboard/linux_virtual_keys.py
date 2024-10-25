@@ -1,5 +1,4 @@
 from Xlib import X,XK
-class VirtualKey:0
 backspace=XK.XK_BackSpace
 tab=XK.XK_Tab
 clear=XK.XK_Clear
@@ -63,7 +62,6 @@ z=XK.XK_z
 left_windows=XK.XK_Super_L
 right_windows=XK.XK_Super_R
 application=XK.XK_Menu
-computer_sleep=None
 number_pad_0=XK.XK_KP_0
 number_pad_1=XK.XK_KP_1
 number_pad_2=XK.XK_KP_2

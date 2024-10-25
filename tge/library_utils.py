@@ -1,5 +1,5 @@
 import importlib.util
-from typing import Union, Tuple, NoReturn, List
+from typing import Union, Tuple, NoReturn, List, Optional
 import subprocess
 from collections.abc import Iterable
 import os
@@ -62,7 +62,10 @@ def download_library(library_name: str) -> Tuple[bool, str]:
 # Honestly no idea what these functions do and I'm way too tired to try and figure out
 def get_installed_python_versions() -> list:
     """Get a list of installed Python executables in the system PATH."""
-    paths = os.getenv("PATH").split(os.pathsep)
+    path = os.getenv("PATH")
+    if path is None:
+        return []
+    paths = path.split(os.pathsep)
     python_versions = []
     for path in paths:
         try:
@@ -136,7 +139,7 @@ def install_all_libraries(libs: "Iterable[str]") -> List[Tuple[bool, str]]:
     return output
 
 
-def install_missing_tge_libraries() -> Union[None, NoReturn]:
+def install_missing_tge_libraries() -> Optional[NoReturn]:
     """
     Check if all libraries listed in the 'requirements.txt' file are installed.
 
@@ -150,4 +153,5 @@ def install_missing_tge_libraries() -> Union[None, NoReturn]:
         libs = f.readlines()
     for lib in libs:
         if not is_library_installed(lib.strip()):
-            raise ModuleNotFoundError(f"Library not found: {lib.strip()}")
+            download_library(lib.strip())
+    return None

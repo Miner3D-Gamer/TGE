@@ -1,9 +1,6 @@
 from itertools import permutations as itertools_permutations
-def list_mul(lst):
- A=1
- for B in lst:
-  if isinstance(B,(int,float)):A=A*B
- return A
+import math
+def list_mul(lst):return math.prod(lst)
 def remove_duplicates(list):
  A=[]
  for B in list:

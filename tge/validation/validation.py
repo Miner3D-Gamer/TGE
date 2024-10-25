@@ -112,7 +112,7 @@ def validate_strong_password(password: str) -> bool:
     )
 
 
-def validate_credit_card(number: int) -> bool:
+def validate_credit_card(number: str) -> bool:
     """
     Validates a credit card number using the Luhn algorithm.
 

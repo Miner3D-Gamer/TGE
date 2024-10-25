@@ -1,5 +1,5 @@
 import random, re
-from typing import Iterable
+from typing import List, Dict, Optional
 
 
 class ExpandedString(str):
@@ -58,7 +58,7 @@ class ExpandedString(str):
 
         word_list = list(self)
         random.shuffle(word_list)
-        self = "".join(word_list)
+        self = ExpandedString("".join(word_list))
 
     def chop(self, substring: str) -> None:
         """
@@ -71,8 +71,8 @@ class ExpandedString(str):
             self: The string is modified in place to remove the specified substring from both ends.
         """
         if self.startswith(substring) and self.endswith(substring):
-            self = self[len(substring) : -len(substring)]
-
+            self = ExpandedString(self[len(substring) : -len(substring)]
+)
     def get_chopped(self, substring: str) -> str:
         """
         Return a new string with a specified substring removed from the beginning and end.
@@ -109,13 +109,13 @@ class ExpandedString(str):
         Truncates a string to the specified length.
         """
         if not (len(self) <= length):
-            self = self[:length]
+            self = ExpandedString(self[:length])
 
     def reverse(self) -> None:
         """
         Reverses the order of characters in a string.
         """
-        self = self[::-1]
+        self = ExpandedString(self[::-1])
 
     def get_reversed(string: str) -> str:
         """
@@ -147,7 +147,7 @@ class ExpandedString(str):
         for char in self:
             if char not in result:
                 result += char
-        self = result
+        self = ExpandedString(result)
 
     def get_string_after_removing_duplicate_characters(self) -> str:
         """
@@ -186,7 +186,7 @@ class ExpandedString(str):
 
         max_length = 0  
         start = 0 
-        char_index_map = {}  
+        char_index_map:Dict[str, int] = {}  
 
         for i in range(len(self)):
             if self[i] in char_index_map and start <= char_index_map[self[i]]:
@@ -198,7 +198,7 @@ class ExpandedString(str):
 
         return max_length
 
-    def find_first_non_repeating_character(self) -> str:
+    def find_first_non_repeating_character(self) ->Optional [str]:
         """
         Find the first non-repeating character in a given string.
 
@@ -208,7 +208,7 @@ class ExpandedString(str):
         Returns:
             str: The first non-repeating character found in the string, or None if no such character is found.
         """
-        char_count = {}
+        char_count:Dict[str, int] = {}
 
         for char in self:
             char_count[char] = char_count.get(char, 0) + 1
@@ -295,7 +295,7 @@ class ExpandedString(str):
         Returns:
             bool: True if the string contains every letter of the alphabet, False otherwise.
         """
-        alphabet = set(string.lower)
+        alphabet = set(string.lower())
 
         filtered_string = "".join(filter(lambda c: c in alphabet, string.lower()))
 
@@ -336,7 +336,7 @@ class ExpandedString(str):
             None: The method modifies the string in place, no return value.
         """
         if self.startswith(substring):
-            self = self[len(substring) :]
+            self = ExpandedString(self[len(substring) :])
 
     def get_lchop(self, substring: str) -> str:
         """
@@ -364,7 +364,7 @@ class ExpandedString(str):
             None: The method modifies the string in place, no return value.
         """
         if self.endswith(substring):
-            self = self[: -len(substring)]
+            self = ExpandedString(self[: -len(substring)])
 
     def get_rchop(self, substring: str) -> str:
         """
@@ -391,7 +391,7 @@ class ExpandedString(str):
         length (int): The desired length after padding.
         char (str): The character to pad with (default is a space).
         """
-        self = self.rjust(length, char)
+        self = ExpandedString(self.rjust(length, char))
 
     def get_left_pad(self, length: int, char: str = " ") -> str:
         """
@@ -414,7 +414,7 @@ class ExpandedString(str):
         length (int): The desired length after padding.
         char (str): The character to pad with (default is a space).
         """
-        self = self.ljust(length, char)
+        self = ExpandedString(self.ljust(length, char))
 
     def get_right_pad(self, length, char=" "):
         """
@@ -429,7 +429,7 @@ class ExpandedString(str):
         """
         return self.ljust(length, char)
 
-    def left_replace(self, chars: Iterable, replacement: str) -> None:
+    def left_replace(self, chars: List[str], replacement: str) -> None:
         """
         Replace leading characters in `chars` with `replacement` in the string.
 
@@ -444,14 +444,14 @@ class ExpandedString(str):
         replaced_part = replacement * index
         remaining_part = self[index:]
 
-        self = replaced_part + remaining_part
+        self = ExpandedString(replaced_part + remaining_part)
 
-    def get_left_replace(self, chars: Iterable, replacement: str) -> str:
+    def get_left_replace(self, chars: List[str], replacement: str) -> str:
         """
         Replace leading characters in `chars` with `replacement` in the string.
 
         Parameters:
-        chars (Iterable): A string of characters to be replaced.
+        chars (List[str]): A string of characters to be replaced.
         replacement (str): The character to replace with.
 
         Returns:
@@ -466,7 +466,7 @@ class ExpandedString(str):
 
         return replaced_part + remaining_part
 
-    def get_right_replace(self, chars: Iterable, replacement: str):
+    def get_right_replace(self, chars: List[str], replacement: str):
         """
         Replace trailing characters in `chars` with `replacement` in the string.
 
@@ -486,7 +486,7 @@ class ExpandedString(str):
 
         return remaining_part + replaced_part
 
-    def right_replace(self, chars: Iterable, replacement: str) -> None:
+    def right_replace(self, chars: List[str], replacement: str) -> str:
         """
         Replace trailing characters in `chars` with `replacement` in the string.
 
@@ -501,13 +501,15 @@ class ExpandedString(str):
         replaced_part = replacement * (len(self) - index - 1)
         remaining_part = self[: index + 1]
 
-        self = remaining_part + replaced_part
+        self = ExpandedString(remaining_part + replaced_part)
+        return self
 
     def remove_html_tags(self) -> str:
         """
         Removes HTML tags from the given string.
         """
-        self = re.sub(r"<.*?>", "", self)
+        self = ExpandedString(re.sub(r"<.*?>", "", self))
+        return self
 
     def get_with_html_tags_removed(self) -> str:
         """
@@ -519,30 +521,30 @@ class ExpandedString(str):
         return re.sub(r"<.*?>", "", self)
 
     def replace_with_list_as_replacement(
-        self, replacer: str, replacements: Iterable
+        string, replacer: str, replacements: List[str]
     ) -> None:
         """
         Replace all occurrences of a specified substring in a string with a list of replacement substrings.
 
         Args:
             replacer (str): The substring to be replaced.
-            replacements (Iterable): An iterable of replacement substrings.
+            replacements (List[str]): An iterable of replacement substrings.
 
         Returns:
             None: The method modifies the string in place, no return value.
         """
         for replacement in replacements:
-            string = string(replacer, replacement)
+            string = ExpandedString(string.replace(replacer, replacement))
 
     def replace_with_list_as_replacer(
-        string, replacers: Iterable, replacement: str
+        string, replacers: List[str], replacement: str
     ) -> None:
         """
         Replace all occurrences of each substring in a list of replacers with a specified replacement substring in the given string.
 
         Args:
             string (str): The string in which replacements will be made.
-            replacers (Iterable): An iterable of substrings to be replaced.
+            replacers (List[str]): An iterable of substrings to be replaced.
             replacement (str): The replacement substring.
 
         Returns:
@@ -550,40 +552,40 @@ class ExpandedString(str):
         """
 
         for replacer in replacers:
-            string = string(replacer, replacement)
+            string = ExpandedString(string.replace(replacer, replacement))
 
     def get_replace_with_list_as_replacement(
-        self, replacer: str, replacements: Iterable
+        self, replacer: str, replacements: List[str]
     ) -> str:
         """
         Return a new string where all occurrences of a specified substring are replaced with a list of replacement substrings.
 
         Args:
             replacer (str): The substring to be replaced.
-            replacements (Iterable): An iterable of replacement substrings.
+            replacements (List[str]): An iterable of replacement substrings.
 
         Returns:
             str: The modified string with replacements applied.
         """
         string = self
         for replacement in replacements:
-            string = string(replacer, replacement)
+            string = ExpandedString(string.replace(replacer, replacement))
         return string
 
     def get_replace_with_list_as_replacer(
-        self, replacers: Iterable, replacement: str
+        string, replacers: List[str], replacement: str
     ) -> str:
         """
         Return a new string where all occurrences of each substring in a list of replacers are replaced with a specified replacement substring.
 
         Args:
-            replacers (Iterable): An iterable of substrings to be replaced.
+            replacers (List[str]): An iterable of substrings to be replaced.
             replacement (str): The replacement substring.
 
         Returns:
             str: The modified string with replacements applied.
         """
-        string = self
+        
         for replacer in replacers:
-            string = string(replacer, replacement)
+            string = ExpandedString(string.replace(replacer, replacement))
         return string

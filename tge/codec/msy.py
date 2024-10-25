@@ -1,9 +1,11 @@
+from typing import List, Dict
+
 # Miner3D's Simplified YAML
-def decode(data: str) -> dict:
+def decode(data: str) -> Dict[str, List[str]]:
     """
     Returns a dictionary based on the inputted string (msy format)
     """
-    parsed_data = {}
+    parsed_data:Dict[str, List[str]] = {}
     current_list_name = None
 
     lines = data.split("\n")

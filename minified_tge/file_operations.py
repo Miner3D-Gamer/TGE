@@ -1,14 +1,14 @@
-_E='source'
-_D='utf-8'
-_C='rb'
+_D='source'
+_C='utf-8'
 _B=True
 _A=False
 import os,shutil
 from ast import parse as ast_parse,walk as ast_walk,FunctionDef as ast_FunctionDef
 import zipfile,math,hashlib,uuid
 from collections import defaultdict
-import tkinter as tk,re
-from.codec.codec import decode,base_x_decode_to_binary,base_x_encode_binary
+import re
+from tkinter import filedialog
+from.codec.codec import decode,base_x_encode_to_binary,base_x_decode_from_binary
 from.import SYSTEM_NAME
 def make_legal_filename(filename,replacer='_'):B='[\\\\/*?"<>|:]';A=re.sub(B,replacer,filename);A=A.strip();return A
 def create_missing_directory(directory):
@@ -21,23 +21,6 @@ def delete_directory(directory):
   if os.path.exists(A):shutil.rmtree(A);return _B,'Directory deleted'
   else:return _A,'Directory not found'
  except:return _A,'Error deleting directory'
-def write_save_data(name,dir,data):
- A=name
- try:
-  A=A.replace('.save','');B=os.path.join(dir,f"{A}.save")
-  with open(B,'w')as C:C.write(data);return _B,'File saved'
- except Exception as D:return _A,f"Error saving file: {str(D)}"
-def load_save_data(name,dir):
- A=name
- try:
-  A=A.rstrip('.save','');B=os.path.join(dir,f"{A}.save")
-  if os.path.exists(B):
-   with open(B,_C)as D:
-    E=D.read();F,C=decode(E)
-    if F:return _B,C
-    else:return _A,C
-  else:return _A,'File not found'
- except Exception as G:return _A,f"Error loading file: {str(G)}"
 def move_file(source_path,destination_path):shutil.move(source_path,destination_path)
 def copy_file(source_path,destination_path):shutil.copy(source_path,destination_path)
 def rename_file(source_path,name):A=source_path;B=os.path.dirname(A);C=os.path.join(B,name);os.rename(A,C)
@@ -48,35 +31,19 @@ def get_folder_name(path):
  A=path.replace('\\','/')
  if os.path.isdir(path):return A.split('/')[-1]
  else:B=A.split('/')[-2];return B
-def combine_files(directory,output_directory,name):
- D=directory
- try:
-  E=[]
-  for A in os.listdir(D):
-   F=os.path.join(D,A)
-   if os.path.isfile(F):
-    with open(F,_C)as B:C=B.read();E.append((A,C))
-  G=b''
-  for(A,C)in E:G+=A.encode()+b':'+C+b'|'
-  H=base_x_encode_binary(G);I=os.path.join(output_directory,name+'.encrypted')
-  with open(I,'wb')as B:B.write(H)
-  return _B
- except:return _A
-def split_file(directory,output_directory):
- try:
-  with open(directory,_C)as A:B=A.read()
-  C=base_x_decode_to_binary(B).decode(_D);D=C.split(b'|')[:-1]
-  for E in D:
-   F,G=E.split(b':',1);H=os.path.join(output_directory,F.decode())
-   with open(H,'wb')as A:A.write(G)
-  return _B
- except:return _A
 def does_file_exist(directory):A=directory;return os.path.exists(A)and os.path.isfile(A)
 def does_directory_exist(directory):A=directory;return os.path.exists(A)and os.path.isdir(A)
 def delete_file(directory):os.remove(directory)
 def compare_file(directory1,directory2):
- with open(directory1,_C)as A,open(directory2,_C)as B:return A.read()==B.read()
+ with open(directory1,'rb')as A,open(directory2,'rb')as B:return A.read()==B.read()
 def are_directories_the_same(directory1,directory2,dir1_blacklist=[],dir2_blacklist=[]):return generate_uuid_from_directory(directory1,dir1_blacklist)==generate_uuid_from_directory(directory2,dir2_blacklist)
+def count_files_in_directory(directory_path,extension_backlist=[]):
+ A=0
+ for(D,E,B)in os.walk(directory_path):
+  for C in B:
+   if C.endswith(tuple(extension_backlist)):continue
+   A+=1
+ return A
 def count_items_in_directory(directory_path):return len(os.listdir(directory_path))
 def get_current_working_directory():
  try:return os.getcwd()
@@ -95,21 +62,21 @@ def get_file_size(file_path):
 def get_file_creation_time(file_path):
  A=file_path
  if os.path.isfile(A):return os.path.getctime(A)
- else:return''
+ else:return-1
 def count_functions_in_file(file_path):
  try:
-  with open(file_path,'r',encoding=_D)as B:C=ast_parse(B.read());A=[A.name for A in ast_walk(C)if isinstance(A,ast_FunctionDef)];return len(A),A
+  with open(file_path,'r',encoding=_C)as B:C=ast_parse(B.read());A=[A.name for A in ast_walk(C)if isinstance(A,ast_FunctionDef)];return len(A),A
  except:return 0,[]
 def count_functions_in_directory(directory_path):
- D={};E=0;F=[]
- for(G,J,H)in os.walk(directory_path):
-  for A in H:
-   if A.endswith('.py'):
-    B=os.path.join(G,A)
+ C={};D=0;E=[]
+ for(G,K,H)in os.walk(directory_path):
+  for F in H:
+   if F.endswith('.py'):
+    A=os.path.join(G,F)
     try:
-     with open(B,'r',encoding=_D)as A:I=ast_parse(A.read());C=[A.name for A in ast_walk(I)if isinstance(A,ast_FunctionDef)];D[B]=len(C),C;E+=len(C)
-    except IOError:F.append(B)
- return E,D,F
+     with open(A,'r',encoding=_C)as I:J=ast_parse(I.read());B=[A.name for A in ast_walk(J)if isinstance(A,ast_FunctionDef)];C[A]=len(B),B;D+=len(B)
+    except IOError:E.append(A)
+ return D,C,E
 def count_function_names_in_directory(directory_path):
  E,B,F=count_functions_in_directory(directory_path);A=[]
  for(G,(H,C))in B.items():
@@ -122,12 +89,12 @@ def save_counted_function_names_from_directory(directory_path,file_name,output_p
  if C=='':C='functions.txt'
  if create_missing_directory_bool:create_missing_directory(B)
  try:
-  with open(B+C,'w',encoding=_D)as E:
+  with open(B+C,'w',encoding=_C)as E:
    for F in D:E.write(F+'\n')
   return _B
  except:return _A
-def input_file_path(extension=None):return tk.filedialog.asksaveasfilename(defaultextension=extension)
-def input_directory_path():A=tk.filedialog.askdirectory();return A
+def input_file_path(extension=None):return filedialog.asksaveasfilename(defaultextension=extension)
+def ask_for_directory_path():A=filedialog.askdirectory();return A
 def unzip_file(zip_path,extract_dir,create_missing_directory_bool=_A):
  C=create_missing_directory_bool;B=zip_path;A=extract_dir
  if B=='':return _A,_A
@@ -141,15 +108,15 @@ def unzip_file(zip_path,extract_dir,create_missing_directory_bool=_A):
    if D:delete_directory(A)
   return _A,_B
 def zip_directory(directory_path,output_path,create_missing_directory_bool=_A):
- E='.zip';B=directory_path;A=output_path
+ D='.zip';B=directory_path;A=output_path
  if B=='':return _A,_A
  if A=='':return _A,_A
- if not A.endswith(E):A+=E
+ if not A.endswith(D):A+=D
  try:
   if create_missing_directory_bool:create_missing_directory(A)
-  with C.ZipFile(A,'w',C.ZIP_DEFLATED)as C:
+  with zipfile.ZipFile(A,'w',zipfile.ZIP_DEFLATED)as E:
    for(F,I,G)in os.walk(B):
-    for H in G:D=os.path.join(F,H);C.write(D,os.path.relpath(D,B))
+    for H in G:C=os.path.join(F,H);E.write(C,os.path.relpath(C,B))
   return _B,_B
  except:return _A,_B
 def get_appdata_path():return os.path.expanduser('~\\AppData')
@@ -184,7 +151,7 @@ def generate_uuid_from_directory(directory,blacklisted_extensions=[]):
    if C:continue
    D=os.path.join(E,B)
    if os.path.isfile(D):
-    with open(D,_C)as H:
+    with open(D,'rb')as H:
      for I in iter(lambda:H.read(4096),b''):A.update(I)
  J=A.hexdigest();K=uuid.UUID(J[:32]);return K
 if SYSTEM_NAME=='windows':
@@ -194,13 +161,13 @@ elif SYSTEM_NAME=='darwin':
  def add_to_path_to_system_path_variables(path):
   A='~/.bash_profile'
   with open(os.path.expanduser(A),'a')as B:B.write(f'\nexport PATH="{path}:$PATH"\n')
-  subprocess.run([_E,A],shell=_B,check=_B)
+  subprocess.run([_D,A],shell=_B,check=_B)
 elif SYSTEM_NAME=='linux':
  import subprocess
  def add_to_path_to_system_path_variables(path):
   A='~/.bashrc'
   with open(os.path.expanduser(A),'a')as B:B.write(f'\nexport PATH="{path}:$PATH"\n')
-  subprocess.run([_E,A],shell=_B,check=_B)
+  subprocess.run([_D,A],shell=_B,check=_B)
 else:
  def add_to_path_to_system_path_variables(path):raise BaseException('Unknown System')
 class _compress_directory_list_trie_node:
@@ -215,7 +182,7 @@ def _compress_directory_list_build_trie(paths):
  return A
 def _compress_directory_list_serialize_trie(node):
  C=node
- if not C.children:return[]
+ if not C.children:return{}
  if len(C.children)==1 and C.is_end_of_path==_A:
   B,D=next(iter(C.children.items()));A=_compress_directory_list_serialize_trie(D)
   if isinstance(A,list)and not A:return B

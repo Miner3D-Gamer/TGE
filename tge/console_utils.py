@@ -1,10 +1,10 @@
 import time
 import os
-from typing import List, Union, Tuple, Any
+from typing import List, Union, Tuple, Any, Callable, Optional
 from random import random, choice
 import sys
 from collections.abc import Iterable
-from numbers import Number
+from typing import Union
 from io import StringIO
 
 
@@ -32,7 +32,7 @@ else:
         os.system("clear")
 
 
-def typing_print(text: str, delay: Number) -> None:
+def typing_print(text: str, delay: Union[int, float]) -> None:
     """
     Prints the given text with a typing effect.
 
@@ -51,7 +51,7 @@ def typing_print(text: str, delay: Number) -> None:
         time.sleep(delay)
 
 
-def typingInput(text: str, delay: Number = 0) -> str:
+def typingInput(text: str, delay: Union[int, float] = 0) -> str:
     """
     Displays the given text character by character with a delay of 0.05 seconds,
     then waits for the user to type a string and press Enter. Returns the entered string.
@@ -73,7 +73,7 @@ def typingInput(text: str, delay: Number = 0) -> str:
 
 
 def write_sentences_to_console(
-    text: List[str], type_delay: Number, line_delay: Number = 0.7
+    text: List[str], type_delay: Union[int, float], line_delay: Union[int, float] = 0.7
 ) -> None:
     """
     Writes a list of sentences
@@ -92,6 +92,7 @@ def write_sentences_to_console(
 def choose_from_text_menu(
     menu_list: "Iterable[str]", prompt: str = "", destroy: bool = False
 ) -> int:
+    raise BaseException("This function needs a revamp :/")
     """
     Displays a text menu and prompts the user to choose an option.
 
@@ -136,7 +137,7 @@ def skip_line() -> None:
     print("\n")
 
 
-def print_table(data: "Iterable[list[str]]") -> Tuple[bool, str]:
+def print_table(data: List[List[str]]) -> str:
     """
     Prints a table representation of the provided data.
 
@@ -155,17 +156,13 @@ def print_table(data: "Iterable[list[str]]") -> Tuple[bool, str]:
         data = [['Name', 'Age', 'Country'],
                 ['John', 25, 'USA'],
                 ['Emily', 32, 'Canada']]
-        success, message = print_table(data)
-        if success:
-            print("Table printed successfully!")
-        else:
-            print("Error:", message)
+        message = print_table(data)
     """
-
+    stuff = ""
     column_widths = [max(len(str(item)) for item in column) for column in zip(*data)]
 
     header = "+" + "+".join("-" * (width + 2) for width in column_widths) + "+"
-    print(header)
+    stuff += header + "\n"
 
     for row in data:
         formatted_row = (
@@ -177,16 +174,16 @@ def print_table(data: "Iterable[list[str]]") -> Tuple[bool, str]:
             )
             + " |"
         )
-        print(formatted_row)
-
-    print(header)
+        stuff += formatted_row + "\n"
+    stuff += header
+    return stuff
 
 
 def progress_bar(
     progress_name: str,
     current: int,
     total: int,
-    length:int,
+    length: int,
     show_float: bool = True,
     empty_tile: str = "-",
     full_tile: str = "#",
@@ -210,7 +207,7 @@ def progress_bar(
     >>> progress_bar("Loading", 50, 100, 20, False,'-', '#')
     Loading: [##########----------] 50%
     """
-    current+=1
+    current += 1
     if show_float:
         percent = float(int(float(current / total * 100) * 10) / 10)
 
@@ -288,7 +285,7 @@ def colorize_text(text: str, color: str) -> str:
     return colors[color] + text + colors["reset"]
 
 
-def visualize_directory(path, prefix="", lines=None) -> None:
+def visualize_directory(path, prefix="", lines=None) -> List[str]:
     """
     Recursively visualizes the directory structure of a given path.
 
@@ -329,22 +326,26 @@ def visualize_directory(path, prefix="", lines=None) -> None:
         lines.append(f"[{base_name}]")
 
     is_last = False
+    last_marker = "└──"
+    middle_marker = "├──"
+    line_marker = "│   "
+    empty_marker = "   "
 
     try:
-        with os.scandir(path) as entries:
-            entries = list(entries)
+        with os.scandir(path) as entries_r:
+            entries = list(entries_r)
             for i, entry in enumerate(entries):
                 is_last = i == len(entries) - 1
-                marker = "└──" if is_last else "├──"
+                marker = last_marker if is_last else middle_marker
 
                 if entry.is_dir():
                     lines.append(f"{prefix}{marker}[{entry.name}]")
-                    new_prefix = prefix + "│   " if not is_last else prefix + "    "
+                    new_prefix = prefix + line_marker if not is_last else prefix + empty_marker
                     visualize_directory(entry.path, new_prefix, lines)
                 else:
                     lines.append(f"{prefix}{marker}/{entry.name}")
     except PermissionError:
-        marker = "└──" if is_last else "├──"
+        marker = last_marker if is_last else middle_marker
         lines.append(f"{prefix}{marker}(Access Denied)")
 
     return lines
@@ -384,15 +385,14 @@ def prompt_bool(
     allow_undeterminable: bool = False,
     tries: int = 0,
     delete_lines=True,
-    return_value_when_tries_are_depleted=None,
-) -> bool:
+) -> Tuple[Optional[bool], str]:
     """
     Prompts the user with a yes/no question and returns their response.
 
     Args:
         question (str): The question to display to the user.
         allow_undeterminable (bool, optional): If True, returns None for invalid answers instead of retrying. Defaults to False.
-        tries (int, optional): Number of attempts allowed for a valid response. Defaults to 0 (no limit).
+        tries (int, optional): Union[int,float] of attempts allowed for a valid response. Defaults to 0 (no limit).
         delete_lines (bool, optional): If True, clears the input lines after each prompt. Defaults to True.
         return_value_when_tries_are_depleted (bool, optional): Value to return if the maximum number of tries is exceeded. Defaults to None.
 
@@ -405,14 +405,13 @@ def prompt_bool(
         tries_count += 1
         input_ans = str(input(question)).lower()
         ans = determine_affirmative(input_ans)
-        if ans is not None:
+        if not ans is None:
             return ans, input_ans
-        else:
-            if allow_undeterminable:
-                return ans, input_ans
+        if allow_undeterminable:
+            return ans, input_ans
         if tries > 0:
             if tries_count >= tries:
-                return return_value_when_tries_are_depleted, input_ans
+                return None, input_ans
 
         if delete_lines:
             clear_lines(1)
@@ -420,26 +419,20 @@ def prompt_bool(
 
 def prompt_number(
     question: str,
-    min: int = None,
-    max: int = None,
-    incorrect=None,
-    error=None,
+    min: Optional[int] = None,
+    max: Optional[int] = None,
     delete_lines=True,
     tries=0,
-    try_return=None,
-) -> int:
+) -> Optional[int]:
     """
     Asks the user a number question and validates the input.
 
     Args:
-        question (str): The question to ask the user.
-        min (int, optional): Minimum allowed value. Defaults to None.
-        max (int, optional): Maximum allowed value. Defaults to None.
-        incorrect (callable, optional): Callback function to handle incorrect input. Defaults to None.
-        error (callable, optional): Callback function to handle errors during input conversion. Defaults to None.
-        delete_lines (bool, optional): Whether to delete previous lines. Defaults to True.
-        tries (int, optional): Maximum number of tries. Defaults to 0.
-        try_return (callable, optional): Callback function to handle reaching maximum tries. Defaults to None.
+        question (str): The question to display to the user.
+        min (int, optional): The minimum value allowed. Defaults to None.
+        max (int, optional): The maximum value allowed. Defaults to None.
+        delete_lines (bool, optional): If True, clears the input lines after each prompt. Defaults to True.
+        tries (int, optional): Union[int,float] of attempts allowed for a valid response. Defaults to 0 (no limit).
 
     Returns:
         int: The validated input number or None if maximum tries reached.
@@ -450,44 +443,37 @@ def prompt_number(
     """
     tries_count = 0
     while True:
+        if tries > 0:
+            if tries_count >= tries:
+                return None
         tries_count += 1
-        try:
-            input_ans = int(input(question))
-            if min is None or max is None:
-                return input_ans
-            elif min <= input_ans <= max:
-                return input_ans
-            else:
-                if tries > 0:
-                    if tries_count >= tries:
-                        if try_return is not None:
-                            return try_return(input_ans)
-                        else:
-                            return None
-                if delete_lines:
-                    clear_lines(1)
-                if incorrect is not None:
-                    return incorrect(input_ans)
-        except:
-            if tries > 0:
-                if tries_count >= tries:
-                    if try_return is not None:
-                        return try_return(input_ans)
-                    else:
-                        return None
-            if delete_lines:
-                clear_lines(1)
-            if error is not None:
-                return error(input_ans)
+
+        user_input: str = input(question)
+        if delete_lines:
+            clear_lines(1)
+        if not user_input.isdigit():
+            continue
+
+        user_input_int: int = int(user_input)
+
+        if not min is None:
+            if user_input_int < min:
+                continue
+        if not max is None:
+            if user_input_int > max:
+                continue
+        else:
+            return user_input_int
 
 
 def matrix_rain(
     rows: int,
     columns: int,
-    speed: Number = 0.1,
-    density: Number = 0.2,
-    duration: Number = None,
-    symbols: Iterable = ["0", "1"],
+    speed: Union[int, float] = 0.1,
+    density: Union[int, float] = 0.2,
+    duration: Optional[Union[int, float]] = None,
+    symbols: List[str] = ["0", "1"],
+    callable_stop_if_return_true: Callable = lambda: False,
 ) -> None:
     """
     Displays a matrix rain animation on the console.
@@ -509,8 +495,6 @@ def matrix_rain(
         - The raindrops are represented by '0' and '1' characters.
         - The console is cleared before each frame is printed.
     """
-    global tge_matrix_console_stop
-    tge_matrix_console_stop = False
     mat_time = time.time()
 
     matrix = [[" " for _ in range(columns)] for _ in range(rows)]
@@ -538,99 +522,19 @@ def matrix_rain(
         if duration is not None:
             if time.time() - mat_time > duration:
                 break
-        elif tge_matrix_console_stop:
+        if callable_stop_if_return_true():
             break
 
         time.sleep(speed)
 
 
+class SuppressPrint:
+    "To use:\nwith SuppressPrint():\n\tdo_something()"
 
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, "w")
 
-class ConsoleCapture:
-    def __init__(self) -> None:
-        """
-        A context manager for capturing and redirecting standard output.
-
-        This class provides functionality to capture and redirect the standard output
-        during its context, allowing you to capture printed output into a string buffer.
-
-        Usage:
-        ------
-        To use this context manager, create an instance of OutputCapture within a `with` block.
-        During the block's execution, any printed output will be captured into a buffer.
-        """
-        self.original_stdout = sys.stdout
-        self.captured_output = StringIO()
-        self.capturing = False
-
-    def start_capture(self) -> None:
-        """
-        Start capturing the standard output if capturing is not already active.
-
-        This method is used to redirect the standard output (stdout) to the captured output stream
-        associated with this object. The captured output can be useful for logging or saving the
-        output of specific code segments.
-
-        If capturing is already active, calling this method will have no effect.
-        """
-        if self.capturing == False:
-            sys.stdout = self.captured_output
-
-    def stop_capture(self) -> None:
-        """
-        Stops capturing the standard output and restores the original stdout if capturing is currently active.
-
-        This method checks the state of the 'capturing' attribute in the instance and, if it is currently set to True,
-        it restores the original stdout stream, effectively stopping the redirection of output that was previously
-        enabled by the 'start_capture' method.
-
-        Parameters:
-            self (object): The instance of the capturing class.
-        """
-        if self.capturing == True:
-            sys.stdout = self.original_stdout
-
-    def get_captured_output(self) -> StringIO:
-        """
-        Retrieve the content from the captured output buffer.
-
-        This method returns the content stored in the internal captured output buffer,
-        which is typically used to capture and store the output produced by various
-        operations or functions. The buffer is first rewound to the beginning to ensure
-        reading starts from the start of the content.
-
-        Returns:
-            str: The content stored in the captured output buffer.
-        """
-        self.captured_output.seek(0)
-        return self.captured_output.read()
-
-
-def suppress_print() -> None:
-    """
-    Temporarily suppresses the standard output (print statements) by capturing
-    and redirecting them. This function initializes a global 'console_capture'
-    object of type 'ConsoleCapture' and starts capturing the console output.
-
-    """
-    global console_capture
-    console_capture = ConsoleCapture()
-    console_capture.start_capture()
-
-
-def restore_print() -> StringIO:
-    """
-    Reverses the effect of a previously enabled console output capture,
-    allowing the standard output to be displayed in the console again.
-
-    This function stops the capture of console output that was previously
-    initiated through the 'console_capture' global object. It retrieves the
-    captured output and returns it as a string.
-
-    Returns:
-        str: The captured console output accumulated since capture started.
-    """
-    global console_capture
-    console_capture.stop_capture()
-    captured_output = console_capture.get_captured_output()
-    return captured_output
+    def __exit__(self, exc_type, exc_value, traceback):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout

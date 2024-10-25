@@ -1,4 +1,5 @@
-from typing import List, Union, Tuple, Any, Tuple, Dict, Optional
+# type: ignore
+from typing import List, Union, Tuple, Any, Tuple, Dict, Optional, Sequence
 import re
 import pytube
 import os
@@ -109,8 +110,8 @@ def is_internet_connected(
 
 
 
-def download_list_of_youtube_videos(urls: list, directory: str, preferred_format: str="mp3", preferred_quality: str="192")->List[Union[None, str]]:
-    errors = []
+def download_list_of_youtube_videos(urls: list, directory: str, preferred_format: str="mp3", preferred_quality: str="192") -> List[Optional[Exception]]:
+    errors: List[Optional[Exception]] = []
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -129,16 +130,20 @@ def download_list_of_youtube_videos(urls: list, directory: str, preferred_format
             try:
                 ydl.download([url])
                 errors.append(None)
-
             except Exception as e:
                 errors.append(e)
+
     return errors
+
+
+
+
 
 def post_to_discord_webhook(
     message_content: str,
     webhook: str,
     name: str,
-    avatar_url: str = None,
+    avatar_url: Optional[str] = None,
     mention: bool = True,
     activate_voice: bool = False,
 ) -> Tuple[int, bytes]:
@@ -160,7 +165,7 @@ def post_to_discord_webhook(
 
 
 
-def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
+def extract_youtube_info(link: str) -> Dict[str, Union[str, dict, None]]:
     """
     Extracts information from a YouTube video link.
 
@@ -202,7 +207,7 @@ def extract_youtube_info(link: str) -> Dict[str, Optional[str]]:
 
 
 
-def download_from_url_to_dir(url: str, dir: str, create: bool=True) -> None:
+def download_from_url_to_dir(url: str, dir: str, create: bool=True) -> bool:
     """
     Downloads a file from the given URL and saves it to the specified directory.
 
@@ -234,7 +239,7 @@ def download_from_url_to_dir(url: str, dir: str, create: bool=True) -> None:
         return False
 
 
-def is_url_available(url: str, check_url: bool = True) -> bool:
+def is_url_available(url: str, check_url: bool = True) -> Optional[bool]:
     """
     Check the availability of a URL by sending a GET request and evaluating the response status code.
 
@@ -257,11 +262,11 @@ def is_url_available(url: str, check_url: bool = True) -> bool:
             return True
         else:
             return False
-    except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout:
+    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout):
         return None
 
 
-def get_all_videos_from_youtube_playlist(playlist_url: str) -> Union[List[str], str]:
+def get_all_videos_from_youtube_playlist(playlist_url: str) -> Union[List[str], Exception]:
     """
     Retrieves all video URLs from a YouTube playlist.
 

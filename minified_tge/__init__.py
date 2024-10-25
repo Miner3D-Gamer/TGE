@@ -61,9 +61,9 @@ def is_ffmpeg_installed():
  try:B=subprocess.run([A,'-version'],stdout=subprocess.PIPE,stderr=subprocess.PIPE);return B.returncode==0
  except FileNotFoundError:return _B
  except Exception as C:print(f"An error occurred: {C}");return _B
-assured_libraries=os.getenv('TGE_ASSURED_LIBRARIES','True')
-if assured_libraries=='True':assured_libraries=True
-elif assured_libraries=='False':assured_libraries=_B
+pre_assured_libraries=os.getenv('TGE_ASSURED_LIBRARIES','True')
+if pre_assured_libraries=='True':assured_libraries=True
+elif pre_assured_libraries=='False':assured_libraries=_B
 else:assured_libraries=None
 INIT_TIME_BEFORE_IMPORTING=tm.time()-start_import
 from.import library_utils
@@ -96,4 +96,4 @@ else:
 tim=tm.time()
 IMPORT_TIME=tim-INIT_TIME_BEFORE_IMPORTING
 INIT_TIME=tim-start_import
-del tim,importing,INIT_TIME_BEFORE_IMPORTING
+del tim,importing,INIT_TIME_BEFORE_IMPORTING,pre_assured_libraries,assured_libraries

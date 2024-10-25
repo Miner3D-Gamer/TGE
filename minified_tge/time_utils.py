@@ -31,6 +31,6 @@ class TimerManager:
   A=B.timers.get(timer_name,_A)
   if not A is _A:return A.subtract_time(amount)
   return-1.
-def get_date():B=' ';A=datetime.now();C=datetime.weekday(A);A=str(A).replace('-',B).replace(':',B).replace('.',B).split(B);return int(A[0]),int(A[1]),int(A[2]),int(A[3]),int(A[4]),int(A[5]),int(C)
+def get_date():B=' ';C=datetime.now();D=datetime.weekday(C);A=str(C).replace('-',B).replace(':',B).replace('.',B).split(B);return int(A[0]),int(A[1]),int(A[2]),int(A[3]),int(A[4]),int(A[5]),int(D)
 def get_timezone_offset():return int(time.timezone/3600)
 def unix_converter(time):return datetime.fromtimestamp(time).strftime('%Y %m %d %H %M %S')

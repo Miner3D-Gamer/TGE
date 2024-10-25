@@ -24,7 +24,7 @@ __doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.MD"
 
 
 import sys
-from typing import Literal
+from typing import Literal, Optional
 import subprocess
 import shutil
 import requests
@@ -52,36 +52,36 @@ from .mini_lib import platform_mini  # For faster import time
 
 if sys.platform.startswith("java"):
 
-    def get_system() -> str:
+    def get_system() -> Literal['jython']:
         "Returns the current user system"
         return "jython"
 
 elif sys.platform == "darwin":
 
-    def get_system() -> str:
+    def get_system() -> Literal['darwin']:
         "Returns the current user system"
         return "darwin"
 
 elif sys.platform == "win32":
 
-    def get_system() -> str:
+    def get_system() -> Literal['windows']:
         "Returns the current user system"
         return "windows"
 
 elif platform_mini.system() == "Linux":
 
-    def get_system() -> str:
+    def get_system() -> Literal['linux']:
         "Returns the current user system"
         return "linux"
 
 else:
 
-    def get_system() -> str:
+    def get_system() -> Literal['unknown']:
         "Returns the current user system"
         return "unknown"
 
 
-SYSTEM_NAME: "Literal['jython', 'darwin', 'windows', 'linux', 'unknown']" = get_system()
+SYSTEM_NAME: Literal['jython', 'darwin', 'windows', 'linux', 'unknown'] = get_system()
 
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
@@ -103,11 +103,11 @@ def is_ffmpeg_installed():
         return False
 
 
-assured_libraries = os.getenv("TGE_ASSURED_LIBRARIES", "True")
+pre_assured_libraries = os.getenv("TGE_ASSURED_LIBRARIES", "True")
 
-if assured_libraries == "True":
-    assured_libraries = True
-elif assured_libraries == "False":
+if pre_assured_libraries == "True":
+    assured_libraries: Optional[bool] = True
+elif pre_assured_libraries == "False":
     assured_libraries = False
 else:
     assured_libraries = None
@@ -341,4 +341,4 @@ else:
 tim = tm.time()
 IMPORT_TIME = tim - INIT_TIME_BEFORE_IMPORTING
 INIT_TIME = tim - start_import
-del tim, importing, INIT_TIME_BEFORE_IMPORTING
+del tim, importing, INIT_TIME_BEFORE_IMPORTING, pre_assured_libraries, assured_libraries

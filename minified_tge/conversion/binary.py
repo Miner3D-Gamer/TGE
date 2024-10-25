@@ -20,10 +20,11 @@ def convert_decimal_to_hexadecimal(decimal):
  while A>0:C=A%16;D=HEX_CHARACTERS[C];B=D+B;A=A//16
  return B
 def convert_hexadecimal_to_decimal(hexadecimal):
- A=hexadecimal
- if A=='0':return 0
- B=0
- for C in reversed(A):B=B*16+HEX_CHARACTERS.index(C)
+ B=hexadecimal
+ if B=='0':return 0
+ A=0
+ for C in reversed(B):A=A*16+HEX_CHARACTERS.index(C)
+ return A
 def convert_bytes(value,from_unit,to_unit):
  C=to_unit;B=from_unit;A=['bytes',_A,_B,_C,'terabytes','petabytes','exabytes','zettabytes','yottabytes','brontobytes','geopbytes','xobibytes','yobibytes']
  if B not in A or C not in A:raise ValueError('Invalid unit specified')

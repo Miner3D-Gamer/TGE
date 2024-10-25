@@ -1,8 +1,11 @@
+# type: ignore
 import inspect
-from types import FunctionType, ModuleType, MethodType
-from typing import Any, List, get_type_hints, Union
+from types import ModuleType, MethodType
+from typing import Any, List, get_type_hints, Union, Callable
 import importlib
 import os
+import concurrent
+from typing import Union
 
 
 def get_docstring(obj: object) -> str:
@@ -26,6 +29,7 @@ def get_docstring(obj: object) -> str:
 def check_for_functions_in_module_with_missing_notations(
     library_module: ModuleType,
 ) -> List[dict]:
+    raise Exception("This function is broken, I'm just done with the bs this function caused me")
     """
     Check all functions in a given library module for missing input type or return type annotations.
     Parameters:
@@ -46,10 +50,16 @@ def check_for_functions_in_module_with_missing_notations(
             if missing_input_types or return_type is MissingReturnType:
                 functions_with_missing_annotations.append(
                     {
+                        "file": library_module.__file__,
                         "function_name": name,
                         "missing_input_types": missing_input_types,
                         "return_type": return_type,
                     }
+                )
+        elif isinstance(obj, ModuleType):
+            if obj.__name__.startswith(library_module.__name__):
+                functions_with_missing_annotations.extend(
+                    check_for_functions_in_module_with_missing_notations(obj)
                 )
 
     return functions_with_missing_annotations
@@ -68,9 +78,7 @@ def print_check_for_functions_in_module_with_missing_notations(
     """
     data = check_for_functions_in_module_with_missing_notations(library_module)
     for i in data:
-        print(
-            f"Function '{i['function_name']}' of type {'Missing Return' if i['function_name'] is MissingReturnType else 'Missing Input type'}"
-        )
+        print(f"\nIn File '{i['file']}' Function '{i['function_name']}'", i)
 
 
 def get_return_type(func: MethodType) -> Any:
@@ -105,7 +113,10 @@ def get_function_inputs(func: MethodType) -> List[dict]:
     """
     signature = inspect.signature(func)
 
-    type_hints = get_type_hints(func)
+    try:
+        type_hints = get_type_hints(func)
+    except TypeError:
+        return [{"name": None, "type": UnknownInputType, "default": NoInputType}]
 
     input_parameters = []
     for param_name, param in signature.parameters.items():
@@ -118,11 +129,16 @@ def get_function_inputs(func: MethodType) -> List[dict]:
                 {"name": param_name, "type": param_type, "default": default_value}
             )
         else:
+            print(param, param_name)
+            quit()
             input_parameters.append(
                 {"name": param_name, "type": param_type, "default": NoInputType}
             )
 
     return input_parameters
+
+
+class UnknownInputType: ...
 
 
 def get_function_id_by_name(func_name) -> Union[None, ModuleType]:
@@ -246,3 +262,33 @@ def restrict_to_directory(allowed_dir):
         return wrapper
 
     return decorator
+
+
+class TimeoutResult: ...
+
+
+def run_function_with_timeout(
+    func: Callable, timeout: Union[int,float], *args, **kwargs
+) -> Union[Any, TimeoutResult]:
+    """
+    Executes a function with a specified timeout.
+
+    Parameters:
+    func (Callable): The function to execute.
+    timeout (Union[int,float]): The maximum time to wait for the function to complete, in seconds.
+    *args: Positional arguments to pass to the function.
+    **kwargs: Keyword arguments to pass to the function.
+
+    Returns:
+    Union[Any, TimeoutResult]: The result of the function if it completes within the timeout,
+                                or a TimeoutResult if the function times out.
+
+    This function uses a thread pool executor to run the given function asynchronously and
+    enforces a timeout on its execution.
+    """
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(func, *args, **kwargs)
+        try:
+            return future.result(timeout=timeout)
+        except concurrent.futures.TimeoutError:
+            return TimeoutResult

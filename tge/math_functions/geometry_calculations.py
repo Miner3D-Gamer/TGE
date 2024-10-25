@@ -2,54 +2,54 @@ from math import sqrt
 
 from .math_functions import get_pi
 
-from numbers import Number
+from typing import Union, List
 from collections.abc import Iterable
 
 
 def volume_of_cuboid(
-    length: Number, width: Number, height: Number
-) -> Number:
+    length: Union[int,float], width: Union[int,float], height: Union[int,float]
+) -> Union[int,float]:
     """Calculate the volume of a cuboid.
 
     Args:
-        length (Number): The length of the cuboid.
-        width (Number): The width of the cuboid.
-        height (Number): The height of the cuboid.
+        length (Union[int,float]): The length of the cuboid.
+        width (Union[int,float]): The width of the cuboid.
+        height (Union[int,float]): The height of the cuboid.
 
     Returns:
-        Number: The volume of the cuboid."""
+        Union[int,float]: The volume of the cuboid."""
     return length * width * height
 
 
-def volume_of_cube(side: Number) -> Number:
+def volume_of_cube(side: Union[int,float]) -> Union[int,float]:
     """Calculate the volume of a cube.
 
     Args:
-        side (Number): The length of each side of the cube.
+        side (Union[int,float]): The length of each side of the cube.
 
     Returns:
-        Number: The volume of the cube."""
+        Union[int,float]: The volume of the cube."""
     return side**3
 
 
-def volume_of_sphere(radius: Number) -> Number:
+def volume_of_sphere(radius: Union[int,float]) -> Union[int,float]:
     """Calculate the volume of a sphere using an approximation for π (pi).
 
     Args:
-        radius (Number): The radius of the sphere.
+        radius (Union[int,float]): The radius of the sphere.
 
     Returns:
-        Number: The volume of the sphere using π ≈ 3.14159.
+        Union[int,float]: The volume of the sphere using π ≈ 3.14159.
     """
     return (4 / 3) * 3.14159 * (radius**3)
 
 
-def volume_of_sphere_with_accuracy(radius: Number, accuracy: Number) -> float:
+def volume_of_sphere_with_accuracy(radius: Union[int,float], accuracy: int) -> float:
     """Calculate the volume of a sphere with a specified accuracy for π (pi).
 
     Args:
         radius (float): The radius of the sphere.
-        accuracy (Number): The level of accuracy for π.
+        accuracy (Union[int,float]): The level of accuracy for π.
 
     Returns:
         float: The volume of the sphere using the provided π accuracy.
@@ -57,28 +57,28 @@ def volume_of_sphere_with_accuracy(radius: Number, accuracy: Number) -> float:
     return (4 / 3) * get_pi(accuracy) * (radius**3)
 
 
-def volume_of_cylinder(radius: Number, height: Number) -> Number:
+def volume_of_cylinder(radius: Union[int,float], height: Union[int,float]) -> Union[int,float]:
     """Calculate the volume of a cylinder using an approximation for π (pi).
 
     Args:
-        radius (Number): The radius of the base of the cylinder.
-        height (Number): The height of the cylinder.
+        radius (Union[int,float]): The radius of the base of the cylinder.
+        height (Union[int,float]): The height of the cylinder.
 
     Returns:
-        Number: The volume of the cylinder using π ≈ 3.14159.
+        Union[int,float]: The volume of the cylinder using π ≈ 3.14159.
     """
     return 3.14159 * (radius**2) * height
 
 
 def volume_of_cylinder_with_accuracy(
-    radius: Number, height: Number, accuracy: Number
+    radius: Union[int,float], height: Union[int,float], accuracy: int
 ) -> float:
     """Calculate the volume of a cylinder with a specified accuracy for π (pi).
 
     Args:
         radius (float): The radius of the base of the cylinder.
         height (float): The height of the cylinder.
-        accuracy (Number): The level of accuracy for π.
+        accuracy (Union[int,float]): The level of accuracy for π.
 
     Returns:
         float: The volume of the cylinder using the provided π accuracy.
@@ -86,47 +86,47 @@ def volume_of_cylinder_with_accuracy(
     return get_pi(accuracy) * (radius**2) * height
 
 
-def area_of_square(side: Number) -> Number:
+def area_of_square(side: Union[int,float]) -> Union[int,float]:
     """Calculate the area of a square.
 
     Args:
-        side (Number): The length of one side of the square.
+        side (Union[int,float]): The length of one side of the square.
 
     Returns:
-        Number: The area of the square."""
+        Union[int,float]: The area of the square."""
     return side**2
 
 
-def area_of_rectangle(length: Number, width: Number) -> Number:
+def area_of_rectangle(length: Union[int,float], width: Union[int,float]) -> Union[int,float]:
     """Calculate the area of a rectangle.
 
     Args:
-        length (Number): The length of the rectangle.
-        width (Number): The width of the rectangle.
+        length (Union[int,float]): The length of the rectangle.
+        width (Union[int,float]): The width of the rectangle.
 
     Returns:
-        Number: The area of the rectangle."""
+        Union[int,float]: The area of the rectangle."""
     return length * width
 
 
-def area_of_circle(radius: Number) -> Number:
+def area_of_circle(radius: Union[int,float]) -> Union[int,float]:
     """Calculate the area of a circle using an approximation for π (pi).
 
     Args:
-        radius (Number): The radius of the circle.
+        radius (Union[int,float]): The radius of the circle.
 
     Returns:
-        Number: The area of the circle using π ≈ 3.14159.
+        Union[int,float]: The area of the circle using π ≈ 3.14159.
     """
     return 3.14159 * (radius**2)
 
 
-def area_of_circle_with_accuracy(radius: Number, accuracy: Number) -> float:
+def area_of_circle_with_accuracy(radius: Union[int,float], accuracy: int) -> float:
     """Calculate the area of a circle with a specified accuracy for π (pi).
 
     Args:
         radius (float): The radius of the circle.
-        accuracy (Number): The level of accuracy for π.
+        accuracy (Union[int,float]): The level of accuracy for π.
 
     Returns:
         float: The area of the circle using the provided π accuracy.
@@ -135,61 +135,61 @@ def area_of_circle_with_accuracy(radius: Number, accuracy: Number) -> float:
 
 
 def area_of_trapezoid(
-    base_length: Number, base_width: Number, height: Number
-) -> Number:
+    base_length: Union[int,float], base_width: Union[int,float], height: Union[int,float]
+) -> Union[int,float]:
     """Calculate the area of a trapezoid.
 
     Args:
-        base_length (Number): The length of one base of the trapezoid.
-        base_width (Number): The length of the other base of the trapezoid.
-        height (Number): The height of the trapezoid.
+        base_length (Union[int,float]): The length of one base of the trapezoid.
+        base_width (Union[int,float]): The length of the other base of the trapezoid.
+        height (Union[int,float]): The height of the trapezoid.
 
     Returns:
-        Number: The area of the trapezoid.
+        Union[int,float]: The area of the trapezoid.
     """
     return ((base_length + base_width) * height) / 2
 
 
 def volume_of_pyramid(
-    base_length: Number, base_width: Number, height: Number
-) -> Number:
+    base_length: Union[int,float], base_width: Union[int,float], height: Union[int,float]
+) -> Union[int,float]:
     """Calculate the volume of a pyramid.
 
     Args:
-        base_length (Number): The length of the base of the pyramid.
-        base_width (Number): The width of the base of the pyramid.
-        height (Number): The height of the pyramid.
+        base_length (Union[int,float]): The length of the base of the pyramid.
+        base_width (Union[int,float]): The width of the base of the pyramid.
+        height (Union[int,float]): The height of the pyramid.
 
     Returns:
-        Number: The volume of the pyramid."""
+        Union[int,float]: The volume of the pyramid."""
     return (base_length * base_width * height) / 3
 
 
 def linear_regression_slope(
-    x1: Number, y1: Number, x2: Number, y2: Number
+    x1: Union[int,float], y1: Union[int,float], x2: Union[int,float], y2: Union[int,float]
 ) -> float:
     """Calculate the slope of the line through two points.
 
     Args:
-        x1 (Number): The x-coordinate of the first point.
-        y1 (Number): The y-coordinate of the first point.
-        x2 (Number): The x-coordinate of the second point.
-        y2 (Number): The y-coordinate of the second point.
+        x1 (Union[int,float]): The x-coordinate of the first point.
+        y1 (Union[int,float]): The y-coordinate of the first point.
+        x2 (Union[int,float]): The x-coordinate of the second point.
+        y2 (Union[int,float]): The y-coordinate of the second point.
 
     Returns:
         float: The slope of the line through the two points."""
     return (y2 - y1) / (x2 - x1)
 
 
-def surface_area_of_cylinder(radius: Number, height: Number) -> Number:
+def surface_area_of_cylinder(radius: Union[int,float], height: Union[int,float]) -> Union[int,float]:
     """Calculate the surface area of a cone (not a cylinder) using an approximation for π (pi).
 
     Args:
-        radius (Number): The radius of the base of the cone.
-        height (Number): The height of the cone.
+        radius (Union[int,float]): The radius of the base of the cone.
+        height (Union[int,float]): The height of the cone.
 
     Returns:
-        Number: The surface area of the cone using π ≈ 3.14159.
+        Union[int,float]: The surface area of the cone using π ≈ 3.14159.
     """
     slant_height = sqrt(radius**2 + height**2)
 
@@ -199,17 +199,17 @@ def surface_area_of_cylinder(radius: Number, height: Number) -> Number:
 
 
 def surface_area_of_cylinder_with_accuracy(
-    radius: Number, height: Number, accuracy: Number
-) -> Number:
+    radius: Union[int,float], height: Union[int,float], accuracy: int
+) -> Union[int,float]:
     """Calculate the surface area of a cone (not a cylinder) with a specified accuracy for π (pi).
 
     Args:
-        radius (Number): The radius of the base of the cone.
-        height (Number): The height of the cone.
-        accuracy (Number): The level of accuracy for π.
+        radius (Union[int,float]): The radius of the base of the cone.
+        height (Union[int,float]): The height of the cone.
+        accuracy (Union[int,float]): The level of accuracy for π.
 
     Returns:
-        Number: The surface area of the cone using the provided π accuracy."""
+        Union[int,float]: The surface area of the cone using the provided π accuracy."""
     slant_height = sqrt(radius**2 + height**2)
 
     surface_area = get_pi(accuracy) * radius * slant_height
@@ -217,14 +217,14 @@ def surface_area_of_cylinder_with_accuracy(
     return surface_area
 
 
-def surface_area_of_sphere(radius: Number) -> Number:
+def surface_area_of_sphere(radius: Union[int,float]) -> Union[int,float]:
     """Calculate the surface area of a sphere using an approximation for π (pi).
 
     Args:
-        radius (Number): The radius of the sphere.
+        radius (Union[int,float]): The radius of the sphere.
 
     Returns:
-        Number: The surface area of the sphere using π ≈ 3.14159.
+        Union[int,float]: The surface area of the sphere using π ≈ 3.14159.
     """
     surface_area = 4 * 3.14159 * (radius**2)
 
@@ -232,98 +232,98 @@ def surface_area_of_sphere(radius: Number) -> Number:
 
 
 def surface_area_of_sphere_with_accuracy(
-    radius: Number, accuracy: Number
-) -> Number:
+    radius: Union[int,float], accuracy: int
+) -> Union[int,float]:
     """Calculate the surface area of a sphere with a specified accuracy for π (pi).
 
     Args:
-        radius (Number): The radius of the sphere.
-        accuracy (Number): The level of accuracy for π.
+        radius (Union[int,float]): The radius of the sphere.
+        accuracy (Union[int,float]): The level of accuracy for π.
 
     Returns:
-        Number: The surface area of the sphere using the provided π accuracy."""
+        Union[int,float]: The surface area of the sphere using the provided π accuracy."""
     surface_area = get_pi(accuracy) * (radius**2)
 
     return surface_area
 
 
-def surface_area_of_cube(side_length: Number) -> Number:
+def surface_area_of_cube(side_length: Union[int,float]) -> Union[int,float]:
     """Calculate the surface area of a cube.
 
     Args:
-        side_length (Number): The length of one side of the cube.
+        side_length (Union[int,float]): The length of one side of the cube.
 
     Returns:
-        Number: The surface area of the cube.
+        Union[int,float]: The surface area of the cube.
     """
     return 6 * (side_length**2)
 
 
-def surface_area_of_rectangle(length: Number, width: Number) -> Number:
+def surface_area_of_rectangle(length: Union[int,float], width: Union[int,float]) -> Union[int,float]:
     """Calculate the surface area of a rectangle.
 
     Args:
-        length (Number): The length of the rectangle.
-        width (Number): The width of the rectangle.
+        length (Union[int,float]): The length of the rectangle.
+        width (Union[int,float]): The width of the rectangle.
 
     Returns:
-        Number: The surface area of the rectangle.
+        Union[int,float]: The surface area of the rectangle.
     """
     return length * width
 
 
 def surface_area_of_cuboid(
-    length: Number, width: Number, height: Number
-) -> Number:
+    length: Union[int,float], width: Union[int,float], height: Union[int,float]
+) -> Union[int,float]:
     """Calculate the surface area of a cuboid.
 
     Args:
-        length (Number): The length of the cuboid.
-        width (Number): The width of the cuboid.
-        height (Number): The height of the cuboid.
+        length (Union[int,float]): The length of the cuboid.
+        width (Union[int,float]): The width of the cuboid.
+        height (Union[int,float]): The height of the cuboid.
 
     Returns:
-        Number: The surface area of the cuboid."""
+        Union[int,float]: The surface area of the cuboid."""
     return 2 * (length * width + width * height + height * length)
 
 
-def volume_of_cone(radius: Number, height: Number) -> Number:
+def volume_of_cone(radius: Union[int,float], height: Union[int,float]) -> Union[int,float]:
     """Calculate the volume of a cone using an approximation for π (pi).
 
     Args:
-        radius (Number): The radius of the base of the cone.
-        height (Number): The height of the cone.
+        radius (Union[int,float]): The radius of the base of the cone.
+        height (Union[int,float]): The height of the cone.
 
     Returns:
-        Number: The volume of the cone using π ≈ 3.14159."""
+        Union[int,float]: The volume of the cone using π ≈ 3.14159."""
     return (1 / 3) * 3.14159 * (radius**2) * height
 
 
 def volume_of_cone_with_accuracy(
-    radius: Number, height: Number, accuracy: Number
-) -> Number:
+    radius: Union[int,float], height: Union[int,float], accuracy: int
+) -> Union[int,float]:
     """
     Calculate the volume of a cone using a specified precision for π (pi).
 
     Args:
-        radius (Number): The radius of the base of the cone.
-        height (Number): The height of the cone.
-        accuracy (Number): Precision level for π.
+        radius (Union[int,float]): The radius of the base of the cone.
+        height (Union[int,float]): The height of the cone.
+        accuracy (Union[int,float]): Precision level for π.
 
     Returns:
-        Number: The volume of the cone calculated with the given π accuracy."""
+        Union[int,float]: The volume of the cone calculated with the given π accuracy."""
     return (1 / 3) * get_pi(accuracy) * (radius**2) * height
 
 
-def surface_area_of_cone(radius: Number, height: Number) -> Number:
+def surface_area_of_cone(radius: Union[int,float], height: Union[int,float]) -> Union[int,float]:
     """Calculate the surface area of a cone using an approximation for π (pi).
 
     Args:
-        radius (Number): The radius of the base of the cone.
-        height (Number): The height of the cone.
+        radius (Union[int,float]): The radius of the base of the cone.
+        height (Union[int,float]): The height of the cone.
 
     Returns:
-        Number: The surface area of the cone, using π ≈ 3.14159.
+        Union[int,float]: The surface area of the cone, using π ≈ 3.14159.
     """
     base_area = 3.14159 * radius**2
     side_area = 3.14159 * radius * sqrt(radius**2 + height**2)
@@ -332,17 +332,17 @@ def surface_area_of_cone(radius: Number, height: Number) -> Number:
 
 
 def surface_area_of_cone_with_accuracy(
-    radius: Number, height: Number, accuracy: Number
-) -> Number:
+    radius: Union[int,float], height: Union[int,float], accuracy: int
+) -> Union[int,float]:
     """Calculate the surface area of a cone with a specified precision for π (pi).
 
     Args:
-        radius (Number): The radius of the base of the cone.
-        height (Number): The height of the cone.
-        accuracy (Number): Precision level for π.
+        radius (Union[int,float]): The radius of the base of the cone.
+        height (Union[int,float]): The height of the cone.
+        accuracy (Union[int,float]): Precision level for π.
 
     Returns:
-        Number: The surface area of the cone calculated with the given π accuracy.
+        Union[int,float]: The surface area of the cone calculated with the given π accuracy.
     """
     base_area = get_pi(accuracy) * radius**2
     side_area = get_pi(accuracy) * radius * sqrt(radius**2 + height**2)
@@ -350,35 +350,35 @@ def surface_area_of_cone_with_accuracy(
     return surface_area
 
 
-def area_of_ellipse(radius: Number, height: Number) -> Number:
+def area_of_ellipse(radius: Union[int,float], height: Union[int,float]) -> Union[int,float]:
     """Calculate the area of an ellipse using an approximation for π (pi).
 
     Args:
-        radius (Number): The semi-major axis of the ellipse.
-        height (Number): The semi-minor axis of the ellipse.
+        radius (Union[int,float]): The semi-major axis of the ellipse.
+        height (Union[int,float]): The semi-minor axis of the ellipse.
 
     Returns:
-        Number: The area of the ellipse using π ≈ 3.14159.
+        Union[int,float]: The area of the ellipse using π ≈ 3.14159.
     """
     return 3.14159 * radius * height
 
 
 def area_of_ellipse_with_accuracy(
-    radius: Number, height: Number, accuracy: Number
-) -> Number:
+    radius: Union[int,float], height: Union[int,float], accuracy: int
+) -> Union[int,float]:
     """Calculate the area of an ellipse with a specified accuracy for π (pi).
 
     Args:
-        radius (Number): The semi-major axis of the ellipse.
-        height (Number): The semi-minor axis of the ellipse.
-        accuracy (Number): The level of accuracy for π.
+        radius (Union[int,float]): The semi-major axis of the ellipse.
+        height (Union[int,float]): The semi-minor axis of the ellipse.
+        accuracy (Union[int,float]): The level of accuracy for π.
 
     Returns:
-        Number: The area of the ellipse using the provided π accuracy."""
+        Union[int,float]: The area of the ellipse using the provided π accuracy."""
     return get_pi(accuracy) * radius * height
 
 
-def area_of_oval(width: int, height: int) -> int:
+def area_of_oval(width: int, height: int) -> float:
     """Calculate the area of an oval approximated as a combination of a rectangle and a triangle.
 
     Args:
@@ -393,21 +393,21 @@ def area_of_oval(width: int, height: int) -> int:
     return area
 
 
-def area_of_triangle(base: Number, height: Number) -> float:
+def area_of_triangle(base: Union[int,float], height: Union[int,float]) -> float:
     """Calculate the area of a triangle.
 
     Args:
-        base (Number): The base length of the triangle.
-        height (Number): The height of the triangle.
+        base (Union[int,float]): The base length of the triangle.
+        height (Union[int,float]): The height of the triangle.
 
     Returns:
-        Number: The area of the triangle."""
+        Union[int,float]: The area of the triangle."""
     return 0.5 * base * height
 
 
 def calculate_distance_between_two_points(
-    x: Number, y: Number
-) -> Number:
+    x: Union[int,float], y: Union[int,float]
+) -> Union[int,float]:
     """
     Calculate the distance between two points using the Euclidean formula.
 
@@ -419,8 +419,8 @@ def calculate_distance_between_two_points(
 
 
 def calculate_distance_between_three_points(
-    x: Number, y: Number, z: Number
-) -> Number:
+    x: Union[int,float], y: Union[int,float], z: Union[int,float]
+) -> Union[int,float]:
     """
     Calculate the distance between three points in a 3D space.
 
@@ -434,8 +434,8 @@ def calculate_distance_between_three_points(
 
 
 def calculate_distance_between_four_points(
-    x: Number, y: Number, z: Number, a: Number
-) -> Number:
+    x: Union[int,float], y: Union[int,float], z: Union[int,float], a: Union[int,float]
+) -> Union[int,float]:
     """
     Calculates the distance between four points represented by their x, y, and z coordinates.
 
@@ -451,7 +451,7 @@ def calculate_distance_between_four_points(
 
 
 
-def calculate_distance_between_points(*points: Iterable) -> int:
+def calculate_distance_between_points(*points: Iterable) -> float:
     """Calculate the total distance between a sequence of points in 2D space.
 
     Args:
@@ -474,11 +474,11 @@ def calculate_distance_between_points(*points: Iterable) -> int:
     return total_distance
 
 
-def vector_magnitude(vector: Iterable) -> float:
+def vector_magnitude(vector: List[Union[int,float]]) -> float:
     """Calculate the magnitude of a 2D vector.
 
     Args:
-        vector (Iterable): A tuple or list representing the vector (x, y).
+        vector (List[Union[int,float]]): A tuple or list representing the vector (x, y).
 
     Returns:
         float: The magnitude of the vector.
@@ -486,7 +486,7 @@ def vector_magnitude(vector: Iterable) -> float:
     return sqrt(vector[0] ** 2 + vector[1] ** 2)
 
 
-def hamming_distance(string1: str, string2: str) -> Number:
+def hamming_distance(string1: str, string2: str) -> Union[int,float]:
     """Calculate the Hamming distance between two strings.
 
     Args:
@@ -494,6 +494,6 @@ def hamming_distance(string1: str, string2: str) -> Number:
         string2 (str): The second string.
 
     Returns:
-        Number: The Hamming distance, which is the number of positions at which the characters differ. Returns an integer.
+        Union[int,float]: The Hamming distance, which is the number of positions at which the characters differ. Returns an integer.
     """
     return sum(ch1 != ch2 for ch1, ch2 in zip(string1, string2))

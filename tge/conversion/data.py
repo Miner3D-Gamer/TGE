@@ -1,3 +1,4 @@
+from typing import Any
 
 
 
@@ -5,8 +6,7 @@
 
 
 
-
-def convertFloat(input_string: int) -> float:
+def convertFloat(input_string: Any) -> float:
     """
     Checks if the given string can be converted to a float.
     """
@@ -16,7 +16,7 @@ def convertFloat(input_string: int) -> float:
     except ValueError:
         return 0
 
-def convertInt(input_string: str) -> int:
+def convertInt(input_string: Any) -> int:
     """
     Checks if the given string can be converted to an integer.
     """

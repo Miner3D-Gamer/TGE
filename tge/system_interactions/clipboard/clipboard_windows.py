@@ -1,4 +1,5 @@
 from ..shared import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
+from typing import Optional
 
 def get_clipboard(user32 = USER32, kernel32 = KERNEL32) -> str: # About 20% faster on Windows than with pyperclip
         """
@@ -18,7 +19,7 @@ def get_clipboard(user32 = USER32, kernel32 = KERNEL32) -> str: # About 20% fast
         kernel32.GlobalUnlock(handle)
         user32.CloseClipboard()
 
-        return data
+        return "" if data is None else data
 
 def copy_to_clipboard(text, user32 = USER32, kernel32 = KERNEL32): # Roughly 95% to 1515% faster on Windows than pyperclip
     """

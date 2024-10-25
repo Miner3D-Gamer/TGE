@@ -1,8 +1,10 @@
+# type: ignore
 import os
 from . import SYSTEM_NAME
 from gtts import gTTS
 from pydub import AudioSegment
-from simpleaudio import play_buffer
+from simpleaudio import play_buffer, PlayObject
+from typing import Optional, cast
 
 class AudioPlayer:
     def __init__(self, file_path: str) -> None:
@@ -13,19 +15,20 @@ class AudioPlayer:
             file_path (str): Path to the audio file.
         """
         self.audio: AudioSegment = AudioSegment.from_file(file_path)
-        self.samples = self.audio.raw_data
-        self.sample_rate = self.audio.frame_rate
-        self.num_channels = self.audio.channels
-        self.bytes_per_sample = self.audio.sample_width
-        self.current_position = 0
-        self.play_obj = None
-        self.is_playing = False
+        self.samples: bytes = self.audio.raw_data
+        self.sample_rate: int = self.audio.frame_rate
+        self.num_channels: int = self.audio.channels
+        self.bytes_per_sample: int = self.audio.sample_width
+        self.current_position: int = 0
+        self.play_obj: Optional[PlayObject] = None
+        self.is_playing: Optional[bool] = False
 
     def play(self) -> None:
         """
         Starts or resumes playback from the current position.
         """
         if not self.is_playing:
+            self.audio = cast(AudioSegment, self.audio),
             self.play_obj = play_buffer(
                 self.audio[self.current_position :].raw_data,
                 self.num_channels,
@@ -33,15 +36,17 @@ class AudioPlayer:
                 self.sample_rate,
             )
             self.is_playing = True
-
+            
     def pause(self) -> None:
         """
         Pauses the playback and updates the current position.
         """
         if self.is_playing:
+            self.play_obj = cast(PlayObject, self.play_obj)
             self.current_position += len(self.play_obj.buffer) // (
                 self.bytes_per_sample * self.num_channels
             )
+            self.play_obj = cast(PlayObject, self.play_obj)
             self.play_obj.stop()
             self.is_playing = False
 
@@ -57,6 +62,7 @@ class AudioPlayer:
         Stops playback, resets the current position to the start, and sets playback state to stopped.
         """
         if self.is_playing:
+            self.play_obj = cast(PlayObject, self.play_obj)
             self.play_obj.stop()
             self.is_playing = False
             self.current_position = 0
@@ -68,6 +74,7 @@ class AudioPlayer:
         Returns:
             int: The current position in milliseconds.
         """
+        self.play_obj = cast(PlayObject, self.play_obj)
         return self.current_position + len(self.play_obj.buffer) // (
             self.bytes_per_sample * self.num_channels
         )

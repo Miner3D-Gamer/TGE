@@ -1,5 +1,5 @@
 from ..shared import ctypes
-from typing import Tuple
+from typing import Tuple, Optional
 
 class POINT(ctypes.Structure):
     _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
@@ -176,8 +176,8 @@ def scroll_horizontal(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
 
 
 def scroll(
-    dx: int = None,
-    dy: int = None,
+    dx: Optional[int] = None,
+    dy: Optional[int] = None,
     wheel_delta_x: int = WHEEL_DELTA,
     wheel_delta_y: int = WHEEL_DELTA,
 ) -> None:

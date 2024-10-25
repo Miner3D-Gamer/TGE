@@ -1,19 +1,19 @@
 from typing import Tuple, Dict, List
 from datetime import datetime
-from numbers import Number
+from typing import Union
 import time
 
 
 class Timer:
-    def __init__(self, start_time: Number, offset: Number = 0) -> None:
+    def __init__(self, start_time: Union[int,float], offset: Union[int,float] = 0) -> None:
         self.start_time = start_time
         self.offset = offset
 
-    def add_time(self, amount: Number) -> float:
+    def add_time(self, amount: Union[int,float]) -> float:
         self.offset += amount
         return self.offset
 
-    def subtract_time(self, amount: Number) -> float:
+    def subtract_time(self, amount: Union[int,float]) -> float:
         self.offset -= amount
         return self.offset
 
@@ -23,10 +23,10 @@ class Timer:
     def get_timer_offset(self) -> float:
         return self.offset
 
-    def set_start_time(self, value: Number) -> None:
+    def set_start_time(self, value: Union[int,float]) -> None:
         self.start_time = value
 
-    def set_offset(self, value: Number) -> None:
+    def set_offset(self, value: Union[int,float]) -> None:
         self.offset = value
 
     def get_time(self) -> float:
@@ -40,13 +40,13 @@ class TimerManager:
     def start_timer(self, timer_name: str):
         self.timers[timer_name] = Timer(time.time())
 
-    def stop_timer(self, timer_name: str) -> Number:
+    def stop_timer(self, timer_name: str) -> Union[int,float]:
         timer = self.timers.pop(timer_name, None)
         if not timer is None:
             return timer.get_time()
         return -1
 
-    def get_timer(self, timer_name: str) -> Number:
+    def get_timer(self, timer_name: str) -> Union[int,float]:
         timer = self.timers.get(timer_name, None)
         if not timer is None:
             return timer.get_time()
@@ -58,13 +58,13 @@ class TimerManager:
     def get_all_timers(self) -> List[str]:
         return [timer for timer in self.timers]
 
-    def add_time_to_timer(self, timer_name: str, amount: Number) -> float:
+    def add_time_to_timer(self, timer_name: str, amount: Union[int,float]) -> float:
         timer = self.timers.get(timer_name, None)
         if not timer is None:
             return timer.add_time(amount)
         return -1.0
 
-    def remove_time_from_timer(self, timer_name: str, amount: Number) -> float:
+    def remove_time_from_timer(self, timer_name: str, amount: Union[int,float]) -> float:
         timer = self.timers.get(timer_name, None)
         if not timer is None:
             return timer.subtract_time(amount)
@@ -81,14 +81,14 @@ def get_date() -> Tuple[int, int, int, int, int, int, int]:
     """
     date = datetime.now()
     day = datetime.weekday(date)
-    date = str(date).replace("-", " ").replace(":", " ").replace(".", " ").split(" ")
+    new_date = str(date).replace("-", " ").replace(":", " ").replace(".", " ").split(" ")
     return (
-        int(date[0]),
-        int(date[1]),
-        int(date[2]),
-        int(date[3]),
-        int(date[4]),
-        int(date[5]),
+        int(new_date[0]),
+        int(new_date[1]),
+        int(new_date[2]),
+        int(new_date[3]),
+        int(new_date[4]),
+        int(new_date[5]),
         int(day),
     )
 

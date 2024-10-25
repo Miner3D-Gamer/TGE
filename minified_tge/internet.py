@@ -49,7 +49,7 @@ def is_url_available(url,check_url=_A):
   B=requests.get(url)
   if B.status_code==200:return _A
   else:return _B
- except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout:return
+ except(requests.exceptions.ConnectionError,requests.exceptions.ConnectTimeout):return
 def get_all_videos_from_youtube_playlist(playlist_url):
  try:A=pytube.Playlist(playlist_url);B=A.video_urls;return B
  except Exception as C:return C

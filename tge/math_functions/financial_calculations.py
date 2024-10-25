@@ -1,4 +1,4 @@
-from numbers import Number
+from typing import Union
 
 
 
@@ -7,8 +7,7 @@ from numbers import Number
 
 
 
-
-def calculate_present_value(principal: Number, rate: Number, years: int) -> float:
+def calculate_present_value(principal: Union[int,float], rate: Union[int,float], years: int) -> float:
     """
     Calculate the present value of an investment based on the given parameters.
 
@@ -22,7 +21,7 @@ def calculate_present_value(principal: Number, rate: Number, years: int) -> floa
     """
     return principal * pow(1 + rate / 100, years)
 
-def percentage_increase(number: Number, percentage: Number) -> float:
+def percentage_increase(number: Union[int,float], percentage: Union[int,float]) -> float:
     """
     Calculate the percentage increase from an old grade to a new grade.
 
@@ -37,7 +36,7 @@ def percentage_increase(number: Number, percentage: Number) -> float:
     return (percentage - number) / number
 
 
-def percentage_decrease(old_grade: Number, new_grade: Number) -> float:
+def percentage_decrease(old_grade: Union[int,float], new_grade: Union[int,float]) -> float:
     """
     Calculate the percentage decrease between an old grade and a new grade.
 
@@ -50,7 +49,7 @@ def percentage_decrease(old_grade: Number, new_grade: Number) -> float:
     """
     return (old_grade - new_grade) / old_grade
 
-def discount_price(price: Number, discount: Number) -> float:
+def discount_price(price: Union[int,float], discount: Union[int,float]) -> float:
     """
     Calculate the discounted price based on the original price and discount percentage.
 
@@ -63,7 +62,7 @@ def discount_price(price: Number, discount: Number) -> float:
     """
     return price * (1 - discount)
 
-def body_mass_index(weight: Number, height: Number) -> float:
+def body_mass_index(weight: Union[int,float], height: Union[int,float]) -> float:
     """
     Calculate the Body Mass Index (BMI) using weight and height.
 

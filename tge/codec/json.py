@@ -1,3 +1,4 @@
+# type: ignore
 import json
 import json5
 import hjson

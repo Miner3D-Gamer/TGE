@@ -8,10 +8,10 @@ class ExpandedString(str):
   B=list(A);random.shuffle(B);return''.join(B)
  def scramble(A):
   if not isinstance(A,str):raise ValueError(_A)
-  B=list(A);random.shuffle(B);A=''.join(B)
+  B=list(A);random.shuffle(B);A=ExpandedString(''.join(B))
  def chop(A,substring):
   B=substring
-  if A.startswith(B)and A.endswith(B):A=A[len(B):-len(B)]
+  if A.startswith(B)and A.endswith(B):A=ExpandedString(A[len(B):-len(B)])
  def get_chopped(A,substring):
   B=substring
   if A.startswith(B)and A.endswith(B):return A[len(B):-len(B)]
@@ -22,15 +22,15 @@ class ExpandedString(str):
   else:return A[:B]
  def truncate(A,length):
   B=length
-  if not len(A)<=B:A=A[:B]
- def reverse(A):A=A[::-1]
+  if not len(A)<=B:A=ExpandedString(A[:B])
+ def reverse(A):A=ExpandedString(A[::-1])
  def get_reversed(A):return A[::-1]
  def check_anagram(A,word2):return sorted(A)==sorted(word2)
  def remove_duplicate_characters(B):
   A=''
   for C in B:
    if C not in A:A+=C
-  B=A
+  B=ExpandedString(A)
  def get_string_after_removing_duplicate_characters(C):
   A=''
   for B in C:
@@ -70,31 +70,31 @@ class ExpandedString(str):
    A+=C
   if len(A)>len(B):B=A
   return B
- def check_pangram(A):B=set(A.lower);C=''.join(filter(lambda c:c in B,A.lower()));return set(C)==B
+ def check_pangram(A):B=set(A.lower());C=''.join(filter(lambda c:c in B,A.lower()));return set(C)==B
  def find_common_characters(A,string2):return''.join(set(A)&set(string2))
  def get_chunks(A,chunk_size):B=chunk_size;return[A[C:C+B]for C in range(0,len(A),B)]
  def lchop(A,substring):
   B=substring
-  if A.startswith(B):A=A[len(B):]
+  if A.startswith(B):A=ExpandedString(A[len(B):])
  def get_lchop(A,substring):
   B=substring
   if A.startswith(B):return A[len(B):]
   else:return A
  def rchop(A,substring):
   B=substring
-  if A.endswith(B):A=A[:-len(B)]
+  if A.endswith(B):A=ExpandedString(A[:-len(B)])
  def get_rchop(A,substring):
   B=substring
   if A.endswith(B):return A[:-len(B)]
   else:return A
- def left_pad(A,length,char=' '):A=A.rjust(length,char)
+ def left_pad(A,length,char=' '):A=ExpandedString(A.rjust(length,char))
  def get_left_pad(A,length,char=' '):return A.rjust(length,char)
- def right_pad(A,length,char=' '):A=A.ljust(length,char)
+ def right_pad(A,length,char=' '):A=ExpandedString(A.ljust(length,char))
  def get_right_pad(A,length,char=' '):return A.ljust(length,char)
  def left_replace(B,chars,replacement):
   A=0
   while A<len(B)and B[A]in chars:A+=1
-  C=replacement*A;D=B[A:];B=C+D
+  C=replacement*A;D=B[A:];B=ExpandedString(C+D)
  def get_left_replace(B,chars,replacement):
   A=0
   while A<len(B)and B[A]in chars:A+=1
@@ -106,18 +106,17 @@ class ExpandedString(str):
  def right_replace(A,chars,replacement):
   B=len(A)-1
   while B>=0 and A[B]in chars:B-=1
-  C=replacement*(len(A)-B-1);D=A[:B+1];A=D+C
- def remove_html_tags(A):A=re.sub('<.*?>','',A)
+  C=replacement*(len(A)-B-1);D=A[:B+1];A=ExpandedString(D+C);return A
+ def remove_html_tags(A):A=ExpandedString(re.sub('<.*?>','',A));return A
  def get_with_html_tags_removed(A):return re.sub('<.*?>','',A)
- def replace_with_list_as_replacement(C,replacer,replacements):
-  for A in replacements:B=B(replacer,A)
+ def replace_with_list_as_replacement(A,replacer,replacements):
+  for B in replacements:A=ExpandedString(A.replace(replacer,B))
  def replace_with_list_as_replacer(A,replacers,replacement):
-  for B in replacers:A=A(B,replacement)
+  for B in replacers:A=ExpandedString(A.replace(B,replacement))
  def get_replace_with_list_as_replacement(B,replacer,replacements):
   A=B
-  for C in replacements:A=A(replacer,C)
+  for C in replacements:A=ExpandedString(A.replace(replacer,C))
   return A
- def get_replace_with_list_as_replacer(B,replacers,replacement):
-  A=B
-  for C in replacers:A=A(C,replacement)
+ def get_replace_with_list_as_replacer(A,replacers,replacement):
+  for B in replacers:A=ExpandedString(A.replace(B,replacement))
   return A

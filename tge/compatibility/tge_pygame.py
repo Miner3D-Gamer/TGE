@@ -1,8 +1,7 @@
 import os
 from importlib import import_module as importlib_import_module
 import pygame
-from types import FunctionType
-from typing import NoReturn
+from typing import NoReturn, Callable
 
 from ..random_generators import generate_random_string
 
@@ -53,7 +52,7 @@ def render_text(
     screen.blit(rendered_text, position)
 
 
-def load_images_from_directory(directory_path: str) -> None:
+def load_images_from_directory(directory_path: str)->int:
     """
     Loads all images in the specified directory to pygame.
 
@@ -78,56 +77,22 @@ def load_images_from_directory(directory_path: str) -> None:
         ".xpm",
         ".tif",
     ]
-    skipped = []
-    files = {}
+    files = 0
 
-    for file in os.listdir(directory_path):
-        file_name, file_extension = os.path.splitext(file)
-        if file_extension in supported_extensions:
-            try:
-                if file_extension == ".gif":
-                    if count_gif_frames(directory_path + "/" + file)[1] == 1:
-                        pass
-                    else:
-                        skipped.append(file)
-                        continue
-                files[file_name] = file
-            except:
-                skipped.append(file)
-                continue
-    if len(files) == 0:
-        return False
-    successful_files = 0
-    temp_file_name = generate_random_string(20)
-    with open(f"{temp_file_name}.py", "w") as f:
-        f.write("from pygame import image\n")
-        f.write("def pygame_load_images_from_directory_temp_file():\n")
-        f.write("\tsuccessful_files = 0\n")
-        for file in files:
-            f.write(f"\tglobal {file}\n")
-            f.write(f"\t{file} = image.load('{directory_path}/{files[file]}')\n")
-            f.write("\tsuccessful_files += 1\n")
-        f.write("\treturn successful_files")
-    try:
-        generated_module = importlib_import_module(temp_file_name)
-        successful_files = (
-            generated_module.pygame_load_images_from_directory_temp_file()
-        )
-    except:
-        return skipped, successful_files, False
-    os.remove(f"{temp_file_name}.py")
-
-    if len(skipped) == 0:
-        return skipped, successful_files, True
-    else:
-        return skipped, successful_files, False
+    for root, dirs, file_names in os.walk(directory_path):
+        for file_name in file_names:
+            file_path = os.path.join(root, file_name)
+            globals()[file_name] = pygame.image.load(file_path)
+            files += 1
+    return files
+    
 
 
 def handle_events(
-    quit_callback: FunctionType = exit,
-    key_callback: FunctionType = pass_func,
-    mouse_button_callback: FunctionType = pass_func,
-    misc_callback: FunctionType = pass_func,
+    quit_callback: Callable = exit,
+    key_callback: Callable = pass_func,
+    mouse_button_callback: Callable = pass_func,
+    misc_callback: Callable = pass_func,
 ) -> None:
     """
     Handles various events in a Pygame application.

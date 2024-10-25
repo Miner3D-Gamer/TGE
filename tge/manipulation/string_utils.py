@@ -1,5 +1,5 @@
 import random
-from typing import Iterable, Union, List
+from typing import List, Union, Optional, Dict
 
 
 def scramble_word(word:str)->str:
@@ -128,7 +128,7 @@ def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
 
     max_length = 0  
     start = 0 
-    char_index_map = {}  
+    char_index_map:Dict[str, int] = {}  
 
     for i in range(len(s)):
         if s[i] in char_index_map and start <= char_index_map[s[i]]:
@@ -141,7 +141,7 @@ def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
     return max_length
 
 
-def find_first_non_repeating_character(string: str) -> str:
+def find_first_non_repeating_character(string: str) -> Optional[str]:
     """
     Find the first non-repeating character in a given string.
 
@@ -151,7 +151,7 @@ def find_first_non_repeating_character(string: str) -> str:
     Returns:
         str: The first non-repeating character found in the string, or None if no such character is found.
     """
-    char_count = {}
+    char_count:Dict[str, int] = {}
 
     for char in string:
         char_count[char] = char_count.get(char, 0) + 1
@@ -346,7 +346,7 @@ def right_pad(string:str, length:int, char:str=" ")->str:
     return string.ljust(length, char)
 
 
-def left_replace(s, chars: Iterable, replacement: str)->str:
+def left_replace(s, chars: List[str], replacement: str)->str:
     """
     Replace leading characters in `chars` with `replacement` in the string `s`.
 
@@ -391,7 +391,7 @@ def right_replace(s, chars, replacement)->str:
 
 
 def replace_with_list_as_replacement(
-    string: str, replacer: str, replacements: Iterable
+    string: str, replacer: str, replacements: List[str]
 ) -> str:
     """
     Replace all occurrences of a single character in a string with multiple replacement strings.
@@ -399,7 +399,7 @@ def replace_with_list_as_replacement(
     Args:
         string (str): The input string to modify.
         replacer (str): The character or substring to replace.
-        replacements (Iterable): An iterable of replacement strings.
+        replacements (List[str]): An iterable of replacement strings.
 
     Returns:
         str: The modified string after replacements.
@@ -409,14 +409,14 @@ def replace_with_list_as_replacement(
     return string
 
 def replace_with_list_as_replacer(
-    string: str, replacers: Iterable, replacement: str
+    string: str, replacers: List[str], replacement: str
 ) -> str:
     """
     Replace multiple characters in a string with a single replacement string.
 
     Args:
         string (str): The input string to modify.
-        replacers (Iterable): An iterable of characters or substrings to replace.
+        replacers (List[str]): An iterable of characters or substrings to replace.
         replacement (str): The replacement string.
 
     Returns:
@@ -427,15 +427,15 @@ def replace_with_list_as_replacer(
     return string
 
 def replace_list_with_list(
-    string: str, replacers: Iterable, replacements: Iterable
+    string: str, replacers: List[str], replacements: List[str]
 ) -> str:
     """
     Replace multiple characters in a string with multiple replacement strings, matching the lengths.
 
     Args:
         string (str): The input string to modify.
-        replacers (Iterable): An iterable of characters or substrings to replace.
-        replacements (Iterable): An iterable of replacement strings.
+        replacers (List[str]): An iterable of characters or substrings to replace.
+        replacements (List[str]): An iterable of replacement strings.
 
     Returns:
         str: The modified string after replacements.
@@ -450,15 +450,15 @@ def replace_list_with_list(
     raise ValueError("List lengths don't match")
 
 def replace(
-    string: str, replacers: Union[str , Iterable], replacements: Union[str , Iterable]
+    string: str, replacers: Union[str , List[str]], replacements: Union[str , List[str]]
 ) -> str:
     """
     Replace substrings in a string based on the types of `replacers` and `replacements`.
 
     Args:
         string (str): The input string to modify.
-        replacers (Union[str , Iterable]): A single character/substring to replace or an iterable of such substrings.
-        replacements (Union[str , Iterable]): A single replacement string or an iterable of replacement strings.
+        replacers (Union[str , List[str]]): A single character/substring to replace or an iterable of such substrings.
+        replacements (Union[str , List[str]]): A single replacement string or an iterable of replacement strings.
 
     Returns:
         str: The modified string after replacements.

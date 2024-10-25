@@ -83,20 +83,19 @@
 #         except:
 #             return -1
 
-from collections.abc import Iterable
+
 from types import FunctionType
-from typing import List, Union, Tuple, Any, Iterator, Dict
+from typing import List, Union, Tuple, Any, Iterator, Dict, Callable, Sequence, Optional
 import ast
 import os
 import sys
 from difflib import get_close_matches
 import getpass
-from numbers import Number
+from typing import Union
 import cProfile
 import pstats
 import io
 import subprocess, tempfile
-import concurrent
 
 version = sys.version_info
 
@@ -134,7 +133,7 @@ def execute_function(func=pass_func, *args: Any, **kwargs: Any) -> Any:
 
 
 
-def determine_affirmative(text: str) -> bool:
+def determine_affirmative(text: str) -> Optional[bool]:
     """
     Determines if the given text is an affirmative response or not.
 
@@ -191,33 +190,6 @@ def determine_affirmative(text: str) -> bool:
     # If no clear determination can be made
     return None
 
-def categorize_responses(text_list: "Iterable[str]") -> List[str]:
-    """
-    Categorizes a list of text responses as affirmative, negative, or uncertain.
-
-    This function takes a list of text responses and categorizes each response
-    as either affirmative, negative, or uncertain based on the result of the
-    `determine_affirmative` function.
-
-    Args:
-        text_list (list[str]): A list of text responses to be categorized.
-
-    Returns:
-        list[str]: A list of categorized responses, where each response is
-        classified as 'True' for affirmative, 'False' for negative, or 'None'
-        for uncertain.
-
-    Example:
-        >>> responses = ["Yes", "No", "Maybe"]
-        >>> categorized = categorize_responses(responses)
-        >>> print(categorized)
-        [True, False, None]
-    """
-    response_list = []
-
-    for text in text_list:
-        response_list.append(determine_affirmative(text))
-    return response_list
 
 def get_available_variables() -> Tuple:
     """
@@ -282,7 +254,7 @@ def get_available_variables() -> Tuple:
 
 
 
-def convert_number_to_words_less_than_thousand(n:str, dash:bool = True) -> str:
+def convert_number_to_words_less_than_thousand(n:int, dash:bool = True) -> str:
         """
         Converts a number (less than one thousand) to its word representation.
 
@@ -415,13 +387,13 @@ def number_to_words(number:int) -> str:
         return "minus " + number_to_words(abs(number))
     
     # Split the number into groups of three digits and convert each group to words
-    groups = []
+    groups: List[int] = []
     while number > 0:
         groups.append(number % 1000)
         number //= 1000
     
     
-    result_parts = []
+    result_parts: List[str] = []
     for i, group in enumerate(groups):
         if group != 0:
             result_parts.append(convert_number_to_words_less_than_thousand(group) + " " + big_numbers[i])
@@ -566,23 +538,23 @@ Inner Updates:
 
 
 
-def autocomplete(prefix: str, word_list: "Iterable[str]") -> List[str]:
+def autocomplete(prefix: str, word_list: List[str]) -> List[str]:
     """Return a list of words from `word_list` that start with the specified `prefix`.
 
 Args:
     prefix (str): The prefix to match against.
-    word_list (Iterable[str]): A list of words to search through.
+    word_list (list[str]): A list of words to search through.
 
 Returns:
     list[str]: A list of matching words."""
     return [word for word in word_list if word.startswith(prefix)]
 
-def strict_autocomplete(prefix:str, word_list:"Iterable[str]")->Union[List[str], str]:
+def strict_autocomplete(prefix:str, word_list:List[str])->Union[List[str], str]:
     """Return a single word, the prefix itself, or a list of words that start with the specified `prefix`.
 
 Args:
     prefix (str): The prefix to match against.
-    word_list ("Iterable[str]"): A list of words to search through.
+    word_list ("list[str]"): A list of words to search through.
 
 """
     words = autocomplete(prefix=prefix, word_list=word_list)
@@ -605,12 +577,12 @@ Returns:
 
 
 
-def split_with_list(string: str, separators: Iterable, limit: Union[None, int] = None) -> List[str]:
+def split_with_list(string: str, separators: list, limit: Union[None, int] = None) -> List[str]:
     """Split a string by multiple separators and return the resulting substrings.
 
 Args:
     string (str): The string to split.
-    separators (Iterable): A list of separators to replace with a unique delimiter.
+    separators (list): A list of separators to replace with a unique delimiter.
     
 
 Returns:
@@ -621,7 +593,7 @@ Returns:
 
 
 
-def analyze_text(text:str)->Dict[str, Union[str,list]]:
+def analyze_text(text:str)->Dict[str, Union[str,list,int,float]]:
     """Analyze the text to provide various statistics about sentences, words, and commas.
 
 Args:
@@ -629,7 +601,7 @@ Args:
 
 Returns:
     dict[str, str  list]: A dictionary with the following keys:
-        - "sentence_amount": Number of sentences.
+        - "sentence_amount": Union[int,float] of sentences.
         - "total_word_count": Total number of words.
         - "average_word_count_per_sentence": Average number of words per sentence.
         - "max_words_per_sentence": Maximum number of words in a sentence.
@@ -659,7 +631,6 @@ Returns:
                 deleted += 1
             if len(words) <= j+deleted:
                 break
-            #print(words[j])
         if not len(words) == 0:
             word_amounts.append(len(words))
         sentences.append(words)
@@ -689,16 +660,6 @@ Returns:
         "word_amount_list":word_amounts,
         "comma_amount_list":comma_amounts,
     }
-    # print("Amount of Sentences: ", len(sentences))
-    # print("Total word count: ", total_word_count)
-    # print("Average word count per sentence: ", total_word_count/len(word_amounts))
-    # print("Maximum word count in a sentence: ", max(word_amounts))
-    # print("Minimum word count in a sentence: ", min(word_amounts))
-    # print()
-    # print("Total comma count: ", total_comma_count)
-    # print("Average comma count per sentence: ", total_comma_count/len(comma_amounts))
-    # print("Maximum comma count in a sentence: ", max(comma_amounts))
-    # print("Minimum comma count in a sentence: ", min(comma_amounts))
 
 
 
@@ -859,33 +820,6 @@ Returns:
 
 
 
-
-class TimeoutResult:
-    ...
-
-def run_function_with_timeout(func:FunctionType, timeout:Number, *args, **kwargs)->Union[Any, TimeoutResult]:
-    """
-    Executes a function with a specified timeout.
-
-    Parameters:
-    func (FunctionType): The function to execute.
-    timeout (Number): The maximum time to wait for the function to complete, in seconds.
-    *args: Positional arguments to pass to the function.
-    **kwargs: Keyword arguments to pass to the function.
-
-    Returns:
-    Union[Any, TimeoutResult]: The result of the function if it completes within the timeout, 
-                                or a TimeoutResult if the function times out.
-    
-    This function uses a thread pool executor to run the given function asynchronously and 
-    enforces a timeout on its execution.
-    """
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        future = executor.submit(func, *args, **kwargs)
-        try:
-            return future.result(timeout=timeout)
-        except concurrent.futures.TimeoutError:
-            return TimeoutResult
 
 from . import SYSTEM_NAME
 
@@ -957,7 +891,7 @@ class DualInfinite:
     """A value that is both positively and negatively infinite, not as range but as literal value"""
 
 
-def divide(a:Number, b:Number)->Union[float,DualInfinite]:
+def divide(a:Union[int,float], b:Union[int,float])->Union[float,DualInfinite]:
     """
     Divides two numbers and handles division by zero.
 
@@ -968,7 +902,7 @@ def divide(a:Number, b:Number)->Union[float,DualInfinite]:
     Returns:
         Union[float, DualInfinite]: The result of the division if b != 0, otherwise an instance of DualInfinite.
     """
-    return a/b if b!=0 else DualInfinite
+    return a/b if b!=0 else DualInfinite()
 
 
 
@@ -1011,7 +945,7 @@ def generate_every_capitalization_state(s:str)->List[str]:
         backtrack(index + 1, path + [s[index].lower()])
         backtrack(index + 1, path + [s[index].upper()])
 
-    result = []
+    result:List[str] = []
     backtrack(0, [])
     return list(set(result))
 
@@ -1064,7 +998,7 @@ def remove_unused_libraries(code_str:str)->str:
 
 
 
-def repeat(func: FunctionType, times: int) -> Any:
+def repeat(func: Callable, times: int) -> Any:
     """Call func multiple times and return the last result."""
     for i in range(times):
         val = func()
@@ -1194,7 +1128,7 @@ def profile(func):
 
 
 
-def profile_function(function:FunctionType, filename:str, *inputs, **extra)->Any:
+def profile_function(function:Callable, filename:str, *inputs, **extra)->Any:
     """Profile a function and save performance stats to files."""
 
 
@@ -1262,16 +1196,15 @@ Attributes:
         self.arguments: list = arguments
         self.argument_list_length = len(arguments)
 
-    def has_argument(self, argument: str, delete:bool=False) -> Union[str , None]:
-        """Retrieve the value of a specified argument. Optionally remove it from the list and adjust the argument count.
+    def has_argument(self, argument: str, delete:bool=False) -> bool:
+        """Check if the argument list contains the specified argument. Optionally remove the argument from the list and adjust the argument count.
 
-        Args:
-            argument (str): The argument to retrieve.
-            delete (bool, optional): If True, remove the argument from the list after retrieving it. Defaults to False.
-            default (Any, optional): The value to return if the argument is not found. Defaults to None.
+Args:
+    argument (str): The argument to check for.
+    delete (bool, optional): If True, remove the argument from the list after checking. Defaults to False.
 
-        Returns:
-        Union[str , None]: The value of the argument, or `default` if the argument is not found."""
+Returns:
+    str  None: The value associated with the argument, or `None` if the argument is not found."""
         value_id = self.get_id(argument)
         if value_id < 0:
             False
@@ -1280,7 +1213,7 @@ Attributes:
             self.arguments.remove(value_id)
             self.argument_list_length-=1
             
-        return False
+        return True
     
     def get_argument_by_flag(self, flag: str, delete:bool=False, default:Any=None) -> Union[str , None]:
         """Retrieve the value associated with a specified flag. Optionally remove the flag and its value from the list and adjust the argument count.
@@ -1335,7 +1268,7 @@ Returns:
 
 
 
-def burn_value_into_function(x)->FunctionType:
+def burn_value_into_function(x:Any)->Callable:
     """
 Creates a function that returns the value of `x` when called.
 """
@@ -1497,7 +1430,7 @@ Returns:
 
 
 
-def get_from_dict_by_list(data_dict:dict, keys:Iterable)->Any:
+def get_from_dict_by_list(data_dict:dict, keys:list)->Any:
     """
     Access a nested dictionary with a list of keys.
     
@@ -1509,7 +1442,7 @@ def get_from_dict_by_list(data_dict:dict, keys:Iterable)->Any:
         data_dict = data_dict[key]
     return data_dict
 
-def set_in_dict_by_list(data_dict:dict, keys:Iterable, value:Any)->None:
+def set_in_dict_by_list(data_dict:dict, keys:list, value:Any)->None:
     """
     Set a value in a nested dictionary with a list of keys.
     
@@ -1675,7 +1608,7 @@ else:
 from .manipulation.list_utils import zipper_insert
 
 
-def separate_imports(lines: "Iterable[str]") -> Tuple[list, list]:
+def separate_imports(lines: "list[str]") -> Tuple[list, list]:
     import_lines = []
     other_lines = []
     for line in lines:
@@ -1692,7 +1625,7 @@ def separate_imports(lines: "Iterable[str]") -> Tuple[list, list]:
     return import_lines, other_lines
 
 
-def compress_imports(import_lines: Iterable) -> list:
+def compress_imports(import_lines: list) -> list:
     from_imports = []
     import_imports = []
 
@@ -1710,7 +1643,7 @@ def compress_imports(import_lines: Iterable) -> list:
     return output_lines
 
 
-def compress_imports_in_code(code: Iterable) -> List[str]:
+def compress_imports_in_code(code: list) -> List[str]:
     imports, rest = separate_imports(code)
     imports = compress_imports(imports)
     return zipper_insert(imports, ["\n"]*len(imports)) + rest
@@ -1723,7 +1656,7 @@ def compress_imports_in_code(code: Iterable) -> List[str]:
 
 # types = {}
 
-# def create_type(name: str, weak_against_type: Iterable, strong_against_type: Iterable, against_self: int):
+# def create_type(name: str, weak_against_type: list, strong_against_type: list, against_self: int):
 #     name = name.lower()
 #     weak_against_type = [weak.lower() for weak in weak_against_type]
 #     strong_against_type = [strong.lower() for strong in strong_against_type]
@@ -1744,8 +1677,8 @@ def compress_imports_in_code(code: Iterable) -> List[str]:
 #         "weak_against_type": weak_against_type,
 #         "strong_against_type": strong_against_type,
 #         "self": against_self,
-#         "strengths": Iterable(set(strengths)),
-#         "weaknesses": Iterable(set(weaknesses))
+#         "strengths": list(set(strengths)),
+#         "weaknesses": list(set(weaknesses))
 #     }
 
 
@@ -1775,7 +1708,7 @@ def compress_imports_in_code(code: Iterable) -> List[str]:
 #     print_type_damage_to_self(type_stats["self"])
 
 
-# def print_type_attributes(attributes: Iterable):
+# def print_type_attributes(attributes: list):
 #     for attribute in attributes:
 #         print("\t\t" + attribute.title())
 
@@ -1833,7 +1766,7 @@ def compress_imports_in_code(code: Iterable) -> List[str]:
 # print_type_stats("")
 # missing_types("")
 
-# def newEnemy(name: str, entity_type: str, health: int, attack: int, defense: int, speed: int, resistant: Iterable, weakness: Iterable, behavior: int, loot: Iterable):
+# def newEnemy(name: str, entity_type: str, health: int, attack: int, defense: int, speed: int, resistant: list, weakness: list, behavior: int, loot: list):
 #     if type(weakness) != list:
 #         try:
 #             weakness = list(weakness)

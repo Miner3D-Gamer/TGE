@@ -1,5 +1,5 @@
 import subprocess, sys
-
+from typing import Union, Optional, NoReturn, Tuple
 
 def is_window_minimized(window_id):
     """Check if the window is minimized."""
@@ -24,10 +24,10 @@ def minimize_window(window_id):
     subprocess.run(["wmctrl", "-i", "-r", window_id, "-b", "add,hidden"])
 
 
-def get_window_position(window_id):
+def get_window_position(window_id:Optional[int])->Optional[Tuple[int, int, int, int]]:
     """Get the position and size of the window. Return None if minimized."""
     if window_id is None:
-        raise ValueError("Window not found")
+        return None
 
     result = subprocess.run(["wmctrl", "-lG"], stdout=subprocess.PIPE, text=True)
     lines = result.stdout.splitlines()
@@ -35,8 +35,8 @@ def get_window_position(window_id):
         if window_id in line:
             parts = line.split()
             x, y = int(parts[2]), int(parts[3])
-            return x, y
-    raise ValueError("Window not found")
+            return x, y, int(parts[4]), int(parts[5])
+    raise None
 
 
 def maximize_window(window_id):
@@ -59,7 +59,7 @@ def set_window_position(window_id, x, y, width, height):
     )
 
 
-def get_window_by_title(title: str) -> str:
+def get_window_by_title(title: str) -> Union[str, None]:
     """Find a window by its title and return its window ID."""
     try:
         result = subprocess.run(

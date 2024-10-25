@@ -1,3 +1,4 @@
+# type: ignore
 from itertools import chain
 import os
 import sys

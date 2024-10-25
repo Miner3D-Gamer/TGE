@@ -1,17 +1,19 @@
+# type: ignore
 WHEEL_DELTA = 120
 import pynput
-from typing import Tuple
+from typing import Tuple, Optional
 
 
 MOUSE = pynput.mouse.Controller()
 
 
-def getScreenDimensions() -> tuple[int, int]: "A line that tells my code colorizer to color this variable like a function"
+def getScreenDimensions() -> tuple[int, int]:
+    return get_monitors()[0].width, get_monitors()[0].width
 
 
 from screeninfo import get_monitors
 
-getScreenDimensions = lambda: get_monitors()[0].width, get_monitors()[0].width
+
 
 # def getScreenDimensions() -> tuple[int, int]:
 #     monitors = get_monitors()
@@ -64,8 +66,8 @@ def scroll_horizontal(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
 
 
 def scroll(
-    dx: int = None,
-    dy: int = None,
+    dx: Optional[int] = None,
+    dy: Optional[int] = None,
     wheel_delta_x: int = WHEEL_DELTA,
     wheel_delta_y: int = WHEEL_DELTA,
 ) -> None:

@@ -1,5 +1,5 @@
-from numbers import Number
-def convert_meters_to_miles(meters: Number) -> float:
+from typing import Union
+def convert_meters_to_miles(meters: Union[int,float]) -> float:
     """
     Convert a distance in meters to miles.
 
@@ -12,7 +12,7 @@ def convert_meters_to_miles(meters: Number) -> float:
     return meters * 0.000621371192237334
 
 
-def convert_miles_to_meters(miles: Number) -> int:
+def convert_miles_to_meters(miles: Union[int,float]) -> float:
     """
     Convert miles to meters.
 
@@ -20,12 +20,12 @@ def convert_miles_to_meters(miles: Number) -> int:
     miles (float): The distance in miles to be converted to meters.
 
     Returns:
-    int: The equivalent distance in meters.
+    float: The equivalent distance in meters.
     """
     return miles * 1609.344
 
 
-def convert_pounds_to_kilograms(pounds: Number) -> float:
+def convert_pounds_to_kilograms(pounds: Union[int,float]) -> float:
     """
     Convert a weight in pounds to kilograms.
 
@@ -38,7 +38,7 @@ def convert_pounds_to_kilograms(pounds: Number) -> float:
     return pounds * 0.45359237
 
 
-def convert_kilograms_to_pounds(kilograms: Number) -> float:
+def convert_kilograms_to_pounds(kilograms: Union[int,float]) -> float:
     """
     Convert a weight in kilograms to pounds.
 

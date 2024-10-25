@@ -68,8 +68,6 @@ def nanoseconds_to_picoseconds(nanoseconds):return nanoseconds*0xe8d4a51000
 def picoseconds_to_nanoseconds(picoseconds):return picoseconds/0xe8d4a51000
 def milliseconds_to_picoseconds(milliseconds):return milliseconds*1000000
 def picoseconds_to_milliseconds(picoseconds):return picoseconds/1000000
-def seconds_to_picoseconds(seconds):return seconds*1000000000
-def picoseconds_to_seconds(picoseconds):return picoseconds/1000000000
 def minutes_to_picoseconds(minutes):return minutes*60000000000
 def picoseconds_to_minutes(picoseconds):return picoseconds/60000000000
 def hours_to_picoseconds(hours):return hours*3600000000000

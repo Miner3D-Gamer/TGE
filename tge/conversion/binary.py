@@ -83,6 +83,7 @@ def convert_hexadecimal_to_decimal(hexadecimal: str) -> int:
     decimal = 0
     for hex_digit in reversed(hexadecimal):
         decimal = decimal * 16 + HEX_CHARACTERS.index(hex_digit)
+    return decimal
 
 
 def convert_bytes(value: int, from_unit: str, to_unit: str) -> int:

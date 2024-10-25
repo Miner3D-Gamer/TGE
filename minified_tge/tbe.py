@@ -8,7 +8,7 @@ _A=True
 import ast,os,sys
 from difflib import get_close_matches
 import getpass
-import cProfile,pstats,io,subprocess,tempfile,concurrent
+import cProfile,pstats,io,subprocess,tempfile
 version=sys.version_info
 if version.minor<12:import python_minifier
 def pass_func(*args,**more_args):0
@@ -20,10 +20,6 @@ def determine_affirmative(text):
  closest_positive_match=get_close_matches(text,positives,n=1,cutoff=.8);closest_negative_match=get_close_matches(text,negatives,n=1,cutoff=.8)
  if closest_positive_match:return _A
  if closest_negative_match:return _B
-def categorize_responses(text_list):
- response_list=[]
- for text in text_list:response_list.append(determine_affirmative(text))
- return response_list
 def get_available_variables():
  g_variables={};l_variables={};global_vars=globals()
  for(var_name,var_value)in global_vars.items():g_variables[var_name]=var_value
@@ -112,12 +108,6 @@ def analyze_text(text):
  total_comma_count=0
  for comma_amount in comma_amounts:total_comma_count+=comma_amount
  return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
-class TimeoutResult:...
-def run_function_with_timeout(func,timeout,*args,**kwargs):
- with concurrent.futures.ThreadPoolExecutor()as executor:
-  future=executor.submit(func,*args,**kwargs)
-  try:return future.result(timeout=timeout)
-  except concurrent.futures.TimeoutError:return TimeoutResult
 from.import SYSTEM_NAME
 if SYSTEM_NAME=='windows':
  def create_virtual_drive(drive_letter,folder_path,size_mb=_C):command=f"subst {drive_letter}: {folder_path}";subprocess.run(command,shell=_A)
@@ -130,7 +120,7 @@ elif SYSTEM_NAME=='darwin':
  def remove_virtual_drive(folder_path):subprocess.run([_E,'detach',folder_path])
 else:...
 class DualInfinite:0
-def divide(a,b):return a/b if b!=0 else DualInfinite
+def divide(a,b):return a/b if b!=0 else DualInfinite()
 def generate_every_capitalization_state(s):
  def backtrack(index,path):
   if index==len(s):result.append(''.join(path));return
@@ -174,7 +164,7 @@ class ArgumentHandler:
   value_id=self.get_id(argument)
   if value_id<0:0
   if delete:self.arguments.remove(value_id);self.argument_list_length-=1
-  return _B
+  return _A
  def get_argument_by_flag(self,flag,delete=_B,default=_C):
   value_id=self.get_id(flag)
   if value_id<0:return default

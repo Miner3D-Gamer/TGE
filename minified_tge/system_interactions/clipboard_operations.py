@@ -15,6 +15,8 @@ def prepend_to_clipboard(text):A=get_clipboard();A=text+A;copy_to_clipboard(A)
 def get_clipboard_size():return len(get_clipboard())
 def get_clipboard_file_extension():return get_clipboard().split('.')[-1]
 def write_out_clipboard():
- A=get_clipboard()
- for B in A.splitlines(True):
-  for C in B:press_key(key_to_virtual_key(C))
+ B=get_clipboard()
+ for C in B.splitlines(True):
+  for D in C:
+   A=key_to_virtual_key(D)
+   if A:press_key(A)

@@ -1,5 +1,5 @@
 _A=None
-from PIL import Image,GifImagePlugin
+from PIL import Image
 import numpy as np
 from..math_functions.math_functions import clamp
 import math
@@ -28,18 +28,15 @@ def _load_image(image_path,alpha=True):
  width,height=image.size;image.close();return pixel_data,width,height
 def count_image_colors(image=_A,image_path=_A):
  if image is _A and image_path is _A:return[]
- if image is _A:loaded_image,width,height=_load_image(image_path)
- elif isinstance(image,tuple)and len(image)==3:loaded_image,width,height=image
- else:return[]
+ if image is _A:
+  if image_path is _A:return[]
+  loaded_image,width,height=_load_image(image_path)
+ else:loaded_image,width,height=image,image.width,image.height
  unique_colors=set()
  for x in range(width):
-  for y in range(height):pixel_value=loaded_image[(x,y)];unique_colors.add(pixel_value)
+  for y in range(height):pixel_value=loaded_image.getpixel((x,y));unique_colors.add(pixel_value)
  return list(unique_colors)
 def hex_to_rgb(hex_color):hex_color=hex_color.lstrip('#');red=int(hex_color[0:2],16);green=int(hex_color[2:4],16);blue=int(hex_color[4:6],16);return red,green,blue
-def hex_list_to_rgb_list(hex_list):
- rgb_list=[]
- for i in hex_list:rgb_list.append(hex_to_rgb(i))
- return rgb_list
 class Color:
  def __init__(self,color):self.color=[clamp(0,255,color[0]),clamp(0,255,color[1]),clamp(0,255,color[2])]
  def __repr__(self):return'r%s b%s g%s'%(self.color[0],self.color[1],self.color[2])

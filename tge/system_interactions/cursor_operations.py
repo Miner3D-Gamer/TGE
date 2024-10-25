@@ -1,12 +1,12 @@
 from .. import SYSTEM_NAME
 
-from.shared import *
+from .shared import *
 
 if SYSTEM_NAME == "windows":
-    from .cursor.cursor_operations_ctypes import * # type: ignore
+    from .cursor.cursor_operations_ctypes import left_click, right_click, middle_click, set_mouse_to, get_mouse_position, is_right_button_pressed, is_middle_button_pressed, is_left_button_pressed, middle_mouse_up, right_mouse_up, middle_mouse_down, left_mouse_up, scroll, scroll_horizontal, scroll_vertical, left_mouse_down, right_mouse_down, middle_mouse_down  # type: ignore
 
 else:
-    from .cursor.cursor_operations_pynput import * # type: ignore
+    from .cursor.cursor_operations_pynput import left_click, right_click, middle_click, set_mouse_to, get_mouse_position, is_right_button_pressed, is_middle_button_pressed, is_left_button_pressed, middle_mouse_up, right_mouse_up, middle_mouse_down, left_mouse_up, scroll, scroll_horizontal, scroll_vertical, left_mouse_down, right_mouse_down, middle_mouse_down  # type: ignore
 
 
 def click_mouse_button(button_number: int) -> None:
@@ -27,11 +27,6 @@ def release_mouse_button(button_number: int) -> None:
 def click_mouse_button_at(button_number: int, x: int, y: int) -> None:
     "Click the mouse button specified by `button_number` at the coordinates (x, y)."
     ClickMouseButton_atList[button_number](x, y)
-
-
-
-
-
 
 
 def left_click_at(x: int, y: int) -> None:
@@ -71,20 +66,17 @@ def MiddleClick_at(x: int, y: int) -> None:
     middle_click()
 
 
-
-def drag_to(x, y):
+def drag_to(x: int, y: int):
     "Drag the mouse from its current position to the specified coordinates (x, y)"
     left_mouse_down()
     set_mouse_to((x, y))
     left_mouse_up()
 
 
-def drag_obj_to(x, y, a, b):
+def drag_obj_to(x: int, y: int, a: int, b: int):
     "Drag an object from the starting coordinates (x, y) to the destination coordinates (a, b)."
     set_mouse_to((x, y))
     drag_to(a, b)
-
-
 
 
 ClickMouseButtonList = [left_click, middle_click, right_click]

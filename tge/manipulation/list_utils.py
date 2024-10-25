@@ -1,7 +1,7 @@
-from itertools import permutations as itertools_permutations
 from typing import Any, Union, List
 from collections.abc import Iterable
 import math
+
 
 def list_mul(lst: List[Union[int, float]]) -> Union[int, float]:
     """
@@ -13,11 +13,11 @@ def list_mul(lst: List[Union[int, float]]) -> Union[int, float]:
     :rtype: tuple
     :raises TypeError: If the list contains non-numeric values.
     """
-    
+
     return math.prod(lst)
 
 
-def remove_duplicates(list: list) -> list:
+def remove_duplicates(list: List[Any]) -> List[Any]:
     """
     Removes duplicates from a given list and returns it.
 
@@ -26,14 +26,14 @@ def remove_duplicates(list: list) -> list:
     :return: A new list containing no duplicates.
     :rtype: list
     """
-    result = []
+    result: List[Any] = []
     for item in list:
         if item not in result:
             result.append(item)
     return result
 
 
-def count_occurrences(list: list, item: str) -> int:
+def count_occurrences(list: List[Any], item: Any) -> int:
     """
     Counts the number of occurrences of a given item in a list.
 
@@ -51,7 +51,7 @@ def count_occurrences(list: list, item: str) -> int:
     return count
 
 
-def calculate_average(lst: list) -> float:
+def calculate_average(lst: List[Union[int, float]]) -> float:
     """
     Calculate the average (mean) of a list of numbers.
 
@@ -71,7 +71,7 @@ def calculate_average(lst: list) -> float:
     return average
 
 
-def find_common_elements(lst1: list, lst2: list) -> list:
+def find_common_elements(lst1: List[Any], lst2: List[Any]) -> List[Any]:
     """
     Find common elements between two lists.
 
@@ -82,14 +82,14 @@ def find_common_elements(lst1: list, lst2: list) -> list:
     Returns:
         list: A list of elements that are common to both `lst1` and `lst2`.
     """
-    result = []
+    result: List[Any] = []
     for item in lst1:
         if item in lst2:
             result.append(item)
     return result
 
 
-def median(lst: list) -> float:
+def median(lst: List[Union[int, float]]) -> float:
     """
     Calculate the median of a list of numbers.
 
@@ -107,7 +107,7 @@ def median(lst: list) -> float:
         return sorted_lst[n // 2]
 
 
-def reverse_list(lst: list) -> list:
+def reverse_list(lst: List[Any]) -> List[Any]:
     """
     Reverse the order of elements in a list.
 
@@ -120,7 +120,7 @@ def reverse_list(lst: list) -> list:
     return lst[::-1]
 
 
-def find_max_min_difference(lst: list) -> int:
+def find_max_min_difference(lst: List[int]) -> int:
     """
     Find the difference between the maximum and minimum values in a list.
 
@@ -133,7 +133,7 @@ def find_max_min_difference(lst: list) -> int:
     return max(lst) - min(lst)
 
 
-def find_missing_number(lst: list) -> int:
+def find_missing_number(lst: List[int]) -> int:
     """
     Find the missing number in a list of consecutive numbers.
 
@@ -148,33 +148,7 @@ def find_missing_number(lst: list) -> int:
     return sum(range(1, len(lst) + 1)) - sum(lst)
 
 
-def remove_whitespace_from_list(lst: list) -> list:
-    """
-    Removes whitespace characters from all elements in a list of strings.
-
-    Args:
-        lst (list): list of strings
-
-    Returns:
-        list: list with whitespace removed from all elements
-    """
-    return [string.replace(" ", "") for string in lst]
-
-
-def exponential_average(lst: list) -> float:
-    """
-    Calculate the average of a list of numbers.
-
-    Args:
-        lst (list): The list of numbers to average.
-
-    Returns:
-        float: The average of the numbers in the list.
-    """
-    return sum(lst) / len(lst)
-
-
-def greatest_product(lst: list, lst2: list) -> int:
+def greatest_product(lst: List[int], lst2: List[int]) -> int:
     """
     Compute the product of the largest elements from two lists.
 
@@ -188,66 +162,7 @@ def greatest_product(lst: list, lst2: list) -> int:
     return max(lst) * max(lst2)
 
 
-def permutations(lst: list) -> list:
-    """
-    Generate all permutations of a list.
-
-    Args:
-        lst (list): The list to permute.
-
-    Returns:
-        list: A list of tuples, where each tuple is a permutation of the input list.
-    """
-    return list(itertools_permutations(lst))
-
-
-def limit_list(lst: list, limit: int) -> list:
-    """
-    Limit a list to a specified number of elements.
-
-    Args:
-        lst (list): The list to limit.
-        limit (int): The maximum number of elements to include in the result.
-
-    Returns:
-        list: A list containing up to `limit` elements from the original list.
-    """
-    return lst[:limit]
-
-
-def get_items_from_list(lst: list, start: int, end: int) -> list:
-    """
-    Extract a sublist from a list based on start and end indices.
-
-    Args:
-        lst (list): The list to slice.
-        start (int): The starting index of the sublist.
-        end (int): The ending index of the sublist.
-
-    Returns:
-        list: A sublist from the original list, starting at `start` and ending at `end`.
-    """
-    return lst[start:end]
-
-
-def sort_list_of_dictionaries(lst: list, key: str) -> tuple:
-    """
-    Sort a list of dictionaries by a specified key.
-
-    Args:
-        lst (list): The list of dictionaries to sort.
-        key (str): The key to sort the dictionaries by.
-
-    Returns:
-        tuple: A tuple containing the sorted list and a boolean indicating success.
-    """
-    try:
-        return sorted(lst, key=lambda x: x[key]), True
-    except:
-        return lst, False
-
-
-def zipper_insert(list1: list, list2: list) -> list:
+def zipper_insert(list1: List[Any], list2: List[Any]) -> List[Any]:
     """
     Merges two lists by alternating elements from each list.
 
@@ -261,7 +176,7 @@ def zipper_insert(list1: list, list2: list) -> list:
     """
     min_length = min(len(list1), len(list2))
 
-    result = []
+    result: List[Any] = []
 
     for i in range(min_length):
         result.append(list1[i])
@@ -273,7 +188,7 @@ def zipper_insert(list1: list, list2: list) -> list:
     return result
 
 
-def compress_list(list_to_compress: list) -> Union[Any, list]:
+def compress_list(list_to_compress: List[Any]) -> Union[Any, List[Any]]:
     """
     Compresses a list by converting consecutive identical elements into a count-value pair.
 
@@ -283,14 +198,22 @@ def compress_list(list_to_compress: list) -> Union[Any, list]:
     Returns:
         Union[Any, list]: A compressed list where consecutive identical elements are represented as [count, value],
                           or a single value if the compressed list has only one element.
+
+    Example:
+        >>> compress_list([1, 2, 2, 3, 3, 3, 4, 4, 4, 4])
+        []
     """
     width = len(list_to_compress)
-    new_sub_list = []
+    new_sub_list: List[Any] = []
     char = list_to_compress[0]
     amount = 0
-    add = lambda amount, char: (
-        [amount, char] if amount > 1 and amount != width else [char]
-    )
+
+    def add(amount: int, char: Any) -> List[Any]:
+        if amount > 1 and amount != width:
+            return [amount, char]
+        else:
+            return [char]
+
     for index in range(len(list_to_compress)):
         new_char = list_to_compress[index]
         if new_char == char:
@@ -306,7 +229,7 @@ def compress_list(list_to_compress: list) -> Union[Any, list]:
     return new_sub_list
 
 
-def compress_list_of_lists(list_to_compress: List[list]) -> List[list]:
+def compress_list_of_lists(list_to_compress: List[List[Any]]) -> List[List[Any]]:
     """
     Compresses a list of lists by applying `compress_list` to each sublist.
 
@@ -316,13 +239,15 @@ def compress_list_of_lists(list_to_compress: List[list]) -> List[list]:
     Returns:
         List[list]: A list of compressed sub-lists.
     """
-    new_list = []
+    new_list: List[List[Any]] = []
     for sub_list in list_to_compress:
         new_list.append(compress_list(sub_list))
     return new_list
 
 
-def decompress_list(list_to_decompress: Union[list, Any], width: int) -> list:
+def decompress_list(
+    list_to_decompress: Union[List[Union[int, Any]], Any], width: int
+) -> List[Any]:
     """
     Decompresses a list by expanding count-value pairs into repeated elements.
 
@@ -336,10 +261,10 @@ def decompress_list(list_to_decompress: Union[list, Any], width: int) -> list:
     if not isinstance(list_to_decompress, list):
         return [list_to_decompress] * width
 
-    new_sub_list = []
+    new_sub_list: List[Any] = []
     repeat_amount = 1
-    for index in range(len(list_to_decompress)):
-        item = list_to_decompress[index]
+    for item in list_to_decompress:
+        item: Any
         if isinstance(item, int):
             repeat_amount = item
         else:
@@ -348,7 +273,7 @@ def decompress_list(list_to_decompress: Union[list, Any], width: int) -> list:
     return new_sub_list
 
 
-def decompress_list_of_lists(list_to_decompress: List[list], width: int) -> List[list]:
+def decompress_list_of_lists(list_to_decompress: List[Union[List[Union[int, Any]], Any]], width: int) -> List[List[Any]]:
     """
     Decompresses a list of lists by applying `decompress_list` to each sublist.
 
@@ -359,13 +284,13 @@ def decompress_list_of_lists(list_to_decompress: List[list], width: int) -> List
     Returns:
         List[list]: A list of decompressed sub-lists.
     """
-    new_list = []
+    new_list: List[List[Any]] = []
     for sub_list in list_to_decompress:
         new_list.append(decompress_list(sub_list, width))
     return new_list
 
 
-class MaxSizeList(list):
+class MaxSizeList(List[Any]):
     def __init__(self, max_size: int):
         """
         Initializes a MaxSizeList object with a specified maximum size.

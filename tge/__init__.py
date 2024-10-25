@@ -24,7 +24,7 @@ __doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.MD"
 
 
 import sys
-from typing import Literal, Optional
+from typing import Literal, Optional, Any, Callable
 import subprocess
 import shutil
 import requests
@@ -50,38 +50,35 @@ def is_tge_outdated() -> bool:
 
 from .mini_lib import platform_mini  # For faster import time
 
-if sys.platform.startswith("java"):
 
-    def get_system() -> Literal['jython']:
-        "Returns the current user system"
+def burn_value_into_function(x: Any) -> Callable[[], Any]:
+    """
+    Creates a function that returns the value of `x` when called.
+    """
+
+    def burned_value_function() -> Any:
+        "Return a value"
+        return x
+
+    return burned_value_function
+
+
+
+def get_system()->Literal["jython", "darwin", "windows", "linux", "unknown"]:
+    if sys.platform.startswith("java"):
         return "jython"
-
-elif sys.platform == "darwin":
-
-    def get_system() -> Literal['darwin']:
-        "Returns the current user system"
+    elif sys.platform == "darwin":
         return "darwin"
-
-elif sys.platform == "win32":
-
-    def get_system() -> Literal['windows']:
-        "Returns the current user system"
+    elif sys.platform == "win32":
         return "windows"
-
-elif platform_mini.system() == "Linux":
-
-    def get_system() -> Literal['linux']:
-        "Returns the current user system"
+    elif platform_mini.system() == "Linux":
         return "linux"
-
-else:
-
-    def get_system() -> Literal['unknown']:
-        "Returns the current user system"
+    else:
         return "unknown"
 
+get_system = burn_value_into_function(get_system())
 
-SYSTEM_NAME: Literal['jython', 'darwin', 'windows', 'linux', 'unknown'] = get_system()
+SYSTEM_NAME = get_system()
 
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
@@ -277,18 +274,18 @@ else:
     if SYSTEM_NAME == "windows" or pyperclip_installed:
         __all__.append("clipboard")
         from .system_interactions import clipboard_operations as clipboard
-    
+
     if SYSTEM_NAME == "windows" or pynput_installed:
         __all__.append("cursor")
         from .system_interactions import cursor_operations as cursor
-    
+
     if SYSTEM_NAME == "windows" or xlib_installed:
         __all__.append("keyboard")
         from .system_interactions import keyboard_operations as keyboard
-    
+
     if (
         SYSTEM_NAME == "windows"
-        or SYSTEM_NAME == "linux"
+        or SYSTEM_NAME == "linux" # type: ignore
         or (quartz_installed and appKit_installed)
     ):
         __all__.append("window_manager")
@@ -301,7 +298,7 @@ else:
         from . import file_operations
 
     if python_minifier_installed:
-        __all__.extend(["tbe", "console_utils"])
+        __all__.extend(["tbe", "console"])
         from . import tbe
         from . import console_utils as console
     if pytube_installed and yt_dlp_installed:

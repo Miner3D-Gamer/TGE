@@ -12,8 +12,6 @@ def scramble_word(word:str)->str:
     Returns:
     str: The scrambled word.
     """
-    if not isinstance(word, str):
-        raise ValueError("Input must be a string")
 
     word_list = list(word)
     random.shuffle(word_list)
@@ -346,7 +344,7 @@ def right_pad(string:str, length:int, char:str=" ")->str:
     return string.ljust(length, char)
 
 
-def left_replace(s, chars: List[str], replacement: str)->str:
+def left_replace(s:str, chars: List[str], replacement: str)->str:
     """
     Replace leading characters in `chars` with `replacement` in the string `s`.
 
@@ -368,7 +366,7 @@ def left_replace(s, chars: List[str], replacement: str)->str:
     return replaced_part + remaining_part
 
 
-def right_replace(s, chars, replacement)->str:
+def right_replace(s:str, chars: List[str], replacement: str)->str:
     """
     Replace trailing characters in `chars` with `replacement` in the string `s`.
 

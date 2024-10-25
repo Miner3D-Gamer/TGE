@@ -1,7 +1,5 @@
 import random
-def scramble_word(word):
- if not isinstance(word,str):raise ValueError('Input must be a string')
- A=list(word);random.shuffle(A);return''.join(A)
+def scramble_word(word):A=list(word);random.shuffle(A);return''.join(A)
 def chop(string,substring,rem=True):
  B=substring;A=string
  if rem and A.startswith(B)and A.endswith(B):return A[len(B):-len(B)]

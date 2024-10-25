@@ -5,6 +5,7 @@
         "autocloud",
         "autoflake",
         "bcdfghjklmnpqrstvwxyz",
+        "bestaudio",
         "BGRA",
         "BITMAPINFO",
         "BITMAPINFOHEADER",
@@ -42,9 +43,13 @@
         "NOZORDER",
         "origname",
         "osinfo",
+        "outtmpl",
         "patchlevel",
         "Pels",
         "pkgdir",
+        "postprocessors",
+        "preferredcodec",
+        "preferredquality",
         "pydub",
         "pyobjc",
         "RBUTTON",
@@ -68,5 +73,6 @@
         "yottabytes",
         "youtu",
         "zettabytes"
-    ]
+    ],
+    "python.analysis.stubPath": "./tge/stubs",
 }

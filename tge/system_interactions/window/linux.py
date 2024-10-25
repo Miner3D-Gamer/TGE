@@ -1,7 +1,7 @@
 import subprocess, sys
-from typing import Union, Optional, NoReturn, Tuple
+from typing import Union, Optional, Tuple
 
-def is_window_minimized(window_id):
+def is_window_minimized(window_id: Optional[Union[int, str]]) -> bool:
     """Check if the window is minimized."""
     if window_id is None:
         return False
@@ -9,19 +9,19 @@ def is_window_minimized(window_id):
     result = subprocess.run(["wmctrl", "-lG"], stdout=subprocess.PIPE, text=True)
     lines = result.stdout.splitlines()
     for line in lines:
-        if window_id in line:
+        if str(window_id) in line:
             parts = line.split()
             state = parts[8]
             return state == "0"  # 0 means the window is not minimized
     return False
 
 
-def minimize_window(window_id):
+def minimize_window(window_id: Optional[Union[int, str]]):
     """Minimize the specified window."""
     if window_id is None:
         raise ValueError("Window not found")
 
-    subprocess.run(["wmctrl", "-i", "-r", window_id, "-b", "add,hidden"])
+    subprocess.run(["wmctrl", "-i", "-r", str(window_id), "-b", "add,hidden"])
 
 
 def get_window_position(window_id:Optional[int])->Optional[Tuple[int, int, int, int]]:
@@ -32,30 +32,30 @@ def get_window_position(window_id:Optional[int])->Optional[Tuple[int, int, int, 
     result = subprocess.run(["wmctrl", "-lG"], stdout=subprocess.PIPE, text=True)
     lines = result.stdout.splitlines()
     for line in lines:
-        if window_id in line:
+        if str(window_id) in line:
             parts = line.split()
             x, y = int(parts[2]), int(parts[3])
             return x, y, int(parts[4]), int(parts[5])
     raise None
 
 
-def maximize_window(window_id):
+def maximize_window(window_id: Optional[Union[int, str]]):
     """Maximize the specified window."""
     if window_id is None:
         raise ValueError("Window not found")
 
     subprocess.run(
-        ["wmctrl", "-i", "-r", window_id, "-b", "add,maximized_vert,maximized_horz"]
+        ["wmctrl", "-i", "-r", str(window_id), "-b", "add,maximized_vert,maximized_horz"]
     )
 
 
-def set_window_position(window_id, x, y, width, height):
+def set_window_position(window_id: Optional[Union[int, str]], x:int, y:int, width:int, height:int):
     """Set the position and size of the window."""
     if window_id is None:
         raise ValueError("Window not found")
 
     subprocess.run(
-        ["wmctrl", "-i", "-r", window_id, "-e", f"0,{x},{y},{width},{height}"]
+        ["wmctrl", "-i", "-r", str(window_id), "-e", f"0,{x},{y},{width},{height}"]
     )
 
 

@@ -1,11 +1,11 @@
 import time
 import os
-from typing import List, Union, Tuple, Any, Callable, Optional
+from typing import List, Union, Tuple, Callable, Optional
+from types import TracebackType
 from random import random, choice
 import sys
 from collections.abc import Iterable
 from typing import Union
-from io import StringIO
 
 
 from .tbe import determine_affirmative
@@ -285,7 +285,9 @@ def colorize_text(text: str, color: str) -> str:
     return colors[color] + text + colors["reset"]
 
 
-def visualize_directory(path, prefix="", lines=None) -> List[str]:
+def visualize_directory(
+    path: str, prefix: str = "", lines: Optional[List[str]] = None
+) -> List[str]:
     """
     Recursively visualizes the directory structure of a given path.
 
@@ -340,7 +342,9 @@ def visualize_directory(path, prefix="", lines=None) -> List[str]:
 
                 if entry.is_dir():
                     lines.append(f"{prefix}{marker}[{entry.name}]")
-                    new_prefix = prefix + line_marker if not is_last else prefix + empty_marker
+                    new_prefix = (
+                        prefix + line_marker if not is_last else prefix + empty_marker
+                    )
                     visualize_directory(entry.path, new_prefix, lines)
                 else:
                     lines.append(f"{prefix}{marker}/{entry.name}")
@@ -384,7 +388,7 @@ def prompt_bool(
     question: str,
     allow_undeterminable: bool = False,
     tries: int = 0,
-    delete_lines=True,
+    delete_lines: bool = True,
 ) -> Tuple[Optional[bool], str]:
     """
     Prompts the user with a yes/no question and returns their response.
@@ -421,8 +425,8 @@ def prompt_number(
     question: str,
     min: Optional[int] = None,
     max: Optional[int] = None,
-    delete_lines=True,
-    tries=0,
+    delete_lines: bool = True,
+    tries: int = 0,
 ) -> Optional[int]:
     """
     Asks the user a number question and validates the input.
@@ -473,7 +477,7 @@ def matrix_rain(
     density: Union[int, float] = 0.2,
     duration: Optional[Union[int, float]] = None,
     symbols: List[str] = ["0", "1"],
-    callable_stop_if_return_true: Callable = lambda: False,
+    callable_stop_if_return_true: Callable[..., bool] = lambda: False,
 ) -> None:
     """
     Displays a matrix rain animation on the console.
@@ -535,6 +539,11 @@ class SuppressPrint:
         self._original_stdout = sys.stdout
         sys.stdout = open(os.devnull, "w")
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(
+        self,
+        exc_type: Optional[Exception],
+        exc_value: Optional[Exception],
+        traceback: Optional[TracebackType],
+    ):
         sys.stdout.close()
         sys.stdout = self._original_stdout

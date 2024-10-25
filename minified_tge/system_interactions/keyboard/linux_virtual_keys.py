@@ -1,4 +1,4 @@
-from Xlib import X,XK
+from Xlib import XK
 backspace=XK.XK_BackSpace
 tab=XK.XK_Tab
 clear=XK.XK_Clear

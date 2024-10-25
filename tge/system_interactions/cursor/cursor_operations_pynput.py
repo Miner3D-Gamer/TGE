@@ -130,3 +130,5 @@ def _is_button_pressed(button):
             if isinstance(event, pynput.mouse.Events.Click) and event.button == button:
                 return event.pressed
         return False
+
+__all__ = ["left_click", "right_click", "middle_click", "set_mouse_to", "get_mouse_position", "is_right_button_pressed", "is_middle_button_pressed", "is_left_button_pressed", "middle_mouse_up", "right_mouse_up", "middle_mouse_down", "left_mouse_up", "scroll", "scroll_horizontal", "scroll_vertical", "left_mouse_down", "right_mouse_down", "middle_mouse_down"]

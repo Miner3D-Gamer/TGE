@@ -1,7 +1,5 @@
 _A='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
 import random
-from requests import get as requests_get
-from.codec.codec import html
 def generate_password(length):A=_A;return''.join(random.choice(A)for B in range(length))
 def random_bool():return bool(random.getrandbits(1))
 def generate_random_hex_color():return'#'+''.join(random.choice('0123456789ABCDEF')for A in range(6))

@@ -1,7 +1,8 @@
+# type: ignore
 from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly, kCGNullWindowID  # type: ignore
 from AppKit import NSWorkspace, NSApplication, NSApp, NSWindow  # type: ignore
 
-from typing import Optional, Union, Tuple
+from typing import Optional, Tuple
 
 
 def is_window_minimized(window: NSWindow):

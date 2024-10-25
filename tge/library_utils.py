@@ -1,5 +1,5 @@
 import importlib.util
-from typing import Union, Tuple, NoReturn, List, Optional
+from typing import Tuple, NoReturn, List, Optional
 import subprocess
 from collections.abc import Iterable
 import os
@@ -39,7 +39,7 @@ def download_library(library_name: str) -> Tuple[bool, str]:
         ]
     else:
         commands = [commands, "install", library_name]
-
+    error_message = None
     for command in commands:
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
@@ -60,13 +60,13 @@ def download_library(library_name: str) -> Tuple[bool, str]:
 
 
 # Honestly no idea what these functions do and I'm way too tired to try and figure out
-def get_installed_python_versions() -> list:
+def get_installed_python_versions() -> List[ str]:
     """Get a list of installed Python executables in the system PATH."""
     path = os.getenv("PATH")
     if path is None:
         return []
     paths = path.split(os.pathsep)
-    python_versions = []
+    python_versions: List[str] = []
     for path in paths:
         try:
             for entry in os.listdir(path):
@@ -130,7 +130,7 @@ def install_all_libraries(libs: "Iterable[str]") -> List[Tuple[bool, str]]:
         >>> install_all_libraries(["numpy", "pandas"])
         [(True, "Successfully installed numpy"), (True, "Successfully installed pandas")]
     """
-    output = []
+    output: List[Tuple[bool, str]] = []
     for lib in libs:
         if is_library_installed(lib):
             continue

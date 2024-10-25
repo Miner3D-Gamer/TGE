@@ -10,27 +10,27 @@ def is_window_minimized(window_id):
  if A is _B:return _D
  C=subprocess.run([_C,'-lG'],stdout=subprocess.PIPE,text=_A);D=C.stdout.splitlines()
  for B in D:
-  if A in B:E=B.split();F=E[8];return F=='0'
+  if str(A)in B:E=B.split();F=E[8];return F=='0'
  return _D
 def minimize_window(window_id):
  A=window_id
  if A is _B:raise ValueError(_E)
- subprocess.run([_C,'-i','-r',A,'-b','add,hidden'])
+ subprocess.run([_C,'-i','-r',str(A),'-b','add,hidden'])
 def get_window_position(window_id):
  B=window_id
  if B is _B:return
  D=subprocess.run([_C,'-lG'],stdout=subprocess.PIPE,text=_A);E=D.stdout.splitlines()
  for C in E:
-  if B in C:A=C.split();F,G=int(A[2]),int(A[3]);return F,G,int(A[4]),int(A[5])
+  if str(B)in C:A=C.split();F,G=int(A[2]),int(A[3]);return F,G,int(A[4]),int(A[5])
  raise _B
 def maximize_window(window_id):
  A=window_id
  if A is _B:raise ValueError(_E)
- subprocess.run([_C,'-i','-r',A,'-b','add,maximized_vert,maximized_horz'])
+ subprocess.run([_C,'-i','-r',str(A),'-b','add,maximized_vert,maximized_horz'])
 def set_window_position(window_id,x,y,width,height):
  A=window_id
  if A is _B:raise ValueError(_E)
- subprocess.run([_C,'-i','-r',A,'-e',f"0,{x},{y},{width},{height}"])
+ subprocess.run([_C,'-i','-r',str(A),'-e',f"0,{x},{y},{width},{height}"])
 def get_window_by_title(title):
  try:A=subprocess.run([_F,'search','--name',title],capture_output=_A,text=_A,check=_A);B=A.stdout.strip();return B
  except subprocess.CalledProcessError:return

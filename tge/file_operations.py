@@ -5,15 +5,15 @@ import zipfile
 import math
 import hashlib
 import uuid
-from typing import Union, Tuple, Iterable, List, Dict, Optional
+from typing import Union, Tuple, List, Dict, Optional, Any
 from collections import defaultdict
 import re
 from tkinter import filedialog
 
-from .codec.codec import decode, base_x_encode_to_binary, base_x_decode_from_binary
-from . import SYSTEM_NAME
+# from .codec.codec import decode, base_x_encode_to_binary, base_x_decode_from_binary
 
-def make_legal_filename(filename: str, replacer:str="_") -> str:
+
+def make_legal_filename(filename: str, replacer: str = "_") -> str:
     """
     Replaces illegal characters in a filename with a specified character and trims whitespace.
 
@@ -25,12 +25,13 @@ def make_legal_filename(filename: str, replacer:str="_") -> str:
     str: A sanitized filename with illegal characters replaced and leading/trailing whitespace removed.
     """
     illegal_chars = r'[\\/*?"<>|:]'
-    
+
     legal_filename = re.sub(illegal_chars, replacer, filename)
-    
+
     legal_filename = legal_filename.strip()
-    
+
     return legal_filename
+
 
 def create_missing_directory(directory: str) -> bool:
     """
@@ -74,8 +75,6 @@ def delete_directory(directory: str) -> Tuple[bool, str]:
             return False, "Directory not found"
     except:
         return False, "Error deleting directory"
-
-
 
 
 def move_file(source_path: str, destination_path: str) -> None:
@@ -285,7 +284,7 @@ def get_folder_name(path: str) -> str:
 
 #         combined_data:str = base_x_decode_from_binary(encoded_data)
 
-#         file_data = combined_data.split(b"|")[:-1] 
+#         file_data = combined_data.split(b"|")[:-1]
 
 #         for data in file_data:
 #             data:str
@@ -296,8 +295,6 @@ def get_folder_name(path: str) -> str:
 #         return True
 #     except:
 #         return False
-
-
 
 
 def does_file_exist(directory: str) -> bool:
@@ -358,8 +355,8 @@ def compare_file(directory1: str, directory2: str) -> bool:
 def are_directories_the_same(
     directory1: str,
     directory2: str,
-    dir1_blacklist: list = [],
-    dir2_blacklist: list = [],
+    dir1_blacklist: List[str] = [],
+    dir2_blacklist: List[str] = [],
 ) -> bool:
     """
 
@@ -377,17 +374,20 @@ def are_directories_the_same(
         directory1, dir1_blacklist
     ) == generate_uuid_from_directory(directory2, dir2_blacklist)
 
-def count_files_in_directory(directory_path, extension_backlist=[]) -> int:
+
+def count_files_in_directory(
+    directory_path: str, extension_backlist: List[str] = []
+) -> int:
     file_count = 0
-    for root, dirs, files in os.walk(directory_path):
+    for _, _, files in os.walk(directory_path):
         for file in files:
             if file.endswith(tuple(extension_backlist)):
                 continue
             file_count += 1
     return file_count
-            
 
-def count_items_in_directory(directory_path) -> int:
+
+def count_items_in_directory(directory_path: str) -> int:
     """
     Counts the number of items (files and directories) in the specified directory.
 
@@ -428,7 +428,7 @@ def get_file_extension(file_path: str) -> str:
     return os.path.splitext(file_path)[1][1:]
 
 
-def find_files_by_extension(directory_path: str, extension: str) -> list:
+def find_files_by_extension(directory_path: str, extension: str) -> List[str]:
     """
     Retrieve a list of file names within the given directory that match the specified extension.
 
@@ -439,7 +439,7 @@ def find_files_by_extension(directory_path: str, extension: str) -> list:
     Returns:
         list: A list of file names that have the specified extension within the directory.
     """
-    result = []
+    result: List[str] = []
     for file in os.listdir(directory_path):
         _, file_extension = os.path.splitext(file)
         if file_extension == extension:
@@ -487,7 +487,7 @@ def get_file_creation_time(file_path: str) -> float:
         return -1
 
 
-def count_functions_in_file(file_path: str) -> Tuple[int, list]:
+def count_functions_in_file(file_path: str) -> Tuple[int, List[str]]:
     """
     Count and retrieve the names of top-level functions defined in the specified Python file.
 
@@ -517,7 +517,9 @@ def count_functions_in_file(file_path: str) -> Tuple[int, list]:
         return 0, []
 
 
-def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
+def count_functions_in_directory(
+    directory_path: str,
+) -> Tuple[int, Dict[str, Tuple[int, List[str]]], List[str]]:
     """
     Counts the number of functions in all Python files within a directory and its subdirectories.
     Returns a dictionary where the keys are the file paths and the values are tuples with the count and names of functions.
@@ -541,13 +543,14 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
                 'my_directory/file1.py': (3, ['function1', 'function2', 'function3']),
                 'my_directory/subdirectory/file2.py': (1, ['function4'])
             },
+            ['error_file1.py', 'error_file2.py']
         )
     """
-    function_counts = {}
+    function_counts: Dict[str, Tuple[int, List[str]]] = {}
     total_function_count = 0
-    error_files = []
+    error_files: List[str] = []
 
-    for root, dirs, files in os.walk(directory_path):
+    for root, _, files in os.walk(directory_path):
         for file in files:
             if file.endswith(".py"):
                 file_path = os.path.join(root, file)
@@ -567,7 +570,7 @@ def count_functions_in_directory(directory_path: str) -> Tuple[int, dict, list]:
     return total_function_count, function_counts, error_files
 
 
-def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
+def count_function_names_in_directory(directory_path: str) -> Tuple[int, List[str]]:
     """
     Count the total number of function names in Python files within the specified directory.
 
@@ -586,12 +589,10 @@ def count_function_names_in_directory(directory_path: str) -> Tuple[int, list]:
         This function depends on the 'count_functions_in_directory' utility function to perform
         the actual counting of function occurrences in the directory's Python files.
     """
-    total_function_count, function_counts, error_files = count_functions_in_directory(
-        directory_path
-    )
-    function_names = []
+    _, function_counts, _ = count_functions_in_directory(directory_path)
+    function_names: List[str] = []
 
-    for file_path, (count, names) in function_counts.items():
+    for _, (_, names) in function_counts.items():
         for name in names:
             function_names.append(name)
 
@@ -693,6 +694,7 @@ def unzip_file(
         return False, False
     if extract_dir == "":
         return False, False
+    existed = False
     try:
         if create_missing_directory_bool:
             existed = create_missing_directory(extract_dir)
@@ -730,10 +732,12 @@ def zip_directory(
             create_missing_directory(output_path)
 
         with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zipfile_file:
-            for root, dirs, files in os.walk(directory_path):
+            for root, _, files in os.walk(directory_path):
                 for file in files:
                     file_path = os.path.join(root, file)
-                    zipfile_file.write(file_path, os.path.relpath(file_path, directory_path))
+                    zipfile_file.write(
+                        file_path, os.path.relpath(file_path, directory_path)
+                    )
         return True, True
     except:
         return False, True
@@ -746,7 +750,7 @@ def get_appdata_path() -> str:
     Returns:
         str: The expanded and absolute path to the 'AppData' directory.
     """
-    return os.path.expanduser("~\AppData")
+    return os.path.expanduser(r"~\AppData")
 
 
 # def create_shortcut(
@@ -806,7 +810,7 @@ def get_latest_file_in_directory_from_all_filenames_that_are_real_numbers(
 
     for file in files:
         if os.path.isfile(os.path.join(path, file)):
-            filename, file_extension = os.path.splitext(file)
+            filename, _ = os.path.splitext(file)
             try:
                 file_number = int(filename)
                 if file_number > max_num:
@@ -845,7 +849,7 @@ def get_filesize(file_path: str) -> int:
 
 
 def get_file_size_of_directory(
-    directory: str, blacklisted_file_extensions: list = [], chunk_size: int = 4096
+    directory: str, blacklisted_file_extensions: List[str] = [], chunk_size: int = 4096
 ) -> int:
     """
     Calculates the total size of files in a directory, excluding those with blacklisted extensions.
@@ -860,7 +864,7 @@ def get_file_size_of_directory(
     """
     total_size = 0
 
-    for dirpath, dirnames, filenames in os.walk(directory):
+    for dirpath, _, filenames in os.walk(directory):
         for f in filenames:
             if any(f.endswith(ext) for ext in blacklisted_file_extensions):
                 continue
@@ -874,7 +878,9 @@ def get_file_size_of_directory(
     return total_size
 
 
-def generate_uuid_from_directory(directory, blacklisted_extensions: list = []):
+def generate_uuid_from_directory(
+    directory: str, blacklisted_extensions: List[str] = []
+) -> uuid.UUID:
     """Generate a UUID based on the content of all files in a directory, excluding files with specified extensions.
 
     Args:
@@ -886,7 +892,7 @@ def generate_uuid_from_directory(directory, blacklisted_extensions: list = []):
     hash_md5 = hashlib.md5()
 
     for root, _, files in os.walk(directory):
-        for file in sorted(files):  
+        for file in sorted(files):
             blacklisted = True
             for ext in blacklisted_extensions:
                 if file.endswith(ext):
@@ -896,7 +902,7 @@ def generate_uuid_from_directory(directory, blacklisted_extensions: list = []):
             if blacklisted:
                 continue
             file_path = os.path.join(root, file)
-            if os.path.isfile(file_path): 
+            if os.path.isfile(file_path):
                 with open(file_path, "rb") as f:
                     for chunk in iter(lambda: f.read(4096), b""):
                         hash_md5.update(chunk)
@@ -907,80 +913,17 @@ def generate_uuid_from_directory(directory, blacklisted_extensions: list = []):
     return unique_uuid
 
 
-if SYSTEM_NAME == "windows":
-
-    def add_to_path_to_system_path_variables(path):
-        """
-        Adds a new path to the system PATH environment variable on Windows.
-
-        Args:
-            path (str): The path to add to the system PATH.
-
-        Note:
-            Uses the `setx` command to update the PATH environment variable permanently.
-        """
-        current_path = os.getenv("PATH")
-        new_path = f"{current_path};{path}"
-        os.system(f'setx PATH "{new_path}"')
-
-elif SYSTEM_NAME == "darwin":
-    import subprocess
-
-    def add_to_path_to_system_path_variables(path):
-        """
-        Adds a new path to the system PATH environment variable on macOS (Darwin).
-
-        Args:
-            path (str): The path to add to the system PATH.
-
-        Notes:
-            Appends the path to the `~/.bash_profile` file and reloads it using the `source` command.
-        """
-        with open(os.path.expanduser("~/.bash_profile"), "a") as file:
-            file.write(f'\nexport PATH="{path}:$PATH"\n')
-        subprocess.run(["source", "~/.bash_profile"], shell=True, check=True)
-
-elif SYSTEM_NAME == "linux":
-    import subprocess
-
-    def add_to_path_to_system_path_variables(path):
-        """
-        Adds a new path to the system PATH environment variable on Linux.
-
-        Args:
-            path (str): The path to add to the system PATH.
-
-        Notes:
-            Appends the path to the `~/.bashrc` file and reloads it using the `source` command.
-        """
-        with open(os.path.expanduser("~/.bashrc"), "a") as file:
-            file.write(f'\nexport PATH="{path}:$PATH"\n')
-        subprocess.run(["source", "~/.bashrc"], shell=True, check=True)
-
-else:
-
-    def add_to_path_to_system_path_variables(path):
-        """
-        Raises an exception for unknown system types.
-
-        Args:
-            path (str): The path to add to the system PATH (not used).
-
-        Raises:
-            BaseException: If the system type is unknown.
-        """
-        raise BaseException("Unknown System")
-
-
 class _compress_directory_list_trie_node:
     def __init__(self):
         "Node in a Trie data structure with a dictionary of child nodes and a boolean flag to mark the end of a path."
-        self.children = defaultdict(_compress_directory_list_trie_node)
+        self.children: Dict[str, "_compress_directory_list_trie_node"] = defaultdict(
+            _compress_directory_list_trie_node
+        )
         self.is_end_of_path = False
 
 
 def _compress_directory_list_insert_path(
-    root: _compress_directory_list_trie_node, path: Iterable
+    root: _compress_directory_list_trie_node, path: List[str]
 ) -> None:
     "Insert a path into a Trie data structure."
     node = root
@@ -990,7 +933,7 @@ def _compress_directory_list_insert_path(
 
 
 def _compress_directory_list_build_trie(
-    paths: Iterable,
+    paths: List[str],
 ) -> _compress_directory_list_trie_node:
     "Build a Trie from a list of file paths."
     root = _compress_directory_list_trie_node()
@@ -1001,7 +944,7 @@ def _compress_directory_list_build_trie(
 
 def _compress_directory_list_serialize_trie(
     node: _compress_directory_list_trie_node,
-) -> dict:
+) -> Union[Any, Dict[str, Any]]:
     "Serialize a Trie into a compressed dictionary format representing a directory structure."
     if not node.children:
         return {}
@@ -1015,7 +958,7 @@ def _compress_directory_list_serialize_trie(
             return f"{key}/{serialized_child}"
         return {key: serialized_child}
 
-    result = {}
+    result: Dict[str, Any] = {}
     for key, child in node.children.items():
         serialized_child = _compress_directory_list_serialize_trie(child)
         if isinstance(serialized_child, list) and not serialized_child:
@@ -1026,13 +969,6 @@ def _compress_directory_list_serialize_trie(
     return result
 
 
-def compress_directory_list(paths: Iterable) -> Dict[str, Union[List[str], dict]]:
-    "Compress a list of file paths into a dictionary format representing the directory structure."
-    trie = _compress_directory_list_build_trie(paths)
-    compressed = _compress_directory_list_serialize_trie(trie)
-    return compressed
-
-
 def find_files_with_extension(root_dir: str, file_extension: str) -> List[str]:
     """
     Returns a list of all file directories with the specified extension.
@@ -1041,12 +977,51 @@ def find_files_with_extension(root_dir: str, file_extension: str) -> List[str]:
     :param file_extension: The file extension to search for (e.g., '.txt').
     :return: A list of file paths with the specified extension.
     """
-    file_paths = []
-    for root, dirs, files in os.walk(root_dir):
+    file_paths: List[str] = []
+    for root, _, files in os.walk(root_dir):
         for file in files:
             if file.endswith(file_extension):
                 file_paths.append(os.path.join(root, file))
     return file_paths
+
+
+def compress_directory_list(
+    paths: List[str],
+) -> Dict[str, Union[List[str], Dict[str, Any]]]:
+    "Compress a list of file paths into a dictionary format representing the directory structure."
+    trie = _compress_directory_list_build_trie(paths)
+    compressed = _compress_directory_list_serialize_trie(trie)
+    return compressed
+
+
+def decompress_directory_list(compressed: Dict[str, Any]) -> List[str]:
+    """Decompress a directory structure from a nested dictionary format into a list of file paths.
+
+    Args:
+        compressed (dict): The compressed directory structure in dictionary format.
+
+    Returns:
+        list[str]: A list of file paths extracted from the compressed structure."""
+    paths: List[str] = []
+
+    def dfs(node: Union[str, List[str], Dict[str, Any]], current_path: str=""):
+        "Inner loop"
+        if isinstance(node, list):
+            paths.append(f"{current_path}/{node[0]}".strip("/"))
+            return
+        if isinstance(node, str):
+            paths.append(node)
+            return
+
+        for key, value in node.items():
+            if key == "files":
+                for file_path in value:
+                    paths.append(f"{current_path}/{file_path}".strip("/"))
+            else:
+                dfs(value, f"{current_path}/{key}".strip("/"))
+
+    dfs(compressed)
+    return paths
 
 
 def find_files_with_extensions(root_dir: str, file_extensions: List[str]) -> List[str]:
@@ -1057,7 +1032,7 @@ def find_files_with_extensions(root_dir: str, file_extensions: List[str]) -> Lis
     :param file_extensions: The file extensions to search.
     :return: A list of file paths with the specified extension.
     """
-    files = []
+    files: List[str] = []
     for file_extension in file_extensions:
         files.extend(find_files_with_extension(root_dir, file_extension))
     return files

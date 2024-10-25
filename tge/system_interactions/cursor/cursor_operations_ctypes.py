@@ -4,7 +4,6 @@ from typing import Tuple, Optional
 class POINT(ctypes.Structure):
     _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
 
-
 # // Mouse
 CURSOR_POINT = POINT()
 
@@ -243,3 +242,5 @@ def is_middle_button_pressed():
 def is_right_button_pressed():
     """Check if the right mouse button is pressed."""
     return (ctypes.windll.user32.GetAsyncKeyState(MK_RBUTTON) & 0x8000) != 0
+
+__all__ = ["left_click", "right_click", "middle_click", "set_mouse_to", "get_mouse_position", "is_right_button_pressed", "is_middle_button_pressed", "is_left_button_pressed", "middle_mouse_up", "right_mouse_up", "middle_mouse_down", "left_mouse_up", "scroll", "scroll_horizontal", "scroll_vertical", "left_mouse_down", "right_mouse_down", "middle_mouse_down"]

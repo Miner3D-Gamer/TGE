@@ -185,7 +185,7 @@ def decode(text: str) -> str:
     ]
 
     # Use regex to find HTML-encoded characters within the text
-    encoded_chars = re.findall("&\w+;", text)
+    encoded_chars = re.findall(r"&\w+;", text)
 
     # Iterate over the found encoded characters and replace them with decoded counterparts
     for encoded_char in encoded_chars:

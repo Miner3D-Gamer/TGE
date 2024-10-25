@@ -9,3 +9,4 @@ if SYSTEM_NAME == "windows":
     GMEM_DDESHARE = 0x2000
     GMEM_MOVEABLE = 0x0002
     GHND = GMEM_DDESHARE | GMEM_MOVEABLE
+    win_dll_type = ctypes.WinDLL

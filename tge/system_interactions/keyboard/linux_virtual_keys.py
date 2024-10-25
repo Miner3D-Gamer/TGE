@@ -1,4 +1,4 @@
-from Xlib import X, XK
+from Xlib import  XK
 from typing import Final
 
 

@@ -8,15 +8,16 @@ import os
 from.tbe import get_current_pip_path
 def is_library_installed(library_name):A=importlib.util.find_spec(library_name);return A is not None
 def download_library(library_name):
- F=False;D=True;A=library_name;B=get_current_pip_path()
+ G=False;D=True;A=library_name;B=get_current_pip_path()
  if not B:B=[[_C,'-m',_B,_A,A],['python3','-m',_B,_A,A],[_B,_A,A],['pip3',_A,A]]
  else:B=[B,_A,A]
- for E in B:
-  try:G=subprocess.run(E,check=D,capture_output=D,text=D);return D,G.stdout
-  except subprocess.CalledProcessError as C:H=f"Failed to install {A} using command: {' '.join(E)}. Return code: {C.returncode}. Output: {C.output}. Error: {C.stderr}."
+ E=None
+ for F in B:
+  try:H=subprocess.run(F,check=D,capture_output=D,text=D);return D,H.stdout
+  except subprocess.CalledProcessError as C:E=f"Failed to install {A} using command: {' '.join(F)}. Return code: {C.returncode}. Output: {C.output}. Error: {C.stderr}."
   except FileNotFoundError:continue
-  except Exception as C:return F,f"An unexpected error occurred: {str(C)}"
- return F,f"All installation attempts failed. Last error: {H}"
+  except Exception as C:return G,f"An unexpected error occurred: {str(C)}"
+ return G,f"All installation attempts failed. Last error: {E}"
 def get_installed_python_versions():
  A=os.getenv('PATH')
  if A is None:return[]

@@ -1,16 +1,14 @@
-from binascii import hexlify, unhexlify, Error as BinasciiError
-from typing import List, Union, Tuple, Any
+from binascii import hexlify, unhexlify
 
 
 
-from . import msy
-from . import morse
-from . import html
-from . import standard_galactic_alphabet
-from . import json
+from . import msy # type: ignore
+from . import morse # type: ignore
+from . import html # type: ignore
+from . import standard_galactic_alphabet # type: ignore
+from . import json # type: ignore
 
-# To make sure the imports stay when minifying
-html, json
+
 
 
 
@@ -25,7 +23,7 @@ def base_x_decode_from_binary(binary_data:bytes, base:int) -> str:
     if base < 2 or base > 95:
         raise ValueError("Base must be between 2 and 95 included")
 
-    digits = """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ """
+    digits = r"""0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ """
     result = ""
 
     while decimal_value > 0:
@@ -38,7 +36,7 @@ def base_x_encode_to_binary(data_in_base_x:str, base:int) -> bytes:
     if base < 2 or base > 95:
         raise ValueError("Base must be between 2 and 95 included")
 
-    digits = """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ """
+    digits = r"""0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ """
     digit_map = {char: index for index, char in enumerate(digits)}
 
     decimal_value = 0

@@ -1,4 +1,4 @@
-from itertools import permutations as itertools_permutations
+from typing import Any, List
 import math
 def list_mul(lst):return math.prod(lst)
 def remove_duplicates(list):
@@ -27,21 +27,17 @@ def median(lst):
 def reverse_list(lst):return lst[::-1]
 def find_max_min_difference(lst):return max(lst)-min(lst)
 def find_missing_number(lst):return sum(range(1,len(lst)+1))-sum(lst)
-def remove_whitespace_from_list(lst):return[A.replace(' ','')for A in lst]
-def exponential_average(lst):return sum(lst)/len(lst)
 def greatest_product(lst,lst2):return max(lst)*max(lst2)
-def permutations(lst):return list(itertools_permutations(lst))
-def limit_list(lst,limit):return lst[:limit]
-def get_items_from_list(lst,start,end):return lst[start:end]
-def sort_list_of_dictionaries(lst,key):
- try:return sorted(lst,key=lambda x:x[key]),True
- except:return lst,False
 def zipper_insert(list1,list2):
  C=list2;B=list1;D=min(len(B),len(C));A=[]
  for E in range(D):A.append(B[E]);A.append(C[E])
  A.extend(B[D:]);A.extend(C[D:]);return A
 def compress_list(list_to_compress):
- B=list_to_compress;G=len(B);A=[];C=B[0];D=0;E=lambda amount,char:[amount,char]if amount>1 and amount!=G else[char]
+ B=list_to_compress;G=len(B);A=[];C=B[0];D=0
+ def E(amount,char):
+  A=amount
+  if A>1 and A!=G:return[A,char]
+  else:return[char]
  for H in range(len(B)):
   F=B[H]
   if F==C:D+=1
@@ -54,19 +50,19 @@ def compress_list_of_lists(list_to_compress):
  for B in list_to_compress:A.append(compress_list(B))
  return A
 def decompress_list(list_to_decompress,width):
- A=list_to_decompress
- if not isinstance(A,list):return[A]*width
- D=[];B=1
- for E in range(len(A)):
-  C=A[E]
-  if isinstance(C,int):B=C
-  else:D+=B*[C];B=1
+ B=list_to_decompress
+ if not isinstance(B,list):return[B]*width
+ D=[];C=1
+ for A in B:
+  A:0
+  if isinstance(A,int):C=A
+  else:D+=C*[A];C=1
  return D
 def decompress_list_of_lists(list_to_decompress,width):
  A=[]
  for B in list_to_decompress:A.append(decompress_list(B,width))
  return A
-class MaxSizeList(list):
+class MaxSizeList(List[Any]):
  def __init__(A,max_size):super().__init__();A.max_size=max_size
  def append(A,item):
   super().append(item)

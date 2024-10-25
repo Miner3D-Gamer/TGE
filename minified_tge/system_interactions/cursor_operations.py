@@ -1,7 +1,7 @@
 from..import SYSTEM_NAME
 from.shared import*
-if SYSTEM_NAME=='windows':from.cursor.cursor_operations_ctypes import*
-else:from.cursor.cursor_operations_pynput import*
+if SYSTEM_NAME=='windows':from.cursor.cursor_operations_ctypes import left_click,right_click,middle_click,set_mouse_to,get_mouse_position,is_right_button_pressed,is_middle_button_pressed,is_left_button_pressed,middle_mouse_up,right_mouse_up,middle_mouse_down,left_mouse_up,scroll,scroll_horizontal,scroll_vertical,left_mouse_down,right_mouse_down,middle_mouse_down
+else:from.cursor.cursor_operations_pynput import left_click,right_click,middle_click,set_mouse_to,get_mouse_position,is_right_button_pressed,is_middle_button_pressed,is_left_button_pressed,middle_mouse_up,right_mouse_up,middle_mouse_down,left_mouse_up,scroll,scroll_horizontal,scroll_vertical,left_mouse_down,right_mouse_down,middle_mouse_down
 def click_mouse_button(button_number):ClickMouseButtonList[button_number]()
 def hold_mouse_button(button_number):HoldMouseButtonList[button_number]()
 def release_mouse_button(button_number):ReleaseMouseButtonList[button_number]()

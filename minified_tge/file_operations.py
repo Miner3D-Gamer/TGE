@@ -1,5 +1,5 @@
-_D='source'
-_C='utf-8'
+_D='utf-8'
+_C='/'
 _B=True
 _A=False
 import os,shutil
@@ -8,8 +8,6 @@ import zipfile,math,hashlib,uuid
 from collections import defaultdict
 import re
 from tkinter import filedialog
-from.codec.codec import decode,base_x_encode_to_binary,base_x_decode_from_binary
-from.import SYSTEM_NAME
 def make_legal_filename(filename,replacer='_'):B='[\\\\/*?"<>|:]';A=re.sub(B,replacer,filename);A=A.strip();return A
 def create_missing_directory(directory):
  A=directory
@@ -28,9 +26,9 @@ def copy_directory(source_path,destination_path):A=destination_path;create_missi
 def move_directory(source_path,destination_path):A=destination_path;create_missing_directory(A);shutil.move(source_path,A)
 def rename_directory(source_path,name):A=source_path;B=os.path.dirname(A);C=os.path.join(B,name);os.rename(A,C)
 def get_folder_name(path):
- A=path.replace('\\','/')
- if os.path.isdir(path):return A.split('/')[-1]
- else:B=A.split('/')[-2];return B
+ A=path.replace('\\',_C)
+ if os.path.isdir(path):return A.split(_C)[-1]
+ else:B=A.split(_C)[-2];return B
 def does_file_exist(directory):A=directory;return os.path.exists(A)and os.path.isfile(A)
 def does_directory_exist(directory):A=directory;return os.path.exists(A)and os.path.isdir(A)
 def delete_file(directory):os.remove(directory)
@@ -39,9 +37,9 @@ def compare_file(directory1,directory2):
 def are_directories_the_same(directory1,directory2,dir1_blacklist=[],dir2_blacklist=[]):return generate_uuid_from_directory(directory1,dir1_blacklist)==generate_uuid_from_directory(directory2,dir2_blacklist)
 def count_files_in_directory(directory_path,extension_backlist=[]):
  A=0
- for(D,E,B)in os.walk(directory_path):
-  for C in B:
-   if C.endswith(tuple(extension_backlist)):continue
+ for(B,B,C)in os.walk(directory_path):
+  for D in C:
+   if D.endswith(tuple(extension_backlist)):continue
    A+=1
  return A
 def count_items_in_directory(directory_path):return len(os.listdir(directory_path))
@@ -65,7 +63,7 @@ def get_file_creation_time(file_path):
  else:return-1
 def count_functions_in_file(file_path):
  try:
-  with open(file_path,'r',encoding=_C)as B:C=ast_parse(B.read());A=[A.name for A in ast_walk(C)if isinstance(A,ast_FunctionDef)];return len(A),A
+  with open(file_path,'r',encoding=_D)as B:C=ast_parse(B.read());A=[A.name for A in ast_walk(C)if isinstance(A,ast_FunctionDef)];return len(A),A
  except:return 0,[]
 def count_functions_in_directory(directory_path):
  C={};D=0;E=[]
@@ -74,14 +72,14 @@ def count_functions_in_directory(directory_path):
    if F.endswith('.py'):
     A=os.path.join(G,F)
     try:
-     with open(A,'r',encoding=_C)as I:J=ast_parse(I.read());B=[A.name for A in ast_walk(J)if isinstance(A,ast_FunctionDef)];C[A]=len(B),B;D+=len(B)
+     with open(A,'r',encoding=_D)as I:J=ast_parse(I.read());B=[A.name for A in ast_walk(J)if isinstance(A,ast_FunctionDef)];C[A]=len(B),B;D+=len(B)
     except IOError:E.append(A)
  return D,C,E
 def count_function_names_in_directory(directory_path):
- E,B,F=count_functions_in_directory(directory_path);A=[]
- for(G,(H,C))in B.items():
-  for D in C:A.append(D)
- return len(A),A
+ A,C,A=count_functions_in_directory(directory_path);B=[]
+ for(A,(A,D))in C.items():
+  for E in D:B.append(E)
+ return len(B),B
 def save_counted_function_names_from_directory(directory_path,file_name,output_path,create_missing_directory_bool):
  C=file_name;B=output_path;A=directory_path;D=count_function_names_in_directory(A)[1]
  if A=='':A=get_current_working_directory()
@@ -89,7 +87,7 @@ def save_counted_function_names_from_directory(directory_path,file_name,output_p
  if C=='':C='functions.txt'
  if create_missing_directory_bool:create_missing_directory(B)
  try:
-  with open(B+C,'w',encoding=_C)as E:
+  with open(B+C,'w',encoding=_D)as E:
    for F in D:E.write(F+'\n')
   return _B
  except:return _A
@@ -99,6 +97,7 @@ def unzip_file(zip_path,extract_dir,create_missing_directory_bool=_A):
  C=create_missing_directory_bool;B=zip_path;A=extract_dir
  if B=='':return _A,_A
  if A=='':return _A,_A
+ D=_A
  try:
   if C:D=create_missing_directory(A)
   with zipfile.ZipFile(B,'r')as E:E.extractall(A)
@@ -154,22 +153,6 @@ def generate_uuid_from_directory(directory,blacklisted_extensions=[]):
     with open(D,'rb')as H:
      for I in iter(lambda:H.read(4096),b''):A.update(I)
  J=A.hexdigest();K=uuid.UUID(J[:32]);return K
-if SYSTEM_NAME=='windows':
- def add_to_path_to_system_path_variables(path):A=os.getenv('PATH');B=f"{A};{path}";os.system(f'setx PATH "{B}"')
-elif SYSTEM_NAME=='darwin':
- import subprocess
- def add_to_path_to_system_path_variables(path):
-  A='~/.bash_profile'
-  with open(os.path.expanduser(A),'a')as B:B.write(f'\nexport PATH="{path}:$PATH"\n')
-  subprocess.run([_D,A],shell=_B,check=_B)
-elif SYSTEM_NAME=='linux':
- import subprocess
- def add_to_path_to_system_path_variables(path):
-  A='~/.bashrc'
-  with open(os.path.expanduser(A),'a')as B:B.write(f'\nexport PATH="{path}:$PATH"\n')
-  subprocess.run([_D,A],shell=_B,check=_B)
-else:
- def add_to_path_to_system_path_variables(path):raise BaseException('Unknown System')
 class _compress_directory_list_trie_node:
  def __init__(A):A.children=defaultdict(_compress_directory_list_trie_node);A.is_end_of_path=_A
 def _compress_directory_list_insert_path(root,path):
@@ -178,7 +161,7 @@ def _compress_directory_list_insert_path(root,path):
  A.is_end_of_path=_B
 def _compress_directory_list_build_trie(paths):
  A=_compress_directory_list_trie_node()
- for B in paths:_compress_directory_list_insert_path(A,B.split('/'))
+ for B in paths:_compress_directory_list_insert_path(A,B.split(_C))
  return A
 def _compress_directory_list_serialize_trie(node):
  C=node
@@ -194,13 +177,24 @@ def _compress_directory_list_serialize_trie(node):
   if isinstance(A,list)and not A:E.setdefault('files',[]).append(B)
   else:E[B]=A
  return E
-def compress_directory_list(paths):A=_compress_directory_list_build_trie(paths);B=_compress_directory_list_serialize_trie(A);return B
 def find_files_with_extension(root_dir,file_extension):
  A=[]
  for(C,E,D)in os.walk(root_dir):
   for B in D:
    if B.endswith(file_extension):A.append(os.path.join(C,B))
  return A
+def compress_directory_list(paths):A=_compress_directory_list_build_trie(paths);B=_compress_directory_list_serialize_trie(A);return B
+def decompress_directory_list(compressed):
+ B=[]
+ def D(node,current_path=''):
+  C=current_path;A=node
+  if isinstance(A,list):B.append(f"{C}/{A[0]}".strip(_C));return
+  if isinstance(A,str):B.append(A);return
+  for(E,F)in A.items():
+   if E=='files':
+    for G in F:B.append(f"{C}/{G}".strip(_C))
+   else:D(F,f"{C}/{E}".strip(_C))
+ D(compressed);return B
 def find_files_with_extensions(root_dir,file_extensions):
  A=[]
  for B in file_extensions:A.extend(find_files_with_extension(root_dir,B))

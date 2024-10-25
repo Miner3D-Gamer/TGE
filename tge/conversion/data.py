@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Tuple, Set
 
 
 
@@ -28,15 +28,15 @@ def convertInt(input_string: Any) -> int:
 
 
 
-def compareType(*objs) -> bool:
+def compareType(*objs: Any) -> bool:
     """
     Check if any of the objects share a common ancestor class in their class hierarchy.
     """
-    def get_class_hierarchy(cls):
+    def get_class_hierarchy(cls: type) -> Tuple [type, ...]:
         """
         Get the class hierarchy of a class, including all base classes.
         """
-        hierarchy = set()
+        hierarchy: Set[type ] = set()
         queue = [cls]
         while queue:
             cls = queue.pop(0)

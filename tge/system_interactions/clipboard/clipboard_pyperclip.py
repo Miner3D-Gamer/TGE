@@ -1,6 +1,7 @@
 import pyperclip
 
-def copy_to_clipboard(text: str, user32 = None, kernel32 = None) -> None:
+
+def copy_to_clipboard(text: str, user32: None = None, kernel32: None = None) -> None:
     """
     Copy text to the system clipboard.
 
@@ -10,8 +11,7 @@ def copy_to_clipboard(text: str, user32 = None, kernel32 = None) -> None:
     pyperclip.copy(text)
 
 
-
-def get_clipboard(user32 = None, kernel32 = None) -> str:
+def get_clipboard(user32: None = None, kernel32: None = None) -> str:
     """
     Retrieve the current content of the system clipboard.
 
@@ -21,7 +21,7 @@ def get_clipboard(user32 = None, kernel32 = None) -> str:
     return pyperclip.paste()
 
 
-def clear_clipboard(user32 = None) -> None:
+def clear_clipboard(user32: None = None) -> None:
     """
     Clear the contents of the clipboard.
 
@@ -31,4 +31,4 @@ def clear_clipboard(user32 = None) -> None:
     Returns:
         None: This function does not return any value.
     """
-    pyperclip.copy('')
+    pyperclip.copy("")

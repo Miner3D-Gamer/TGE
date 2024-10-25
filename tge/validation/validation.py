@@ -1,13 +1,13 @@
 import re
-from typing import Iterable, Union
+from typing import Any
 
 from ipaddress import IPv4Address, IPv6Address, AddressValueError
 
-from . import minecraft
-from . import numbers
+from . import minecraft # type: ignore
+from . import numbers # type: ignore
 
 
-def is_empty(text: Union[str, Iterable]) -> bool:
+def is_empty(text: Any) -> bool:
     """
     Returns a boolean indicating whether the given text is empty or not.
 
@@ -33,7 +33,7 @@ def validate_email(email: str) -> bool:
 
 
 def validate_password(
-    password,
+    password: str,
     length: int,
     upper: bool,
     lower: bool,
@@ -169,7 +169,7 @@ def check_valid_ipv6(ip_address: str) -> bool:
     bool: True if the IPv6 address is valid, False if it is not.
     """
     try:
-        ip = IPv6Address(ip_address)
+        _ = IPv6Address(ip_address)
     except AddressValueError:
         return False
     else:
@@ -192,7 +192,7 @@ def check_valid_ipv4(ip_address: str) -> bool:
         bool: True if the input is a valid IPv4 address, False otherwise.
     """
     try:
-        ip = IPv4Address(ip_address)
+        _ = IPv4Address(ip_address)
     except AddressValueError:
         return False
     else:

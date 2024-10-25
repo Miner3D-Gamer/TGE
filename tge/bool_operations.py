@@ -1,7 +1,7 @@
 # TODO: Note to future self: Write a script to automatically generate the and truth table
 
 from typing import List, Tuple
-from collections.abc import Iterable
+
 
 
 
@@ -209,7 +209,7 @@ def any_bit_adder(a: List[bool], b: List[bool], carry: bool = False) ->Tuple[Lis
         raise ValueError("Input lists must have the same length")
 
     n = len(a)
-    result = []
+    result: List[bool] = []
     for i in range(n-1, -1, -1):
         sum_bit, carry = full_adder(a[i], b[i], carry)
         result.append(sum_bit)

@@ -3,7 +3,6 @@ from math import sqrt
 from .math_functions import get_pi
 
 from typing import Union, List
-from collections.abc import Iterable
 
 
 def volume_of_cuboid(
@@ -451,7 +450,7 @@ def calculate_distance_between_four_points(
 
 
 
-def calculate_distance_between_points(*points: Iterable) -> float:
+def calculate_distance_between_points(*points: List[Union[int, float]]) -> float:
     """Calculate the total distance between a sequence of points in 2D space.
 
     Args:

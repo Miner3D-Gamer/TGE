@@ -1,13 +1,11 @@
 import os
-from importlib import import_module as importlib_import_module
-import pygame
-from typing import NoReturn, Callable
 
-from ..random_generators import generate_random_string
+import pygame
+from typing import NoReturn, Callable, Tuple,List
+
 
 from ..tbe import pass_func
 
-from ..image_processing.image_operations import count_gif_frames
 
 
 def update_screen(clock: pygame.time.Clock, fps: int = 0) -> None:
@@ -30,8 +28,8 @@ def render_text(
     text: str,
     font_name: str,
     size: int,
-    color: tuple,
-    position: tuple,
+    color: Tuple[int, int, int],
+    position: Tuple[int, int],
 ) -> None:
     """
     Renders and displays the given text on the specified Pygame screen.
@@ -52,7 +50,7 @@ def render_text(
     screen.blit(rendered_text, position)
 
 
-def load_images_from_directory(directory_path: str)->int:
+def load_images_from_directory(directory_path: str) -> int:
     """
     Loads all images in the specified directory to pygame.
 
@@ -60,7 +58,7 @@ def load_images_from_directory(directory_path: str)->int:
         directory_path (str): The path of the directory.
     """
 
-    supported_extensions = [
+    supported_extensions: List[str] = [
         ".png",
         ".jpg",
         ".jpeg",
@@ -79,20 +77,21 @@ def load_images_from_directory(directory_path: str)->int:
     ]
     files = 0
 
-    for root, dirs, file_names in os.walk(directory_path):
+    for root, _, file_names in os.walk(directory_path):
         for file_name in file_names:
             file_path = os.path.join(root, file_name)
+            if os.path.splitext(file_path)[1] not in supported_extensions:
+                continue
             globals()[file_name] = pygame.image.load(file_path)
             files += 1
     return files
-    
 
 
 def handle_events(
-    quit_callback: Callable = exit,
-    key_callback: Callable = pass_func,
-    mouse_button_callback: Callable = pass_func,
-    misc_callback: Callable = pass_func,
+    quit_callback: Callable[..., NoReturn] = exit,
+    key_callback: Callable[..., None] = pass_func,
+    mouse_button_callback: Callable[..., None] = pass_func,
+    misc_callback: Callable[..., None] = pass_func,
 ) -> None:
     """
     Handles various events in a Pygame application.
@@ -118,9 +117,6 @@ def handle_events(
             mouse_button_callback(event.button)
         else:
             misc_callback(event)
-
-
-
 
 
 def check_collision(*rects: pygame.Rect) -> bool:
@@ -165,7 +161,7 @@ def pygame_exit() -> None:
     pygame.quit()
 
 
-def background_color(window: pygame.Surface, color: tuple) -> None:
+def background_color(window: pygame.Surface, color: Tuple[ int, int, int]) -> None:
     """
     Fill the given Pygame window surface with the specified color.
 
@@ -180,7 +176,7 @@ def background_color(window: pygame.Surface, color: tuple) -> None:
 
 
 def draw_texture_at(
-    surface: pygame.Surface, texture: pygame.Surface, position: tuple
+    surface: pygame.Surface, texture: pygame.Surface, position: Tuple[int, int]
 ) -> None:
     """
     Draws a texture onto a surface at a specified position.
@@ -196,8 +192,6 @@ def draw_texture_at(
     surface.blit(texture, position)
 
 
-
-
 def exit() -> NoReturn:
     """
     Exit the program safely and without errors just with one line
@@ -206,6 +200,3 @@ def exit() -> NoReturn:
     """
     pygame.quit()
     quit()
-
-
-

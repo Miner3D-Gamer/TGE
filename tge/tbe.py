@@ -84,8 +84,8 @@
 #             return -1
 
 
-from types import FunctionType
-from typing import List, Union, Tuple, Any, Iterator, Dict, Callable, Sequence, Optional
+
+from typing import List, Union, Tuple, Any, Iterator, Dict, Callable, Optional
 import ast
 import os
 import sys
@@ -99,9 +99,6 @@ import subprocess, tempfile
 
 version = sys.version_info
 
-if version.minor < 12:
-    import python_minifier # type: ignore
-
 
 def pass_func(*args: Any, **more_args:Any) -> None: 
     """This function does nothing and has no side effects."""
@@ -110,7 +107,7 @@ def pass_func(*args: Any, **more_args:Any) -> None:
 
 
 
-def execute_function(func=pass_func, *args: Any, **kwargs: Any) -> Any:
+def execute_function(func:Callable[...,Any]=pass_func, *args: Any, **kwargs: Any) -> Any:
     """
     Executes a function with the given arguments and keyword arguments.
 
@@ -191,7 +188,7 @@ def determine_affirmative(text: str) -> Optional[bool]:
     return None
 
 
-def get_available_variables() -> Tuple:
+def get_available_variables() -> Dict[str, Any]:
     """
     Retrieve and return the available global and local variables in the current scope.
 
@@ -203,19 +200,14 @@ def get_available_variables() -> Tuple:
         Tuple[Dict[str, Any], Dict[str, Any]]: A tuple containing two dictionaries.
         The first dictionary holds global variables, and the second dictionary holds local variables.
     """
-    g_variables = {}
-    l_variables = {}
+    g_variables: Dict[str, Any] = {}
     # Retrieve global variables
     global_vars = globals()
     for var_name, var_value in global_vars.items():
         g_variables[var_name] = var_value
 
-    # Retrieve local variables
-    local_vars = locals()
-    for var_name, var_value in local_vars.items():
-        l_variables[var_name] = var_value
 
-    return g_variables, l_variables
+    return g_variables
 
 
 
@@ -443,7 +435,7 @@ def number_to_letter(number:int)->str:
 
 
 
-def find_undocumented_functions(file_path:str)->list:
+def find_undocumented_functions(file_path:str)->List[List[Union[str, Optional[int]]]]:
     """Find all functions without docstrings in a Python file.
 
 Args:
@@ -451,7 +443,7 @@ Args:
 
 Returns:
     list: A list of undocumented functions, each represented as a list with the function name and its end line number."""
-    undocumented_functions = []
+    undocumented_functions:List[List[Union[str, Optional[int]]]] = []
 
     with open(file_path, 'r', encoding="utf8") as file:
         tree = ast.parse(file.read())
@@ -464,7 +456,7 @@ Returns:
 
     return undocumented_functions
 
-def check_directory_for_undocumented_functions(directory_path:str)->dict:
+def check_directory_for_undocumented_functions(directory_path:str)->Dict[str, List[List[Union[str, Optional[int]]]]]:
     """Check a directory for Python files and find undocumented functions in each file.
 
 Args:
@@ -472,7 +464,7 @@ Args:
 
 Returns:
     dict: A dictionary where keys are filenames and values are lists of undocumented functions, each represented as a list with the function name and its end line number."""
-    undocumented_functions_dict = {}
+    undocumented_functions_dict:Dict[str, List[List[Union[str, Optional[int]]]]] = {}
 
     for filename in os.listdir(directory_path):
         if filename.endswith('.py'):
@@ -483,7 +475,7 @@ Returns:
 
     return undocumented_functions_dict
 
-def check_directory_and_sub_directory_for_undocumented_functions(directory_path:str)->dict:
+def check_directory_and_sub_directory_for_undocumented_functions(directory_path:str)->Dict[str, List[List[Union[str, Optional[int]]]]]:
     """Check a directory and its subdirectories for Python files and find undocumented functions in each file.
 
 Args:
@@ -491,7 +483,7 @@ Args:
 
 Returns:
     dict: A dictionary where keys are relative file paths and values are lists of undocumented functions, each represented as a list with the function name and its end line number."""
-    undocumented_functions_dict = {}
+    undocumented_functions_dict:Dict[str, List[List[Union[str, Optional[int]]]]] = {}
 
     def _check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(current_path:str)->None:
         """Recursively traverse directories and files to find undocumented functions in Python files and update the dictionary with results.
@@ -577,7 +569,7 @@ Returns:
 
 
 
-def split_with_list(string: str, separators: list, limit: Union[None, int] = None) -> List[str]:
+def split_with_list(string: str, separators: List[str], limit: Union[None, int] = None) -> List[str]:
     """Split a string by multiple separators and return the resulting substrings.
 
 Args:
@@ -587,13 +579,17 @@ Args:
 
 Returns:
     list[str]: A list of substrings resulting from the split operation."""
+    d = 0
     for separator in separators:
         string = string.replace(separator, "𘚟")
+        d+=1
+        if limit is not None and d >= limit:
+            break
     return string.split("𘚟")
 
 
 
-def analyze_text(text:str)->Dict[str, Union[str,list,int,float]]:
+def analyze_text(text:str)->Dict[str, Union[str,List[int],float]]:
     """Analyze the text to provide various statistics about sentences, words, and commas.
 
 Args:
@@ -616,9 +612,9 @@ Returns:
 
     legacy_sentences = split_with_list(text, [". ", "! ", "? "])
 
-    sentences = []
-    word_amounts = []
-    comma_amounts = []
+    sentences:List[List[str]] = []
+    word_amounts:List[int] = []
+    comma_amounts:List[int] = []
 
     for i in range(len(legacy_sentences)):
         commas = legacy_sentences[i].count(",")
@@ -821,47 +817,7 @@ Returns:
 
 
 
-from . import SYSTEM_NAME
 
-if SYSTEM_NAME == "windows":
-    def create_virtual_drive(drive_letter, folder_path, size_mb=None):
-        """Creates a virtual drive that appears as a drive letter on Windows. The drive though is just a shortcut to the specified folder."""
-        command = f"subst {drive_letter}: {folder_path}"
-        subprocess.run(command, shell=True)
-
-    def remove_virtual_drive(drive_letter):
-        """Removes a virtual drive that appears as a drive letter on Windows."""
-        command = f"subst {drive_letter}: /d"
-        subprocess.run(command, shell=True)
-        
-elif SYSTEM_NAME == "linux":
-    def create_virtual_disk(drive_letter, folder_path, size_mb=100):
-        # Create an empty file to act as the virtual disk
-        subprocess.run(['dd', 'if=/dev/zero', f'of={drive_letter}', 'bs=1M', f'count={size_mb}'])
-        
-        # Format the file as ext4 (or any other filesystem)
-        subprocess.run(['mkfs.ext4', drive_letter])
-
-        subprocess.run(['mkdir', '-p', folder_path])
-
-        # Mount the file as a loopback device
-        subprocess.run(['sudo', 'mount', '-o', 'loop', drive_letter, folder_path])
-
-    def remove_virtual_disk(folder_path):
-        
-        subprocess.run(['sudo', 'umount', folder_path])
-
-elif SYSTEM_NAME == "darwin":
-    def create_virtual_drive(drive_letter, folder_path, size_mb=100):
-        # Create an empty DMG file
-        subprocess.run(['hdiutil', 'create', '-size', f'{size_mb}m', '-fs', 'HFS+', '-volname', 'VirtualDrive', drive_letter])
-
-        # Mount the DMG file
-        subprocess.run(['hdiutil', 'attach', drive_letter, '-mountpoint', folder_path])
-
-    def remove_virtual_drive(folder_path):
-        subprocess.run(['hdiutil', 'detach', folder_path])
-else:... # ¯\_(ツ)_/¯
     
 
 
@@ -938,7 +894,7 @@ def generate_every_capitalization_state(s:str)->List[str]:
         > generate_every_capitalization_state('png')
         > ['PNg', 'pNG', 'png', 'pnG', 'PnG', 'PNG', 'pNg', 'Png']
     """
-    def backtrack(index:int, path:list)->None:
+    def backtrack(index:int, path:List[str])->None:
         if index == len(s):
             result.append(''.join(path))
             return
@@ -998,10 +954,11 @@ def remove_unused_libraries(code_str:str)->str:
 
 
 
-def repeat(func: Callable, times: int) -> Any:
+def repeat(times: int, func: Callable[...,Any], *args: Any, **kwargs: Any) -> Any:
     """Call func multiple times and return the last result."""
-    for i in range(times):
-        val = func()
+    val = None
+    for _ in range(times):
+        val = func(*args, **kwargs)
     return val
 
 def get_username() -> str:
@@ -1089,7 +1046,7 @@ def get_username() -> str:
 
 
 
-def profile(func):
+def profile(func: Callable[..., Any]) -> Callable[..., Any]:
     """
     A decorator that profiles the execution time of a function.
 
@@ -1103,7 +1060,7 @@ def profile(func):
     Returns:
         function: The wrapped function with profiling enabled.
     """
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         "The profile wrapper"
         pr = cProfile.Profile()
         pr.enable()
@@ -1128,7 +1085,7 @@ def profile(func):
 
 
 
-def profile_function(function:Callable, filename:str, *inputs, **extra)->Any:
+def profile_function(function:Callable[...,Any], filename:str, *inputs:Any, **extra:Any)->Any:
     """Profile a function and save performance stats to files."""
 
 
@@ -1183,7 +1140,7 @@ else:
 
 class ArgumentHandler:
     "Handle command-line arguments by allowing retrieval, deletion, and flag-based access."
-    def __init__(self, arguments: Union[None , list] = None) -> None:
+    def __init__(self, arguments: Union[None , List[str]] = None) -> None:
         """Initialize the object with a list of arguments. If no arguments are provided, use command-line arguments excluding the script name.
 
 Args:
@@ -1193,7 +1150,7 @@ Attributes:
     arguments (list): The list of arguments."""
         if arguments is None:
             arguments = sys.argv[1:]
-        self.arguments: list = arguments
+        self.arguments = arguments
         self.argument_list_length = len(arguments)
 
     def has_argument(self, argument: str, delete:bool=False) -> bool:
@@ -1207,10 +1164,10 @@ Returns:
     str  None: The value associated with the argument, or `None` if the argument is not found."""
         value_id = self.get_id(argument)
         if value_id < 0:
-            False
+            return False
         
         if delete:
-            self.arguments.remove(value_id)
+            self.arguments.pop(value_id)
             self.argument_list_length-=1
             
         return True
@@ -1268,14 +1225,7 @@ Returns:
 
 
 
-def burn_value_into_function(x:Any)->Callable:
-    """
-Creates a function that returns the value of `x` when called.
-"""
-    def burned_value_function()->Any:
-        "Return a value"
-        return x
-    return burned_value_function
+
 
 
 
@@ -1430,7 +1380,7 @@ Returns:
 
 
 
-def get_from_dict_by_list(data_dict:dict, keys:list)->Any:
+def get_from_dict_by_list(data_dict:Dict[Any,Any], keys:List[Any])->Any:
     """
     Access a nested dictionary with a list of keys.
     
@@ -1442,7 +1392,7 @@ def get_from_dict_by_list(data_dict:dict, keys:list)->Any:
         data_dict = data_dict[key]
     return data_dict
 
-def set_in_dict_by_list(data_dict:dict, keys:list, value:Any)->None:
+def set_in_dict_by_list(data_dict:Dict[Any,Any], keys:List[Any], value:Any)->None:
     """
     Set a value in a nested dictionary with a list of keys.
     
@@ -1524,37 +1474,11 @@ def set_in_dict_by_list(data_dict:dict, keys:list, value:Any)->None:
 
 
 
-def decompress_directory_list(compressed:dict)->List[str]:
-    """Decompress a directory structure from a nested dictionary format into a list of file paths.
 
-Args:
-    compressed (dict): The compressed directory structure in dictionary format.
-
-Returns:
-    list[str]: A list of file paths extracted from the compressed structure."""
-    paths = []
-
-    def dfs(node:Union[str,list,dict], current_path=""):
-        "Inner loop"
-        if isinstance(node, list):
-            paths.append(f"{current_path}/{node[0]}".strip('/'))
-            return
-        if isinstance(node, str):
-            paths.append(node)
-            return
-
-        for key, value in node.items():
-            if key == 'files':
-                for file_path in value:
-                    paths.append(f"{current_path}/{file_path}".strip('/'))
-            else:
-                dfs(value, f"{current_path}/{key}".strip('/'))
-
-    dfs(compressed)
-    return paths
 
 
 if version.minor < 12:
+    import python_minifier
     def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
         """Minify Python code by optionally renaming important names and removing docstrings.
 
@@ -1608,9 +1532,9 @@ else:
 from .manipulation.list_utils import zipper_insert
 
 
-def separate_imports(lines: "list[str]") -> Tuple[list, list]:
-    import_lines = []
-    other_lines = []
+def separate_imports(lines: List[str]) -> Tuple[List[str], List[str]]:
+    import_lines: List[str] = []
+    other_lines: List[str] = []
     for line in lines:
         stripped_line = line.strip()
 
@@ -1625,9 +1549,9 @@ def separate_imports(lines: "list[str]") -> Tuple[list, list]:
     return import_lines, other_lines
 
 
-def compress_imports(import_lines: list) -> list:
-    from_imports = []
-    import_imports = []
+def compress_imports(import_lines: List[str]) -> List[str]:
+    from_imports: List[str] = []
+    import_imports: List[str] = []
 
     for line in import_lines:
         line = line.strip()
@@ -1643,7 +1567,7 @@ def compress_imports(import_lines: list) -> list:
     return output_lines
 
 
-def compress_imports_in_code(code: list) -> List[str]:
+def compress_imports_in_code(code: List[str]) -> List[str]:
     imports, rest = separate_imports(code)
     imports = compress_imports(imports)
     return zipper_insert(imports, ["\n"]*len(imports)) + rest

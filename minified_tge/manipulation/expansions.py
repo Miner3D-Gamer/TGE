@@ -1,14 +1,9 @@
-_A='Input must be a string'
 import random,re
 class ExpandedString(str):
  def __new__(A,value):B=super(ExpandedString,A).__new__(A,value);return B
  def __init__(A,value):super().__init__()
- def get_scrambled(A):
-  if not isinstance(A,str):raise ValueError(_A)
-  B=list(A);random.shuffle(B);return''.join(B)
- def scramble(A):
-  if not isinstance(A,str):raise ValueError(_A)
-  B=list(A);random.shuffle(B);A=ExpandedString(''.join(B))
+ def get_scrambled(B):A=list(B);random.shuffle(A);return''.join(A)
+ def scramble(A):B=list(A);random.shuffle(B);A=ExpandedString(''.join(B))
  def chop(A,substring):
   B=substring
   if A.startswith(B)and A.endswith(B):A=ExpandedString(A[len(B):-len(B)])

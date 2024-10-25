@@ -1,7 +1,7 @@
 from math import sqrt, factorial
 
 
-from typing import overload, Literal, Union, Optional
+from typing import overload, Literal, Union, Optional, List, Any
 
 from builtins import range as builtin_range
 import struct
@@ -121,7 +121,7 @@ def calculate_combinations(n: int, k: int) -> float:
     return factorial(n) / (factorial(k) * factorial(n - k))
 
 
-def generate_fibonacci_sequence(number: int) -> list:
+def generate_fibonacci_sequence(number: int) -> List[int]:
     """
     Generate a Fibonacci sequence up to the specified number of terms.
 
@@ -193,7 +193,7 @@ def factorial_recursive(number: Union[int, float]) -> Union[int, float]:
         return number * factorial_recursive(number - 1)
 
 
-def fibonacci(n: Union[int, float]) -> list:
+def fibonacci(n: Union[int, float]) -> List[int]:
     """
     Generate a Fibonacci sequence of length n.
 
@@ -405,7 +405,7 @@ def hexation(base: Union[int, float], exponent: Union[int, float]) -> Union[int,
     return temp
 
 
-def round_with_precision(number, digits=0):
+def round_with_precision(number: float, digits: int = 0):
     """
     Custom round function that rounds a number to a specified number of decimal digits.
 
@@ -421,7 +421,7 @@ def round_with_precision(number, digits=0):
     return rounded_number
 
 
-def find_divisors(x):
+def find_divisors(x: int) -> List[int]:
     """Find all divisors of a number.
 
     Args:
@@ -429,7 +429,7 @@ def find_divisors(x):
 
     Returns:
         list: A list of divisors of the number."""
-    divisors = []
+    divisors: List[int] = []
     for i in builtin_range(1, x + 1):
         if x % i == 0:
             divisors.append(i)
@@ -497,7 +497,7 @@ class Vector:
         """
         return self.components[index]
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         """
         Checks if two vectors are equal.
 
@@ -608,8 +608,10 @@ def top_clamp(max: Union[int, float], value: Union[int, float]) -> Union[int, fl
 @overload
 def clamp(min: int, max: int, value: int) -> int: ...
 
+
 @overload
 def clamp(min: float, max: float, value: float) -> float: ...
+
 
 def clamp(
     min: Union[int, float], max: Union[int, float], value: Union[int, float]

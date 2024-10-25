@@ -23,7 +23,7 @@ def decode(data: str) -> Dict[str, List[str]]:
     return parsed_data
 
 
-def encode(data: dict) -> str:
+def encode(data: Dict[str, List[str]]) -> str:
     """
     Returns a a str (msy formatted) from the inputted dictionary
     """

@@ -3,7 +3,7 @@ from typing import List, Dict, Optional
 
 
 class ExpandedString(str):
-    def __new__(cls, value):
+    def __new__(cls, value: str):
         """
         Create a new instance of the ExpandedString class.
 
@@ -21,7 +21,7 @@ class ExpandedString(str):
         instance = super(ExpandedString, cls).__new__(cls, value)
         return instance
 
-    def __init__(self, value):
+    def __init__(self, value: str):
         """
         Initialize an instance of the ExpandedString class.
 
@@ -42,8 +42,6 @@ class ExpandedString(str):
         Returns:
         str: The scrambled word.
         """
-        if not isinstance(self, str):
-            raise ValueError("Input must be a string")
 
         word_list = list(self)
         random.shuffle(word_list)
@@ -53,8 +51,6 @@ class ExpandedString(str):
         """
         Scramble the letters of a given word.
         """
-        if not isinstance(self, str):
-            raise ValueError("Input must be a string")
 
         word_list = list(self)
         random.shuffle(word_list)
@@ -117,14 +113,14 @@ class ExpandedString(str):
         """
         self = ExpandedString(self[::-1])
 
-    def get_reversed(string: str) -> str:
+    def get_reversed(self: str) -> str:
         """
         Reverses the order of characters in a string.
 
         Returns:
             str: The reversed string.
         """
-        return string[::-1]
+        return self[::-1]
 
     def check_anagram(self, word2: str) -> bool:
         """
@@ -288,16 +284,16 @@ class ExpandedString(str):
 
         return longest_substring
 
-    def check_pangram(string: str) -> bool:
+    def check_pangram(self) -> bool:
         """
         Check if the string is a pangram (contains every letter of the alphabet at least once).
 
         Returns:
             bool: True if the string contains every letter of the alphabet, False otherwise.
         """
-        alphabet = set(string.lower())
+        alphabet = set(self.lower())
 
-        filtered_string = "".join(filter(lambda c: c in alphabet, string.lower()))
+        filtered_string = "".join(filter(lambda c: c in alphabet, self.lower()))
 
         return set(filtered_string) == alphabet
 
@@ -406,7 +402,7 @@ class ExpandedString(str):
         """
         return self.rjust(length, char)
 
-    def right_pad(self, length, char=" ") -> None:
+    def right_pad(self, length: int, char:str=" ") -> None:
         """
         Pads the given string on the right with the specified character to the desired length.
 
@@ -416,7 +412,7 @@ class ExpandedString(str):
         """
         self = ExpandedString(self.ljust(length, char))
 
-    def get_right_pad(self, length, char=" "):
+    def get_right_pad(self, length:int, char:str=" "):
         """
         Pads the given string on the right with the specified character to the desired length.
 
@@ -521,7 +517,7 @@ class ExpandedString(str):
         return re.sub(r"<.*?>", "", self)
 
     def replace_with_list_as_replacement(
-        string, replacer: str, replacements: List[str]
+        self, replacer: str, replacements: List[str]
     ) -> None:
         """
         Replace all occurrences of a specified substring in a string with a list of replacement substrings.
@@ -534,10 +530,10 @@ class ExpandedString(str):
             None: The method modifies the string in place, no return value.
         """
         for replacement in replacements:
-            string = ExpandedString(string.replace(replacer, replacement))
+            self = ExpandedString(self.replace(replacer, replacement))
 
     def replace_with_list_as_replacer(
-        string, replacers: List[str], replacement: str
+        self, replacers: List[str], replacement: str
     ) -> None:
         """
         Replace all occurrences of each substring in a list of replacers with a specified replacement substring in the given string.
@@ -552,7 +548,7 @@ class ExpandedString(str):
         """
 
         for replacer in replacers:
-            string = ExpandedString(string.replace(replacer, replacement))
+            self = ExpandedString(self.replace(replacer, replacement))
 
     def get_replace_with_list_as_replacement(
         self, replacer: str, replacements: List[str]
@@ -573,7 +569,7 @@ class ExpandedString(str):
         return string
 
     def get_replace_with_list_as_replacer(
-        string, replacers: List[str], replacement: str
+        self, replacers: List[str], replacement: str
     ) -> str:
         """
         Return a new string where all occurrences of each substring in a list of replacers are replaced with a specified replacement substring.
@@ -587,5 +583,5 @@ class ExpandedString(str):
         """
         
         for replacer in replacers:
-            string = ExpandedString(string.replace(replacer, replacement))
-        return string
+            self = ExpandedString(self.replace(replacer, replacement))
+        return self

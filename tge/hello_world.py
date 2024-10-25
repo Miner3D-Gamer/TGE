@@ -16,7 +16,7 @@ def get_hello_world(reminder_start: int = 10000, reminder_every: int = 10):
     """
     THIS_IS_IT_I_PROMISE = b'\x7f\x83\xb1e\x7f\xf1\xfcS\xb9-\xc1\x81H\xa1\xd6]\xfc-K\x1f\xa3\xd6w(J\xdd\xd2\x00\x12m\x90i'
 
-    def scramble_word(word):
+    def scramble_word(word: str):
         """
         Scrambles the characters of the given word by shuffling them.
 

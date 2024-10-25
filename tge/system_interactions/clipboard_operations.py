@@ -1,16 +1,12 @@
 from .. import SYSTEM_NAME
-import os
-
-
 
 
 if SYSTEM_NAME == "windows":
-    from .clipboard.clipboard_windows import get_clipboard, copy_to_clipboard, clear_clipboard
-    from .keyboard.windows import press_key, key_to_virtual_key 
+    from .clipboard.clipboard_windows import get_clipboard, copy_to_clipboard, clear_clipboard  # type: ignore
+    from .keyboard.windows import press_key, key_to_virtual_key
 else:
-    from .clipboard.clipboard_pyperclip import get_clipboard, copy_to_clipboard, clear_clipboard
-    from .keyboard.linux import press_key, key_to_virtual_key 
-
+    from .clipboard.clipboard_pyperclip import get_clipboard, copy_to_clipboard, clear_clipboard  # type: ignore
+    from .keyboard.linux import press_key, key_to_virtual_key
 
 
 def save_clipboard_to_file(file_path: str) -> bool:
@@ -134,4 +130,6 @@ def write_out_clipboard():
     clipboard = get_clipboard()
     for line in clipboard.splitlines(True):
         for character in line:
-            press_key(key_to_virtual_key(character))
+            k = key_to_virtual_key(character)
+            if k:
+                press_key(k)

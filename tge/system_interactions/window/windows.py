@@ -11,11 +11,11 @@ class RECT(ctypes.Structure):
         ("bottom", wintypes.LONG)
     ]
 
-def is_window_minimized(hwnd: int, user32 = USER32) -> bool:
+def is_window_minimized(hwnd: int, user32: ctypes.WinDLL = USER32) -> bool:
     """Check if the window is minimized."""
     return user32.IsIconic(hwnd) != 0
 
-def minimize_window(hwnd: int, user32 = USER32) -> None:
+def minimize_window(hwnd: int, user32: ctypes.WinDLL = USER32) -> None:
     """Minimize the specified window."""
     user32.ShowWindow(hwnd, 6)  # 6 = SW_MINIMIZE
 

@@ -1,6 +1,5 @@
-_G='cumulative'
-_F='import '
-_E='hdiutil'
+_F='cumulative'
+_E='import '
 _D='.py'
 _C=None
 _B=False
@@ -10,7 +9,6 @@ from difflib import get_close_matches
 import getpass
 import cProfile,pstats,io,subprocess,tempfile
 version=sys.version_info
-if version.minor<12:import python_minifier
 def pass_func(*args,**more_args):0
 def execute_function(func=pass_func,*args,**kwargs):return func(*args,**kwargs)
 def determine_affirmative(text):
@@ -21,11 +19,9 @@ def determine_affirmative(text):
  if closest_positive_match:return _A
  if closest_negative_match:return _B
 def get_available_variables():
- g_variables={};l_variables={};global_vars=globals()
+ g_variables={};global_vars=globals()
  for(var_name,var_value)in global_vars.items():g_variables[var_name]=var_value
- local_vars=locals()
- for(var_name,var_value)in local_vars.items():l_variables[var_name]=var_value
- return g_variables,l_variables
+ return g_variables
 def convert_number_to_words_less_than_thousand(n,dash=_A):
  TINY_NUMBERS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];SMALL_NUMBERS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety']
  if n>=100:
@@ -91,7 +87,10 @@ def strict_autocomplete(prefix,word_list):
  return words
 def is_iterable(thing):return hasattr(thing,'__iter__')
 def split_with_list(string,separators,limit=_C):
- for separator in separators:string=string.replace(separator,'𘚟')
+ d=0
+ for separator in separators:
+  string=string.replace(separator,'𘚟');d+=1
+  if limit is not _C and d>=limit:break
  return string.split('𘚟')
 def analyze_text(text):
  A='min_commas_per_sentence';text=text.replace('...','…').replace('\n','').strip();legacy_sentences=split_with_list(text,['. ','! ','? ']);sentences=[];word_amounts=[];comma_amounts=[]
@@ -108,17 +107,6 @@ def analyze_text(text):
  total_comma_count=0
  for comma_amount in comma_amounts:total_comma_count+=comma_amount
  return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
-from.import SYSTEM_NAME
-if SYSTEM_NAME=='windows':
- def create_virtual_drive(drive_letter,folder_path,size_mb=_C):command=f"subst {drive_letter}: {folder_path}";subprocess.run(command,shell=_A)
- def remove_virtual_drive(drive_letter):command=f"subst {drive_letter}: /d";subprocess.run(command,shell=_A)
-elif SYSTEM_NAME=='linux':
- def create_virtual_disk(drive_letter,folder_path,size_mb=100):subprocess.run(['dd','if=/dev/zero',f"of={drive_letter}",'bs=1M',f"count={size_mb}"]);subprocess.run(['mkfs.ext4',drive_letter]);subprocess.run(['mkdir','-p',folder_path]);subprocess.run(['sudo','mount','-o','loop',drive_letter,folder_path])
- def remove_virtual_disk(folder_path):subprocess.run(['sudo','umount',folder_path])
-elif SYSTEM_NAME=='darwin':
- def create_virtual_drive(drive_letter,folder_path,size_mb=100):subprocess.run([_E,'create','-size',f"{size_mb}m",'-fs','HFS+','-volname','VirtualDrive',drive_letter]);subprocess.run([_E,'attach',drive_letter,'-mountpoint',folder_path])
- def remove_virtual_drive(folder_path):subprocess.run([_E,'detach',folder_path])
-else:...
 class DualInfinite:0
 def divide(a,b):return a/b if b!=0 else DualInfinite()
 def generate_every_capitalization_state(s):
@@ -134,16 +122,17 @@ def remove_unused_libraries(code_str):
   with open(temp_file_path,'r',encoding='utf8')as temp_file:cleaned_code=temp_file.read()
   return cleaned_code
  finally:os.remove(temp_file_path)
-def repeat(func,times):
- for i in range(times):val=func()
+def repeat(times,func,*args,**kwargs):
+ val=_C
+ for _ in range(times):val=func(*args,**kwargs)
  return val
 def get_username():return getpass.getuser()
 def profile(func):
- def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_G;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
+ def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_F;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
  return wrapper
 def profile_function(function,filename,*inputs,**extra):
  profile=cProfile.Profile();profile.enable();return_=function(*inputs,**extra);profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
- with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_G);stats.print_stats()
+ with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_F);stats.print_stats()
  return return_
 if os.name=='nt':
  def get_current_pip_path():
@@ -162,8 +151,8 @@ class ArgumentHandler:
   self.arguments=arguments;self.argument_list_length=len(arguments)
  def has_argument(self,argument,delete=_B):
   value_id=self.get_id(argument)
-  if value_id<0:0
-  if delete:self.arguments.remove(value_id);self.argument_list_length-=1
+  if value_id<0:return _B
+  if delete:self.arguments.pop(value_id);self.argument_list_length-=1
   return _A
  def get_argument_by_flag(self,flag,delete=_B,default=_C):
   value_id=self.get_id(flag)
@@ -176,9 +165,6 @@ class ArgumentHandler:
   if not item in self.arguments:return-1
   value_id=self.arguments.index(item);return value_id
  def is_empty(self):return self.argument_list_length==0
-def burn_value_into_function(x):
- def burned_value_function():return x
- return burned_value_function
 class HashMap:
  def __init__(self,*items):self.map=list(items)
  def append(self,value):
@@ -206,18 +192,8 @@ def get_from_dict_by_list(data_dict,keys):
 def set_in_dict_by_list(data_dict,keys,value):
  for key in keys[:-1]:data_dict=data_dict.setdefault(key,{})
  data_dict[keys[-1]]=value
-def decompress_directory_list(compressed):
- paths=[]
- def dfs(node,current_path=''):
-  A='/'
-  if isinstance(node,list):paths.append(f"{current_path}/{node[0]}".strip(A));return
-  if isinstance(node,str):paths.append(node);return
-  for(key,value)in node.items():
-   if key=='files':
-    for file_path in value:paths.append(f"{current_path}/{file_path}".strip(A))
-   else:dfs(value,f"{current_path}/{key}".strip(A))
- dfs(compressed);return paths
 if version.minor<12:
+ import python_minifier
  def minify(text,rename_important_names=_B,remove_docstrings=_A):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
 else:
  def minify(text,rename_important_names=_B,remove_docstrings=_A):return text
@@ -226,7 +202,7 @@ def separate_imports(lines):
  import_lines=[];other_lines=[]
  for line in lines:
   stripped_line=line.strip()
-  if stripped_line.startswith(_F)or stripped_line.startswith('from '):
+  if stripped_line.startswith(_E)or stripped_line.startswith('from '):
    if not line.startswith(' '):import_lines.append(line)
    else:other_lines.append(line)
   else:other_lines.append(line)
@@ -236,6 +212,6 @@ def compress_imports(import_lines):
  for line in import_lines:
   line=line.strip()
   if line.startswith('from '):from_imports.append(line)
-  elif line.startswith(_F):import_imports.extend(line.replace(_F,'').split(','))
+  elif line.startswith(_E):import_imports.extend(line.replace(_E,'').split(','))
  import_imports=sorted(set(import_imports));compressed_import_line=f"import {','.join(import_imports)}";output_lines=from_imports+([compressed_import_line]if import_imports else[]);return output_lines
 def compress_imports_in_code(code):imports,rest=separate_imports(code);imports=compress_imports(imports);return zipper_insert(imports,['\n']*len(imports))+rest

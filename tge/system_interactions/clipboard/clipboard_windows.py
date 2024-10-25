@@ -1,27 +1,32 @@
 from ..shared import USER32, KERNEL32, ctypes, CF_UNICODETEXT, GHND
-from typing import Optional
 
-def get_clipboard(user32 = USER32, kernel32 = KERNEL32) -> str: # About 20% faster on Windows than with pyperclip
-        """
-        Retrieve the current content of the system clipboard.
 
-        Returns:
-            str: The text content currently stored in the clipboard.
-        """
-        user32.OpenClipboard(0)
-        handle = user32.GetClipboardData(CF_UNICODETEXT)
+def get_clipboard(
+    user32: ctypes.WinDLL = USER32, kernel32: ctypes.WinDLL = KERNEL32
+) -> str:  # About 20% faster on Windows than with pyperclip
+    """
+    Retrieve the current content of the system clipboard.
 
-        # Lock the memory to get a pointer to the data
-        locked_mem = kernel32.GlobalLock(handle)
-        data = ctypes.c_wchar_p(locked_mem).value
+    Returns:
+        str: The text content currently stored in the clipboard.
+    """
+    user32.OpenClipboard(0)
+    handle = user32.GetClipboardData(CF_UNICODETEXT)
 
-        # Unlock and close the clipboard
-        kernel32.GlobalUnlock(handle)
-        user32.CloseClipboard()
+    # Lock the memory to get a pointer to the data
+    locked_mem = kernel32.GlobalLock(handle)
+    data = ctypes.c_wchar_p(locked_mem).value
 
-        return "" if data is None else data
+    # Unlock and close the clipboard
+    kernel32.GlobalUnlock(handle)
+    user32.CloseClipboard()
 
-def copy_to_clipboard(text, user32 = USER32, kernel32 = KERNEL32): # Roughly 95% to 1515% faster on Windows than pyperclip
+    return "" if data is None else data
+
+
+def copy_to_clipboard(
+    text: str, user32: ctypes.WinDLL = USER32, kernel32: ctypes.WinDLL = KERNEL32
+):  # Roughly 95% to 1515% faster on Windows than pyperclip
     """
     Copy text to the system clipboard.
 
@@ -34,7 +39,11 @@ def copy_to_clipboard(text, user32 = USER32, kernel32 = KERNEL32): # Roughly 95%
     # Allocate memory for the text and copy it
     handle = kernel32.GlobalAlloc(GHND, (len(text) + 1) * ctypes.sizeof(ctypes.c_wchar))
     locked_mem = kernel32.GlobalLock(handle)
-    ctypes.memmove(locked_mem, text.encode('utf-16le'), (len(text) + 1) * ctypes.sizeof(ctypes.c_wchar))
+    ctypes.memmove(
+        locked_mem,
+        text.encode("utf-16le"),
+        (len(text) + 1) * ctypes.sizeof(ctypes.c_wchar),
+    )
 
     # Unlock and set the clipboard data
     kernel32.GlobalUnlock(handle)
@@ -42,7 +51,9 @@ def copy_to_clipboard(text, user32 = USER32, kernel32 = KERNEL32): # Roughly 95%
     user32.CloseClipboard()
 
 
-def clear_clipboard(user32 = USER32) -> None: # Roughly 95% faster on Windows than pyperclip
+def clear_clipboard(
+    user32: ctypes.WinDLL = USER32,
+) -> None:  # Roughly 95% faster on Windows than pyperclip
     """
     Clear the contents of the clipboard.
 

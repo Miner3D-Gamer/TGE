@@ -1,8 +1,8 @@
-from typing import List, Union, Tuple, Any, overload
+from typing import Tuple
 import random
 
-from requests import get as requests_get
-from .codec.codec import html
+# from requests import get as requests_get
+# from .codec.codec import html
 
 
 # THIS FUNCTION DOES NO LONGER WORK WITH THE CURRENT LAYOUT OF THE WEBSITE
@@ -62,7 +62,7 @@ def generate_password(length: int) -> str:
     :return: A string representing the generated password.
     :rtype: str
     """
-    chars = """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
+    chars = r"""0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
     return "".join(random.choice(chars) for _ in range(length))
 
 
@@ -112,7 +112,7 @@ def generate_random_string(length: int = 1) -> str:
     """
     return "".join(
         random.choice(
-            """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
+            r"""0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
         )
         for _ in range(length)
     )

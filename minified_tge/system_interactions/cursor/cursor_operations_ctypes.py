@@ -1,3 +1,4 @@
+_A='middle_mouse_down'
 from..shared import ctypes
 class POINT(ctypes.Structure):_fields_=[('x',ctypes.c_long),('y',ctypes.c_long)]
 CURSOR_POINT=POINT()
@@ -51,3 +52,4 @@ def middle_mouse_up():ctypes.windll.user32.mouse_event(MOUSEEVENTF_MIDDLEUP,0,0,
 def is_left_button_pressed():return ctypes.windll.user32.GetAsyncKeyState(MK_LBUTTON)&32768!=0
 def is_middle_button_pressed():return ctypes.windll.user32.GetAsyncKeyState(MK_MBUTTON)&32768!=0
 def is_right_button_pressed():return ctypes.windll.user32.GetAsyncKeyState(MK_RBUTTON)&32768!=0
+__all__=['left_click','right_click','middle_click','set_mouse_to','get_mouse_position','is_right_button_pressed','is_middle_button_pressed','is_left_button_pressed','middle_mouse_up','right_mouse_up',_A,'left_mouse_up','scroll','scroll_horizontal','scroll_vertical','left_mouse_down','right_mouse_down',_A]

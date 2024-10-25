@@ -9,4 +9,4 @@ def release_key(key_code):root.warp_pointer(0,0);root.fake_input(X.KeyRelease,ke
 def key_to_virtual_key(key):
  A=XK.string_to_keysym(key)
  if A==0:raise ValueError(f"Invalid key: {key}")
- return d.keysym_to_keycode(A)
+ B=d.keysym_to_keycode(A);return B if B else None

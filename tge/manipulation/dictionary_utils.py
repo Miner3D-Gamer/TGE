@@ -1,4 +1,5 @@
-def remove_duplicates_from_dictionary(dictionary: dict) -> dict:
+from typing import Any, Dict
+def remove_duplicates_from_dictionary(dictionary: Dict[Any, Any]) -> Dict[Any, Any]:
     """
     Remove duplicates from a dictionary based on its values.
 
@@ -10,7 +11,7 @@ def remove_duplicates_from_dictionary(dictionary: dict) -> dict:
           of each value is retained, preserving the original key-value pairs.
     """
     unique_values = set(dictionary.values())
-    new_dictionary = {}
+    new_dictionary:Dict[Any, Any] = {}
 
     for key, value in dictionary.items():
         if value in unique_values:

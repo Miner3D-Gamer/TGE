@@ -32,8 +32,7 @@ def loose_decode_json(json_str):
  def D(s):
   E=[];B=0;C=0;F=0;G=_A;D=_A
   def I(char):return char in'[{'
-  def J(char):return char in']}'
-  def K(opening,closing):B=closing;A=opening;return A=='['and B==']'or A=='{'and B=='}'
+  def J(char_):return A in']}'
   for(H,A)in enumerate(s):
    if A=='"':
     if not D:G=not G
@@ -82,7 +81,6 @@ def is_valid_json(json_str):
   nonlocal B;F=[];C=0;D=0;G=0;H=_A;E=_A
   def J(char):return char in'[{'
   def K(char):return char in']}'
-  def L(opening,closing):B=closing;A=opening;return A=='['and B==']'or A=='{'and B=='}'
   for(I,A)in enumerate(s):
    if A=='"':
     if not E:H=not H

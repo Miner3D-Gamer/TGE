@@ -73,7 +73,7 @@ def image_to_ascii(
     return ascii_art
 
 
-def _load_image(image_path: str, alpha: bool=True)->Tuple[Image.Image, int, int]:
+def _load_image(image_path: str, alpha: bool=True)->Optional[Tuple[Image.Image, int, int]]:
     """
     Loads an image and returns pixel data along with its dimensions.
 
@@ -91,9 +91,11 @@ def _load_image(image_path: str, alpha: bool=True)->Tuple[Image.Image, int, int]
     image = Image.open(image_path)
 
     pixel_data: Any = image.load()
+    if not isinstance(pixel_data, Image.Image):
+        return None
 
     if not alpha:
-        image = image.convert("RGB")
+        pixel_data = image.convert("RGB")
 
     width, height = image.size
 
@@ -121,7 +123,10 @@ def count_image_colors(image:Optional[Image.Image]=None, image_path:Optional[str
     if image is None:
         if image_path is None:
             return []
-        loaded_image, width, height = _load_image(image_path)
+        thing = _load_image(image_path)
+        if thing is None:
+            return []
+        loaded_image, width, height = thing
     else:
         loaded_image, width, height = image, image.width, image.height
 

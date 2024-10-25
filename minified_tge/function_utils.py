@@ -40,9 +40,12 @@ def get_function_id_by_name(func_name):
   if callable(func_obj):return func_obj
 def count_functions_in_module(module,library_name):
  function_count=0
- for(name,obj)in inspect.getmembers(module):
-  if inspect.isfunction(obj):function_count+=1
-  elif inspect.ismodule(obj)and obj.__package__.startswith(library_name):function_count+=count_functions_in_module(obj,library_name)
+ for(_,obj)in inspect.getmembers(module):
+  if inspect.isfunction(obj):function_count+=1;continue
+  if not inspect.ismodule(obj):continue
+  thing=obj.__package__
+  if thing is None:continue
+  if thing.startswith(library_name):function_count+=count_functions_in_module(obj,library_name)
  return function_count
 def count_functions_in_library(library_name):
  try:module=importlib.import_module(library_name)

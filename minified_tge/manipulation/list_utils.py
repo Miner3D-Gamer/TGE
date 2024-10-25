@@ -50,13 +50,12 @@ def compress_list_of_lists(list_to_compress):
  for B in list_to_compress:A.append(compress_list(B))
  return A
 def decompress_list(list_to_decompress,width):
- B=list_to_decompress
- if not isinstance(B,list):return[B]*width
- D=[];C=1
- for A in B:
-  A:0
-  if isinstance(A,int):C=A
-  else:D+=C*[A];C=1
+ A=list_to_decompress
+ if not isinstance(A,list):return[A]*width
+ D=[];B=1
+ for C in A:
+  if isinstance(C,int):B=C
+  else:D+=B*[C];B=1
  return D
 def decompress_list_of_lists(list_to_decompress,width):
  A=[]

@@ -1,8 +1,3 @@
-
-
-
-
-
 def format_seconds(duration: int) -> str:
     """
     Formats a duration given in seconds into a string representation.
@@ -23,6 +18,7 @@ def format_seconds(duration: int) -> str:
 
     formatted_duration = f"{hours}h {minutes}m {seconds}s"
     return formatted_duration
+
 
 def format_minutes(duration: int) -> str:
     """
@@ -45,6 +41,7 @@ def format_minutes(duration: int) -> str:
     formatted_duration = f"{hours}h {minutes}m {seconds}s"
     return formatted_duration
 
+
 def format_hours(duration: int) -> str:
     """
     Formats a duration given in hours into a string representation.
@@ -65,6 +62,7 @@ def format_hours(duration: int) -> str:
 
     formatted_duration = f"{hours}h {minutes}m {seconds}s"
     return formatted_duration
+
 
 def format_days(duration: int) -> str:
     """
@@ -87,6 +85,7 @@ def format_days(duration: int) -> str:
     formatted_duration = f"{hours}h {minutes}m {seconds}s"
     return formatted_duration
 
+
 def format_weeks(duration: int) -> str:
     """
     Formats a duration given in weeks into a string representation.
@@ -107,6 +106,7 @@ def format_weeks(duration: int) -> str:
 
     formatted_duration = f"{hours}h {minutes}m {seconds}s"
     return formatted_duration
+
 
 def format_years(duration: int) -> str:
     """
@@ -129,6 +129,7 @@ def format_years(duration: int) -> str:
     formatted_duration = f"{hours}h {minutes}m {seconds}s"
     return formatted_duration
 
+
 def unformat_time(formatted_time: str) -> int:
     """
     Converts a formatted time string into its equivalent duration in seconds.
@@ -150,4 +151,3 @@ def unformat_time(formatted_time: str) -> int:
         return hours * 3600 + minutes * 60 + seconds
     except:
         return 0
-

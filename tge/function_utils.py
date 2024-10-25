@@ -1,14 +1,14 @@
 # type: ignore
 import inspect
 from types import ModuleType, MethodType
-from typing import Any, List, get_type_hints, Union, Callable
+from typing import Any, Dict, List, NoReturn, Optional, get_type_hints, Union, Callable
 import importlib
 import os
 import concurrent
 from typing import Union
 
 
-def get_docstring(obj: object) -> str:
+def get_docstring(obj: object) -> Optional[str]:
     """
     Retrieve the docstring of a given object.
 
@@ -28,7 +28,7 @@ def get_docstring(obj: object) -> str:
 
 def check_for_functions_in_module_with_missing_notations(
     library_module: ModuleType,
-) -> List[dict]:
+) -> NoReturn:
     raise Exception("This function is broken, I'm just done with the bs this function caused me")
     """
     Check all functions in a given library module for missing input type or return type annotations.
@@ -101,7 +101,7 @@ def get_return_type(func: MethodType) -> Any:
         return return_type
 
 
-def get_function_inputs(func: MethodType) -> List[dict]:
+def get_function_inputs(func: MethodType) -> List[Dict[str, Any]]:
     """
     Retrieve all input parameters of a given function along with their types and default values.
 
@@ -118,7 +118,7 @@ def get_function_inputs(func: MethodType) -> List[dict]:
     except TypeError:
         return [{"name": None, "type": UnknownInputType, "default": NoInputType}]
 
-    input_parameters = []
+    input_parameters: List[Dict[str, Any]] = []
     for param_name, param in signature.parameters.items():
         param_type = type_hints.get(param_name, None)
 
@@ -141,7 +141,7 @@ def get_function_inputs(func: MethodType) -> List[dict]:
 class UnknownInputType: ...
 
 
-def get_function_id_by_name(func_name) -> Union[None, ModuleType]:
+def get_function_id_by_name(func_name: str) -> Union[None, Callable[..., Any]]:
     """
     Retrieve the function object (ID) from its name.
 
@@ -169,10 +169,16 @@ def count_functions_in_module(module: ModuleType, library_name: str) -> int:
         int: The total number of functions in the module and its submodules.
     """
     function_count = 0
-    for name, obj in inspect.getmembers(module):
+    for _, obj in inspect.getmembers(module):
         if inspect.isfunction(obj):
             function_count += 1
-        elif inspect.ismodule(obj) and obj.__package__.startswith(library_name):
+            continue
+        if not inspect.ismodule(obj):
+            continue
+        thing = obj.__package__
+        if thing is None:
+            continue
+        if thing.startswith(library_name):
             function_count += count_functions_in_module(obj, library_name)
     return function_count
 
@@ -207,7 +213,7 @@ class MissingReturnType:
     pass
 
 
-def restrict_to_directory(allowed_dir):
+def restrict_to_directory(allowed_dir: str)-> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """
     A decorator factory that restricts a function to only allow file operations
     within a specified directory.
@@ -219,7 +225,7 @@ def restrict_to_directory(allowed_dir):
     function: A decorator that enforces the directory restriction.
     """
 
-    def decorator(func):
+    def decorator(func: Callable[..., Any])-> Callable[..., Any]:
         """
         A decorator that wraps a function to ensure file operations are restricted
         to the allowed directory.
@@ -231,7 +237,7 @@ def restrict_to_directory(allowed_dir):
         function: The wrapped function with directory restrictions applied.
         """
 
-        def wrapper(file_path, *args, **kwargs):
+        def wrapper(file_path: str, *args: Any, **kwargs: Any):
             """
             The wrapper function that checks if the provided file path is within the allowed directory.
 
@@ -268,7 +274,7 @@ class TimeoutResult: ...
 
 
 def run_function_with_timeout(
-    func: Callable, timeout: Union[int,float], *args, **kwargs
+    func: Callable[..., Any], timeout: Union[int,float], *args: Any, **kwargs: Any
 ) -> Union[Any, TimeoutResult]:
     """
     Executes a function with a specified timeout.

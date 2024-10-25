@@ -24,13 +24,16 @@ def image_to_ascii(image_path='',image=_A,width=_A,unicode=False,ascii_chars='')
  pixel_intensity=255-image_array;ascii_chars_indices=(pixel_intensity/255*(len(ascii_chars)-1)).astype(int);ascii_art_array=np.array(list(ascii_chars))[ascii_chars_indices];ascii_art='\n'.join(''.join(row)for row in ascii_art_array);return ascii_art
 def _load_image(image_path,alpha=True):
  image=Image.open(image_path);pixel_data=image.load()
- if not alpha:image=image.convert('RGB')
+ if not isinstance(pixel_data,Image.Image):return
+ if not alpha:pixel_data=image.convert('RGB')
  width,height=image.size;image.close();return pixel_data,width,height
 def count_image_colors(image=_A,image_path=_A):
  if image is _A and image_path is _A:return[]
  if image is _A:
   if image_path is _A:return[]
-  loaded_image,width,height=_load_image(image_path)
+  thing=_load_image(image_path)
+  if thing is _A:return[]
+  loaded_image,width,height=thing
  else:loaded_image,width,height=image,image.width,image.height
  unique_colors=set()
  for x in range(width):

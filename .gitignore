@@ -1,6 +1,4 @@
 minified_tge/codec/__pycache__/codec.cpython-38.pyc
-minified_tge/codec/__pycache__/html.cpython-38.pyc
-minified_tge/codec/__pycache__/json.cpython-38.pyc
 minified_tge/codec/__pycache__/morse.cpython-38.pyc
 minified_tge/codec/__pycache__/msy.cpython-38.pyc
 minified_tge/codec/__pycache__/standard_galactic_alphabet.cpython-38.pyc
@@ -35,7 +33,6 @@ minified_tge/system_interactions/__pycache__/shared.cpython-38.pyc
 minified_tge/system_interactions/__pycache__/window_manager.cpython-38.pyc
 minified_tge/validation/__pycache__/minecraft.cpython-38.pyc
 minified_tge/validation/__pycache__/validation.cpython-38.pyc
-minified_tge/__pycache__/random_generators.cpython-38.pyc
 minified_tge/__pycache__/tbe.cpython-38.pyc
 minified_tge/__pycache__/__init__.cpython-38.pyc
 tge/codec/__pycache__/base.cpython-310.pyc

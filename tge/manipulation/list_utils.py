@@ -1,4 +1,4 @@
-from typing import Any, Union, List
+from typing import Any, Union, List, Optional
 from collections.abc import Iterable
 import math
 
@@ -246,7 +246,7 @@ def compress_list_of_lists(list_to_compress: List[List[Any]]) -> List[List[Any]]
 
 
 def decompress_list(
-    list_to_decompress: Union[List[Union[int, Any]], Any], width: int
+    list_to_decompress: Union[List[Optional[Union[int, str]]], Any], width: int
 ) -> List[Any]:
     """
     Decompresses a list by expanding count-value pairs into repeated elements.
@@ -263,8 +263,7 @@ def decompress_list(
 
     new_sub_list: List[Any] = []
     repeat_amount = 1
-    for item in list_to_decompress:
-        item: Any
+    for item in list_to_decompress: # type: ignore
         if isinstance(item, int):
             repeat_amount = item
         else:

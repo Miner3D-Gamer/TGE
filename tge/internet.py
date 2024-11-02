@@ -1,9 +1,9 @@
 # type: ignore
-from typing import List, Union, Tuple, Any, Tuple, Dict, Optional, Sequence
+# Create stubs for the yt_dlp and pytube modules
+from typing import List, Union, Tuple, Dict, Optional, Any
 import re
 import pytube
 import os
-import re
 
 import yt_dlp
 import requests
@@ -13,6 +13,19 @@ from .file_operations import create_missing_directory
 
 import urllib.request
 
+__all__ = [
+    "is_url",
+    "remove_html_tags",
+    "is_internet_connected",
+    "is_url_available",
+    "download_youtube_video",
+    "download_youtube_playlist",
+    "get_youtube_playlist_info",
+    "get_youtube_video_info",
+    "get_youtube_video_id",
+    "get_youtube_video_url",
+    "get_all_videos_from_youtube_playlist",
+]
 
 def is_url(url: str) -> bool:
     """
@@ -110,7 +123,8 @@ def is_internet_connected(
 
 
 
-def download_list_of_youtube_videos(urls: list, directory: str, preferred_format: str="mp3", preferred_quality: str="192") -> List[Optional[Exception]]:
+def download_list_of_youtube_videos(urls: List[str], directory: str, preferred_format: str="mp3", preferred_quality: str="192") -> List[Optional[Exception]]:
+    """Downloads a list of YouTube videos to a directory."""
     errors: List[Optional[Exception]] = []
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -150,7 +164,7 @@ def post_to_discord_webhook(
     """
     Posts a message to a Discord webhook. Returns the response code and the content of the message.
     """
-    data = {
+    data: Dict[str, Any] = {
         "content": message_content, 
         "username": name,  
         "tts": activate_voice,  
@@ -165,7 +179,7 @@ def post_to_discord_webhook(
 
 
 
-def extract_youtube_info(link: str) -> Dict[str, Union[str, dict, None]]:
+def extract_youtube_info(link: str) -> Dict[str, Union[str, Dict[str, str], None]]:
     """
     Extracts information from a YouTube video link.
 

@@ -1,8 +1,8 @@
-_A=None
+#type: ignore
 from PIL import Image
-import numpy as np
+import math,numpy as np
+_A=None
 from..math_functions.math_functions import clamp
-import math
 from.middle_man import*
 def count_gif_frames(gif):
  frame_count=0
@@ -47,3 +47,4 @@ class Color:
  def get(self):return self.color
  def __call__(self):return self.get()
 def is_color_similar(a,b,similarity):return math.sqrt(sum((a[i]-b[i])**2 for i in range(3)))<=similarity
+__all__=['count_gif_frames','image_to_ascii','count_image_colors','hex_to_rgb','Color','is_color_similar']

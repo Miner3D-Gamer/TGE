@@ -104,3 +104,4 @@ def decode(text: str) -> str:
         "└┘": "0",
     }
     return "".join(table.get(char, char) for char in text)
+__all__ = ['encode', 'decode']

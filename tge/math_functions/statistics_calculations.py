@@ -1,9 +1,8 @@
 from math import sqrt, log2
 
 import numpy as np
-from collections.abc import Iterable
 from typing import List, Union
-
+__all__ = ['average_grade', 'median_grade', 'mode_grade', 'standard_deviation', 'median', 'median_absolute_deviation', 'correlation', 'calculate_entropy', 'median_absolute_error']
 
 def average_grade(grades: List[Union[int, float]]) -> float:
     """
@@ -89,7 +88,7 @@ def median_absolute_deviation(data: List[Union[int, float]]) -> float:
     return mad
 
 
-def correlation(data1: float, data2: float) -> np.ndarray:
+def correlation(data1: float, data2: float) -> np.ndarray: # type: ignore
     """
     Calculate the correlation coefficient between two sets of data.
 

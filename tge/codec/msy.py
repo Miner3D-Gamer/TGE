@@ -36,3 +36,4 @@ def encode(data: Dict[str, List[str]]) -> str:
         formatted_text += "\n"
 
     return formatted_text
+__all__ = ['decode', 'encode']

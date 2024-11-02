@@ -1,4 +1,6 @@
+#type: ignore
 import random,re
+__all__=['ExpandedString']
 class ExpandedString(str):
  def __new__(A,value):B=super(ExpandedString,A).__new__(A,value);return B
  def __init__(A,value):super().__init__()

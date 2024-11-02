@@ -1,7 +1,8 @@
 import subprocess, os
 
 
-def create_virtual_disk(drive_letter: str, folder_path: str, size_mb:int=100):
+def create_virtual_drive(drive_letter: str, folder_path: str, size_mb:int=100):
+    """Creates a virtual drive that appears as a drive letter on Linux. The drive though is just a shortcut to the specified folder."""
     # Create an empty file to act as the virtual disk
     subprocess.run(
         ["dd", "if=/dev/zero", f"of={drive_letter}", "bs=1M", f"count={size_mb}"]
@@ -17,7 +18,7 @@ def create_virtual_disk(drive_letter: str, folder_path: str, size_mb:int=100):
 
 
 def remove_virtual_disk(folder_path: str):
-
+    """Removes a virtual drive that appears as a drive letter on Linux."""
     subprocess.run(["sudo", "umount", folder_path])
 
 

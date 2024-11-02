@@ -1,18 +1,22 @@
-# type: ignore
 import os, json
-
+from typing import List
 import tge
 import base64
 
 tge.console.clear()
 
+IGNORE = True
+
 total_functions = tge.function_utils.count_functions_in_library("tge")
 print("TGE has %s functions" % total_functions)
-total_files = tge.file_operations.count_files_in_directory("./tge", extension_backlist=[
-    ".pyc",
-    ".txt",
-    ".hashed",
-])
+total_files = tge.file_operations.count_files_in_directory(
+    "./tge",
+    extension_backlist=[
+        ".pyc",
+        ".txt",
+        ".hashed",
+    ],
+)
 print("TGE has %s files" % total_files)
 
 
@@ -27,8 +31,8 @@ dir = f"{os.getcwd()}/tge/"
 
 for i in range(2):
 
-    with open("tge/update.hashed", "w") as f:
-        f.write(
+    with open("tge/update.hashed", "w") as normal_file:
+        normal_file.write(
             base64.b64encode(
                 (
                     tge.file_operations.generate_uuid_from_directory(
@@ -40,7 +44,7 @@ for i in range(2):
 
 
 print()
-directories = []
+directories: List[str] = []
 
 
 for root, dirs, files in os.walk(dir, topdown=False):
@@ -54,17 +58,17 @@ for root, dirs, files in os.walk(dir, topdown=False):
         directories.append(file)
 
 
-compressed = tge.file_operations.compress_directory_list(directories)
+compressed = tge.file_operations.compress_file_paths(directories)
 
-with open("directory.json", "w") as f:  #
+with open("directory.json", "w") as normal_file:  #
     compressed = json.dumps(compressed)
     for replacer, replacement in [('", "', '","'), ('": ', '":'), (', "', ',"')]:
         compressed = compressed.replace(replacer, replacement)
-    f.write(compressed)
+    normal_file.write(compressed)
 
 
 cwd = os.getcwd()
-output = rf"{cwd}/minified_tge/"
+output = rf"{cwd}/minified_tge"
 try:
     os.remove(output)
 except PermissionError:
@@ -80,38 +84,46 @@ if tge.tbe.determine_affirmative(input("Minify?: ")):
         root = root
         for file in files:
             file_path = os.path.join(root[len(dir) :].lstrip("\\"), file)
-            total_file_path = os.path.join(root, file)
+            input_file_path = os.path.join(root, file)
+            output_file_path = os.path.join(output, file_path)
             if file.endswith(".pyc"):
                 continue
             if file.endswith(".hash"):
-                with open(total_file_path, "rb") as f:
-                    with open(output + file_path, "wb") as o:
-                        data = f.read()
+                with open(input_file_path, "rb") as normal_file:
+                    with open(output_file_path, "wb") as minified_file:
+                        data = normal_file.read()
 
-                        o.write(data)
+                        minified_file.write(data)
                 continue
-            with open(total_file_path, "r", encoding="utf8") as f:
+            with open(input_file_path, "r+", encoding="utf8") as normal_file:
 
-                os.makedirs(os.path.dirname(output + file_path), exist_ok=True)
+                os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
 
-                with open(output + file_path, "w", encoding="utf8") as o:
-                    data = tge.tbe.compress_imports_in_code(
-                        tge.tbe.remove_unused_libraries(
-                            "".join(
-                                [
-                                    tge.string_utils.left_replace(line, "	", " ")
-                                    for line in tge.tbe.minify(
-                                        f.read(),
-                                        rename_important_names=False,
-                                        remove_docstrings=True,
-                                    )
-                                ]
-                            )
+                with open(output_file_path, "w", encoding="utf8") as minified_file:
+                    data = (
+                        tge.tbe.compress_imports_in_code(
+                            tge.tbe.remove_unused_libraries(
+                                "".join(
+                                    [
+                                        tge.string_utils.left_replace(line, "	", " ")
+                                        for line in tge.tbe.minify(
+                                            normal_file.read(),
+                                            rename_important_names=False,
+                                            remove_docstrings=True,
+                                        ).splitlines(keepends=True)
+                                    ]
+                                )
+                            ).splitlines()
                         )
-                        if file.endswith(".py")
-                        else f.read()
+                        if input_file_path.endswith(".py")
+                        else normal_file.read().splitlines()
                     )
-                    o.write("".join(data))
+                    if file.endswith(".py"):
+                        if IGNORE:
+                            data = ["#type: ignore"] + data
+                        
+                    minified_file.write("\n".join(data))
+                
 
 
 tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
@@ -121,11 +133,16 @@ minified_size = tge.conversion.binary.convert_byte_to_kilobyte(
     tge.file_operations.get_file_size_of_directory("./minified_tge", [".pyc"])
 )
 
+if tge.library_utils.is_library_installed("minified_tge"):
+    import minified_tge  # type: ignore
+else:
 
-import minified_tge  # type: ignore
+    class minified_tge:
+        INIT_TIME = 0
 
-with open(".gitignore", "w") as f:
-    f.write(
+
+with open(".gitignore", "w") as normal_file:
+    normal_file.write(
         "\n".join(
             [
                 file[2:].replace("\\", "/")

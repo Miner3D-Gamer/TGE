@@ -123,3 +123,4 @@ def save_text_to_speech(text: str, name: str, dir: str, language="en") -> None:
 
 
 
+__all__ = ['AudioPlayer', 'save_text_to_speech']

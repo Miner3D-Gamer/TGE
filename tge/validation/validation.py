@@ -1,22 +1,10 @@
 import re
-from typing import Any
-
 from ipaddress import IPv4Address, IPv6Address, AddressValueError
 
-from . import minecraft # type: ignore
-from . import numbers # type: ignore
+from . import minecraft
+from . import numbers
 
 
-def is_empty(text: Any) -> bool:
-    """
-    Returns a boolean indicating whether the given text is empty or not.
-
-    :param text: A string to check if it is empty.
-    :type text: str
-    :return: True if the given text is empty, False otherwise.
-    :rtype: bool
-    """
-    return not text
 
 
 def validate_email(email: str) -> bool:
@@ -197,3 +185,5 @@ def check_valid_ipv4(ip_address: str) -> bool:
         return False
     else:
         return True
+
+__all__ = ['minecraft', 'numbers', "check_valid_ipv4", "check_valid_ipv6", "validate_email", "validate_password", "validate_strong_password", "validate_credit_card"]

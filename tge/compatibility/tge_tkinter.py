@@ -2,6 +2,8 @@
 from tkinter import messagebox
 from typing import Union
 
+__all__ = ["show_message"]
+
 def show_message(message_level, user_feedback_level=0, title=None, message=None, **options)->Union[bool, str]:
     """
     Display a message box to the user with customizable parameters.

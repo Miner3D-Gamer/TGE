@@ -6,7 +6,7 @@ from typing import Optional
 user32 = ctypes.WinDLL("user32")
 user32.GetAsyncKeyState.restype = wintypes.SHORT
 
-
+__all__ = ['is_key_pressed', 'press_key', 'hold_key', 'release_key', 'key_to_virtual_key']
 def is_key_pressed(key_code: int) -> bool:
     """Checks if the inputted key is currently pressed"""
     state = user32.GetAsyncKeyState(key_code)

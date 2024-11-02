@@ -4,7 +4,7 @@ from typing import Optional
 
 d = display.Display()
 root = d.screen().root
-
+__all__ = ['is_key_pressed', 'press_key', 'hold_key', 'release_key', 'key_to_virtual_key']
 
 def is_key_pressed(key_code: int) -> bool:
     "Checks if the inputted key is currently pressed"

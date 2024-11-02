@@ -1,5 +1,7 @@
+#type: ignore
 from typing import Any, List
 import math
+__all__=['list_mul','remove_duplicates','count_occurrences','calculate_average','find_common_elements','median','reverse_list','find_max_min_difference','find_missing_number','greatest_product','zipper_insert','compress_list','compress_list_of_lists','decompress_list','decompress_list_of_lists','MaxSizeList']
 def list_mul(lst):return math.prod(lst)
 def remove_duplicates(list):
  A=[]

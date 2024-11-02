@@ -1,3 +1,4 @@
+#type: ignore
 import random
 def scramble_word(word):A=list(word);random.shuffle(A);return''.join(A)
 def chop(string,substring,rem=True):
@@ -91,3 +92,4 @@ def replace(string,replacers,replacements):
   return replace_with_list_as_replacement(C,B,A)
  if isinstance(A,str):return replace_with_list_as_replacer(C,B,A)
  return replace_list_with_list(C,B,A)
+__all__=['scramble_word','chop','truncate_string','reverse_string','check_anagram','remove_duplicate_characters_from_string','find_longest_word','get_length_of_longest_substring_without_repeating_characters','find_first_non_repeating_character','count_consonants','count_substring_occurrences','count_vowels','find_longest_substring','check_pangram','find_common_characters','split_text','lchop','rchop','left_pad','right_pad','left_replace','right_replace','replace_with_list_as_replacement','replace_with_list_as_replacer','replace_list_with_list','replace']

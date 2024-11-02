@@ -1,7 +1,7 @@
 from typing import Any, Union, List, Optional
 from collections.abc import Iterable
 import math
-
+__all__ = ['list_mul', 'remove_duplicates', 'count_occurrences', 'calculate_average', 'find_common_elements', 'median', 'reverse_list', 'find_max_min_difference', 'find_missing_number', 'greatest_product', 'zipper_insert', 'compress_list', 'compress_list_of_lists', 'decompress_list', 'decompress_list_of_lists', 'MaxSizeList']
 
 def list_mul(lst: List[Union[int, float]]) -> Union[int, float]:
     """
@@ -209,6 +209,7 @@ def compress_list(list_to_compress: List[Any]) -> Union[Any, List[Any]]:
     amount = 0
 
     def add(amount: int, char: Any) -> List[Any]:
+        """Helper function to add a count-value pair to the new_sub_list."""
         if amount > 1 and amount != width:
             return [amount, char]
         else:

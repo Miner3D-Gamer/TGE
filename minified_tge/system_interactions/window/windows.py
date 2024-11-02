@@ -1,6 +1,7 @@
+#type: ignore
+from ctypes import wintypes
 import ctypes.wintypes
 from..shared import*
-from ctypes import wintypes
 class RECT(ctypes.Structure):_fields_=[('left',wintypes.LONG),('top',wintypes.LONG),('right',wintypes.LONG),('bottom',wintypes.LONG)]
 def is_window_minimized(hwnd,user32=USER32):return user32.IsIconic(hwnd)!=0
 def minimize_window(hwnd,user32=USER32):user32.ShowWindow(hwnd,6)

@@ -8,6 +8,36 @@ if SYSTEM_NAME == "windows":
 else:
     from .cursor.cursor_operations_pynput import left_click, right_click, middle_click, set_mouse_to, get_mouse_position, is_right_button_pressed, is_middle_button_pressed, is_left_button_pressed, middle_mouse_up, right_mouse_up, middle_mouse_down, left_mouse_up, scroll, scroll_horizontal, scroll_vertical, left_mouse_down, right_mouse_down, middle_mouse_down  # type: ignore
 
+__all__ = [
+    "click_mouse_button",
+    "hold_mouse_button",
+    "release_mouse_button",
+    "click_mouse_button_at",
+    "left_click_at",
+    "double_left_click",
+    "double_left_click_at",
+    "right_click_at",
+    "double_right_click",
+    "MiddleClick_at",
+    "drag_to",
+    "drag_obj_to",
+    "left_click",
+    "right_click",
+    "middle_click",
+    "set_mouse_to",
+    "get_mouse_position",
+    "is_right_button_pressed",
+    "is_middle_button_pressed",
+    "is_left_button_pressed",
+    "middle_mouse_up",
+    "right_mouse_up",
+    "middle_mouse_down",
+    "left_mouse_up",
+    "scroll",
+    "scroll_horizontal",
+    "scroll_vertical",
+]
+
 
 def click_mouse_button(button_number: int) -> None:
     "Click the mouse button specified by `button_number`."

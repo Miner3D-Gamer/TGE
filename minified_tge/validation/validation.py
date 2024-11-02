@@ -1,10 +1,11 @@
+#type: ignore
+from ipaddress import IPv4Address,IPv6Address,AddressValueError
+import re
 _C='!@#$%^&*()_-+=<>?/\\'
 _B=True
 _A=False
-import re
-from ipaddress import IPv4Address,IPv6Address,AddressValueError
 from.import minecraft
-def is_empty(text):return not text
+from.import numbers
 def validate_email(email):A='^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$';return re.match(A,email)is not None
 def validate_password(password,length,upper,lower,digit,overwrite_special_characters,overwritten_special_characters):
  A=password
@@ -38,3 +39,4 @@ def check_valid_ipv4(ip_address):
  try:A=IPv4Address(ip_address)
  except AddressValueError:return _A
  else:return _B
+__all__=['minecraft','numbers','check_valid_ipv4','check_valid_ipv6','validate_email','validate_password','validate_strong_password','validate_credit_card']

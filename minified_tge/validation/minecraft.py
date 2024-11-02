@@ -1,5 +1,7 @@
-_A=False
+#type: ignore
 import re
+_A=False
+__all__=['is_valid_function_name','is_valid_registry_name','is_number_range','is_valid_scoreboard_name']
 def is_valid_function_name(name):
  A=name
  if A.startswith('/')or A.endswith('/'):return _A

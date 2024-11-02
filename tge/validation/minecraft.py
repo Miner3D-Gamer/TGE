@@ -1,5 +1,5 @@
 import re
-
+__all__ = ['is_valid_function_name', 'is_valid_registry_name', 'is_number_range', 'is_valid_scoreboard_name']
 def is_valid_function_name(name: str) -> bool:
     """
     Checks if a given name is a valid function name based on the following criteria:

@@ -1,6 +1,6 @@
 import random, re
 from typing import List, Dict, Optional
-
+__all__ = ["ExpandedString"]
 
 class ExpandedString(str):
     def __new__(cls, value: str):

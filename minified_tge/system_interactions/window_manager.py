@@ -1,3 +1,4 @@
+#type: ignore
 from..import SYSTEM_NAME
 __all__=['is_window_minimized','minimize_window','maximize_window','get_window_position','set_window_position','get_window_by_title']
 if SYSTEM_NAME=='windows':from.window.windows import is_window_minimized,minimize_window,maximize_window,get_window_position,set_window_position,get_window_by_title

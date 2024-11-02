@@ -50,7 +50,7 @@ import random
 #     name = name_text[:idx2]
 #     name = html.decode(name)
 #     return name
-
+__all__ = [ "generate_password", "random_bool", "generate_random_hex_color","generate_random_color","generate_random_hex_color"]
 
 def generate_password(length: int) -> str:
     """

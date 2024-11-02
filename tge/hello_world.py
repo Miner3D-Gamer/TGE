@@ -1,6 +1,8 @@
 from random import shuffle
 from hashlib import sha256
 
+__all__ = ["get_hello_world", "print_hello_world"]
+
 def get_hello_world(reminder_start: int = 10000, reminder_every: int = 10):
     """
     Generates a "Hello World" string return it.

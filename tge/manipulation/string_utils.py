@@ -2,7 +2,7 @@ import random
 from typing import List, Union, Optional, Dict
 
 
-def scramble_word(word:str)->str:
+def scramble_word(word: str) -> str:
     """
     Scramble the letters of a given word.
 
@@ -31,10 +31,9 @@ def chop(string: str, substring: str, rem: bool = True) -> str:
         str: The modified string with the substring removed from both ends if it was present.
     """
     if rem and string.startswith(substring) and string.endswith(substring):
-        return string[len(substring): -len(substring)]
+        return string[len(substring) : -len(substring)]
     else:
         return string
-
 
 
 def truncate_string(string: str, length: int) -> str:
@@ -124,9 +123,9 @@ def get_length_of_longest_substring_without_repeating_characters(s: str) -> int:
     if not s:
         return 0
 
-    max_length = 0  
-    start = 0 
-    char_index_map:Dict[str, int] = {}  
+    max_length = 0
+    start = 0
+    char_index_map: Dict[str, int] = {}
 
     for i in range(len(s)):
         if s[i] in char_index_map and start <= char_index_map[s[i]]:
@@ -149,7 +148,7 @@ def find_first_non_repeating_character(string: str) -> Optional[str]:
     Returns:
         str: The first non-repeating character found in the string, or None if no such character is found.
     """
-    char_count:Dict[str, int] = {}
+    char_count: Dict[str, int] = {}
 
     for char in string:
         char_count[char] = char_count.get(char, 0) + 1
@@ -195,7 +194,6 @@ def count_substring_occurrences(string: str, substring: str) -> int:
     return string.count(substring)
 
 
-
 def count_vowels(string: str) -> int:
     """
     Count the number of vowels in a given string.
@@ -211,6 +209,7 @@ def count_vowels(string: str) -> int:
         if char in "aeiouäöü":
             count += 1
     return count
+
 
 def find_longest_substring(string: str) -> str:
     """
@@ -238,6 +237,7 @@ def find_longest_substring(string: str) -> str:
 
     return longest_substring
 
+
 def check_pangram(string: str) -> bool:
     """
     Check if a given string is a pangram (contains every letter of the alphabet at least once).
@@ -248,12 +248,11 @@ def check_pangram(string: str) -> bool:
     Returns:
         bool: True if the string is a pangram, False otherwise.
     """
-    alphabet = set('abcdefghijklmnopqrstuvwxyz')  
+    alphabet = set("abcdefghijklmnopqrstuvwxyz")
 
     filtered_string = "".join(filter(lambda c: c in alphabet, string.lower()))
 
     return set(filtered_string) == alphabet
-
 
 
 def find_common_characters(string1: str, string2: str) -> str:
@@ -269,6 +268,7 @@ def find_common_characters(string1: str, string2: str) -> str:
     """
     return "".join(set(string1) & set(string2))
 
+
 def split_text(text: str, chunk_size: int) -> List[str]:
     """
     Split a string into chunks of a specified size.
@@ -280,7 +280,8 @@ def split_text(text: str, chunk_size: int) -> List[str]:
     Returns:
         list[str]: A list of substrings, each of length `chunk_size`, except possibly the last one.
     """
-    return [text[i: i + chunk_size] for i in range(0, len(text), chunk_size)]
+    return [text[i : i + chunk_size] for i in range(0, len(text), chunk_size)]
+
 
 def lchop(string: str, substring: str) -> str:
     """
@@ -294,8 +295,9 @@ def lchop(string: str, substring: str) -> str:
         str: The modified string with the leading `substring` removed, if it was present.
     """
     if string.startswith(substring):
-        return string[len(substring):]
+        return string[len(substring) :]
     return string
+
 
 def rchop(string: str, substring: str) -> str:
     """
@@ -309,12 +311,11 @@ def rchop(string: str, substring: str) -> str:
         str: The modified string with the trailing `substring` removed, if it was present.
     """
     if string.endswith(substring):
-        return string[:-len(substring)]
+        return string[: -len(substring)]
     return string
 
 
-
-def left_pad(string:str, length:int, char:str=" ")->str:
+def left_pad(string: str, length: int, char: str = " ") -> str:
     """
     Pads the given string on the left with the specified character to the desired length.
 
@@ -329,7 +330,7 @@ def left_pad(string:str, length:int, char:str=" ")->str:
     return string.rjust(length, char)
 
 
-def right_pad(string:str, length:int, char:str=" ")->str:
+def right_pad(string: str, length: int, char: str = " ") -> str:
     """
     Pads the given string on the right with the specified character to the desired length.
 
@@ -344,7 +345,7 @@ def right_pad(string:str, length:int, char:str=" ")->str:
     return string.ljust(length, char)
 
 
-def left_replace(s:str, chars: List[str], replacement: str)->str:
+def left_replace(s: str, chars: Union[List[str], str], replacement: str) -> str:
     """
     Replace leading characters in `chars` with `replacement` in the string `s`.
 
@@ -366,7 +367,7 @@ def left_replace(s:str, chars: List[str], replacement: str)->str:
     return replaced_part + remaining_part
 
 
-def right_replace(s:str, chars: List[str], replacement: str)->str:
+def right_replace(s: str, chars: List[str], replacement: str) -> str:
     """
     Replace trailing characters in `chars` with `replacement` in the string `s`.
 
@@ -406,6 +407,7 @@ def replace_with_list_as_replacement(
         string = string.replace(replacer, replacement)
     return string
 
+
 def replace_with_list_as_replacer(
     string: str, replacers: List[str], replacement: str
 ) -> str:
@@ -423,6 +425,7 @@ def replace_with_list_as_replacer(
     for replacer in replacers:
         string = string.replace(replacer, replacement)
     return string
+
 
 def replace_list_with_list(
     string: str, replacers: List[str], replacements: List[str]
@@ -447,8 +450,9 @@ def replace_list_with_list(
         return string
     raise ValueError("List lengths don't match")
 
+
 def replace(
-    string: str, replacers: Union[str , List[str]], replacements: Union[str , List[str]]
+    string: str, replacers: Union[str, List[str]], replacements: Union[str, List[str]]
 ) -> str:
     """
     Replace substrings in a string based on the types of `replacers` and `replacements`.
@@ -474,3 +478,4 @@ def replace(
     if isinstance(replacements, str):
         return replace_with_list_as_replacer(string, replacers, replacements)
     return replace_list_with_list(string, replacers, replacements)
+__all__ = ['scramble_word', 'chop', 'truncate_string', 'reverse_string', 'check_anagram', 'remove_duplicate_characters_from_string', 'find_longest_word', 'get_length_of_longest_substring_without_repeating_characters', 'find_first_non_repeating_character', 'count_consonants', 'count_substring_occurrences', 'count_vowels', 'find_longest_substring', 'check_pangram', 'find_common_characters', 'split_text', 'lchop', 'rchop', 'left_pad', 'right_pad', 'left_replace', 'right_replace', 'replace_with_list_as_replacement', 'replace_with_list_as_replacer', 'replace_list_with_list', 'replace']

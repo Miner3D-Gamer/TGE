@@ -5,10 +5,10 @@ import zipfile
 import math
 import hashlib
 import uuid
-from typing import Union, Tuple, List, Dict, Optional, Any
-from collections import defaultdict
+from typing import Union, Tuple, List, Dict, Optional, Any, Callable
 import re
 from tkinter import filedialog
+import json
 
 # from .codec.codec import decode, base_x_encode_to_binary, base_x_decode_from_binary
 
@@ -378,6 +378,16 @@ def are_directories_the_same(
 def count_files_in_directory(
     directory_path: str, extension_backlist: List[str] = []
 ) -> int:
+    """
+    Counts the number of files in the specified directory.
+
+    Args:
+        directory_path (str): The path of the directory.
+        extension_backlist (List[str]): A list of file extensions to exclude from the count.
+
+    Returns:
+        int: The total count of files in the directory.
+    """
     file_count = 0
     for _, _, files in os.walk(directory_path):
         for file in files:
@@ -913,62 +923,6 @@ def generate_uuid_from_directory(
     return unique_uuid
 
 
-class _compress_directory_list_trie_node:
-    def __init__(self):
-        "Node in a Trie data structure with a dictionary of child nodes and a boolean flag to mark the end of a path."
-        self.children: Dict[str, "_compress_directory_list_trie_node"] = defaultdict(
-            _compress_directory_list_trie_node
-        )
-        self.is_end_of_path = False
-
-
-def _compress_directory_list_insert_path(
-    root: _compress_directory_list_trie_node, path: List[str]
-) -> None:
-    "Insert a path into a Trie data structure."
-    node = root
-    for part in path:
-        node = node.children[part]
-    node.is_end_of_path = True
-
-
-def _compress_directory_list_build_trie(
-    paths: List[str],
-) -> _compress_directory_list_trie_node:
-    "Build a Trie from a list of file paths."
-    root = _compress_directory_list_trie_node()
-    for path in paths:
-        _compress_directory_list_insert_path(root, path.split("/"))
-    return root
-
-
-def _compress_directory_list_serialize_trie(
-    node: _compress_directory_list_trie_node,
-) -> Union[Any, Dict[str, Any]]:
-    "Serialize a Trie into a compressed dictionary format representing a directory structure."
-    if not node.children:
-        return {}
-
-    if len(node.children) == 1 and node.is_end_of_path == False:
-        key, child = next(iter(node.children.items()))
-        serialized_child = _compress_directory_list_serialize_trie(child)
-        if isinstance(serialized_child, list) and not serialized_child:
-            return key
-        if isinstance(serialized_child, str):
-            return f"{key}/{serialized_child}"
-        return {key: serialized_child}
-
-    result: Dict[str, Any] = {}
-    for key, child in node.children.items():
-        serialized_child = _compress_directory_list_serialize_trie(child)
-        if isinstance(serialized_child, list) and not serialized_child:
-            result.setdefault("files", []).append(key)
-        else:
-            result[key] = serialized_child
-
-    return result
-
-
 def find_files_with_extension(root_dir: str, file_extension: str) -> List[str]:
     """
     Returns a list of all file directories with the specified extension.
@@ -985,45 +939,6 @@ def find_files_with_extension(root_dir: str, file_extension: str) -> List[str]:
     return file_paths
 
 
-def compress_directory_list(
-    paths: List[str],
-) -> Dict[str, Union[List[str], Dict[str, Any]]]:
-    "Compress a list of file paths into a dictionary format representing the directory structure."
-    trie = _compress_directory_list_build_trie(paths)
-    compressed = _compress_directory_list_serialize_trie(trie)
-    return compressed
-
-
-def decompress_directory_list(compressed: Dict[str, Any]) -> List[str]:
-    """Decompress a directory structure from a nested dictionary format into a list of file paths.
-
-    Args:
-        compressed (dict): The compressed directory structure in dictionary format.
-
-    Returns:
-        list[str]: A list of file paths extracted from the compressed structure."""
-    paths: List[str] = []
-
-    def dfs(node: Union[str, List[str], Dict[str, Any]], current_path: str=""):
-        "Inner loop"
-        if isinstance(node, list):
-            paths.append(f"{current_path}/{node[0]}".strip("/"))
-            return
-        if isinstance(node, str):
-            paths.append(node)
-            return
-
-        for key, value in node.items():
-            if key == "files":
-                for file_path in value:
-                    paths.append(f"{current_path}/{file_path}".strip("/"))
-            else:
-                dfs(value, f"{current_path}/{key}".strip("/"))
-
-    dfs(compressed)
-    return paths
-
-
 def find_files_with_extensions(root_dir: str, file_extensions: List[str]) -> List[str]:
     """
     Returns a list of all file directories with the specified extensions.
@@ -1036,3 +951,259 @@ def find_files_with_extensions(root_dir: str, file_extensions: List[str]) -> Lis
     for file_extension in file_extensions:
         files.extend(find_files_with_extension(root_dir, file_extension))
     return files
+
+
+NestedList = List[Union[str, "NestedList"]]
+
+
+def _compress_path_list_to_dict(paths: List[str]) -> Dict[str, Any]:
+    """
+    Compresses a list of paths into a dictionary.
+    """
+    dirs = "d"
+    files = "f"
+    stuff: Dict[str, Any] = {files: [], dirs: {}}
+
+    for path in paths:
+        parts = path.split("/")
+        current_level = stuff
+
+        for part in parts[:-1]:
+            if dirs not in current_level:
+                current_level[dirs] = {}
+            if part not in current_level[dirs]:
+                current_level[dirs][part] = {}
+            current_level = current_level[dirs][part]
+
+        if files not in current_level:
+            current_level[files] = []
+        current_level[files].append(parts[-1])
+
+    def cleanup(data: Dict[str, Any]):
+        """Cleans up empty directories."""
+        if dirs in data:
+            keys_to_remove: List[str] = []
+            for key, value in data[dirs].items():
+                cleanup(value)
+                if len(value[files]) == 1 and not value.get(dirs):
+                    if not files in data:
+                        data[files] = []
+                    data[files].append(f"{key}/{value[files][0]}")
+                    keys_to_remove.append(key)
+
+            for key in keys_to_remove:
+                del data[dirs][key]
+
+            if not data[dirs]:
+                del data[dirs]
+        if dirs in data and not data[dirs]:
+            del data[dirs]
+        else:
+            for key in data.get(dirs, {}):
+                cleanup(data[dirs][key])
+
+    cleanup(stuff)
+
+    return stuff
+
+
+def _format_dict_file_paths_to_array(compressed: Dict[str, Any]) -> NestedList:
+    """
+    Converts a compressed dictionary into an array.
+    """
+
+    def convert_to_array(data: Dict[str, Any]) -> NestedList:
+        """
+        Converts a dictionary into an array.
+        """
+        directories: List[Any] = []
+        files = data.get("f", [])
+
+        if "d" in data:
+            for subdir_name, subdir_data in data["d"].items():
+                subdir_as_array = convert_to_array(subdir_data)
+                if len(subdir_as_array) == 1:
+                    directories.append([subdir_name, subdir_as_array[0]])
+                else:
+                    directories.append([subdir_name, subdir_as_array])
+
+        return (
+            directories if not files else [directories, files] if directories else files
+        )
+
+    def clean_single_array_items(data: Union[List[Any], Dict[Any, Any]]) -> Any:
+        """
+        Cleans up single array items.
+        """
+        if isinstance(data, list):
+            if len(data) == 1:
+                return clean_single_array_items(data[0])
+            else:
+                return [clean_single_array_items(item) for item in data]
+        return data
+
+    return clean_single_array_items(convert_to_array(compressed))
+
+
+def _decompress_file_path_dict(
+    data: Dict[str, Any], current_path: str = ""
+) -> List[str]:
+    """
+    Decompresses a dictionary of paths into a list of paths.
+    """
+    paths: List[str] = []
+    dirs = "d"
+    files = "f"
+
+    if files in data:
+        for file in data[files]:
+            paths.append(current_path + file)
+
+    if dirs in data:
+        for dir_name, dir_content in data[dirs].items():
+            paths.extend(
+                _decompress_file_path_dict(dir_content, current_path + dir_name + "/")
+            )
+
+    return paths
+
+
+def _decompress_file_path_list(data: NestedList, current: str = "") -> List[str]:
+    """
+    Decompresses a list of paths into a list of paths.
+    """
+    directories: List[str] = []
+
+    def handle_folder_list(data: List[Union[str, List[Any]]]) -> List[str]:
+        """
+        Handles a list of folders.
+        """
+        # List[str], str
+        dir: List[str] = []
+        for folder in data:
+            if not isinstance(folder, list):
+                raise ValueError("Expected lists but got %s" % type(folder))
+            dir.extend(handle_folder(folder))
+        return dir
+
+    def handle_folder(data: List[Any]) -> List[str]:
+        """
+        Handles a folder.
+        """
+        nonlocal current
+        dir: List[str] = []
+        if isinstance(data, str):
+            raise ValueError("Expected list but got %s" % type(data[0]))
+        dir.extend(_decompress_file_path_list(data[1], add(data[0])))
+        return dir
+
+    add: Callable[[str], str] = lambda path: (current + "/" + path) if current else path
+    # remove = lambda: "/".join(current.split("/")[:-1])
+
+    size = len(data)
+    if size == 2:
+        if isinstance(data[0], list):
+            if len(data[0]) == 2:
+                if isinstance(data[0][0], list):
+                    directories.extend(handle_folder_list(data[0]))
+                else:
+                    directories.extend(handle_folder(data[0]))
+            else:
+                directories.extend(handle_folder_list(data[0]))
+
+        else:
+            if isinstance(data[1], list):
+                current = add(data[0])
+                directories.extend(handle_folder(data[1]))
+            else:
+                for file in data:
+                    if not isinstance(file, str):
+                        raise ValueError("Expected strings but got %s" % type(file))
+                    directories.append(add(file))
+    else:
+        for file in data:
+            if not isinstance(file, str):
+                raise ValueError("Expected strings but got %s" % type(file))
+            directories.append(add(file))
+
+    return directories
+
+
+def decompress_file_paths(
+    data: Union[NestedList, Dict[str, Any]]
+) -> Union[List[str], Dict[str, Any]]:
+    """
+    Decompresses a list of paths into a list of paths.
+    """
+    if isinstance(data, list):
+        return _decompress_file_path_list(data)
+    else:
+        return _decompress_file_path_dict(data)
+
+
+def compress_file_paths(paths: List[str]) -> Union[NestedList, Dict[str, Any]]:
+    """
+    Compresses a list of paths into a dictionary.
+    """
+    compressed = _compress_path_list_to_dict(paths)
+    list_compressed = _format_dict_file_paths_to_array(compressed)
+    if len(object_to_optimal_string(compressed)) > len(
+        object_to_optimal_string(list_compressed)
+    ):
+        return list_compressed
+    return compressed
+
+
+def object_to_optimal_string(data: Any) -> str:
+    """
+    Converts an object into an optimal string.
+    """
+    compressed = json.dumps(data)
+    for replacer, replacement in [('", "', '","'), ('": ', '":'), (', "', ',"')]:
+        compressed = compressed.replace(replacer, replacement)
+    return compressed
+
+
+__all__ = [
+    "make_legal_filename",
+    "create_missing_directory",
+    "delete_directory",
+    "move_file",
+    "copy_file",
+    "rename_file",
+    "copy_directory",
+    "move_directory",
+    "rename_directory",
+    "get_folder_name",
+    "does_file_exist",
+    "does_directory_exist",
+    "delete_file",
+    "compare_file",
+    "are_directories_the_same",
+    "count_files_in_directory",
+    "count_items_in_directory",
+    "get_current_working_directory",
+    "get_file_extension",
+    "find_files_by_extension",
+    "get_file_size",
+    "get_file_creation_time",
+    "count_functions_in_file",
+    "count_functions_in_directory",
+    "count_function_names_in_directory",
+    "save_counted_function_names_from_directory",
+    "input_file_path",
+    "ask_for_directory_path",
+    "unzip_file",
+    "zip_directory",
+    "get_appdata_path",
+    "get_latest_file_in_directory_from_all_filenames_that_are_real_numbers",
+    "is_directory_empty",
+    "get_filesize",
+    "get_file_size_of_directory",
+    "generate_uuid_from_directory",
+    "find_files_with_extension",
+    "find_files_with_extensions",
+    "decompress_file_paths",
+    "compress_file_paths",
+    "object_to_optimal_string",
+]

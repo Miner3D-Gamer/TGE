@@ -1,10 +1,11 @@
+#type: ignore
+import subprocess,sys
 _F='xdotool'
 _E='Window not found'
 _D=False
 _C='wmctrl'
 _B=None
 _A=True
-import subprocess,sys
 def is_window_minimized(window_id):
  A=window_id
  if A is _B:return _D

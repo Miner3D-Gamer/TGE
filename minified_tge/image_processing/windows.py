@@ -1,7 +1,9 @@
-_A=None
-import ctypes
+#type: ignore
 from ctypes import wintypes
 from PIL import Image
+import ctypes
+_A=None
+__all__=['screenshot','get_pixel_color']
 SRCCOPY=13369376
 DIB_RGB_COLORS=0
 class BITMAPINFOHEADER(ctypes.Structure):_fields_=[('biSize',wintypes.DWORD),('biWidth',wintypes.LONG),('biHeight',wintypes.LONG),('biPlanes',wintypes.WORD),('biBitCount',wintypes.WORD),('biCompression',wintypes.DWORD),('biSizeImage',wintypes.DWORD),('biXPelsPerMeter',wintypes.LONG),('biYPelsPerMeter',wintypes.LONG),('biClrUsed',wintypes.DWORD),('biClrImportant',wintypes.DWORD)]

@@ -2,22 +2,32 @@ from binascii import hexlify, unhexlify
 
 
 
-from . import msy # type: ignore
-from . import morse # type: ignore
-from . import html # type: ignore
-from . import standard_galactic_alphabet # type: ignore
-from . import json # type: ignore
+from . import msy 
+from . import morse 
+from . import html 
+from . import standard_galactic_alphabet 
+from . import json 
 
 
 
 
-
+__all__ = ['base_x_decode_from_binary', 'base_x_encode_to_binary', 'encode', 'decode', 'msy', 'morse', 'html', 'standard_galactic_alphabet', 'json']
 
 
 
 
 
 def base_x_decode_from_binary(binary_data:bytes, base:int) -> str:
+    """
+    Decodes a binary string into a base-x string.
+
+    Args:
+        binary_data (bytes): The binary data to decode.
+        base (int): The base to use for decoding.
+
+    Returns:
+        str: The decoded base-x string.
+    """
     decimal_value = int.from_bytes(binary_data, byteorder='big')
 
     if base < 2 or base > 95:
@@ -33,6 +43,16 @@ def base_x_decode_from_binary(binary_data:bytes, base:int) -> str:
     return result or "0"
 
 def base_x_encode_to_binary(data_in_base_x:str, base:int) -> bytes:
+    """
+    Encodes a base-x string into a binary string.
+
+    Args:
+        data_in_base_x (str): The base-x string to encode.
+        base (int): The base to use for encoding.
+
+    Returns:
+        bytes: The encoded binary data.
+    """
     if base < 2 or base > 95:
         raise ValueError("Base must be between 2 and 95 included")
 

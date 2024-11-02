@@ -1,14 +1,14 @@
+#type: ignore
+from difflib import get_close_matches
+import ast,cProfile,getpass,io,os,pstats,subprocess,sys,tempfile
 _F='cumulative'
 _E='import '
 _D='.py'
 _C=None
 _B=False
 _A=True
-import ast,os,sys
-from difflib import get_close_matches
-import getpass
-import cProfile,pstats,io,subprocess,tempfile
 version=sys.version_info
+__all__=['pass_func','execute_function','determine_affirmative','get_available_variables','number_to_words','letter_to_number','number_to_letter','find_undocumented_functions','check_directory_for_undocumented_functions','check_directory_and_sub_directory_for_undocumented_functions','autocomplete','strict_autocomplete','is_iterable','split_with_list','analyze_text','divide','DualInfinite','generate_every_capitalization_states','remove_unused_libraries','repeat','get_username','profile','profile_function','get_current_pip_path','ArgumentHandler','HashMap','print_undocumented_functions_in_directory','minify','compress_imports_in_code']
 def pass_func(*args,**more_args):0
 def execute_function(func=pass_func,*args,**kwargs):return func(*args,**kwargs)
 def determine_affirmative(text):
@@ -22,11 +22,11 @@ def get_available_variables():
  g_variables={};global_vars=globals()
  for(var_name,var_value)in global_vars.items():g_variables[var_name]=var_value
  return g_variables
-def convert_number_to_words_less_than_thousand(n,dash=_A):
+def _convert_number_to_words_less_than_thousand(n,dash=_A):
  TINY_NUMBERS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];SMALL_NUMBERS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety']
  if n>=100:
   hundreds_digit=n//100;rest=n%100;result=TINY_NUMBERS[hundreds_digit]+' hundred'
-  if rest>0:result+=' and '+convert_number_to_words_less_than_thousand(rest)
+  if rest>0:result+=' and '+_convert_number_to_words_less_than_thousand(rest)
   return result
  elif n>=20:
   tens_digit=n//10;rest=n%10;result=SMALL_NUMBERS[tens_digit]
@@ -43,7 +43,7 @@ def number_to_words(number):
  while number>0:groups.append(number%1000);number//=1000
  result_parts=[]
  for(i,group)in enumerate(groups):
-  if group!=0:result_parts.append(convert_number_to_words_less_than_thousand(group)+' '+big_numbers[i])
+  if group!=0:result_parts.append(_convert_number_to_words_less_than_thousand(group)+' '+big_numbers[i])
  return', '.join(reversed(result_parts))
 def letter_to_number(letter):
  number=0
@@ -79,6 +79,9 @@ def check_directory_and_sub_directory_for_undocumented_functions(directory_path)
     undocumented_functions=find_undocumented_functions(item_path)
     if undocumented_functions:filename=os.path.relpath(item_path,directory_path);undocumented_functions_dict[filename]=undocumented_functions
  _check_directory_and_sub_directory_for_undocumented_functions_traverse_directory(directory_path);return undocumented_functions_dict
+def get_surface_defined_names(file_path):
+ with open(file_path,'r')as file:tree=ast.parse(file.read())
+ function_names=[node.name for node in tree.body if isinstance(node,(ast.FunctionDef,ast.ClassDef))and not node.name.startswith('_')];return function_names
 def autocomplete(prefix,word_list):return[word for word in word_list if word.startswith(prefix)]
 def strict_autocomplete(prefix,word_list):
  words=autocomplete(prefix=prefix,word_list=word_list)
@@ -109,7 +112,7 @@ def analyze_text(text):
  return{'sentence_amount':len(sentences),'total_word_count':total_word_count,'average_word_count_per_sentence':total_word_count/len(word_amounts),'max_words_per_sentence':max(word_amounts),'min_words_per_sentence':min(word_amounts),'total_comma_count':total_comma_count,'average_commas_count_per_sentence':total_comma_count/len(comma_amounts),A:max(comma_amounts),A:min(comma_amounts),'word_amount_list':word_amounts,'comma_amount_list':comma_amounts}
 class DualInfinite:0
 def divide(a,b):return a/b if b!=0 else DualInfinite()
-def generate_every_capitalization_state(s):
+def generate_every_capitalization_states(s):
  def backtrack(index,path):
   if index==len(s):result.append(''.join(path));return
   backtrack(index+1,path+[s[index].lower()]);backtrack(index+1,path+[s[index].upper()])
@@ -186,19 +189,12 @@ def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__
   print('\n\n'+i)
   for j in undocumented[i]:amount+=1;print(f'\n\t{j[0]} \n\tFile "{directory}\\{i}", line {j[1]}')
  return amount
-def get_from_dict_by_list(data_dict,keys):
- for key in keys:data_dict=data_dict[key]
- return data_dict
-def set_in_dict_by_list(data_dict,keys,value):
- for key in keys[:-1]:data_dict=data_dict.setdefault(key,{})
- data_dict[keys[-1]]=value
 if version.minor<12:
  import python_minifier
  def minify(text,rename_important_names=_B,remove_docstrings=_A):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
 else:
  def minify(text,rename_important_names=_B,remove_docstrings=_A):return text
-from.manipulation.list_utils import zipper_insert
-def separate_imports(lines):
+def _separate_imports(lines):
  import_lines=[];other_lines=[]
  for line in lines:
   stripped_line=line.strip()
@@ -207,11 +203,11 @@ def separate_imports(lines):
    else:other_lines.append(line)
   else:other_lines.append(line)
  return import_lines,other_lines
-def compress_imports(import_lines):
+def _compress_imports(import_lines):
  from_imports=[];import_imports=[]
  for line in import_lines:
   line=line.strip()
   if line.startswith('from '):from_imports.append(line)
   elif line.startswith(_E):import_imports.extend(line.replace(_E,'').split(','))
  import_imports=sorted(set(import_imports));compressed_import_line=f"import {','.join(import_imports)}";output_lines=from_imports+([compressed_import_line]if import_imports else[]);return output_lines
-def compress_imports_in_code(code):imports,rest=separate_imports(code);imports=compress_imports(imports);return zipper_insert(imports,['\n']*len(imports))+rest
+def compress_imports_in_code(code):imports,rest=_separate_imports(code);imports=_compress_imports(imports);return imports+rest

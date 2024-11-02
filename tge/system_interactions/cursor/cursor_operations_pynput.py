@@ -8,6 +8,7 @@ MOUSE = pynput.mouse.Controller()
 
 
 def getScreenDimensions() -> tuple[int, int]:
+    "Retrieve the dimensions of the screen as a tuple (width, height)."
     return get_monitors()[0].width, get_monitors()[0].width
 
 

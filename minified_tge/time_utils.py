@@ -1,6 +1,7 @@
-_A=None
+#type: ignore
 from datetime import datetime
 import time
+_A=None
 class Timer:
  def __init__(A,start_time,offset=0):A.start_time=start_time;A.offset=offset
  def add_time(A,amount):A.offset+=amount;return A.offset

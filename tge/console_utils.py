@@ -92,6 +92,7 @@ def write_sentences_to_console(
 def choose_from_text_menu(
     menu_list: "Iterable[str]", prompt: str = "", destroy: bool = False
 ) -> int:
+    "..."
     raise BaseException("This function needs a revamp :/")
     """
     Displays a text menu and prompts the user to choose an option.
@@ -536,6 +537,7 @@ class SuppressPrint:
     "To use:\nwith SuppressPrint():\n\tdo_something()"
 
     def __enter__(self):
+        """To use:\nwith SuppressPrint():\n\tdo_something()"""
         self._original_stdout = sys.stdout
         sys.stdout = open(os.devnull, "w")
 
@@ -545,5 +547,7 @@ class SuppressPrint:
         exc_value: Optional[Exception],
         traceback: Optional[TracebackType],
     ):
+        """To use:\nwith SuppressPrint():\n\tdo_something()"""
         sys.stdout.close()
         sys.stdout = self._original_stdout
+__all__ = ['typing_print', 'typingInput', 'write_sentences_to_console', 'choose_from_text_menu', 'skip_line', 'print_table', 'progress_bar', 'colorize_text', 'visualize_directory', 'clear_lines', 'prompt_bool', 'prompt_number', 'matrix_rain', 'SuppressPrint']

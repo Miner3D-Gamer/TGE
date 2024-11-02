@@ -1,3 +1,4 @@
+#type: ignore
 from Xlib import XK
 backspace=XK.XK_BackSpace
 tab=XK.XK_Tab

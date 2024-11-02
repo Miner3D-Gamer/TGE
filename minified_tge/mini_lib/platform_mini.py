@@ -1,12 +1,13 @@
+#type: ignore
+from itertools import chain
+from functools import cached_property
+from collections import namedtuple
+from re import compile
+import os,sys
 _D='2003Server'
 _C='Vista'
 _B='win32'
 _A=None
-from itertools import chain
-import os,sys
-from functools import cached_property
-from collections import namedtuple
-from re import compile
 _uname_cache=_A
 _ver_output=compile('(?:([\\w ]+) ([\\w.]+) .*\\[.* ([\\d.]+)\\])')
 _WIN32_SERVER_RELEASES={(5,2):_D,(6,0):'2008Server',(6,1):'2008ServerR2',(6,2):'2012Server',(6,3):'2012ServerR2',(6,_A):'post2012ServerR2'}

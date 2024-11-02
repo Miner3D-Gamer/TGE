@@ -54,50 +54,50 @@
 
 
 # Get import time of tge
-import os, sys, time
+# import os, sys, time
 
 
-sys.path.append(os.path.dirname(os.getcwd()))
-import tge # type: ignore
-print(tge.INIT_TIME)
-# tge.system_interactions.clipboard_operations.append_to_clipboard(str) -> None
+# sys.path.append(os.path.dirname(os.getcwd()))
+# import tge # type: ignore
+# print(tge.INIT_TIME)
+# # tge.system_interactions.clipboard_operations.append_to_clipboard(str) -> None
 
-def get_all_folders(directory):
-    folders = []
-    try:
-        for root, dirs, files in os.walk(directory):
-            for dir_name in dirs:
-                folders.append(os.path.join(root, dir_name))
-    except FileNotFoundError:
-        print(f"The directory '{directory}' does not exist.")
-    except PermissionError:
-        print(f"Permission denied to access the directory '{directory}'.")
+# def get_all_folders(directory):
+#     folders = []
+#     try:
+#         for root, dirs, files in os.walk(directory):
+#             for dir_name in dirs:
+#                 folders.append(os.path.join(root, dir_name))
+#     except FileNotFoundError:
+#         print(f"The directory '{directory}' does not exist.")
+#     except PermissionError:
+#         print(f"Permission denied to access the directory '{directory}'.")
     
-    return folders
+#     return folders
 
-def get_all_files(directory):
-    files_list = []
-    try:
-        for root, dirs, files in os.walk(directory):
-            for file_name in files:
-                # Append the full path of the file to the list
-                files_list.append(os.path.join(root, file_name))
-    except FileNotFoundError:
-        print(f"The directory '{directory}' does not exist.")
-    except PermissionError:
-        print(f"Permission denied to access the directory '{directory}'.")
+# def get_all_files(directory):
+#     files_list = []
+#     try:
+#         for root, dirs, files in os.walk(directory):
+#             for file_name in files:
+#                 # Append the full path of the file to the list
+#                 files_list.append(os.path.join(root, file_name))
+#     except FileNotFoundError:
+#         print(f"The directory '{directory}' does not exist.")
+#     except PermissionError:
+#         print(f"Permission denied to access the directory '{directory}'.")
     
-    return files_list
+#     return files_list
 
 
 
 
-f = get_all_files('./tge')
-f = [s for s in f if not s.endswith(".pyc")]
+# f = get_all_files('./tge')
+# f = [s for s in f if not s.endswith(".pyc")]
 
-[print(s) for s in f]
-print(len([print(s) for s in f if s.endswith(".py")]))
-print(tge.platform_mini.system())
+# [print(s) for s in f]
+# print(len([print(s) for s in f if s.endswith(".py")]))
+# print(tge.platform_mini.system())
 # import inspect
 # import pkgutil
 # import importlib
@@ -143,4 +143,18 @@ print(tge.platform_mini.system())
 #         tge.clipboard.paste_clipboard()
 #         time.sleep(1)
 #     time.sleep(0.1)
+import ast
+from typing import List
+def get_function_names(file_path: str) -> List[str]:
+    with open(file_path, 'r', encoding="utf8") as file:
+        tree = ast.parse(file.read())
     
+    # Get all function names at the top level that don't start with "_"
+    function_names = [
+        node.name for node in tree.body 
+        if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and not node.name.startswith('_')
+    ]
+    
+    return function_names
+
+tge.system_interactions.clipboard_operations.copy_to_clipboard("__all__ = "+str(get_function_names("tge/__init__.py")))

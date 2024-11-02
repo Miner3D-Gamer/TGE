@@ -32,3 +32,4 @@ def clear_clipboard(user32: None = None) -> None:
         None: This function does not return any value.
     """
     pyperclip.copy("")
+__all__ = ["copy_to_clipboard", "get_clipboard", "clear_clipboard"]

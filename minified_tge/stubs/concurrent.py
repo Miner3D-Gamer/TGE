@@ -1,3 +1,4 @@
+#type: ignore
 class concurrent:
  class futures:
   class ThreadPoolExecutor:

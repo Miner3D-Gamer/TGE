@@ -65,6 +65,7 @@ def burn_value_into_function(x: Any) -> Callable[[], Any]:
 
 
 def get_system()->Literal["jython", "darwin", "windows", "linux", "unknown"]:
+    """Returns the system name"""
     if sys.platform.startswith("java"):
         return "jython"
     elif sys.platform == "darwin":
@@ -101,6 +102,7 @@ def is_ffmpeg_installed():
 
 
 pre_assured_libraries = os.getenv("TGE_ASSURED_LIBRARIES", "True")
+use_custom_window_implementations = os.getenv("TGE_USE_CUSTOM_WINDOW_IMPLEMENTATIONS", "True") == "True"
 
 if pre_assured_libraries == "True":
     assured_libraries: Optional[bool] = True

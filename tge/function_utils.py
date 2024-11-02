@@ -1,12 +1,12 @@
-# type: ignore
 import inspect
 from types import ModuleType, MethodType
 from typing import Any, Dict, List, NoReturn, Optional, get_type_hints, Union, Callable
 import importlib
 import os
 import concurrent
-from typing import Union
 
+
+__all__ = ["run_function_with_timeout", "get_docstring", "check_for_functions_in_module_with_missing_notations", "print_check_for_functions_in_module_with_missing_notations","get_function_inputs","get_return_type"]
 
 def get_docstring(obj: object) -> Optional[str]:
     """
@@ -29,6 +29,7 @@ def get_docstring(obj: object) -> Optional[str]:
 def check_for_functions_in_module_with_missing_notations(
     library_module: ModuleType,
 ) -> NoReturn:
+    "..."
     raise Exception("This function is broken, I'm just done with the bs this function caused me")
     """
     Check all functions in a given library module for missing input type or return type annotations.
@@ -275,7 +276,7 @@ class TimeoutResult: ...
 
 def run_function_with_timeout(
     func: Callable[..., Any], timeout: Union[int,float], *args: Any, **kwargs: Any
-) -> Union[Any, TimeoutResult]:
+) -> Union[Any, TimeoutResult]: 
     """
     Executes a function with a specified timeout.
 
@@ -292,9 +293,9 @@ def run_function_with_timeout(
     This function uses a thread pool executor to run the given function asynchronously and
     enforces a timeout on its execution.
     """
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        future = executor.submit(func, *args, **kwargs)
+    with concurrent.futures.ThreadPoolExecutor() as executor:# type: ignore
+        future = executor.submit(func, *args, **kwargs)# type: ignore
         try:
-            return future.result(timeout=timeout)
-        except concurrent.futures.TimeoutError:
+            return future.result(timeout=timeout)# type: ignore
+        except concurrent.futures.TimeoutError:# type: ignore
             return TimeoutResult

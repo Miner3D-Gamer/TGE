@@ -1,7 +1,9 @@
+#type: ignore
 from math import sqrt,factorial
 from typing import overload
 from builtins import range as builtin_range
 import struct
+_A='clamp'
 def reverse_number(number):return int(str(number)[::-1])
 def hypotenuse(a,b):return sqrt(a**2+b**2)
 def quadratic_roots(a,b,c):return(-b+sqrt(b**2-4*a*c))/(2*a)
@@ -107,9 +109,9 @@ class Vector:
 def bottom_clamp(min,value):A=value;return A if A>min else min
 def top_clamp(max,value):A=value;return A if A<max else max
 @overload
-def clamp(min,max,value):...
+def clamp(min,max,value):0
 @overload
-def clamp(min,max,value):...
+def clamp(min,max,value):0
 def clamp(min,max,value):
  A=value
  if A<min:return min
@@ -117,3 +119,4 @@ def clamp(min,max,value):
  else:return A
 def sign(x):return 1 if x>0 else-1 if x<0 else 0
 def is_number_similar(a,b,similarity):return abs(a-b)<=similarity
+__all__=['reverse_number','hypotenuse','quadratic_roots','check_perfect_number','factorial_iterative','binomial_coefficient','calculate_combinations','generate_fibonacci_sequence','check_armstrong_number','calculate_gcd','factorial_recursive','fibonacci','range','divide_by_power_of_2','calculate_percentage','get_pi','smaller','bigger','return_like_a_thousand_digits_of_pi','fast_inverse_sqrt','tetration','hexation','round_with_precision','find_divisors','Vector','bottom_clamp','top_clamp',_A,_A,_A,'sign','is_number_similar']

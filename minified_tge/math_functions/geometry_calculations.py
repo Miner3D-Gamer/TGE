@@ -1,3 +1,4 @@
+#type: ignore
 from math import sqrt
 from.math_functions import get_pi
 def volume_of_cuboid(length,width,height):return length*width*height
@@ -38,3 +39,4 @@ def calculate_distance_between_points(*A):
  return B
 def vector_magnitude(vector):A=vector;return sqrt(A[0]**2+A[1]**2)
 def hamming_distance(string1,string2):return sum(A!=B for(A,B)in zip(string1,string2))
+__all__=['volume_of_cuboid','volume_of_cube','volume_of_sphere','volume_of_sphere_with_accuracy','volume_of_cylinder','volume_of_cylinder_with_accuracy','area_of_square','area_of_rectangle','area_of_circle','area_of_circle_with_accuracy','area_of_trapezoid','volume_of_pyramid','linear_regression_slope','surface_area_of_cylinder','surface_area_of_cylinder_with_accuracy','surface_area_of_sphere','surface_area_of_sphere_with_accuracy','surface_area_of_cube','surface_area_of_rectangle','surface_area_of_cuboid','volume_of_cone','volume_of_cone_with_accuracy','surface_area_of_cone','surface_area_of_cone_with_accuracy','area_of_ellipse','area_of_ellipse_with_accuracy','area_of_oval','area_of_triangle','calculate_distance_between_two_points','calculate_distance_between_three_points','calculate_distance_between_four_points','calculate_distance_between_points','vector_magnitude','hamming_distance']

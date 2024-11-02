@@ -1,0 +1,6 @@
+Nothing special here, just greeting you
+
+This file once existed to handle the edge case of only having a single file in a directory (./mini_lib)
+since the first itteration of my directory compress function was too stupid to handle that
+
+Now it's a reminder of how many changes TGE has received over all this time

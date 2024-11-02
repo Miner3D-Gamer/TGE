@@ -1,11 +1,14 @@
-from .. import SYSTEM_NAME
+from .. import SYSTEM_NAME, use_custom_window_implementations
 
-
+__all__ = ['save_clipboard_to_file', 'load_clipboard_from_file', 'append_to_clipboard', 'prepend_to_clipboard', 'get_clipboard_size', 'get_clipboard_file_extension', 'write_out_clipboard', 'clear_clipboard',"get_clipboard","copy_to_clipboard"]
 if SYSTEM_NAME == "windows":
-    from .clipboard.clipboard_windows import get_clipboard, copy_to_clipboard, clear_clipboard  # type: ignore
+    if use_custom_window_implementations:
+        from .clipboard.clipboard_windows import get_clipboard, copy_to_clipboard, clear_clipboard
+    else:
+        from .clipboard.clipboard_pyperclip import get_clipboard, copy_to_clipboard, clear_clipboard
     from .keyboard.windows import press_key, key_to_virtual_key
 else:
-    from .clipboard.clipboard_pyperclip import get_clipboard, copy_to_clipboard, clear_clipboard  # type: ignore
+    from .clipboard.clipboard_pyperclip import get_clipboard, copy_to_clipboard, clear_clipboard  
     from .keyboard.linux import press_key, key_to_virtual_key
 
 

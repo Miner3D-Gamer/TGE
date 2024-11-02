@@ -1,8 +1,10 @@
-import ctypes
+#type: ignore
 from ctypes import wintypes
+import ctypes
 from.import windows_virtual_keys as keys
 user32=ctypes.WinDLL('user32')
 user32.GetAsyncKeyState.restype=wintypes.SHORT
+__all__=['is_key_pressed','press_key','hold_key','release_key','key_to_virtual_key']
 def is_key_pressed(key_code):A=user32.GetAsyncKeyState(key_code);return A&32768!=0
 KEYEVENTF_KEYDOWN=0
 KEYEVENTF_KEYUP=2

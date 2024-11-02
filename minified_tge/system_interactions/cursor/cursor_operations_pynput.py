@@ -1,9 +1,10 @@
+#type: ignore
+from screeninfo import get_monitors
+import pynput
 _A='middle_mouse_down'
 WHEEL_DELTA=120
-import pynput
 MOUSE=pynput.mouse.Controller()
 def getScreenDimensions():return get_monitors()[0].width,get_monitors()[0].width
-from screeninfo import get_monitors
 SCREEN_WIDTH,SCREEN_HEIGHT=getScreenDimensions()
 def set_mouse_to(coords):MOUSE.position=coords
 def get_mouse_position():return MOUSE.position

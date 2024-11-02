@@ -1,3 +1,4 @@
+#type: ignore
 from Quartz import CGWindowListCopyWindowInfo,kCGWindowListOptionOnScreenOnly,kCGNullWindowID
 from AppKit import NSWorkspace,NSApplication,NSApp,NSWindow
 def is_window_minimized(window):return window.isMiniaturized()

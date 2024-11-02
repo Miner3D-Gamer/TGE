@@ -1,6 +1,7 @@
+#type: ignore
+import hjson,json,json5,re
 _B='^-?\\d+(\\.\\d+)?$'
 _A=False
-import json,json5,hjson,re
 def json5_to_json(string):return json.dumps(json5.loads(string))
 def json_to_json5(string):return json5.dumps(json.loads(string))
 def hjson_to_json(string):return json.dumps(hjson.loads(string))
@@ -103,3 +104,4 @@ def is_valid_json(json_str):
   if D!=0:B=_A
   return F
  C=C.strip();A(C);return B
+__all__=['json5_to_json','json_to_json5','hjson_to_json','json_to_hjson','hjson_to_json5','json5_to_hjson','loose_decode_json','is_valid_json']

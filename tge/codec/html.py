@@ -387,3 +387,4 @@ def encode(text: str) -> str:
         text = text.replace(character, encoding)
 
     return text
+__all__ = ['decode', 'encode']

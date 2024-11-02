@@ -6,7 +6,7 @@ from typing import NoReturn, Callable, Tuple,List
 
 from ..tbe import pass_func
 
-
+__all__ = ['update_screen', 'render_text', 'load_images_from_directory', 'handle_events', 'check_collision', 'check_collision_with_all', 'pygame_exit', 'background_color', 'draw_texture_at', 'exit']
 
 def update_screen(clock: pygame.time.Clock, fps: int = 0) -> None:
     """

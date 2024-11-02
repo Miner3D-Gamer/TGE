@@ -2,6 +2,7 @@ import subprocess, os
 
 
 def create_virtual_drive(drive_letter: str, folder_path: str, size_mb: int = 100):
+    """Creates a virtual drive that appears as a drive letter on macOS. The drive though is just a shortcut to the specified folder."""
     # Create an empty DMG file
     subprocess.run(
         [
@@ -22,6 +23,7 @@ def create_virtual_drive(drive_letter: str, folder_path: str, size_mb: int = 100
 
 
 def remove_virtual_drive(folder_path: str):
+    """Removes a virtual drive that appears as a drive letter on macOS."""
     subprocess.run(["hdiutil", "detach", folder_path])
 
 

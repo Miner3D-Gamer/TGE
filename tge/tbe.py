@@ -100,6 +100,14 @@ import subprocess, tempfile
 version = sys.version_info
 
 
+__all__ = [
+    "pass_func",
+    "execute_function","determine_affirmative","get_available_variables","number_to_words","letter_to_number","number_to_letter","find_undocumented_functions","check_directory_for_undocumented_functions","check_directory_and_sub_directory_for_undocumented_functions","autocomplete","strict_autocomplete","is_iterable","split_with_list","analyze_text","divide","DualInfinite","generate_every_capitalization_states","remove_unused_libraries","repeat","get_username","profile","profile_function","get_current_pip_path","ArgumentHandler","HashMap","print_undocumented_functions_in_directory","minify","compress_imports_in_code"
+]
+
+
+
+
 def pass_func(*args: Any, **more_args:Any) -> None: 
     """This function does nothing and has no side effects."""
     pass
@@ -246,7 +254,7 @@ def get_available_variables() -> Dict[str, Any]:
 
 
 
-def convert_number_to_words_less_than_thousand(n:int, dash:bool = True) -> str:
+def _convert_number_to_words_less_than_thousand(n:int, dash:bool = True) -> str:
         """
         Converts a number (less than one thousand) to its word representation.
 
@@ -274,7 +282,7 @@ def convert_number_to_words_less_than_thousand(n:int, dash:bool = True) -> str:
             rest = n % 100
             result = TINY_NUMBERS[hundreds_digit] + " hundred"
             if rest > 0:
-                result += " and " + convert_number_to_words_less_than_thousand(rest)
+                result += " and " + _convert_number_to_words_less_than_thousand(rest)
             return result
         elif n >= 20:
             tens_digit = n // 10
@@ -388,7 +396,7 @@ def number_to_words(number:int) -> str:
     result_parts: List[str] = []
     for i, group in enumerate(groups):
         if group != 0:
-            result_parts.append(convert_number_to_words_less_than_thousand(group) + " " + big_numbers[i])
+            result_parts.append(_convert_number_to_words_less_than_thousand(group) + " " + big_numbers[i])
     
     # Join the parts and return the final result
     return ", ".join(reversed(result_parts))
@@ -514,7 +522,24 @@ Inner Updates:
 
 
 
-
+from typing import List
+def get_surface_defined_names(file_path: str) -> List[str]:
+    """Get all surface-defined names in a Python file.
+    Surface-defined names are defined as top-level functions and classes that don't start with an underscore (_).
+    Args:
+        file_path (str): Path to the Python file to scan.
+    Returns:
+        list: A list of surface-defined names, each represented as a string."""
+    with open(file_path, 'r') as file:
+        tree = ast.parse(file.read())
+    
+    # Get all function names at the top level that don't start with "_"
+    function_names = [
+        node.name for node in tree.body 
+        if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and not node.name.startswith('_')
+    ]
+    
+    return function_names
 
 
 
@@ -877,7 +902,7 @@ def divide(a:Union[int,float], b:Union[int,float])->Union[float,DualInfinite]:
 
 
 
-def generate_every_capitalization_state(s:str)->List[str]:
+def generate_every_capitalization_states(s:str)->List[str]:
     """
     Generates all possible capitalization combinations of a given string.
 
@@ -895,6 +920,9 @@ def generate_every_capitalization_state(s:str)->List[str]:
         > ['PNg', 'pNG', 'png', 'pnG', 'PnG', 'PNG', 'pNg', 'Png']
     """
     def backtrack(index:int, path:List[str])->None:
+        """
+        Recursively generates all possible capitalization combinations of a given string.
+        """
         if index == len(s):
             result.append(''.join(path))
             return
@@ -1117,6 +1145,9 @@ def profile_function(function:Callable[...,Any], filename:str, *inputs:Any, **ex
 
 if os.name == 'nt':
     def get_current_pip_path():
+        """
+        Get the path to the current pip executable on Windows.
+        """
         python_executable = sys.executable
         if os.name == 'nt':
             pip_path = os.path.join(os.path.dirname(python_executable), 'Scripts', 'pip.exe')
@@ -1127,6 +1158,9 @@ if os.name == 'nt':
             return None
 else:
     def get_current_pip_path():
+        """
+        Get the path to the current pip executable on non-Windows platforms.
+        """
         python_executable = sys.executable
         pip_path = os.path.join(os.path.dirname(python_executable), 'bin', 'pip')
         
@@ -1380,31 +1414,6 @@ Returns:
 
 
 
-def get_from_dict_by_list(data_dict:Dict[Any,Any], keys:List[Any])->Any:
-    """
-    Access a nested dictionary with a list of keys.
-    
-    :param data_dict: Dictionary to access.
-    :param keys: List of keys to access the dictionary.
-    :return: Value from the dictionary.
-    """
-    for key in keys:
-        data_dict = data_dict[key]
-    return data_dict
-
-def set_in_dict_by_list(data_dict:Dict[Any,Any], keys:List[Any], value:Any)->None:
-    """
-    Set a value in a nested dictionary with a list of keys.
-    
-    :param data_dict: Dictionary to set the value in.
-    :param keys: List of keys to access the dictionary.
-    :param value: Value to set in the dictionary.
-    """
-    for key in keys[:-1]:
-        data_dict = data_dict.setdefault(key, {})
-    data_dict[keys[-1]] = value
-
-
 
 
 
@@ -1529,10 +1538,11 @@ else:
 
 
 
-from .manipulation.list_utils import zipper_insert
+#from .manipulation.list_utils import zipper_insert
 
 
-def separate_imports(lines: List[str]) -> Tuple[List[str], List[str]]:
+def _separate_imports(lines: List[str]) -> Tuple[List[str], List[str]]:
+    """Separate imports from other lines."""
     import_lines: List[str] = []
     other_lines: List[str] = []
     for line in lines:
@@ -1549,7 +1559,8 @@ def separate_imports(lines: List[str]) -> Tuple[List[str], List[str]]:
     return import_lines, other_lines
 
 
-def compress_imports(import_lines: List[str]) -> List[str]:
+def _compress_imports(import_lines: List[str]) -> List[str]:
+    """Compress imports."""
     from_imports: List[str] = []
     import_imports: List[str] = []
 
@@ -1568,9 +1579,10 @@ def compress_imports(import_lines: List[str]) -> List[str]:
 
 
 def compress_imports_in_code(code: List[str]) -> List[str]:
-    imports, rest = separate_imports(code)
-    imports = compress_imports(imports)
-    return zipper_insert(imports, ["\n"]*len(imports)) + rest
+    """Compress imports in code."""
+    imports, rest = _separate_imports(code)
+    imports = _compress_imports(imports)
+    return imports + rest
 
 
 

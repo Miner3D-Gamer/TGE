@@ -1,3 +1,5 @@
+#type: ignore
+__all__=['convertFloat','convertInt','compareType']
 def convertFloat(input_string):
  A=input_string
  try:A=float(A);return A

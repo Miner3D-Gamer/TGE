@@ -1,7 +1,9 @@
+#type: ignore
 from Xlib import X,XK,display
 from.import linux_virtual_keys as keys
 d=display.Display()
 root=d.screen().root
+__all__=['is_key_pressed','press_key','hold_key','release_key','key_to_virtual_key']
 def is_key_pressed(key_code):A=root.query_pointer()._data['mask'];return A&1<<key_code-8!=0
 def press_key(key_code):root.warp_pointer(0,0);root.fake_input(X.KeyPress,key_code);d.sync()
 def hold_key(key_code):root.warp_pointer(0,0);root.fake_input(X.KeyPress,key_code);d.sync()

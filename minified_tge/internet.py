@@ -1,10 +1,11 @@
+#type: ignore
+from urllib.parse import urlparse,parse_qs
+import os,pytube,re,requests,urllib.request,yt_dlp
 _C=None
 _B=False
 _A=True
-import re,pytube,os,re,yt_dlp,requests
-from urllib.parse import urlparse,parse_qs
 from.file_operations import create_missing_directory
-import urllib.request
+__all__=['is_url','remove_html_tags','is_internet_connected','is_url_available','download_youtube_video','download_youtube_playlist','get_youtube_playlist_info','get_youtube_video_info','get_youtube_video_id','get_youtube_video_url','get_all_videos_from_youtube_playlist']
 def is_url(url):A=re.compile('^(?:http|https)://(?:[\\w-]+\\.)*[\\w-]+(?:\\.[a-zA-Z]{2,})(?:/?|(?:/[^\\s]+)+)?$');return bool(re.match(A,url))
 def remove_html_tags(string):return re.sub('<.*?>','',string)
 def get_youtube_video_id(input_string):

@@ -1,4 +1,6 @@
 minified_tge/codec/__pycache__/codec.cpython-38.pyc
+minified_tge/codec/__pycache__/html.cpython-38.pyc
+minified_tge/codec/__pycache__/json.cpython-38.pyc
 minified_tge/codec/__pycache__/morse.cpython-38.pyc
 minified_tge/codec/__pycache__/msy.cpython-38.pyc
 minified_tge/codec/__pycache__/standard_galactic_alphabet.cpython-38.pyc
@@ -32,6 +34,7 @@ minified_tge/system_interactions/__pycache__/keyboard_operations.cpython-38.pyc
 minified_tge/system_interactions/__pycache__/shared.cpython-38.pyc
 minified_tge/system_interactions/__pycache__/window_manager.cpython-38.pyc
 minified_tge/validation/__pycache__/minecraft.cpython-38.pyc
+minified_tge/validation/__pycache__/numbers.cpython-38.pyc
 minified_tge/validation/__pycache__/validation.cpython-38.pyc
 minified_tge/__pycache__/tbe.cpython-38.pyc
 minified_tge/__pycache__/__init__.cpython-38.pyc
@@ -167,6 +170,7 @@ tge/mini_lib/__pycache__/platform_mini.cpython-311.pyc
 tge/mini_lib/__pycache__/platform_mini.cpython-312.pyc
 tge/mini_lib/__pycache__/platform_mini.cpython-38.pyc
 tge/mini_lib/__pycache__/platform_mini.cpython-39.pyc
+tge/system_interactions/clipboard/__pycache__/clipboard_pyperclip.cpython-38.pyc
 tge/system_interactions/clipboard/__pycache__/clipboard_windows.cpython-310.pyc
 tge/system_interactions/clipboard/__pycache__/clipboard_windows.cpython-311.pyc
 tge/system_interactions/clipboard/__pycache__/clipboard_windows.cpython-312.pyc

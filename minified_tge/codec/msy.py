@@ -1,3 +1,4 @@
+#type: ignore
 def decode(data):
  C={};B=None;D=data.split('\n')
  for A in D:
@@ -14,3 +15,4 @@ def encode(data):
   for D in C:A+=f"{D}\n"
   A+='\n'
  return A
+__all__=['decode','encode']

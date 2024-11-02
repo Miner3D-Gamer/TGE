@@ -7,7 +7,15 @@ from .middle_man import *
 
 
 def count_gif_frames(gif: Image.Image)->int:
-    
+    """
+    Count the number of frames in a GIF image.
+
+    Args:
+        gif (PIL.Image.Image): The GIF image to count frames for.
+
+    Returns:
+        int: The number of frames in the GIF.
+    """
     frame_count = 0
     try:
         while True:
@@ -234,3 +242,4 @@ def is_color_similar(
     bool: True if the colors are similar within the threshold, False otherwise.
     """
     return math.sqrt(sum((a[i] - b[i]) ** 2 for i in range(3))) <= similarity
+__all__ = ['count_gif_frames', 'image_to_ascii', 'count_image_colors', 'hex_to_rgb', 'Color', 'is_color_similar']

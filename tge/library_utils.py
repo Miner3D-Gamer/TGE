@@ -5,6 +5,10 @@ from collections.abc import Iterable
 import os
 
 from .tbe import get_current_pip_path
+___all__ = ["download_library", "is_library_installed", "install_missing_tge_libraries"]
+
+PIP_c = get_current_pip_path()
+found = False
 
 
 def is_library_installed(library_name: str) -> bool:
@@ -29,20 +33,24 @@ def download_library(library_name: str) -> Tuple[bool, str]:
         tuple: A tuple containing a boolean indicating whether the installation was successful
         and a message string providing additional information in case of an error.
     """
-    commands = get_current_pip_path()
-    if not commands:
-        commands = [
-            ["python", "-m", "pip", "install", library_name],
-            ["python3", "-m", "pip", "install", library_name],
-            ["pip", "install", library_name],
-            ["pip3", "install", library_name],
-        ]
-    else:
-        commands = [commands, "install", library_name]
+    global PIP_c, found
+    if not found:
+        if not PIP_c:
+            PIP_c = [
+                ["python", "-m", "pip", "install", library_name],
+                ["python3", "-m", "pip", "install", library_name],
+                ["pip", "install", library_name],
+                ["pip3", "install", library_name],
+            ]
+        else:
+            PIP_c = [[PIP_c, "install", library_name]]
     error_message = None
-    for command in commands:
+    for command in PIP_c: # type: ignore
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
+            if not found:
+                found = True
+                PIP_c = [command]
             return True, result.stdout
         except subprocess.CalledProcessError as e:
             error_message = (

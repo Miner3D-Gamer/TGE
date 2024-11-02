@@ -1,5 +1,7 @@
+#type: ignore
 import os,pygame
 from..tbe import pass_func
+__all__=['update_screen','render_text','load_images_from_directory','handle_events','check_collision','check_collision_with_all','pygame_exit','background_color','draw_texture_at','exit']
 def update_screen(clock,fps=0):pygame.display.update();clock.tick(fps)
 def render_text(screen,text,font_name,size,color,position):font=pygame.font.SysFont(font_name,size);rendered_text=font.render(text,True,color);screen.blit(rendered_text,position)
 def load_images_from_directory(directory_path):

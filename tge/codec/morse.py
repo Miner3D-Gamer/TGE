@@ -150,3 +150,4 @@ def decode(message: str) -> str:
     }
     message = message.replace(" ", "/").replace("_", "/")
     return "".join([morse_code[letter] for letter in message.lower()])
+__all__ = ['encode', 'decode']

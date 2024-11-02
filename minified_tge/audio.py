@@ -1,10 +1,11 @@
-_A=False
-import os
-from.import SYSTEM_NAME
+#type: ignore
 from gtts import gTTS
 from pydub import AudioSegment
 from simpleaudio import play_buffer,PlayObject
 from typing import cast
+import os
+_A=False
+from.import SYSTEM_NAME
 class AudioPlayer:
  def __init__(A,file_path):A.audio=AudioSegment.from_file(file_path);A.samples=A.audio.raw_data;A.sample_rate=A.audio.frame_rate;A.num_channels=A.audio.channels;A.bytes_per_sample=A.audio.sample_width;A.current_position=0;A.play_obj=None;A.is_playing=_A
  def play(A):
@@ -24,3 +25,4 @@ class AudioPlayer:
 def save_text_to_speech(text,name,dir,language='en'):
  if not os.path.exists(dir):raise FileNotFoundError('Directory %s was not found'%dir)
  A=gTTS(text=text,lang=language);A.save(f"{dir}/{name}")
+__all__=['AudioPlayer','save_text_to_speech']

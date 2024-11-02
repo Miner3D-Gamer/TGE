@@ -3,7 +3,7 @@ import ctypes
 from ctypes import wintypes
 from PIL import Image
 
-
+__all__ = ["screenshot", "get_pixel_color"]
 SRCCOPY = 0x00CC0020
 DIB_RGB_COLORS = 0
 

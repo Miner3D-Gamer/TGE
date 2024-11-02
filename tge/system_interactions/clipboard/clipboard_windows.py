@@ -66,3 +66,4 @@ def clear_clipboard(
     user32.OpenClipboard(0)
     user32.EmptyClipboard()
     user32.CloseClipboard()
+__all__ = ["copy_to_clipboard", "get_clipboard", "clear_clipboard"]

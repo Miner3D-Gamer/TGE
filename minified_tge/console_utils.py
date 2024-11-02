@@ -1,10 +1,10 @@
+#type: ignore
+from random import random,choice
+import os,sys,time
 _D=False
 _C='\n'
 _B=True
 _A=None
-import time,os
-from random import random,choice
-import sys
 from.tbe import determine_affirmative
 if os.name=='nt':
  def clear():os.system('cls')
@@ -111,3 +111,4 @@ def matrix_rain(rows,columns,speed=.1,density=.2,duration=_A,symbols=['0','1'],c
 class SuppressPrint:
  def __enter__(A):A._original_stdout=sys.stdout;sys.stdout=open(os.devnull,'w')
  def __exit__(A,exc_type,exc_value,traceback):sys.stdout.close();sys.stdout=A._original_stdout
+__all__=['typing_print','typingInput','write_sentences_to_console','choose_from_text_menu','skip_line','print_table','progress_bar','colorize_text','visualize_directory','clear_lines','prompt_bool','prompt_number','matrix_rain','SuppressPrint']

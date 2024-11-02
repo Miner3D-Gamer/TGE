@@ -64,3 +64,4 @@ def is_odd(number: int) -> bool:
         bool: True if the input integer is odd, False if it's even.
     """
     return number % 2 == 1
+__all__ = ['is_prime', 'is_palindrome', 'is_leap_year', 'is_even', 'is_odd']

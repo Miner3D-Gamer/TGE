@@ -1,4 +1,6 @@
+#type: ignore
 from tkinter import messagebox
+__all__=['show_message']
 def show_message(message_level,user_feedback_level=0,title=None,message=None,**F):
  B=message_level;A=user_feedback_level;C=['info','warning','error','question'];D=['ok','okcancel','yesno','yesnocancel','retrycancel','abortretryignore']
  if B<0 or B>len(C):B=0

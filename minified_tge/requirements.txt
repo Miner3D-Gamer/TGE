@@ -3,7 +3,6 @@ pygame
 gtts
 requests
 Pillow
-bs4
 screeninfo
 pynput
 pytube
@@ -12,10 +11,8 @@ python-minifier
 hjson
 json5
 autoflake
-pyobjc
 python-xlib
 pydub
 simpleaudio
-vdf
 ffmpeg-python
 yt_dlp

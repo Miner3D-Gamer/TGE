@@ -1,9 +1,13 @@
+#type: ignore
+from binascii import hexlify,unhexlify
 _B='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ '
 _A='Base must be between 2 and 95 included'
-from binascii import hexlify,unhexlify
 from.import msy
 from.import morse
+from.import html
 from.import standard_galactic_alphabet
+from.import json
+__all__=['base_x_decode_from_binary','base_x_encode_to_binary','encode','decode','msy','morse','html','standard_galactic_alphabet','json']
 def base_x_decode_from_binary(binary_data,base):
  A=base;B=int.from_bytes(binary_data,byteorder='big')
  if A<2 or A>95:raise ValueError(_A)

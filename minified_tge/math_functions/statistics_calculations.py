@@ -1,5 +1,7 @@
+#type: ignore
 from math import sqrt,log2
 import numpy as np
+__all__=['average_grade','median_grade','mode_grade','standard_deviation','median','median_absolute_deviation','correlation','calculate_entropy','median_absolute_error']
 def average_grade(grades):A=grades;return sum(A)/len(A)
 def median_grade(grades):A=grades;return sorted(A)[len(A)//2]
 def mode_grade(grades):A=grades;return max(set(A),key=A.count)

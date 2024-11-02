@@ -1,3 +1,4 @@
+#type: ignore
 _A=False
 def nand(a,b):return not(a and b)
 def nand_three(a,b,c):return not(a and b and c)
@@ -8,7 +9,6 @@ def xor_any(*A):return sum(A)%2==1
 def xnor(a,b):return not a^b
 def xnor_three(a,b,c):return not a^b^c
 def xnor_any(*A):return sum(A)%2==0
-def mux(a,b,c):return a if c else b
 def mux_four(a,b,c,d,sel_1,sel_0):A=[a,b,c,d];B=sel_1<<1|sel_0;return A[B]
 def mux_eight(a,b,c,d,e,f,g,h,sel_2,sel_1,sel_0):A=[a,b,c,d,e,f,g,h];B=sel_2<<2|sel_1<<1|sel_0;return A[B]
 def mux_any(inputs,selectors):
@@ -48,3 +48,4 @@ def bools_to_number(bools):
  for D in range(C):
   if A[D]:B+=1<<C-1-D
  return B
+__all__=['nand','nand_three','nand_any','xor','xor_three','xor_any','xnor','xnor_three','xnor_any','mux_four','mux_eight','mux_any','nor','nor_three','nor_any','binary_to_gray','demux','half_adder','full_adder','four_bit_adder','flip_four_bits','two_complement','four_bit_subtractor','any_bit_adder','number_to_bools','bools_to_number']

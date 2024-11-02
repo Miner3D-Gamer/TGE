@@ -13,12 +13,12 @@ if not importing:
 __name__ = "tge"
 __author__ = "Miner3D"
 __license__ = "LGPL, GNU Lesser General Public License"
-__url__ = "https://github.com/Miner3DGaming/TGE"
+__url__ = "https://github.com/Miner3D-Gamer/TGE"
 
-__doc__ = "https://github.com/Miner3DGaming/TGE/blob/main/README.MD"
+__doc__ = "https://github.com/Miner3D-Gamer/TGE/blob/main/README.MD"
 
 "Yep"
-"Over 900 functions in almost 60 files"
+"Oh god so many functions and files"
 "This's totally manageable and not messy even in the slightest. Easily manageable by a solo developer"
 "I'm always open for feedback so if you found a bug or have any suggestions, I'm grateful to hear your feedback"
 

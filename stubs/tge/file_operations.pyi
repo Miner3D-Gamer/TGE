@@ -1,6 +1,6 @@
 import uuid
-from typing import Any, List, Union
-NestedList = List[Union[str, "NestedList"]]
+from typing import Any
+
 __all__ = ['make_legal_filename', 'create_missing_directory', 'delete_directory', 'move_file', 'copy_file', 'rename_file', 'copy_directory', 'move_directory', 'rename_directory', 'get_folder_name', 'does_file_exist', 'does_directory_exist', 'delete_file', 'compare_file', 'are_directories_the_same', 'count_files_in_directory', 'count_items_in_directory', 'get_current_working_directory', 'get_file_extension', 'find_files_by_extension', 'get_file_size', 'get_file_creation_time', 'count_functions_in_file', 'count_functions_in_directory', 'count_function_names_in_directory', 'save_counted_function_names_from_directory', 'input_file_path', 'ask_for_directory_path', 'unzip_file', 'zip_directory', 'get_appdata_path', 'get_latest_file_in_directory_from_all_filenames_that_are_real_numbers', 'is_directory_empty', 'get_filesize', 'get_file_size_of_directory', 'generate_uuid_from_directory', 'find_files_with_extension', 'find_files_with_extensions', 'decompress_file_paths', 'compress_file_paths', 'object_to_optimal_string']
 
 def make_legal_filename(filename: str, replacer: str = '_') -> str: ...

@@ -546,8 +546,26 @@ class SuppressPrint:
         exc_type: Optional[Exception],
         exc_value: Optional[Exception],
         traceback: Optional[TracebackType],
-    )-> None:
+    ) -> None:
         """To use:\nwith SuppressPrint():\n\tdo_something()"""
         sys.stdout.close()
         sys.stdout = self._original_stdout
-__all__ = ['typing_print', 'typingInput', 'write_sentences_to_console', 'choose_from_text_menu', 'skip_line', 'print_table', 'progress_bar', 'colorize_text', 'visualize_directory', 'clear_lines', 'prompt_bool', 'prompt_number', 'matrix_rain', 'SuppressPrint']
+
+
+__all__ = [
+    "typing_print",
+    "typingInput",
+    "write_sentences_to_console",
+    "choose_from_text_menu",
+    "skip_line",
+    "print_table",
+    "progress_bar",
+    "colorize_text",
+    "visualize_directory",
+    "clear_lines",
+    "prompt_bool",
+    "prompt_number",
+    "matrix_rain",
+    "SuppressPrint",
+    "clear"
+]

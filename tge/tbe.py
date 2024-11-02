@@ -1173,6 +1173,7 @@ else:
 
 
 class ArgumentHandler:
+    __slots__ = ('arguments', 'argument_list_length')
     "Handle command-line arguments by allowing retrieval, deletion, and flag-based access."
     def __init__(self, arguments: Union[None , List[str]] = None) -> None:
         """Initialize the object with a list of arguments. If no arguments are provided, use command-line arguments excluding the script name.
@@ -1184,8 +1185,8 @@ Attributes:
     arguments (list): The list of arguments."""
         if arguments is None:
             arguments = sys.argv[1:]
-        self.arguments = arguments
-        self.argument_list_length = len(arguments)
+        self.arguments: List[str] = arguments
+        self.argument_list_length: int = len(arguments)
 
     def has_argument(self, argument: str, delete:bool=False) -> bool:
         """Check if the argument list contains the specified argument. Optionally remove the argument from the list and adjust the argument count.
@@ -1269,6 +1270,7 @@ Returns:
 
 class HashMap:
     "A Custom Hashmap"
+    __slots__ = ('map',)
     def __init__(self, *items: Any) -> None:
         """Initialize with items."""
         self.map: List[Any] = list(items)

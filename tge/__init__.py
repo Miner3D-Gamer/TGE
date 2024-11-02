@@ -63,8 +63,7 @@ def burn_value_into_function(x: Any) -> Callable[[], Any]:
     return burned_value_function
 
 
-
-def get_system()->Literal["jython", "darwin", "windows", "linux", "unknown"]:
+def get_system() -> Literal["jython", "darwin", "windows", "linux", "unknown"]:
     """Returns the system name"""
     if sys.platform.startswith("java"):
         return "jython"
@@ -77,7 +76,6 @@ def get_system()->Literal["jython", "darwin", "windows", "linux", "unknown"]:
     else:
         return "unknown"
 
-get_system = burn_value_into_function(get_system())
 
 SYSTEM_NAME = get_system()
 
@@ -102,7 +100,9 @@ def is_ffmpeg_installed():
 
 
 pre_assured_libraries = os.getenv("TGE_ASSURED_LIBRARIES", "True")
-use_custom_window_implementations = os.getenv("TGE_USE_CUSTOM_WINDOW_IMPLEMENTATIONS", "True") == "True"
+use_custom_window_implementations = (
+    os.getenv("TGE_USE_CUSTOM_WINDOW_IMPLEMENTATIONS", "True") == "True"
+)
 
 if pre_assured_libraries == "True":
     assured_libraries: Optional[bool] = True
@@ -127,6 +127,8 @@ __all__ = [
     "__url__",
     "__doc__",
     "SYSTEM_NAME",
+    "INIT_TIME",
+    "INIT_TIME_BEFORE_IMPORTING",
 ]
 
 
@@ -287,7 +289,7 @@ else:
 
     if (
         SYSTEM_NAME == "windows"
-        or SYSTEM_NAME == "linux" # type: ignore
+        or SYSTEM_NAME == "linux"  # type: ignore
         or (quartz_installed and appKit_installed)
     ):
         __all__.append("window_manager")
@@ -340,4 +342,11 @@ else:
 tim = tm.time()
 IMPORT_TIME = tim - INIT_TIME_BEFORE_IMPORTING
 INIT_TIME = tim - start_import
-del tim, importing, INIT_TIME_BEFORE_IMPORTING, pre_assured_libraries, assured_libraries
+del (
+    tim,
+    importing,
+    INIT_TIME_BEFORE_IMPORTING,
+    pre_assured_libraries,
+    assured_libraries,
+    get_system,
+)

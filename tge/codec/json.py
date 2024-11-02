@@ -30,7 +30,7 @@ def hjson_to_json5(string: str) -> str:
     return json5.dumps(hjson.loads(string))
 
 
-def json5_to_hjson(string: str):
+def json5_to_hjson(string: str)->str:
     """Convert JSON5 to HJSON."""
     return hjson.dumps(json5.loads(string))
 

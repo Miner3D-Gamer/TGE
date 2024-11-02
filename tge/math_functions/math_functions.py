@@ -458,7 +458,7 @@ class Vector:
     magnitude() -> float: Calculates the magnitude (length) of the vector.
     normalize() -> 'Vector': Returns a normalized (unit) vector.
     """
-
+    __slots__ = ("components",)
     def __init__(self, *components: Union[int, float]) -> None:
         """Initialize an object with a list of float components.
 

@@ -6,7 +6,16 @@ import os
 import concurrent
 
 
-__all__ = ["run_function_with_timeout", "get_docstring", "check_for_functions_in_module_with_missing_notations", "print_check_for_functions_in_module_with_missing_notations","get_function_inputs","get_return_type"]
+__all__ = [
+    "run_function_with_timeout",
+    "get_docstring",
+    "check_for_functions_in_module_with_missing_notations",
+    "print_check_for_functions_in_module_with_missing_notations",
+    "get_function_inputs",
+    "get_return_type",
+    "count_functions_in_library"
+]
+
 
 def get_docstring(obj: object) -> Optional[str]:
     """
@@ -30,7 +39,9 @@ def check_for_functions_in_module_with_missing_notations(
     library_module: ModuleType,
 ) -> NoReturn:
     "..."
-    raise Exception("This function is broken, I'm just done with the bs this function caused me")
+    raise Exception(
+        "This function is broken, I'm just done with the bs this function caused me"
+    )
     """
     Check all functions in a given library module for missing input type or return type annotations.
     Parameters:
@@ -214,7 +225,9 @@ class MissingReturnType:
     pass
 
 
-def restrict_to_directory(allowed_dir: str)-> Callable[[Callable[..., Any]], Callable[..., Any]]:
+def restrict_to_directory(
+    allowed_dir: str,
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """
     A decorator factory that restricts a function to only allow file operations
     within a specified directory.
@@ -226,7 +239,7 @@ def restrict_to_directory(allowed_dir: str)-> Callable[[Callable[..., Any]], Cal
     function: A decorator that enforces the directory restriction.
     """
 
-    def decorator(func: Callable[..., Any])-> Callable[..., Any]:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         """
         A decorator that wraps a function to ensure file operations are restricted
         to the allowed directory.
@@ -275,8 +288,8 @@ class TimeoutResult: ...
 
 
 def run_function_with_timeout(
-    func: Callable[..., Any], timeout: Union[int,float], *args: Any, **kwargs: Any
-) -> Union[Any, TimeoutResult]: 
+    func: Callable[..., Any], timeout: Union[int, float], *args: Any, **kwargs: Any
+) -> Union[Any, TimeoutResult]:
     """
     Executes a function with a specified timeout.
 
@@ -293,9 +306,9 @@ def run_function_with_timeout(
     This function uses a thread pool executor to run the given function asynchronously and
     enforces a timeout on its execution.
     """
-    with concurrent.futures.ThreadPoolExecutor() as executor:# type: ignore
-        future = executor.submit(func, *args, **kwargs)# type: ignore
+    with concurrent.futures.ThreadPoolExecutor() as executor:  # type: ignore
+        future = executor.submit(func, *args, **kwargs)  # type: ignore
         try:
-            return future.result(timeout=timeout)# type: ignore
-        except concurrent.futures.TimeoutError:# type: ignore
+            return future.result(timeout=timeout)  # type: ignore
+        except concurrent.futures.TimeoutError:  # type: ignore
             return TimeoutResult

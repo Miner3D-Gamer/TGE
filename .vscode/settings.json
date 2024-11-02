@@ -56,6 +56,7 @@
         "RRGGBB",
         "simpleaudio",
         "SRCCOPY",
+        "stubgen",
         "subtractor",
         "syscmd",
         "tkinter",

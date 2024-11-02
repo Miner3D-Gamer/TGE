@@ -3,6 +3,9 @@ from typing import List
 import tge
 import base64
 
+# stubgen -p tge -o stubs
+# Add NestedList to file_operations.py
+
 tge.console.clear()
 
 IGNORE = True

@@ -86,7 +86,7 @@ class TimerManager:
         """
         self.timers: Dict[str, Timer] = {}
 
-    def start_timer(self, timer_name: str):
+    def start_timer(self, timer_name: str)-> None:
         """Start a timer.
 
         Args:

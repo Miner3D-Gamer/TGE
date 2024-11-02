@@ -546,7 +546,7 @@ class SuppressPrint:
         exc_type: Optional[Exception],
         exc_value: Optional[Exception],
         traceback: Optional[TracebackType],
-    ):
+    )-> None:
         """To use:\nwith SuppressPrint():\n\tdo_something()"""
         sys.stdout.close()
         sys.stdout = self._original_stdout

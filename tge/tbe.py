@@ -1144,7 +1144,7 @@ def profile_function(function:Callable[...,Any], filename:str, *inputs:Any, **ex
 
 
 if os.name == 'nt':
-    def get_current_pip_path():
+    def get_current_pip_path()->Optional[str]:
         """
         Get the path to the current pip executable on Windows.
         """
@@ -1157,7 +1157,7 @@ if os.name == 'nt':
         else:
             return None
 else:
-    def get_current_pip_path():
+    def get_current_pip_path()->Optional[str]:
         """
         Get the path to the current pip executable on non-Windows platforms.
         """

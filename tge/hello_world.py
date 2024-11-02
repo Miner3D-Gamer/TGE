@@ -1,9 +1,10 @@
 from random import shuffle
 from hashlib import sha256
+from typing import Tuple
 
 __all__ = ["get_hello_world", "print_hello_world"]
 
-def get_hello_world(reminder_start: int = 10000, reminder_every: int = 10):
+def get_hello_world(reminder_start: int = 10000, reminder_every: int = 10)-> Tuple[str, int]:
     """
     Generates a "Hello World" string return it.
 
@@ -45,7 +46,7 @@ def get_hello_world(reminder_start: int = 10000, reminder_every: int = 10):
     return scram, attempts
 
 
-def print_hello_world():
+def print_hello_world()-> None:
     """
     Prints the result of `get_hello_world`.
 

@@ -354,7 +354,7 @@ for file_id in range(total_urls):
             continue
         os.makedirs(parent_dir, exist_ok=True)
         if give_feedback < 1:
-            print(f"Writing to {path} ({file_id+1}/{total_urls})")
+            print(f"Writing to {path} ({file_id+1}/{total_urls}) ({idx+1}/{total_dirs}) ({round((file_id+1)/total_urls*100,2)}%)")
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
     if give_feedback < 1:

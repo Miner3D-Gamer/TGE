@@ -149,6 +149,7 @@ else:
   if os.path.isfile(pip_path):return pip_path
   else:return
 class ArgumentHandler:
+ __slots__='arguments','argument_list_length'
  def __init__(self,arguments=_C):
   if arguments is _C:arguments=sys.argv[1:]
   self.arguments=arguments;self.argument_list_length=len(arguments)
@@ -169,6 +170,7 @@ class ArgumentHandler:
   value_id=self.arguments.index(item);return value_id
  def is_empty(self):return self.argument_list_length==0
 class HashMap:
+ __slots__='map',
  def __init__(self,*items):self.map=list(items)
  def append(self,value):
   if value not in self.map:self.map.append(value)

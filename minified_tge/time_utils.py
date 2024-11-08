@@ -3,6 +3,7 @@ from datetime import datetime
 import time
 _A=None
 class Timer:
+ __slots__=['start_time','offset']
  def __init__(A,start_time,offset=0):A.start_time=start_time;A.offset=offset
  def add_time(A,amount):A.offset+=amount;return A.offset
  def subtract_time(A,amount):A.offset-=amount;return A.offset
@@ -12,6 +13,7 @@ class Timer:
  def set_offset(A,value):A.offset=value
  def get_time(A):return time.time()-A.start_time+A.offset
 class TimerManager:
+ __slots__=['timers']
  def __init__(A):A.timers={}
  def start_timer(A,timer_name):A.timers[timer_name]=Timer(time.time())
  def stop_timer(B,timer_name):

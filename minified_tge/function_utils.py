@@ -4,7 +4,7 @@ from typing import get_type_hints
 import concurrent,importlib,inspect,os
 _B='function_name'
 _A='type'
-__all__=['run_function_with_timeout','get_docstring','check_for_functions_in_module_with_missing_notations','print_check_for_functions_in_module_with_missing_notations','get_function_inputs','get_return_type']
+__all__=['run_function_with_timeout','get_docstring','check_for_functions_in_module_with_missing_notations','print_check_for_functions_in_module_with_missing_notations','get_function_inputs','get_return_type','count_functions_in_library']
 def get_docstring(obj):
  try:return inspect.getdoc(obj)
  except:return''

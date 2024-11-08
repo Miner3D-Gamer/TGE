@@ -37,8 +37,8 @@ if not importing:raise RuntimeError('This library is meant to be imported, not r
 __name__='tge'
 __author__='Miner3D'
 __license__='LGPL, GNU Lesser General Public License'
-__url__='https://github.com/Miner3DGaming/TGE'
-__doc__='https://github.com/Miner3DGaming/TGE/blob/main/README.MD'
+__url__='https://github.com/Miner3D-Gamer/TGE'
+__doc__='https://github.com/Miner3D-Gamer/TGE/blob/main/README.MD'
 def is_tge_outdated():
  A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
  with open(os.path.dirname(__file__)+'/update.hashed','r')as B:C=B.read();D=str(A.content)[2:-1];return C!=D
@@ -53,7 +53,6 @@ def get_system():
  elif sys.platform=='win32':return _A
  elif platform_mini.system()=='Linux':return'linux'
  else:return'unknown'
-get_system=burn_value_into_function(get_system())
 SYSTEM_NAME=get_system()
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']='hide'
 def is_ffmpeg_installed():
@@ -69,7 +68,7 @@ elif pre_assured_libraries=='False':assured_libraries=_B
 else:assured_libraries=None
 INIT_TIME_BEFORE_IMPORTING=tm.time()-start_import
 from.import library_utils
-__all__=['library_utils','is_ffmpeg_installed','get_system','is_tge_outdated','__name__','__author__','__license__','__url__','__doc__','SYSTEM_NAME']
+__all__=['library_utils','is_ffmpeg_installed','get_system','is_tge_outdated','__name__','__author__','__license__','__url__','__doc__','SYSTEM_NAME','INIT_TIME','INIT_TIME_BEFORE_IMPORTING']
 if assured_libraries:
  __all__.extend([_D,_E,_F,_G,_H,_I,_J,_K,_L,_M,_N,_O,_P,_Q,_R,_S,_T,_U,_V,_W,'codec',_X,_Y,_Z,'tbe',_a,_b,_c,_d,'image_operations',_e]);from.manipulation import string_utils,list_utils,dictionary_utils as dict_utils,expansions;from.compatibility import tge_pygame;from.compatibility import tge_tkinter;from.conversion import binary as binary_conversion;from.conversion import temperature as temperature_conversion;from.conversion import time as time_conversion;from.conversion import units as units_conversion;from.conversion import data as data_conversion;from.math_functions import financial_calculations;from.math_functions import geometry_calculations;from.math_functions import math_functions;from.math_functions import statistics_calculations;from.system_interactions import clipboard_operations as clipboard;from.system_interactions import cursor_operations as cursor;from.system_interactions import keyboard_operations as keyboard;from.system_interactions import window_manager;from.validation import validation;from.codec import codec;from.import console_utils as console;from.import random_generators as random;from.import internet;from.import tbe;from.import time_utils;from.import file_operations;from.import formatting_utils as formatting;from.import bool_operations;from.image_processing import image_operations;from.import function_utils
  if is_ffmpeg_installed():from.import audio;__all__.append('audio')
@@ -98,4 +97,4 @@ else:
 tim=tm.time()
 IMPORT_TIME=tim-INIT_TIME_BEFORE_IMPORTING
 INIT_TIME=tim-start_import
-del tim,importing,INIT_TIME_BEFORE_IMPORTING,pre_assured_libraries,assured_libraries
+del(tim,importing,INIT_TIME_BEFORE_IMPORTING,pre_assured_libraries,assured_libraries,get_system)

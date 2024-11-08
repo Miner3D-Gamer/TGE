@@ -81,6 +81,7 @@ def find_divisors(x):
   if x%B==0:A.append(B)
  return A
 class Vector:
+ __slots__='components',
  def __init__(A,*B):A.components=list(B)
  def __repr__(A):return f"Vector{tuple(A.components)}"
  def __len__(A):return len(A.components)

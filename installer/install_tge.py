@@ -9,14 +9,16 @@ else:
 from typing import Optional, Union, Any, Callable, List, Dict
 from importlib.util import find_spec as importlib_find_spec
 import requests, json, subprocess, sys, os, shutil, time
+
 NestedList = List[Union[str, "NestedList"]]
+
 
 def is_library_installed(library_name: str) -> bool:
     return importlib_find_spec(library_name) is not None
 
 
 class ArgumentHandler:
-    def __init__(self, arguments:Optional[List[str]]=None):
+    def __init__(self, arguments: Optional[List[str]] = None):
         B = arguments
         if B is None:
             self.a = sys.argv[1:]
@@ -24,14 +26,14 @@ class ArgumentHandler:
             self.a = B
 
     def get_argument_by_flag(
-        self, flag: str, delete: bool = False, default: Any=None
+        self, flag: str, delete: bool = False, default: Any = None
     ) -> Optional[Union[str, Any]]:
-        
+
         if not flag in self.a:
             b = -1
         else:
             b = self.a.index(flag)
-        
+
         if b < 0:
             return default
         if b + 1 == len(self.a):
@@ -43,7 +45,7 @@ class ArgumentHandler:
             d = self.a.__getitem__(b + 1)
         return d
 
-    def has_argument(self, argument: str, delete: bool=False):
+    def has_argument(self, argument: str, delete: bool = False):
         return argument in self.a
 
 
@@ -123,6 +125,8 @@ while True:
         Your Input: """
         ).strip()
         if inp.startswith("&"):
+            if wait_for_reaction:
+                input()
             quit()
 
     if inp == "1":
@@ -140,14 +144,12 @@ while True:
         if not path:
 
             if TKINTER_available:
-                path = filedialog.askopenfilename() # type: ignore
+                path = filedialog.askopenfilename()  # type: ignore
             else:
                 path = input("(Tkinter not available) Directory: ")
         path = os.path.dirname(path) + "/Lib/site-packages"
         if os.path.exists(path):
-            dirs = [
-                path + "/tge" if not unify(path).endswith("/tge") else ""
-            ]
+            dirs = [path + "/tge" if not unify(path).endswith("/tge") else ""]
             break
         else:
             if give_feedback < 1:
@@ -159,7 +161,7 @@ while True:
         )
         if not path:
             if TKINTER_available:
-                path = filedialog.askdirectory() # type: ignore
+                path = filedialog.askdirectory()  # type: ignore
             else:
                 path = input("(Tkinter not available) Directory: ")
         if not os.path.exists(path):
@@ -176,6 +178,8 @@ while True:
         if not os.path.exists(path):
             if give_feedback < 1:
                 print("Directory does not exist, canceling.")
+            if wait_for_reaction:
+                input()
             quit()
         if is_directory_empty(path) or path.endswith("\\tge"):
             dirs = [path]
@@ -183,6 +187,8 @@ while True:
         dirs = [path + "/tge"]
         break
     elif inp == "5":
+        if wait_for_reaction:
+            input()
         quit()
 
 if give_feedback < 1:
@@ -220,7 +226,9 @@ response = requests.get(unify(os.path.join(base_github_url, "directory.json")))
 response.raise_for_status()
 
 
-def decompress_file_path_dict(data: Dict[str, Any], current_path: str = "") -> List[str]:
+def decompress_file_path_dict(
+    data: Dict[str, Any], current_path: str = ""
+) -> List[str]:
     paths: List[str] = []
     dirs = "d"
     files = "f"
@@ -231,11 +239,14 @@ def decompress_file_path_dict(data: Dict[str, Any], current_path: str = "") -> L
 
     if dirs in data:
         for dir_name, dir_content in data[dirs].items():
-            paths.extend(decompress_file_path_dict(dir_content, current_path + dir_name + "/"))
+            paths.extend(
+                decompress_file_path_dict(dir_content, current_path + dir_name + "/")
+            )
 
     return paths
 
-def decompress_file_path_list(data: NestedList, current: str="")-> List[str]:
+
+def decompress_file_path_list(data: NestedList, current: str = "") -> List[str]:
     directories: List[str] = []
 
     def handle_folder_list(data: List[Union[str, List[Any]]]) -> List[str]:
@@ -249,14 +260,14 @@ def decompress_file_path_list(data: NestedList, current: str="")-> List[str]:
 
     def handle_folder(data: List[Any]) -> List[str]:
         nonlocal current, add
-        dir:List[str] = []
+        dir: List[str] = []
         if isinstance(data, str):
             raise ValueError("Expected list but got %s" % type(data[0]))
         dir.extend(decompress_file_path_list(data[1], add(data[0])))
         return dir
-    
+
     add: Callable[[str], str] = lambda path: (current + "/" + path) if current else path
-    #remove = lambda: "/".join(current.split("/")[:-1])
+    # remove = lambda: "/".join(current.split("/")[:-1])
 
     size = len(data)
     if size == 2:
@@ -287,18 +298,23 @@ def decompress_file_path_list(data: NestedList, current: str="")-> List[str]:
     return directories
 
 
-def decompress_file_paths(data: Union[NestedList, Dict[str, Any]])->Union[List[str],Dict[str,Any]]:
+def decompress_file_paths(
+    data: Union[NestedList, Dict[str, Any]]
+) -> Union[List[str], Dict[str, Any]]:
     if isinstance(data, list):
         return decompress_file_path_list(data)
     else:
         return decompress_file_path_dict(data)
 
+
 files = [
     (file + "py" if file.endswith(".") else file)
-    for file in decompress_file_path_list(json.loads(response.text))
+    for file in decompress_file_paths(json.loads(response.text))
 ]
 
-urls = [unify(os.path.join(github_url, file)) for file in files if file.__contains__(".")]
+urls = [
+    unify(os.path.join(github_url, file)) for file in files if file.__contains__(".")
+]
 
 for dir in dirs:
     if os.path.exists(dir):
@@ -354,7 +370,9 @@ for file_id in range(total_urls):
             continue
         os.makedirs(parent_dir, exist_ok=True)
         if give_feedback < 1:
-            print(f"Writing to {path} ({file_id+1}/{total_urls}) ({idx+1}/{total_dirs}) ({round((file_id+1)/total_urls*100,2)}%)")
+            print(
+                f"Writing to {path} ({file_id+1}/{total_urls}) ({idx+1}/{total_dirs}) ({round((file_id+1)/total_urls*100,2)}%)"
+            )
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)
     if give_feedback < 1:

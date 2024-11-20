@@ -61,7 +61,7 @@ for root, dirs, files in os.walk(dir, topdown=False):
         directories.append(file)
 
 
-compressed = tge.file_operations.compress_file_paths(directories)
+compressed = tge.file_operations._compress_path_list_to_dict(directories) #type: ignore
 
 with open("directory.json", "w") as normal_file:  #
     compressed = json.dumps(compressed)

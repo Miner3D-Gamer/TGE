@@ -2,6 +2,7 @@ import os
 import subprocess
 import argparse
 from typing import List, Optional
+import concurrent.futures
 
 def find_python_files(directory: str) -> List[str]:
     """
@@ -22,11 +23,52 @@ def find_python_files(directory: str) -> List[str]:
                 python_files.append(file_path)
     return python_files
 
+def generate_stub_for_file(
+    file_path: str, 
+    output_dir: str, 
+    include_private: bool = False,
+    quiet: bool = False
+) -> tuple:
+    """
+    Generate stub for a single Python file.
+    
+    Args:
+        file_path: Path to the Python file
+        output_dir: Directory where stubs should be generated
+        include_private: Whether to include private members in stubs
+        quiet: Whether to suppress output
+        
+    Returns:
+        Tuple of (file_path, success_status, error_message)
+    """
+    try:
+        # Construct stubgen command
+        cmd = ['stubgen']
+        if include_private:
+            cmd.append('--include-private')
+        cmd.extend(['-o', output_dir, file_path])
+        
+        # Run stubgen
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True
+        )
+        
+        if result.returncode == 0:
+            return (file_path, True, None)
+        else:
+            return (file_path, False, result.stderr)
+            
+    except Exception as e:
+        return (file_path, False, str(e))
+
 def generate_stubs(
     files: List[str], 
     output_dir: str, 
     include_private: bool = False,
-    quiet: bool = False
+    quiet: bool = False,
+    max_workers: Optional[int] = None
 ) -> None:
     """
     Generate stubs for the given Python files.
@@ -36,35 +78,31 @@ def generate_stubs(
         output_dir: Directory where stubs should be generated
         include_private: Whether to include private members in stubs
         quiet: Whether to suppress output
+        max_workers: Number of threads to use (None for default)
     """
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
-    for file_path in files:
-        try:
-            # Construct stubgen command
-            cmd = ['stubgen']
-            if include_private:
-                cmd.append('--include-private')
-            cmd.extend(['-o', output_dir, file_path])
-            
-            # Run stubgen
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True
-            )
+    # Use ThreadPoolExecutor for parallel processing
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Prepare futures for stub generation
+        futures = [
+            executor.submit(
+                generate_stub_for_file, 
+                file_path, output_dir, include_private, quiet
+            ) for file_path in files
+        ]
+        
+        # Process results
+        for future in concurrent.futures.as_completed(futures):
+            file_path, success, error = future.result()
             
             if not quiet:
-                if result.returncode == 0:
+                if success:
                     print(f"✓ Generated stub for: {file_path}")
                 else:
                     print(f"✗ Failed to generate stub for: {file_path}")
-                    print(f"Error: {result.stderr}")
-                    
-        except Exception as e:
-            if not quiet:
-                print(f"✗ Error processing {file_path}: {str(e)}")
+                    print(f"Error: {error}")
 
 def main():
     parser = argparse.ArgumentParser(description="Recursively generate stubs for Python files")
@@ -87,6 +125,12 @@ def main():
         action='store_true',
         help="Suppress output"
     )
+    parser.add_argument(
+        '-t', '--threads',
+        type=int,
+        default=None,
+        help="Number of threads to use for parallel stub generation (default: number of CPUs)"
+    )
     
     args = parser.parse_args()
     
@@ -105,10 +149,10 @@ def main():
         python_files,
         args.output_dir,
         args.include_private,
-        args.quiet
+        args.quiet,
+        args.threads
     )
 
 if __name__ == '__main__':
     main()
-
 #python generate_stubs.py -o stubs tge

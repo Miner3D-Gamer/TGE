@@ -5,7 +5,7 @@ import zipfile
 import math
 import hashlib
 import uuid
-from typing import Union, Tuple, List, Dict, Optional, Any, Callable
+from typing import Union, Tuple, List, Dict, Optional, Any, Callable, TypeAlias
 import re
 from tkinter import filedialog
 import json
@@ -953,7 +953,7 @@ def find_files_with_extensions(root_dir: str, file_extensions: List[str]) -> Lis
     return files
 
 
-NestedList = List[Union[str, "NestedList"]]
+NestedList: TypeAlias = List[Union[str, "NestedList"]]
 
 
 def _compress_path_list_to_dict(paths: List[str]) -> Dict[str, Any]:

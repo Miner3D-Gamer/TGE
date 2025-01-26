@@ -16,3 +16,4 @@ pydub
 simpleaudio
 ffmpeg-python
 yt_dlp
+psutil

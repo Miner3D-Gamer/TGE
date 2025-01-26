@@ -9,8 +9,8 @@ import concurrent
 __all__ = [
     "run_function_with_timeout",
     "get_docstring",
-    "check_for_functions_in_module_with_missing_notations",
-    "print_check_for_functions_in_module_with_missing_notations",
+    # "check_for_functions_in_module_with_missing_notations",
+    # "print_check_for_functions_in_module_with_missing_notations",
     "get_function_inputs",
     "get_return_type",
     "count_functions_in_library"
@@ -35,62 +35,62 @@ def get_docstring(obj: object) -> Optional[str]:
         return ""
 
 
-def check_for_functions_in_module_with_missing_notations(
-    library_module: ModuleType,
-) -> NoReturn:
-    "..."
-    raise Exception(
-        "This function is broken, I'm just done with the bs this function caused me"
-    )
-    """
-    Check all functions in a given library module for missing input type or return type annotations.
-    Parameters:
-    library_module (module): The library module to analyze.
-    Returns:
-    list: A list of dictionaries containing information about functions with missing type annotations.
-    """
-    functions_with_missing_annotations = []
+# def check_for_functions_in_module_with_missing_notations(
+#     library_module: ModuleType,
+# ) -> NoReturn:
+#     "..."
+#     raise Exception(
+#         "This function is broken, I'm just done with the bs this function caused me"
+#     )
+#     """
+#     Check all functions in a given library module for missing input type or return type annotations.
+#     Parameters:
+#     library_module (module): The library module to analyze.
+#     Returns:
+#     list: A list of dictionaries containing information about functions with missing type annotations.
+#     """
+#     functions_with_missing_annotations = []
 
-    for name, obj in inspect.getmembers(library_module):
-        if isinstance(obj, FunctionType):
-            input_parameters = get_function_inputs(obj)
-            missing_input_types = [
-                param for param in input_parameters if param["type"] is NoInputType
-            ]
+#     for name, obj in inspect.getmembers(library_module):
+#         if isinstance(obj, FunctionType):
+#             input_parameters = get_function_inputs(obj)
+#             missing_input_types = [
+#                 param for param in input_parameters if param["type"] is NoInputType
+#             ]
 
-            return_type = get_return_type(obj)
-            if missing_input_types or return_type is MissingReturnType:
-                functions_with_missing_annotations.append(
-                    {
-                        "file": library_module.__file__,
-                        "function_name": name,
-                        "missing_input_types": missing_input_types,
-                        "return_type": return_type,
-                    }
-                )
-        elif isinstance(obj, ModuleType):
-            if obj.__name__.startswith(library_module.__name__):
-                functions_with_missing_annotations.extend(
-                    check_for_functions_in_module_with_missing_notations(obj)
-                )
+#             return_type = get_return_type(obj)
+#             if missing_input_types or return_type is MissingReturnType:
+#                 functions_with_missing_annotations.append(
+#                     {
+#                         "file": library_module.__file__,
+#                         "function_name": name,
+#                         "missing_input_types": missing_input_types,
+#                         "return_type": return_type,
+#                     }
+#                 )
+#         elif isinstance(obj, ModuleType):
+#             if obj.__name__.startswith(library_module.__name__):
+#                 functions_with_missing_annotations.extend(
+#                     check_for_functions_in_module_with_missing_notations(obj)
+#                 )
 
-    return functions_with_missing_annotations
+#     return functions_with_missing_annotations
 
 
-def print_check_for_functions_in_module_with_missing_notations(
-    library_module: ModuleType,
-) -> None:
-    """Print details of functions in a module that are missing type annotations.
+# def print_check_for_functions_in_module_with_missing_notations(
+#     library_module: ModuleType,
+# ) -> None:
+#     """Print details of functions in a module that are missing type annotations.
 
-    Args:
-        library_module (ModuleType): The module to check for missing type annotations.
+#     Args:
+#         library_module (ModuleType): The module to check for missing type annotations.
 
-    Details:
-        Prints each function with missing type annotations, specifying whether the issue is a missing return type or missing input type.
-    """
-    data = check_for_functions_in_module_with_missing_notations(library_module)
-    for i in data:
-        print(f"\nIn File '{i['file']}' Function '{i['function_name']}'", i)
+#     Details:
+#         Prints each function with missing type annotations, specifying whether the issue is a missing return type or missing input type.
+#     """
+#     data = check_for_functions_in_module_with_missing_notations(library_module)
+#     for i in data:
+#         print(f"\nIn File '{i['file']}' Function '{i['function_name']}'", i)
 
 
 def get_return_type(func: MethodType) -> Any:

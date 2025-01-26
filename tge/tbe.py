@@ -1490,7 +1490,7 @@ Returns:
 
 if version.minor < 12:
     import python_minifier
-    def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
+    def minify(text:str, *, rename_globals:bool=False,remove_docstrings:bool=True,remove_annotations:bool=True,rename_locals:bool=False)->str:
         """Minify Python code by optionally renaming important names and removing docstrings.
 
     Args:
@@ -1500,9 +1500,9 @@ if version.minor < 12:
 
     Returns:
         str: The minified Python code."""
-        return python_minifier.minify(text, rename_globals=rename_important_names, remove_literal_statements=remove_docstrings)
+        return python_minifier.minify(text, rename_globals=rename_globals, remove_literal_statements=remove_docstrings,remove_annotations=remove_annotations,hoist_literals=remove_annotations,rename_locals=rename_locals)
 else:
-    def minify(text:str, rename_important_names:bool=False,remove_docstrings:bool=True)->str:
+    def minify(text:str, *, rename_globals:bool=False,remove_docstrings:bool=True,remove_annotations:bool=True,rename_locals:bool=False)->str:
         """'python_minifier' isn't installed, the text will 1 to 1 be returned"""
         return text
 

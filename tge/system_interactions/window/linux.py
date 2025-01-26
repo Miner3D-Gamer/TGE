@@ -36,7 +36,7 @@ def get_window_position(window_id:Optional[int])->Optional[Tuple[int, int, int, 
             parts = line.split()
             x, y = int(parts[2]), int(parts[3])
             return x, y, int(parts[4]), int(parts[5])
-    raise None
+    return None
 
 
 def maximize_window(window_id: Optional[Union[int, str]]):

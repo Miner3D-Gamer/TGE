@@ -5,10 +5,8 @@ from collections.abc import Iterable
 import os
 
 from .tbe import get_current_pip_path
-___all__ = ["download_library", "is_library_installed", "install_missing_tge_libraries"]
 
-PIP_c = get_current_pip_path()
-found = False
+__all__ = ["install_library", "is_library_installed", "install_missing_tge_libraries"]
 
 
 def is_library_installed(library_name: str) -> bool:
@@ -22,53 +20,62 @@ def is_library_installed(library_name: str) -> bool:
     return spec is not None
 
 
-def download_library(library_name: str) -> Tuple[bool, str]:
+def install_library(
+    library_name: str,
+    pip_path: Optional[str] = get_current_pip_path(),
+    tried_commands: Optional[List[List[str]]] = None,
+) -> Tuple[bool, str]:
     """
     Downloads and installs a Python library using pip.
 
     Parameters:
         library_name (str): The name of the library to be installed.
+        pip_path (Optional[str]): The specific pip path to use for installation.
+        tried_commands (Optional[List[List[str]]]): A list of commands that were tried in previous attempts.
 
     Returns:
         tuple: A tuple containing a boolean indicating whether the installation was successful
         and a message string providing additional information in case of an error.
     """
-    global PIP_c, found
-    if not found:
-        if not PIP_c:
-            PIP_c = [
+    # Default command list if none provided
+    if tried_commands is None:
+        tried_commands = (
+            [[pip_path, "install", library_name]]
+            if pip_path
+            else [
                 ["python", "-m", "pip", "install", library_name],
                 ["python3", "-m", "pip", "install", library_name],
                 ["pip", "install", library_name],
                 ["pip3", "install", library_name],
             ]
-        else:
-            PIP_c = [[PIP_c, "install", library_name]]
-    error_message = None
-    for command in PIP_c: # type: ignore
+        )
+
+    last_error_message = None
+
+    for command in tried_commands:
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
-            if not found:
-                found = True
-                PIP_c = [command]
+            # On success, return True with the output
             return True, result.stdout
         except subprocess.CalledProcessError as e:
-            error_message = (
+            last_error_message = (
                 f"Failed to install {library_name} using command: {' '.join(command)}. "
                 f"Return code: {e.returncode}. "
-                f"Output: {e.output}. "
-                f"Error: {e.stderr}."
+                f"Output: {e.output.strip()}. "
+                f"Error: {e.stderr.strip()}."
             )
         except FileNotFoundError:
+            # Ignore commands that can't be found
             continue
         except Exception as e:
             return False, f"An unexpected error occurred: {str(e)}"
 
-    return False, f"All installation attempts failed. Last error: {error_message}"
+    # Return False with the last error message if all attempts fail
+    return False, f"All installation attempts failed. Last error: {last_error_message}"
 
 
 # Honestly no idea what these functions do and I'm way too tired to try and figure out
-def get_installed_python_versions() -> List[ str]:
+def get_installed_python_versions() -> List[str]:
     """Get a list of installed Python executables in the system PATH."""
     path = os.getenv("PATH")
     if path is None:
@@ -142,7 +149,7 @@ def install_all_libraries(libs: "Iterable[str]") -> List[Tuple[bool, str]]:
     for lib in libs:
         if is_library_installed(lib):
             continue
-        output.append(download_library(lib))
+        output.append(install_library(lib))
 
     return output
 
@@ -161,5 +168,5 @@ def install_missing_tge_libraries() -> Optional[NoReturn]:
         libs = f.readlines()
     for lib in libs:
         if not is_library_installed(lib.strip()):
-            download_library(lib.strip())
+            install_library(lib.strip())
     return None

@@ -1,0 +1,9 @@
+from _typeshed import Incomplete
+from unittest import TestCase
+
+JSONDOCS: Incomplete
+
+class TestFail(TestCase):
+    def test_failures(self) -> None: ...
+    def test_array_decoder_issue46(self) -> None: ...
+    def test_truncated_input(self) -> None: ...

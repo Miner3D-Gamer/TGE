@@ -1,6 +1,5 @@
-# type: ignore
-from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly, kCGNullWindowID  # type: ignore
-from AppKit import NSWorkspace, NSApplication, NSApp, NSWindow  # type: ignore
+from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly, kCGNullWindowID 
+from AppKit import NSWorkspace, NSApplication, NSApp, NSWindow  
 
 from typing import Optional, Tuple
 

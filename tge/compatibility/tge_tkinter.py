@@ -1,4 +1,4 @@
-# type: ignore
+
 from tkinter import messagebox
 from typing import Union
 
@@ -62,7 +62,7 @@ def show_message(message_level, user_feedback_level=0, title=None, message=None,
         message_level = 0
     if user_feedback_level < 0 or user_feedback_level > len(feedback):
         user_feedback_level = 0
-    answer = messagebox._show(title, message, levels[message_level], feedback[user_feedback_level], **options)
+    answer = messagebox._show(title, message, levels[message_level], feedback[user_feedback_level], **options) # type: ignore
     if user_feedback_level == 2:
         if answer == 'yes':
             return True

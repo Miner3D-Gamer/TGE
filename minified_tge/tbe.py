@@ -193,9 +193,9 @@ def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__
  return amount
 if version.minor<12:
  import python_minifier
- def minify(text,rename_important_names=_B,remove_docstrings=_A):return python_minifier.minify(text,rename_globals=rename_important_names,remove_literal_statements=remove_docstrings)
+ def minify(text,*,rename_globals=_B,remove_docstrings=_A,remove_annotations=_A,rename_locals=_B):return python_minifier.minify(text,rename_globals=rename_globals,remove_literal_statements=remove_docstrings,remove_annotations=remove_annotations,hoist_literals=remove_annotations,rename_locals=rename_locals)
 else:
- def minify(text,rename_important_names=_B,remove_docstrings=_A):return text
+ def minify(text,*,rename_globals=_B,remove_docstrings=_A,remove_annotations=_A,rename_locals=_B):return text
 def _separate_imports(lines):
  import_lines=[];other_lines=[]
  for line in lines:

@@ -23,7 +23,6 @@ def get_window_position(window_id):
  D=subprocess.run([_C,'-lG'],stdout=subprocess.PIPE,text=_A);E=D.stdout.splitlines()
  for C in E:
   if str(B)in C:A=C.split();F,G=int(A[2]),int(A[3]);return F,G,int(A[4]),int(A[5])
- raise _B
 def maximize_window(window_id):
  A=window_id
  if A is _B:raise ValueError(_E)

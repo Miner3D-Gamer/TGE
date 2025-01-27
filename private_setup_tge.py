@@ -83,6 +83,7 @@ except FileNotFoundError:
 
 
 if tge.tbe.determine_affirmative(input("Minify?: ")):
+    os.system("python generate_stubs.py -o stubs tge")
     for root, dirs, files in os.walk(dir, topdown=False):
         root = root
         for file in files:
@@ -111,7 +112,8 @@ if tge.tbe.determine_affirmative(input("Minify?: ")):
                                         tge.string_utils.left_replace(line, "	", " ")
                                         for line in tge.tbe.minify(
                                             normal_file.read(),
-                                            rename_important_names=False,
+                                            rename_globals=False,
+                                            rename_locals=True,
                                             remove_docstrings=True,
                                         ).splitlines(keepends=True)
                                     ]

@@ -289,7 +289,7 @@ else:
 
     if (
         SYSTEM_NAME == "windows"
-        or SYSTEM_NAME == "linux"  # type: ignore
+        or SYSTEM_NAME == "linux"
         or (quartz_installed and appKit_installed)
     ):
         __all__.append("window_manager")

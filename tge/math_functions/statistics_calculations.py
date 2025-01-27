@@ -88,7 +88,7 @@ def median_absolute_deviation(data: List[Union[int, float]]) -> float:
     return mad
 
 
-def correlation(data1: float, data2: float) -> np.ndarray: # type: ignore
+def correlation(data1: float, data2: float) -> np.ndarray:
     """
     Calculate the correlation coefficient between two sets of data.
 

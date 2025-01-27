@@ -3,7 +3,7 @@ from types import ModuleType, MethodType
 from typing import Any, Dict, List, NoReturn, Optional, get_type_hints, Union, Callable
 import importlib
 import os
-import concurrent
+from concurrent import futures
 
 
 __all__ = [
@@ -13,7 +13,7 @@ __all__ = [
     # "print_check_for_functions_in_module_with_missing_notations",
     "get_function_inputs",
     "get_return_type",
-    "count_functions_in_library"
+    "count_functions_in_library",
 ]
 
 
@@ -306,9 +306,9 @@ def run_function_with_timeout(
     This function uses a thread pool executor to run the given function asynchronously and
     enforces a timeout on its execution.
     """
-    with concurrent.futures.ThreadPoolExecutor() as executor:  # type: ignore
-        future = executor.submit(func, *args, **kwargs)  # type: ignore
+    with futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(func, *args, **kwargs)
         try:
-            return future.result(timeout=timeout)  # type: ignore
-        except concurrent.futures.TimeoutError:  # type: ignore
+            return future.result(timeout=timeout)
+        except futures.TimeoutError:
             return TimeoutResult

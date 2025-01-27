@@ -5,7 +5,7 @@ _C=None
 _B=False
 _A=True
 from.file_operations import create_missing_directory
-__all__=['is_url','remove_html_tags','is_internet_connected','is_url_available','download_youtube_video','download_youtube_playlist','get_youtube_playlist_info','get_youtube_video_info','get_youtube_video_id','get_youtube_video_url','get_all_videos_from_youtube_playlist']
+__all__=['is_url','remove_html_tags','is_internet_connected','is_url_available','get_youtube_video_id','get_all_videos_from_youtube_playlist']
 def is_url(url):A=re.compile('^(?:http|https)://(?:[\\w-]+\\.)*[\\w-]+(?:\\.[a-zA-Z]{2,})(?:/?|(?:/[^\\s]+)+)?$');return bool(re.match(A,url))
 def remove_html_tags(string):return re.sub('<.*?>','',string)
 def get_youtube_video_id(input_string):
@@ -52,5 +52,5 @@ def is_url_available(url,check_url=_A):
   else:return _B
  except(requests.exceptions.ConnectionError,requests.exceptions.ConnectTimeout):return
 def get_all_videos_from_youtube_playlist(playlist_url):
- try:A=pytube.Playlist(playlist_url);B=A.video_urls;return B
- except Exception as C:return C
+ try:A=pytube.Playlist(playlist_url);return[A for A in A.video_urls]
+ except Exception as B:return B

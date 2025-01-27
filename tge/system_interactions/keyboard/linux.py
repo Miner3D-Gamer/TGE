@@ -1,5 +1,5 @@
 from Xlib import X, XK, display
-from . import linux_virtual_keys as keys # type: ignore
+from . import linux_virtual_keys as keys
 from typing import Optional
 
 d = display.Display()

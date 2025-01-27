@@ -2,32 +2,25 @@
 import importlib.util,os,subprocess
 _E='--version'
 _D='python'
-_C=False
-_B='pip'
+_C='pip'
+_B=None
 _A='install'
 from.tbe import get_current_pip_path
-___all__=['download_library','is_library_installed','install_missing_tge_libraries']
-PIP_c=get_current_pip_path()
-found=_C
-def is_library_installed(library_name):A=importlib.util.find_spec(library_name);return A is not None
-def download_library(library_name):
- C=True;A=library_name;global PIP_c,found
- if not found:
-  if not PIP_c:PIP_c=[[_D,'-m',_B,_A,A],['python3','-m',_B,_A,A],[_B,_A,A],['pip3',_A,A]]
-  else:PIP_c=[[PIP_c,_A,A]]
- E=None
- for D in PIP_c:
-  try:
-   F=subprocess.run(D,check=C,capture_output=C,text=C)
-   if not found:found=C;PIP_c=[D]
-   return C,F.stdout
-  except subprocess.CalledProcessError as B:E=f"Failed to install {A} using command: {' '.join(D)}. Return code: {B.returncode}. Output: {B.output}. Error: {B.stderr}."
+__all__=['install_library','is_library_installed','install_missing_tge_libraries']
+def is_library_installed(library_name):A=importlib.util.find_spec(library_name);return A is not _B
+def install_library(library_name,pip_path=get_current_pip_path(),tried_commands=_B):
+ H=False;E=pip_path;D=tried_commands;C=True;A=library_name
+ if D is _B:D=[[E,_A,A]]if E else[[_D,'-m',_C,_A,A],['python3','-m',_C,_A,A],[_C,_A,A],['pip3',_A,A]]
+ F=_B
+ for G in D:
+  try:I=subprocess.run(G,check=C,capture_output=C,text=C);return C,I.stdout
+  except subprocess.CalledProcessError as B:F=f"Failed to install {A} using command: {' '.join(G)}. Return code: {B.returncode}. Output: {B.output.strip()}. Error: {B.stderr.strip()}."
   except FileNotFoundError:continue
-  except Exception as B:return _C,f"An unexpected error occurred: {str(B)}"
- return _C,f"All installation attempts failed. Last error: {E}"
+  except Exception as B:return H,f"An unexpected error occurred: {str(B)}"
+ return H,f"All installation attempts failed. Last error: {F}"
 def get_installed_python_versions():
  A=os.getenv('PATH')
- if A is None:return[]
+ if A is _B:return[]
  E=A.split(os.pathsep);D=[]
  for A in E:
   try:
@@ -45,15 +38,15 @@ def install_library_from_github(github_repo_url):
  B=get_installed_python_versions()
  for A in B:
   print(f"Python executable: {A}")
-  try:C=subprocess.check_output([A,_E],stderr=subprocess.STDOUT).decode().strip();print(f"Installing for {C} ({A})");subprocess.check_call([A,'-m',_B,_A,'git+'+github_repo_url])
+  try:C=subprocess.check_output([A,_E],stderr=subprocess.STDOUT).decode().strip();print(f"Installing for {C} ({A})");subprocess.check_call([A,'-m',_C,_A,'git+'+github_repo_url])
   except subprocess.CalledProcessError as D:print(f"Failed to install for {A}: {D}")
 def install_all_libraries(libs):
  A=[]
  for B in libs:
   if is_library_installed(B):continue
-  A.append(download_library(B))
+  A.append(install_library(B))
  return A
 def install_missing_tge_libraries():
  with open(os.path.dirname(__file__)+'/requirements.txt','r')as B:C=B.readlines()
  for A in C:
-  if not is_library_installed(A.strip()):download_library(A.strip())
+  if not is_library_installed(A.strip()):install_library(A.strip())

@@ -1,4 +1,4 @@
-# type: ignore
+
 WHEEL_DELTA = 120
 import pynput
 from typing import Tuple, Optional
@@ -43,27 +43,27 @@ def get_mouse_position() -> Tuple[int, int]:
 
 def left_click() -> None:
     "Perform a left mouse button click at the current mouse position."
-    MOUSE.click(1)
+    MOUSE.click(pynput.mouse.Button.left)
 
 
 def right_click() -> None:
     "Perform a left mouse button click at the current mouse position."
-    MOUSE.click(3)
+    MOUSE.click(pynput.mouse.Button.right)
 
 
 def middle_click() -> None:
     "Perform a middle mouse button click at the current mouse position."
-    MOUSE.click(2)
+    MOUSE.click(pynput.mouse.Button.middle)
 
 
 def scroll_vertical(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
     "Scroll the mouse wheel vertically by the specified number of `clicks`."
-    MOUSE.scroll(dy=clicks)
+    MOUSE.scroll(dy=clicks, dx=0)
 
 
 def scroll_horizontal(clicks: int, wheel_delta: int = WHEEL_DELTA) -> None:
     "Scroll the mouse wheel horizontally by the specified number of `clicks`."
-    MOUSE.scroll(dx=clicks)
+    MOUSE.scroll(dx=clicks, dy=0)
 
 
 def scroll(
@@ -73,37 +73,41 @@ def scroll(
     wheel_delta_y: int = WHEEL_DELTA,
 ) -> None:
     "Scroll the mouse wheel both horizontally and vertically by the specified amounts (`dx` and `dy`)."
+    if not dx:
+        dx = 0
+    if not dy:
+        dy = 0
     MOUSE.scroll(dy=dy, dx=dx)
 
 
 def left_mouse_down() -> None:
     "Press and hold the left mouse button."
-    MOUSE.press(1)
+    MOUSE.press(pynput.mouse.Button.left)
 
 
 def right_mouse_down() -> None:
     "Press and hold the right mouse button."
-    MOUSE.press(3)
+    MOUSE.press(pynput.mouse.Button.right)
 
 
 def middle_mouse_down() -> None:
     "Press and hold the middle mouse button."
-    MOUSE.press(2)
+    MOUSE.press(pynput.mouse.Button.middle)
 
 
 def left_mouse_up() -> None:
     "Release the left mouse button."
-    MOUSE.release(1)
+    MOUSE.release(pynput.mouse.Button.left)
 
 
 def right_mouse_up() -> None:
     "Release the right mouse button."
-    MOUSE.release(3)
+    MOUSE.release(pynput.mouse.Button.right)
 
 
 def middle_mouse_up() -> None:
     "Release the middle mouse button."
-    MOUSE.release(2)
+    MOUSE.release(pynput.mouse.Button.middle)
 
 
 def is_left_button_pressed():
@@ -121,7 +125,6 @@ def is_middle_button_pressed():
     return _is_button_pressed(2)
 
 
-MOUSE
 
 
 def _is_button_pressed(button):

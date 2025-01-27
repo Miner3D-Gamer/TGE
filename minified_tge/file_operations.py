@@ -161,7 +161,7 @@ def find_files_with_extensions(root_dir,file_extensions):
  A=[]
  for B in file_extensions:A.extend(find_files_with_extension(root_dir,B))
  return A
-NestedList=List[Union[(str,'NestedList')]]
+NestedList=List[Union[str,'NestedList']]
 def _compress_path_list_to_dict(paths):
  A='d';C='f';D={C:[],A:{}}
  for H in paths:

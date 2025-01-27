@@ -1,4 +1,4 @@
-# type: ignore
+
 # Create stubs for the yt_dlp and pytube modules
 from typing import List, Union, Tuple, Dict, Optional, Any
 import re
@@ -18,12 +18,7 @@ __all__ = [
     "remove_html_tags",
     "is_internet_connected",
     "is_url_available",
-    "download_youtube_video",
-    "download_youtube_playlist",
-    "get_youtube_playlist_info",
-    "get_youtube_video_info",
     "get_youtube_video_id",
-    "get_youtube_video_url",
     "get_all_videos_from_youtube_playlist",
 ]
 
@@ -295,10 +290,8 @@ def get_all_videos_from_youtube_playlist(playlist_url: str) -> Union[List[str], 
     """
     try:
         playlist = pytube.Playlist(playlist_url)
-    
-        video_links = playlist.video_urls
         
-        return video_links
+        return [x for x in playlist.video_urls]
     
     except Exception as e:
         return e

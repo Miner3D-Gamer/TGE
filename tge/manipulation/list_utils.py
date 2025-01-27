@@ -264,7 +264,7 @@ def decompress_list(
 
     new_sub_list: List[Any] = []
     repeat_amount = 1
-    for item in list_to_decompress: # type: ignore
+    for item in list_to_decompress:
         if isinstance(item, int):
             repeat_amount = item
         else:

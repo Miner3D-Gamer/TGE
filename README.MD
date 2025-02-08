@@ -1,6 +1,6 @@
 # Text Game Engine (TGE)
 
-Originally designed for console-based games, TGE has evolved into a versatile general-purpose library. Since 2021, it has expanded significantly, now offering over 800 functions for various applications, including file manipulation, UI handling, audio playback, and more.
+Originally designed for console-based games, TGE has evolved into a versatile general-purpose library. Since 2021, it has expanded significantly, now offering over 600 functions for various applications, including file manipulation, UI handling, audio playback, and more.
 
 ## Installation Instructions
 
@@ -13,7 +13,7 @@ Originally designed for console-based games, TGE has evolved into a versatile ge
 | Feature           | Normal      | Minified    |
 |-------------------|-------------|-------------|
 | **Import Time**   | ~500ms      | ~150ms      |
-| **Size**          | ~600kb      | ~350kb      |
+| **Size**          | ~550kb      | ~350kb      |
 | **Docstrings**    | 100%        | Removed     |
 | **Type Notation** | ~99%        | Removed     |
 

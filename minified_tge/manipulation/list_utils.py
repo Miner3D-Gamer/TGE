@@ -1,7 +1,7 @@
 #type: ignore
 from typing import Any, List
 import math
-__all__=['list_mul','remove_duplicates','count_occurrences','calculate_average','find_common_elements','median','reverse_list','find_max_min_difference','find_missing_number','greatest_product','zipper_insert','compress_list','compress_list_of_lists','decompress_list','decompress_list_of_lists','MaxSizeList']
+__all__=['list_mul','remove_duplicates','count_occurrences','calculate_average','find_common_elements','median','reverse_list','find_max_min_difference','find_missing_number','greatest_product','zipper_insert','compress_list','compress_list_of_lists','decompress_list','decompress_list_of_lists','MaxSizeList','split_with_list']
 def list_mul(lst):return math.prod(lst)
 def remove_duplicates(list):
  A=[]
@@ -71,3 +71,9 @@ class MaxSizeList(List[Any]):
  def extend(A,iterable):
   super().extend(iterable)
   while len(A)>A.max_size:A.pop(0)
+def split_with_list(string,separators,limit=None):
+ B=limit;A=string;C=0
+ for D in separators:
+  A=A.replace(D,'𘚟');C+=1
+  if B is not None and C>=B:break
+ return A.split('𘚟')

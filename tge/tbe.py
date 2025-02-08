@@ -594,24 +594,8 @@ Returns:
 
 
 
-def split_with_list(string: str, separators: List[str], limit: Union[None, int] = None) -> List[str]:
-    """Split a string by multiple separators and return the resulting substrings.
 
-Args:
-    string (str): The string to split.
-    separators (list): A list of separators to replace with a unique delimiter.
-    
-
-Returns:
-    list[str]: A list of substrings resulting from the split operation."""
-    d = 0
-    for separator in separators:
-        string = string.replace(separator, "𘚟")
-        d+=1
-        if limit is not None and d >= limit:
-            break
-    return string.split("𘚟")
-
+from .manipulation.list_utils import split_with_list
 
 
 def analyze_text(text:str)->Dict[str, Union[str,List[int],float]]:
@@ -884,7 +868,6 @@ def divide(a:Union[int,float], b:Union[int,float])->Union[float,DualInfinite]:
         Union[float, DualInfinite]: The result of the division if b != 0, otherwise an instance of DualInfinite.
     """
     return a/b if b!=0 else DualInfinite()
-
 
 
 

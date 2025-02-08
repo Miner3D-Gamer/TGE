@@ -89,12 +89,7 @@ def strict_autocomplete(prefix,word_list):
  if prefix in words:return prefix
  return words
 def is_iterable(thing):return hasattr(thing,'__iter__')
-def split_with_list(string,separators,limit=_C):
- d=0
- for separator in separators:
-  string=string.replace(separator,'𘚟');d+=1
-  if limit is not _C and d>=limit:break
- return string.split('𘚟')
+from.manipulation.list_utils import split_with_list
 def analyze_text(text):
  A='min_commas_per_sentence';text=text.replace('...','…').replace('\n','').strip();legacy_sentences=split_with_list(text,['. ','! ','? ']);sentences=[];word_amounts=[];comma_amounts=[]
  for i in range(len(legacy_sentences)):

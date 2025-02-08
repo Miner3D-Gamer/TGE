@@ -1,7 +1,27 @@
 from typing import Any, Union, List, Optional
 from collections.abc import Iterable
 import math
-__all__ = ['list_mul', 'remove_duplicates', 'count_occurrences', 'calculate_average', 'find_common_elements', 'median', 'reverse_list', 'find_max_min_difference', 'find_missing_number', 'greatest_product', 'zipper_insert', 'compress_list', 'compress_list_of_lists', 'decompress_list', 'decompress_list_of_lists', 'MaxSizeList']
+
+__all__ = [
+    "list_mul",
+    "remove_duplicates",
+    "count_occurrences",
+    "calculate_average",
+    "find_common_elements",
+    "median",
+    "reverse_list",
+    "find_max_min_difference",
+    "find_missing_number",
+    "greatest_product",
+    "zipper_insert",
+    "compress_list",
+    "compress_list_of_lists",
+    "decompress_list",
+    "decompress_list_of_lists",
+    "MaxSizeList",
+    "split_with_list",
+]
+
 
 def list_mul(lst: List[Union[int, float]]) -> Union[int, float]:
     """
@@ -273,7 +293,9 @@ def decompress_list(
     return new_sub_list
 
 
-def decompress_list_of_lists(list_to_decompress: List[Union[List[Union[int, Any]], Any]], width: int) -> List[List[Any]]:
+def decompress_list_of_lists(
+    list_to_decompress: List[Union[List[Union[int, Any]], Any]], width: int
+) -> List[List[Any]]:
     """
     Decompresses a list of lists by applying `decompress_list` to each sublist.
 
@@ -325,3 +347,24 @@ class MaxSizeList(List[Any]):
         super().extend(iterable)
         while len(self) > self.max_size:
             self.pop(0)
+
+
+def split_with_list(
+    string: str, separators: List[str], limit: Union[None, int] = None
+) -> List[str]:
+    """Split a string by multiple separators and return the resulting substrings.
+
+    Args:
+        string (str): The string to split.
+        separators (list): A list of separators to replace with a unique delimiter.
+
+
+    Returns:
+        list[str]: A list of substrings resulting from the split operation."""
+    d = 0
+    for separator in separators:
+        string = string.replace(separator, "𘚟")
+        d += 1
+        if limit is not None and d >= limit:
+            break
+    return string.split("𘚟")

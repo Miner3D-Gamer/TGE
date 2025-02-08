@@ -8,6 +8,7 @@ import base64
 
 tge.console.clear()
 
+# So the minified files don't show errors using pylance
 IGNORE = True
 
 total_functions = tge.function_utils.count_functions_in_library("tge")

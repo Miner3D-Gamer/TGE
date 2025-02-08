@@ -1,6 +1,8 @@
 import random, re
 from typing import List, Dict, Optional
+
 __all__ = ["ExpandedString"]
+
 
 class ExpandedString(str):
     def __new__(cls, value: str):
@@ -30,7 +32,7 @@ class ExpandedString(str):
 
         Notes:
             Any additional initialization code specific to the ExpandedString class can be added here.
-            The superclass __init__ method is not explicitly called because str objects are immutable and 
+            The superclass __init__ method is not explicitly called because str objects are immutable and
             their initialization is handled by the __new__ method.
         """
         super().__init__()
@@ -67,8 +69,8 @@ class ExpandedString(str):
             self: The string is modified in place to remove the specified substring from both ends.
         """
         if self.startswith(substring) and self.endswith(substring):
-            self = ExpandedString(self[len(substring) : -len(substring)]
-)
+            self = ExpandedString(self[len(substring) : -len(substring)])
+
     def get_chopped(self, substring: str) -> str:
         """
         Return a new string with a specified substring removed from the beginning and end.
@@ -180,9 +182,9 @@ class ExpandedString(str):
         if not self:
             return 0
 
-        max_length = 0  
-        start = 0 
-        char_index_map:Dict[str, int] = {}  
+        max_length = 0
+        start = 0
+        char_index_map: Dict[str, int] = {}
 
         for i in range(len(self)):
             if self[i] in char_index_map and start <= char_index_map[self[i]]:
@@ -194,7 +196,7 @@ class ExpandedString(str):
 
         return max_length
 
-    def find_first_non_repeating_character(self) ->Optional [str]:
+    def find_first_non_repeating_character(self) -> Optional[str]:
         """
         Find the first non-repeating character in a given string.
 
@@ -204,7 +206,7 @@ class ExpandedString(str):
         Returns:
             str: The first non-repeating character found in the string, or None if no such character is found.
         """
-        char_count:Dict[str, int] = {}
+        char_count: Dict[str, int] = {}
 
         for char in self:
             char_count[char] = char_count.get(char, 0) + 1
@@ -219,7 +221,7 @@ class ExpandedString(str):
         """
         Count the number of consonants in the string.
 
-        Consonants are defined as letters that are not vowels. This method considers both uppercase and lowercase 
+        Consonants are defined as letters that are not vowels. This method considers both uppercase and lowercase
         consonants and counts each occurrence within the string.
 
         Returns:
@@ -234,7 +236,6 @@ class ExpandedString(str):
 
         return count
 
-
     def count_substring_occurrences(self, substring: str) -> int:
         """
         Count the number of occurrences of a substring within the string.
@@ -246,7 +247,6 @@ class ExpandedString(str):
             int: The number of times the substring appears in the string.
         """
         return self.count(substring)
-
 
     def count_vowels(self) -> int:
         """
@@ -402,7 +402,7 @@ class ExpandedString(str):
         """
         return self.rjust(length, char)
 
-    def right_pad(self, length: int, char:str=" ") -> None:
+    def right_pad(self, length: int, char: str = " ") -> None:
         """
         Pads the given string on the right with the specified character to the desired length.
 
@@ -412,7 +412,7 @@ class ExpandedString(str):
         """
         self = ExpandedString(self.ljust(length, char))
 
-    def get_right_pad(self, length:int, char:str=" "):
+    def get_right_pad(self, length: int, char: str = " "):
         """
         Pads the given string on the right with the specified character to the desired length.
 
@@ -581,7 +581,7 @@ class ExpandedString(str):
         Returns:
             str: The modified string with replacements applied.
         """
-        
+
         for replacer in replacers:
             self = ExpandedString(self.replace(replacer, replacement))
         return self

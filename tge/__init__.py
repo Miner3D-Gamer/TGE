@@ -129,6 +129,7 @@ __all__ = [
     "SYSTEM_NAME",
     "INIT_TIME",
     "INIT_TIME_BEFORE_IMPORTING",
+    "burn_value_into_function"
 ]
 
 
@@ -139,8 +140,8 @@ if assured_libraries:
             "list_utils",
             "dict_utils",
             "expansions",
-            "tge_pygame",
-            "tge_tkinter",
+            # "tge_pygame",
+            # "tge_tkinter",
             "binary_conversion",
             "temperature_conversion",
             "time_conversion",
@@ -173,8 +174,9 @@ if assured_libraries:
     from .manipulation import dictionary_utils as dict_utils
     from .manipulation import expansions
 
-    from .compatibility import tge_pygame
-    from .compatibility import tge_tkinter
+    # Find better use somewhen else, this is taking up way too much time to import
+    # from .compatibility import tge_pygame
+    # from .compatibility import tge_tkinter
 
     from .conversion import binary as binary_conversion
     from .conversion import temperature as temperature_conversion

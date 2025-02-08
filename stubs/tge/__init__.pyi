@@ -8,14 +8,15 @@ from.math_functions import financial_calculations as financial_calculations,geom
 from.system_interactions import clipboard_operations as clipboard,cursor_operations as cursor,keyboard_operations as keyboard,window_manager as window_manager
 from.validation import validation as validation
 from _typeshed import Incomplete
-from typing import Literal
-__all__=['library_utils','is_ffmpeg_installed','get_system','is_tge_outdated','__name__','__author__','__license__','__url__','__doc__','SYSTEM_NAME','INIT_TIME','INIT_TIME_BEFORE_IMPORTING','string_utils','list_utils','dict_utils','expansions','tge_pygame','tge_tkinter','binary_conversion','temperature_conversion','time_conversion','units_conversion','data_conversion','financial_calculations','geometry_calculations','math_functions','statistics_calculations','clipboard','cursor','keyboard','window_manager','validation','codec','console','random','internet','tbe','time_utils','file_operations','formatting','bool_operations','image_operations','function_utils','audio','string_utils','list_utils','dict_utils','expansions','binary_conversion','temperature_conversion','time_conversion','units_conversion','data_conversion','tge_tkinter','financial_calculations','geometry_calculations','function_utils','time_utils','formatting','bool_operations','validation','tge_pygame','math_functions','statistics_calculations','clipboard','cursor','keyboard','window_manager','codec','random','file_operations','tbe','console','internet','image_processing','audio']
+from typing import Any,Callable,Literal
+__all__=['library_utils','is_ffmpeg_installed','get_system','is_tge_outdated','__name__','__author__','__license__','__url__','__doc__','SYSTEM_NAME','INIT_TIME','INIT_TIME_BEFORE_IMPORTING','burn_value_into_function','string_utils','list_utils','dict_utils','expansions','binary_conversion','temperature_conversion','time_conversion','units_conversion','data_conversion','financial_calculations','geometry_calculations','math_functions','statistics_calculations','clipboard','cursor','keyboard','window_manager','validation','codec','console','random','internet','tbe','time_utils','file_operations','formatting','bool_operations','image_operations','function_utils','audio','string_utils','list_utils','dict_utils','expansions','binary_conversion','temperature_conversion','time_conversion','units_conversion','data_conversion','tge_tkinter','financial_calculations','geometry_calculations','function_utils','time_utils','formatting','bool_operations','validation','tge_pygame','math_functions','statistics_calculations','clipboard','cursor','keyboard','window_manager','codec','random','file_operations','tbe','console','internet','image_processing','audio']
 __name__:str
 __author__:str
 __license__:str
 __url__:str
 __doc__:str
 def is_tge_outdated()->bool:...
+def burn_value_into_function(x:Any)->Callable[[],Any]:...
 def get_system()->Literal['jython','darwin','windows','linux','unknown']:...
 SYSTEM_NAME:Incomplete
 def is_ffmpeg_installed():...

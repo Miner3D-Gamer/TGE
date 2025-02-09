@@ -12,7 +12,7 @@ Originally designed for console-based games, TGE has evolved into a versatile ge
 
 | Feature           | Normal      | Minified    |
 |-------------------|-------------|-------------|
-| **Import Time**   | ~250ms      | ~220ms      |
+| **Import Time**   | ~200-300ms  | ~120-250ms  |
 | **Size**          | ~550kb      | ~350kb      |
 | **Docstrings**    | 100%        | Removed     |
 | **Type Notation** | ~95%        | Removed     |

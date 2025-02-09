@@ -1,6 +1,6 @@
 import inspect
 from types import ModuleType, MethodType
-from typing import Any, Dict, List, NoReturn, Optional, get_type_hints, Union, Callable
+from typing import Any, Dict, List, NoReturn, Optional, get_type_hints, Union, Callable, TypeVar
 import importlib
 import os
 import functools
@@ -285,12 +285,11 @@ def restrict_to_directory(
     return decorator
 
 
-class TimeoutResult: ...
-
+T = TypeVar("T")
 
 def run_function_with_timeout(
-    func: Callable[..., Any], timeout: Union[int, float], *args: Any, **kwargs: Any
-) -> Union[Any, TimeoutResult]:
+    func: Callable[..., T], timeout: Union[int, float], *args: Any, **kwargs: Any
+) -> Union[T, TimeoutError]:
     """
     Executes a function with a specified timeout.
 
@@ -312,7 +311,7 @@ def run_function_with_timeout(
         try:
             return future.result(timeout=timeout)
         except futures.TimeoutError:
-            return TimeoutResult
+            return TimeoutError()
 
 
 def lazy_load(func_loader):

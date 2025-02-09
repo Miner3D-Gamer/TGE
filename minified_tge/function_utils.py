@@ -1,5 +1,5 @@
 #type: ignore
-from typing import get_type_hints
+from typing import get_type_hints, TypeVar
 from concurrent import futures
 import functools,importlib,inspect,os
 _A=None
@@ -49,12 +49,12 @@ def restrict_to_directory(allowed_dir):
    return func(file_path,*args,**kwargs)
   return wrapper
  return decorator
-class TimeoutResult:...
+T=TypeVar('T')
 def run_function_with_timeout(func,timeout,*args,**kwargs):
  with futures.ThreadPoolExecutor()as executor:
   future=executor.submit(func,*args,**kwargs)
   try:return future.result(timeout=timeout)
-  except futures.TimeoutError:return TimeoutResult
+  except futures.TimeoutError:return TimeoutError()
 def lazy_load(func_loader):
  func=_A
  @functools.wraps(func_loader)

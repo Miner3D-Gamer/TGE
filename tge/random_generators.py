@@ -1,55 +1,10 @@
 from typing import Tuple
 import random
 
-# from requests import get as requests_get
+
 # from .codec.codec import html
 
 
-# THIS FUNCTION DOES NO LONGER WORK WITH THE CURRENT LAYOUT OF THE WEBSITE
-# def generate_name(
-#     gender: int,
-# ) -> str:
-#     """
-#     Generate a random name based on the specified gender or unisex option.
-
-#     Args:
-#         gen (int): An integer representing the desired gender or option for the name.
-#                 0: Male (can also be represented as "m" or "male")
-#                 1: Female (can also be represented as "f" or "female")
-#                 2: Unisex (can also be represented as "u", "unisex", or "unidentified")
-#                 3: Both (can also be represented as "both" or "b")
-
-#     Returns:
-#         str: A randomly generated name based on the specified gender or option.
-#             Returns an empty string if the input is invalid.
-
-#     Note:
-#         This function uses the "https://www.behindthename.com/random/random.php" endpoint to
-#         generate random names.
-
-#     """
-
-#     if gender == 0 or "m" or "male":
-#         gender = "m"
-#     elif gender == 1 or "f" or "female":
-#         gender = "f"
-#     elif gender == 2 or "u" or "unisex" or "unidentified":
-#         gender = "u"
-#     elif gender == 3 or "both" or "b":
-#         gender = "both"
-#     else:
-#         raise ValueError("Invalid gender input.")
-#     url = "https://www.behindthename.com/random/random.php"
-#     params = {"gender": gender, "number": "1", "sets": "1", "surname": "", "all": "yes"}
-#     response = requests_get(url, params=params)
-#     name_text = str(response.text.split("\n")[165])
-#     idx = name_text.find('class="plain">') + 14
-#     name_text = name_text[idx:]
-#     idx2 = name_text.find("<")
-
-#     name = name_text[:idx2]
-#     name = html.decode(name)
-#     return name
 __all__ = [ "generate_password", "random_bool", "generate_random_hex_color","generate_random_color","generate_random_hex_color"]
 
 def generate_password(length: int) -> str:

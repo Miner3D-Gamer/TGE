@@ -1,8 +1,19 @@
 from math import sqrt, log2
 
-import numpy as np
 from typing import List, Union
-__all__ = ['average_grade', 'median_grade', 'mode_grade', 'standard_deviation', 'median', 'median_absolute_deviation', 'correlation', 'calculate_entropy', 'median_absolute_error']
+
+__all__ = [
+    "average_grade",
+    "median_grade",
+    "mode_grade",
+    "standard_deviation",
+    "median",
+    "median_absolute_deviation",
+    # "correlation",
+    "calculate_entropy",
+    "median_absolute_error",
+]
+
 
 def average_grade(grades: List[Union[int, float]]) -> float:
     """
@@ -88,22 +99,23 @@ def median_absolute_deviation(data: List[Union[int, float]]) -> float:
     return mad
 
 
-def correlation(data1: float, data2: float) -> np.ndarray:
-    """
-    Calculate the correlation coefficient between two sets of data.
+# def correlation(data1: float, data2: float) -> np.ndarray:
+#     """
+#     Calculate the correlation coefficient between two sets of data.
 
-    Parameters:
-    data1 (array-like): The first set of data.
-    data2 (array-like): The second set of data.
+#     Parameters:
+#     data1 (array-like): The first set of data.
+#     data2 (array-like): The second set of data.
 
-    Returns:
-    float: The correlation coefficient between data1 and data2.
-        The correlation coefficient ranges from -1 to 1, where:
-        - 1 indicates a perfect positive linear relationship,
-        0 indicates no linear relationship, and
-        1 indicates a perfect negative linear relationship.
-    """
-    return np.corrcoef(data1, data2)[0][1]
+#     Returns:
+#     float: The correlation coefficient between data1 and data2.
+#         The correlation coefficient ranges from -1 to 1, where:
+#         - 1 indicates a perfect positive linear relationship,
+#         0 indicates no linear relationship, and
+#         1 indicates a perfect negative linear relationship.
+#     """
+#     import numpy as np
+#     return np.corrcoef(data1, data2)[0][1]
 
 
 def calculate_entropy(grades: List[Union[int, float]]) -> float:

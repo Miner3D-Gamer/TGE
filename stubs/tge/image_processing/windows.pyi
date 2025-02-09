@@ -1,4 +1,4 @@
-from PIL import Image
+from.image_operations import Image
 import ctypes
 __all__=['screenshot','get_pixel_color']
 class BITMAPINFOHEADER(ctypes.Structure):...

@@ -16,7 +16,7 @@ def volume_of_pyramid(base_length,base_width,height):return base_length*base_wid
 def linear_regression_slope(x1,y1,x2,y2):return(y2-y1)/(x2-x1)
 def surface_area_of_cylinder(radius,height):A=radius;B=sqrt(A**2+height**2);C=3.14159*A*B;return C
 def surface_area_of_cylinder_with_accuracy(radius,height,accuracy):A=radius;B=sqrt(A**2+height**2);C=get_pi(accuracy)*A*B;return C
-def surface_area_of_sphere(radius):A=4*3.14159*radius**2;return A
+def surface_area_of_sphere(radius):A=12.56636*radius**2;return A
 def surface_area_of_sphere_with_accuracy(radius,accuracy):A=get_pi(accuracy)*radius**2;return A
 def surface_area_of_cube(side_length):return 6*side_length**2
 def surface_area_of_rectangle(length,width):return length*width

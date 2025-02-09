@@ -1,13 +1,12 @@
 #type: ignore
 from difflib import get_close_matches
-import ast,cProfile,getpass,io,os,pstats,subprocess,sys,tempfile
+import ast,cProfile,getpass,io,os,pstats,python_minifier,subprocess,sys,tempfile
 _F='cumulative'
 _E='import '
 _D='.py'
 _C=None
 _B=False
 _A=True
-version=sys.version_info
 __all__=['pass_func','execute_function','determine_affirmative','get_available_variables','number_to_words','letter_to_number','number_to_letter','find_undocumented_functions','check_directory_for_undocumented_functions','check_directory_and_sub_directory_for_undocumented_functions','autocomplete','strict_autocomplete','is_iterable','split_with_list','analyze_text','divide','DualInfinite','generate_every_capitalization_states','remove_unused_libraries','repeat','get_username','profile','profile_function','get_current_pip_path','ArgumentHandler','HashMap','print_undocumented_functions_in_directory','minify','compress_imports_in_code']
 def pass_func(*args,**more_args):0
 def execute_function(func=pass_func,*args,**kwargs):return func(*args,**kwargs)
@@ -129,8 +128,8 @@ def profile(func):
  def wrapper(*args,**kwargs):pr=cProfile.Profile();pr.enable();result=func(*args,**kwargs);pr.disable();s=io.StringIO();sortby=_F;ps=pstats.Stats(pr,stream=s).sort_stats(sortby);ps.print_stats();print(s.getvalue());return result
  return wrapper
 def profile_function(function,filename,*inputs,**extra):
- profile=cProfile.Profile();profile.enable();return_=function(*inputs,**extra);profile.disable();profile_filename=f"{filename}.pstats";profile.dump_stats(profile_filename);stats=pstats.Stats(profile_filename)
- with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile_filename,stream=f);stats.sort_stats(_F);stats.print_stats()
+ profile=cProfile.Profile();profile.enable();return_=function(*inputs,**extra);profile.disable()
+ with open(f"{filename}.txt",'w')as f:stats=pstats.Stats(profile,stream=f);stats.sort_stats(_F);stats.print_stats()
  return return_
 if os.name=='nt':
  def get_current_pip_path():
@@ -186,11 +185,7 @@ def print_undocumented_functions_in_directory(directory=os.path.dirname(__file__
   print('\n\n'+i)
   for j in undocumented[i]:amount+=1;print(f'\n\t{j[0]} \n\tFile "{directory}\\{i}", line {j[1]}')
  return amount
-if version.minor<12:
- import python_minifier
- def minify(text,*,rename_globals=_B,remove_docstrings=_A,remove_annotations=_A,rename_locals=_B):return python_minifier.minify(text,rename_globals=rename_globals,remove_literal_statements=remove_docstrings,remove_annotations=remove_annotations,hoist_literals=remove_annotations,rename_locals=rename_locals)
-else:
- def minify(text,*,rename_globals=_B,remove_docstrings=_A,remove_annotations=_A,rename_locals=_B):return text
+def minify(text,*,rename_globals=_B,remove_docstrings=_A,remove_annotations=_A,rename_locals=_B):return python_minifier.minify(text,rename_globals=rename_globals,remove_literal_statements=remove_docstrings,remove_annotations=remove_annotations,hoist_literals=remove_annotations,rename_locals=rename_locals)
 def _separate_imports(lines):
  import_lines=[];other_lines=[]
  for line in lines:

@@ -1,7 +1,6 @@
 # type: ignore
 import os
-from . import SYSTEM_NAME
-from gtts import gTTS
+#from . import SYSTEM_NAME
 from pydub import AudioSegment
 from simpleaudio import play_buffer, PlayObject
 from typing import Optional, cast
@@ -114,6 +113,7 @@ def save_text_to_speech(text: str, name: str, dir: str, language="en") -> None:
     Returns:
         None
     """
+    from gtts import gTTS
     if not os.path.exists(dir):
         raise FileNotFoundError("Directory %s was not found" % dir)
     tts = gTTS(text=text, lang=language)

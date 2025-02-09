@@ -4,22 +4,6 @@
 
 
 
-# from time import sleep, timezone
-# from os import system as os_system, path as os_path, environ, makedirs as os_createDirectory, listdir as os_listdir, getcwd as os_getcwd, rename as os_rename, remove as os_remove; environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-# from sys import stdout as sys_stdout
-
-
-#from pytz import timezone as pytz_timezone
-#from math import sqrt, log, log2, modf, ceil, floor, factorial
-
-
-
-
-
-# from requests import get as requests_get, post as requests_post
-# from importlib import import_module as importlib_import_module
-# from bs4 import BeautifulSoup
-#from re import split as re.split
 
 
 #log = []
@@ -96,8 +80,8 @@ import cProfile
 import pstats
 import io
 import subprocess, tempfile
+import python_minifier
 
-version = sys.version_info
 
 
 __all__ = [
@@ -220,32 +204,6 @@ def get_available_variables() -> Dict[str, Any]:
 
 
 
-
-# from tge.random_generators import randomInt
-# from tge import console_utils
-
-# def higher_lower_game(random_num: int = None, max_num: int = None, min_num: int = None, num_of_guesses: int = 0, num_range: int = None):
-#     if random_num is None:
-#         randomInt(0, 10, False)
-    
-    
-#     random_num = 5
-#     while True:
-#         guess = console_utils.typingInput("Your Guess:", 0.01)
-#         try:
-#             guess = int(guess)
-#             break
-#         except:
-#             console_utils.clear_lines(1)
-
-
-
-
-# higher_lower_game()
-
-
-
-#hi = "post_to_discord_webhook"
 
 
 
@@ -1096,10 +1054,8 @@ def profile(func: Callable[..., Any]) -> Callable[..., Any]:
 
 
 
-def profile_function(function:Callable[...,Any], filename:str, *inputs:Any, **extra:Any)->Any:
+def profile_function(function, filename: str, *inputs, **extra):
     """Profile a function and save performance stats to files."""
-
-
 
     profile = cProfile.Profile()
     profile.enable()
@@ -1108,16 +1064,11 @@ def profile_function(function:Callable[...,Any], filename:str, *inputs:Any, **ex
 
     profile.disable()
 
-
-    profile_filename = f'{filename}.pstats'
-    profile.dump_stats(profile_filename)
-    stats = pstats.Stats(profile_filename)
-
-    with open(f'{filename}.txt', 'w') as f:
-        stats = pstats.Stats(profile_filename, stream=f)
+    with open(f"{filename}.txt", "w") as f:
+        stats = pstats.Stats(profile, stream=f)
         stats.sort_stats("cumulative")
         stats.print_stats()
-    
+
     return return_
 
 
@@ -1470,24 +1421,18 @@ Returns:
 
 
 
+def minify(text:str, *, rename_globals:bool=False,remove_docstrings:bool=True,remove_annotations:bool=True,rename_locals:bool=False)->str:
+    """Minify Python code by optionally renaming important names and removing docstrings.
 
-if version.minor < 12:
-    import python_minifier
-    def minify(text:str, *, rename_globals:bool=False,remove_docstrings:bool=True,remove_annotations:bool=True,rename_locals:bool=False)->str:
-        """Minify Python code by optionally renaming important names and removing docstrings.
+Args:
+    text (str): The Python code to minify.
+    rename_important_names (bool, optional): Whether to rename important names (variables, functions) to shorter names. Defaults to False.
+    remove_docstrings (bool, optional): Whether to remove docstrings from the code. Defaults to True.
 
-    Args:
-        text (str): The Python code to minify.
-        rename_important_names (bool, optional): Whether to rename important names (variables, functions) to shorter names. Defaults to False.
-        remove_docstrings (bool, optional): Whether to remove docstrings from the code. Defaults to True.
+Returns:
+    str: The minified Python code."""
+    return python_minifier.minify(text, rename_globals=rename_globals, remove_literal_statements=remove_docstrings,remove_annotations=remove_annotations,hoist_literals=remove_annotations,rename_locals=rename_locals)
 
-    Returns:
-        str: The minified Python code."""
-        return python_minifier.minify(text, rename_globals=rename_globals, remove_literal_statements=remove_docstrings,remove_annotations=remove_annotations,hoist_literals=remove_annotations,rename_locals=rename_locals)
-else:
-    def minify(text:str, *, rename_globals:bool=False,remove_docstrings:bool=True,remove_annotations:bool=True,rename_locals:bool=False)->str:
-        """'python_minifier' isn't installed, the text will 1 to 1 be returned"""
-        return text
 
 
 
@@ -1523,7 +1468,6 @@ else:
 
 
 
-#from .manipulation.list_utils import zipper_insert
 
 
 def _separate_imports(lines: List[str]) -> Tuple[List[str], List[str]]:

@@ -1,9 +1,7 @@
 #type: ignore
 from urllib.parse import urlparse,parse_qs
-import os,pytube,re,requests,urllib.request,yt_dlp
-_C=None
-_B=False
-_A=True
+import os,re,urllib.request
+_A=False
 from.file_operations import create_missing_directory
 __all__=['is_url','remove_html_tags','is_internet_connected','is_url_available','get_youtube_video_id','get_all_videos_from_youtube_playlist']
 def is_url(url):A=re.compile('^(?:http|https)://(?:[\\w-]+\\.)*[\\w-]+(?:\\.[a-zA-Z]{2,})(?:/?|(?:/[^\\s]+)+)?$');return bool(re.match(A,url))
@@ -16,41 +14,32 @@ def get_youtube_video_id(input_string):
   if B:return B.group(1)
  return''
 def is_internet_connected(max_timeout=5,website='https://www.google.com'):
- try:urllib.request.urlopen(website,timeout=max_timeout);return _A
- except Exception as A:return _B
+ try:urllib.request.urlopen(website,timeout=max_timeout);return True
+ except Exception as A:return _A
 def download_list_of_youtube_videos(urls,directory,preferred_format='mp3',preferred_quality='192'):
  A=directory;B=[]
  if not os.path.exists(A):os.makedirs(A)
- C={'format':'bestaudio/best','postprocessors':[{'key':'FFmpegExtractAudio','preferredcodec':preferred_format,'preferredquality':preferred_quality}],'outtmpl':os.path.join(A,'%(title)s.%(ext)s')}
- with yt_dlp.YoutubeDL(C)as D:
-  for E in urls:
-   try:D.download([E]);B.append(_C)
-   except Exception as F:B.append(F)
+ import yt_dlp as C;D={'format':'bestaudio/best','postprocessors':[{'key':'FFmpegExtractAudio','preferredcodec':preferred_format,'preferredquality':preferred_quality}],'outtmpl':os.path.join(A,'%(title)s.%(ext)s')}
+ with C.YoutubeDL(D)as E:
+  for F in urls:
+   try:E.download([F]);B.append(None)
+   except Exception as G:B.append(G)
  return B
-def post_to_discord_webhook(message_content,webhook,name,avatar_url=_C,mention=_A,activate_voice=_B):
- A=avatar_url;B={'content':message_content,'username':name,'tts':activate_voice,'allowed_mentions':{'parse':[]}if mention else{}}
- if A is not _C:B['avatar_url']=A
- C=requests.post(webhook,json=B);return C.status_code,C.content
 def extract_youtube_info(link):
  C='/shorts/';A=link;D=urlparse(A);B=parse_qs(D.query)
  if A.__contains__(C):A=A.replace(C,'/watch?v=')
- E=B.get('v',[_C])[0];F={A:B[0]for(A,B)in B.items()if A!='v'};return{'video_id':E,'params':F}
-def download_from_url_to_dir(url,dir,create=_A):
- A=requests.get(url)
- try:
-  if create:create_missing_directory(dir)
-  with open(dir+A.url.split('/')[-1],'wb',encoding='utf-8')as B:B.write(A.content)
-  return _A
- except:return _B
-def is_url_available(url,check_url=_A):
+ E=B.get('v',[None])[0];F={A:B[0]for(A,B)in B.items()if A!='v'};return{'video_id':E,'params':F}
+def is_url_available(url,check_url=True):
  A=check_url
  if A:A=not is_url(url)
- if not A:return _B
+ if not A:return _A
+ import requests as B
  try:
-  B=requests.get(url)
-  if B.status_code==200:return _A
-  else:return _B
- except(requests.exceptions.ConnectionError,requests.exceptions.ConnectTimeout):return
+  C=B.get(url)
+  if C.status_code==200:return True
+  else:return _A
+ except(B.exceptions.ConnectionError,B.exceptions.ConnectTimeout):return
 def get_all_videos_from_youtube_playlist(playlist_url):
- try:A=pytube.Playlist(playlist_url);return[A for A in A.video_urls]
- except Exception as B:return B
+ import pytube as A
+ try:B=A.Playlist(playlist_url);return[A for A in B.video_urls]
+ except Exception as C:return C

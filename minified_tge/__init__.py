@@ -1,5 +1,5 @@
 #type: ignore
-import os,requests,shutil,subprocess,sys,time as tm
+import os,shutil,subprocess,sys,time as tm
 _c='function_utils'
 _b='bool_operations'
 _a='formatting'
@@ -38,8 +38,8 @@ __license__='LGPL, GNU Lesser General Public License'
 __url__='https://github.com/Miner3D-Gamer/TGE'
 __doc__='https://github.com/Miner3D-Gamer/TGE/blob/main/README.MD'
 def is_tge_outdated():
- A=requests.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
- with open(os.path.dirname(__file__)+'/update.hashed','r')as B:C=B.read();D=str(A.content)[2:-1];return C!=D
+ import requests as B;A=B.get('https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed');A.raise_for_status()
+ with open(os.path.dirname(__file__)+'/update.hashed','r')as C:D=C.read();E=str(A.content)[2:-1];return D!=E
 from.mini_lib import platform_mini
 def burn_value_into_function(x):
  def A():return x

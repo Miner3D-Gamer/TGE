@@ -1,7 +1,8 @@
-from _typeshed import Incomplete
+from pydub import AudioSegment
+from simpleaudio import PlayObject
 __all__=['AudioPlayer','save_text_to_speech']
 class AudioPlayer:
-	audio:Incomplete;samples:Incomplete;sample_rate:Incomplete;num_channels:Incomplete;bytes_per_sample:Incomplete;current_position:int;play_obj:Incomplete;is_playing:bool
+	audio:AudioSegment;samples:bytes;sample_rate:int;num_channels:int;bytes_per_sample:int;current_position:int;play_obj:PlayObject|None;is_playing:bool|None
 	def __init__(self,file_path:str)->None:...
 	def play(self)->None:...
 	def pause(self)->None:...

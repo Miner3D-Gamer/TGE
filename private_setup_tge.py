@@ -84,7 +84,9 @@ except FileNotFoundError:
 
 
 if tge.tbe.determine_affirmative(input("Minify?: ")):
+    # Generate stubs
     os.system("python generate_stubs.py -o stubs tge")
+    # Generate minified files
     for root, dirs, files in os.walk(dir, topdown=False):
         root = root
         for file in files:

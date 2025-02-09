@@ -2,11 +2,8 @@
 # Create stubs for the yt_dlp and pytube modules
 from typing import List, Union, Tuple, Dict, Optional, Any
 import re
-import pytube
 import os
 
-import yt_dlp
-import requests
 from urllib.parse import urlparse, parse_qs
 from .file_operations import create_missing_directory
 
@@ -123,6 +120,7 @@ def download_list_of_youtube_videos(urls: List[str], directory: str, preferred_f
     errors: List[Optional[Exception]] = []
     if not os.path.exists(directory):
         os.makedirs(directory)
+    import yt_dlp
 
     ydl_opts = {
         'format': 'bestaudio/best',
@@ -148,28 +146,28 @@ def download_list_of_youtube_videos(urls: List[str], directory: str, preferred_f
 
 
 
-def post_to_discord_webhook(
-    message_content: str,
-    webhook: str,
-    name: str,
-    avatar_url: Optional[str] = None,
-    mention: bool = True,
-    activate_voice: bool = False,
-) -> Tuple[int, bytes]:
-    """
-    Posts a message to a Discord webhook. Returns the response code and the content of the message.
-    """
-    data: Dict[str, Any] = {
-        "content": message_content, 
-        "username": name,  
-        "tts": activate_voice,  
-        "allowed_mentions": {"parse": []} if mention else {},
-    }
-    if avatar_url is not None:
-        data["avatar_url"] = avatar_url
+# def post_to_discord_webhook(
+#     message_content: str,
+#     webhook: str,
+#     name: str,
+#     avatar_url: Optional[str] = None,
+#     mention: bool = True,
+#     activate_voice: bool = False,
+# ) -> Tuple[int, bytes]:
+#     """
+#     Posts a message to a Discord webhook. Returns the response code and the content of the message.
+#     """
+#     data: Dict[str, Any] = {
+#         "content": message_content, 
+#         "username": name,  
+#         "tts": activate_voice,  
+#         "allowed_mentions": {"parse": []} if mention else {},
+#     }
+#     if avatar_url is not None:
+#         data["avatar_url"] = avatar_url
 
-    response = requests.post(webhook, json=data)
-    return response.status_code, response.content
+#     response = requests.post(webhook, json=data)
+#     return response.status_code, response.content
 
 
 
@@ -216,36 +214,36 @@ def extract_youtube_info(link: str) -> Dict[str, Union[str, Dict[str, str], None
 
 
 
-def download_from_url_to_dir(url: str, dir: str, create: bool=True) -> bool:
-    """
-    Downloads a file from the given URL and saves it to the specified directory.
+# def download_from_url_to_dir(url: str, dir: str, create: bool=True) -> bool:
+#     """
+#     Downloads a file from the given URL and saves it to the specified directory.
 
-    Args:
-        url (str): The URL of the file to be downloaded.
-        dir (str): The directory where the downloaded file will be saved.
-        create (bool): If True, creates the directory if it doesn't exist.
+#     Args:
+#         url (str): The URL of the file to be downloaded.
+#         dir (str): The directory where the downloaded file will be saved.
+#         create (bool): If True, creates the directory if it doesn't exist.
 
-    Returns:
-        None
+#     Returns:
+#         None
 
-    Raises:
-        Any exceptions raised during the download and file write process are caught,
-        and the function returns False if an exception occurs.
+#     Raises:
+#         Any exceptions raised during the download and file write process are caught,
+#         and the function returns False if an exception occurs.
 
-    Note:
-        This function uses the 'requests' library to download the file. If 'create' is
-        set to True, it creates the missing directory structure before saving the file.
-        The file is saved with the same name as the last part of the URL.
-    """
-    r = requests.get(url)
-    try:
-        if create:
-            create_missing_directory(dir)
-        with open(dir + r.url.split("/")[-1], "wb", encoding="utf-8") as f:
-            f.write(r.content)
-        return True
-    except:
-        return False
+#     Note:
+#         This function uses the 'requests' library to download the file. If 'create' is
+#         set to True, it creates the missing directory structure before saving the file.
+#         The file is saved with the same name as the last part of the URL.
+#     """
+#     r = requests.get(url)
+#     try:
+#         if create:
+#             create_missing_directory(dir)
+#         with open(dir + r.url.split("/")[-1], "wb", encoding="utf-8") as f:
+#             f.write(r.content)
+#         return True
+#     except:
+#         return False
 
 
 def is_url_available(url: str, check_url: bool = True) -> Optional[bool]:
@@ -264,6 +262,7 @@ def is_url_available(url: str, check_url: bool = True) -> Optional[bool]:
 
     if not check_url:
         return False
+    import requests
 
     try:
         r = requests.get(url)
@@ -288,6 +287,7 @@ def get_all_videos_from_youtube_playlist(playlist_url: str) -> Union[List[str], 
     This function uses the PyTube library to extract video URLs from the provided playlist URL.
     In case of an error, the exception is returned as a string.
     """
+    import pytube
     try:
         playlist = pytube.Playlist(playlist_url)
         

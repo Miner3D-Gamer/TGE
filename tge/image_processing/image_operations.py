@@ -1,12 +1,11 @@
 from PIL import Image
-from typing import Any, Union, Tuple, List, Optional,Set
-import numpy as np
+from typing import Any, Union, Tuple, List, Optional, Set
 from ..math_functions.math_functions import clamp
 import math
 from .middle_man import *
 
 
-def count_gif_frames(gif: Image.Image)->int:
+def count_gif_frames(gif: Image.Image) -> int:
     """
     Count the number of frames in a GIF image.
 
@@ -28,7 +27,7 @@ def count_gif_frames(gif: Image.Image)->int:
 
 def image_to_ascii(
     image_path: str = "",
-    image: Optional[Image.Image]=None,
+    image: Optional[Image.Image] = None,
     width: Optional[int] = None,
     unicode: bool = False,
     ascii_chars: str = "",
@@ -53,6 +52,8 @@ def image_to_ascii(
         - If `ascii_chars` is empty, a default set of characters is used based on the `unicode` flag.
         - Brighter pixels in the image correspond to darker characters in the ASCII art.
     """
+    import numpy as np
+
     Image.MAX_IMAGE_PIXELS = None
     if image_path:
         if not image:
@@ -81,7 +82,9 @@ def image_to_ascii(
     return ascii_art
 
 
-def _load_image(image_path: str, alpha: bool=True)->Optional[Tuple[Image.Image, int, int]]:
+def _load_image(
+    image_path: str, alpha: bool = True
+) -> Optional[Tuple[Image.Image, int, int]]:
     """
     Loads an image and returns pixel data along with its dimensions.
 
@@ -111,7 +114,9 @@ def _load_image(image_path: str, alpha: bool=True)->Optional[Tuple[Image.Image, 
     return pixel_data, width, height
 
 
-def count_image_colors(image:Optional[Image.Image]=None, image_path:Optional[str]=None)->List[Tuple[int, int, int]]:
+def count_image_colors(
+    image: Optional[Image.Image] = None, image_path: Optional[str] = None
+) -> List[Tuple[int, int, int]]:
     """
     Counts unique colors in an image.
 
@@ -138,7 +143,7 @@ def count_image_colors(image:Optional[Image.Image]=None, image_path:Optional[str
     else:
         loaded_image, width, height = image, image.width, image.height
 
-    unique_colors: Set[Union[Tuple[int, int, int],Any]] = set()
+    unique_colors: Set[Union[Tuple[int, int, int], Any]] = set()
 
     for x in range(width):
         for y in range(height):
@@ -148,7 +153,7 @@ def count_image_colors(image:Optional[Image.Image]=None, image_path:Optional[str
     return list(unique_colors)
 
 
-def hex_to_rgb(hex_color:str)->Tuple[int, int, int]:
+def hex_to_rgb(hex_color: str) -> Tuple[int, int, int]:
     """
     Converts a hexadecimal color string to an RGB tuple.
 
@@ -242,4 +247,13 @@ def is_color_similar(
     bool: True if the colors are similar within the threshold, False otherwise.
     """
     return math.sqrt(sum((a[i] - b[i]) ** 2 for i in range(3))) <= similarity
-__all__ = ['count_gif_frames', 'image_to_ascii', 'count_image_colors', 'hex_to_rgb', 'Color', 'is_color_similar']
+
+
+__all__ = [
+    "count_gif_frames",
+    "image_to_ascii",
+    "count_image_colors",
+    "hex_to_rgb",
+    "Color",
+    "is_color_similar",
+]

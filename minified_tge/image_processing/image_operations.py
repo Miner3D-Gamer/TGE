@@ -1,6 +1,6 @@
 #type: ignore
 from PIL import Image
-import math,numpy as np
+import math
 _A=None
 from..math_functions.math_functions import clamp
 from.middle_man import*
@@ -11,7 +11,7 @@ def count_gif_frames(gif):
  except EOFError:pass
  return frame_count
 def image_to_ascii(image_path='',image=_A,width=_A,unicode=False,ascii_chars=''):
- Image.MAX_IMAGE_PIXELS=_A
+ import numpy as np;Image.MAX_IMAGE_PIXELS=_A
  if image_path:
   if not image:image=Image.open(image_path)
  elif not image:return''

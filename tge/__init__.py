@@ -27,7 +27,6 @@ import sys
 from typing import Literal, Optional, Any, Callable
 import subprocess
 import shutil
-import requests
 import os
 
 
@@ -38,6 +37,7 @@ def is_tge_outdated() -> bool:
     Returns:
         bool: True if the local file is outdated, False otherwise.
     """
+    import requests
     response = requests.get(
         "https://github.com/Miner3DGaming/TGE/raw/main/tge/update.hashed"
     )

@@ -3,6 +3,7 @@ from types import ModuleType, MethodType
 from typing import Any, Dict, List, NoReturn, Optional, get_type_hints, Union, Callable
 import importlib
 import os
+import functools
 from concurrent import futures
 
 
@@ -312,3 +313,18 @@ def run_function_with_timeout(
             return future.result(timeout=timeout)
         except futures.TimeoutError:
             return TimeoutResult
+
+
+def lazy_load(func_loader):
+    """Decorator to lazy load a function upon first use."""
+    func = None
+
+    @functools.wraps(func_loader)
+    def wrapper(*args, **kwargs):
+        "Wrapper :)"
+        nonlocal func
+        if func is None:
+            func = func_loader()
+        return func(*args, **kwargs)
+
+    return wrapper

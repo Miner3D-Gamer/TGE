@@ -1,8 +1,8 @@
 #type: ignore
 from ctypes import wintypes
-from PIL import Image
 import ctypes
 _A=None
+from.image_operations import Image
 __all__=['screenshot','get_pixel_color']
 SRCCOPY=13369376
 DIB_RGB_COLORS=0

@@ -299,7 +299,7 @@ def decompress_file_path_list(data: NestedList, current: str = "") -> List[str]:
 
 
 def decompress_file_paths(
-    data: Union[NestedList, Dict[str, Any]]
+    data: Union[NestedList, Dict[str, Any]],
 ) -> Union[List[str], Dict[str, Any]]:
     if isinstance(data, list):
         return decompress_file_path_list(data)

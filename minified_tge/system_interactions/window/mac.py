@@ -1,6 +1,7 @@
 #type: ignore
-from Quartz import CGWindowListCopyWindowInfo,kCGWindowListOptionOnScreenOnly,kCGNullWindowID
-from AppKit import NSWorkspace,NSApplication,NSApp,NSWindow
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:from Quartz import CGWindowListCopyWindowInfo,kCGWindowListOptionOnScreenOnly,kCGNullWindowID;from AppKit import NSWorkspace,NSApplication,NSApp,NSWindow
+else:from Quartz import CGWindowListCopyWindowInfo,kCGWindowListOptionOnScreenOnly,kCGNullWindowID;from AppKit import NSWorkspace,NSApplication,NSApp,NSWindow
 def is_window_minimized(window):return window.isMiniaturized()
 def minimize_window(window):window.performMiniaturize_(None)
 def get_window_position(window):

@@ -1,4 +1,3 @@
-# This is for mypy to ignore this file's errors as this file is os dependent
 from .. import SYSTEM_NAME
 
 __all__ = ["is_window_minimized", "minimize_window", "maximize_window", "get_window_position", "set_window_position", "get_window_by_title"]

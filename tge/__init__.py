@@ -10,7 +10,7 @@ importing = __name__ != "__main__"
 if not importing:
     raise RuntimeError("This library is meant to be imported, not run directly. Dummy")
 
-__name__ = "tge"
+
 __author__ = "Miner3D"
 __license__ = "LGPL, GNU Lesser General Public License"
 __url__ = "https://github.com/Miner3D-Gamer/TGE"

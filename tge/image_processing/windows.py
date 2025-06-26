@@ -1,7 +1,7 @@
 from typing import Tuple
 import ctypes
 from ctypes import wintypes
-from .image_operations import Image
+from PIL import Image
 
 __all__ = ["screenshot", "get_pixel_color"]
 SRCCOPY = 0x00CC0020

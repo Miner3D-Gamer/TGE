@@ -1,5 +1,15 @@
-from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly, kCGNullWindowID 
-from AppKit import NSWorkspace, NSApplication, NSApp, NSWindow  
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly, kCGNullWindowID  # type: ignore
+    from AppKit import NSWorkspace, NSApplication, NSApp, NSWindow  # type: ignore
+else:
+    from Quartz import (
+        CGWindowListCopyWindowInfo,
+        kCGWindowListOptionOnScreenOnly,
+        kCGNullWindowID,
+    )
+    from AppKit import NSWorkspace, NSApplication, NSApp, NSWindow
 
 from typing import Optional, Tuple
 

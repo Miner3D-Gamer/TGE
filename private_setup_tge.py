@@ -62,7 +62,7 @@ for root, dirs, files in os.walk(dir, topdown=False):
         directories.append(file)
 
 
-compressed = tge.file_operations._compress_path_list_to_dict(directories) #type: ignore
+compressed = tge.file_operations._compress_path_list_to_dict(directories)  # type: ignore
 
 with open("directory.json", "w") as normal_file:  #
     compressed = json.dumps(compressed)
@@ -129,9 +129,8 @@ if tge.tbe.determine_affirmative(input("Minify?: ")):
                     if file.endswith(".py"):
                         if IGNORE:
                             data = ["#type: ignore"] + data
-                        
+
                     minified_file.write("\n".join(data))
-                
 
 
 tge_size = tge.conversion.binary.convert_byte_to_kilobyte(
@@ -160,13 +159,16 @@ with open(".gitignore", "w") as normal_file:
     )
 
 print()
-print("Import time of TGE:", tge.INIT_TIME)
+print("Import time of TGE: %s ms" % (tge.INIT_TIME * 1000))
 print("Size of TGE: %s kb" % tge_size)
-print("Import time of minified TGE:", minified_tge.INIT_TIME)
+print("Import time of minified TGE: %s ms" % (minified_tge.INIT_TIME * 1000))
 print("Size of minified TGE: %s kb" % minified_size)
 print(
-    "The minified TGE is %sx smaller"
-    % str(tge_size / (minified_size if minified_size != 0 else tge_size))
+    "The minified TGE is {}% smaller".format(
+        str(
+            (1 - (minified_size / (tge_size if tge_size != 0 else minified_size))) * 100
+        )
+    )
 )
 print()
 

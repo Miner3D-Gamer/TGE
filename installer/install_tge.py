@@ -209,9 +209,7 @@ while True:
             continue
         if (
             is_directory_empty(path)
-            and argument_handler.has_argument(
-                "-inherit_empty_directory"
-            )
+            and argument_handler.has_argument("-inherit_empty_directory")
         ) or unify(path).split("/")[0] == "tge":
             dirs = [path]
             break
@@ -268,11 +266,11 @@ def format_table(data: List[List[str]]) -> str:
 if give_feedback < 1:
     print()
 base_github_url = "https://raw.githubusercontent.com/Miner3D-Gamer/TGE/main"
-while True:
+install_minified = argument_handler.has_argument(
+    "-install_minified", delete=True,
+)
+while not install_minified:
 
-    inp = argument_handler.get_argument_by_flag(
-        "-install_minified", delete=True, default=None
-    )
     if inp is None:
         table = format_table(
             [
@@ -290,13 +288,17 @@ while True:
             .lower()
         )
     if inp in ["n", "2", "nope"]:
-        github_url = unify(os.path.join(base_github_url, "tge"))
+        install_minified = False
         break
 
     elif inp in ["y", "1", "sure", ""]:
-        github_url = unify(os.path.join(base_github_url, "minified_tge"))
+        install_minified = True
         break
+if install_minified:
+    github_url = unify(os.path.join(base_github_url, "minified_tge"))
+else:
 
+    github_url = unify(os.path.join(base_github_url, "tge"))
 
 response = requests.get(unify(os.path.join(base_github_url, "directory.json")))
 

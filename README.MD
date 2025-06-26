@@ -30,7 +30,7 @@ The downloader supports additional inputs to customize the installation without 
 
 ### `-path` (Default: Asks user)
 
-- The directory to a file (python.exe) or folder used by `-install_option`.
+- The directory to a file <sup><sub>(python.exe)</sub></sup> or folder used by `-install_option`.
 
 ### `-install_option` (Default: Asks user)
 
@@ -39,10 +39,9 @@ The downloader supports additional inputs to customize the installation without 
 - **3**: Select a folder to install TGE into.
 - **4**: Same as 3 -> Internally when asking the user, 3 allows them to select the folder in a visual window while 4 requests the file to be provided in the console.
 
-### `-install_minified` (Default: N)
+### `-install_minified` (Flag)
 
-- `y`, `1`, `sure`: Installs the minified version of TGE.
-- `n`, `2`, `nope`: Installs the normal version of TGE.
+- If set, install the minified version of TGE
 
 ### `-clingy` (Flag)
 

@@ -34,7 +34,7 @@ The downloader supports additional inputs to customize the installation without 
 
 ### `-install_option` (Default: Asks user)
 
-- **1**: Install TGE for all installed Python installations in the default Python directory <sup><sub>(`{C:\Users\{Username}\AppData\Local\Programs\Python}` or `/usr/lib/python3.x/` or `/usr/local/lib/python3.x/`)</sub></sup>, this won't do anything .
+- **1**: Install TGE in the detected site-packages of your current interpreter if found.
 - **2**: Select a `.exe` file in the Python folder.
 - **3**: Select a folder to install TGE into.
 - **4**: Same as 3 -> Internally when asking the user, 3 allows them to select the folder in a visual window while 4 requests the file to be provided in the console.

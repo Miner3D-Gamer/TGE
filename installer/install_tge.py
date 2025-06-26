@@ -148,16 +148,17 @@ else:
     full_import_time = times[0]
     minified_import_time = times[1]
 
-system = platform.system()
-if system == "Windows":
-    default_python_installation = [rf"{os.getenv('LOCALAPPDATA')}\Programs\Python"]
-elif system == "Linux":
-    default_python_installation = ["/usr/lib/python3.x/", "/usr/local/lib/python3.x/"]
-else:
-    default_python_installation = []
+# system = platform.system()
+# if system == "Windows":
+#     default_python_installation = [rf"{os.getenv('LOCALAPPDATA')}\Programs\Python"]
+# elif system == "Linux":
+#     default_python_installation = ["/usr/lib/python3.x/", "/usr/local/lib/python3.x/"]
+# else:
+#     default_python_installation = []
+import site
 
-default_python_installation = [
-    x for x in default_python_installation if os.path.exists(x)
+default_python_installation_sidepackage = [
+    x for x in site.getsitepackages() if x.endswith("site-packages")
 ]
 
 
@@ -170,7 +171,7 @@ while True:
     if not inp:
         inp = input(
             f"""Choose how to install TGE (Enter Number):
-        {cross_out_start if len(default_python_installation)==0 else ''} 1. Install TGE for all installed python installations in the default python installation ({' and '.join(default_python_installation)}) {cross_out_end if len(default_python_installation)==0 else ''}
+        {cross_out_start if len(default_python_installation_sidepackage)==0 else ''} 1. Install TGE in the detected site-packages of your current interpreter ({' and '.join(default_python_installation_sidepackage)}) {cross_out_end if len(default_python_installation_sidepackage)==0 else ''}
 
         2. Select a file (.exe) in the python folder you wanna install TGE in (Visual Window)
 
@@ -187,14 +188,13 @@ while True:
             quit()
 
     if inp == "1":
-        dirs = []
-        for x in default_python_installation:
-            dirs_ = [
-                f"{i.path}/Lib/site-packages/tge"
-                for i in os.scandir(x)
-                if os.path.exists(f"{i.path}/Lib/site-packages")
-            ]
-            dirs.extend(dirs_)
+        if len(default_python_installation_sidepackage) == 0:
+            if give_feedback < 3:
+                print("Error -> No default side-package folder found")
+            if wait_for_reaction:
+                input()
+            quit()
+        dirs = [x + "/tge" for x in default_python_installation_sidepackage]
 
         break
     elif inp == "2":

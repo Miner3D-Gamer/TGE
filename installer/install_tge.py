@@ -6,7 +6,7 @@ except ImportError:
 else:
     TKINTER_available = True
 
-from typing import Optional, Union, Any, Callable, List, Dict
+from typing import Optional, Union, Any, Callable, List, Dict, TypeVar
 from importlib.util import find_spec as importlib_find_spec
 import requests, json, subprocess, sys, os, shutil, time
 
@@ -15,6 +15,9 @@ NestedList = List[Union[str, "NestedList"]]
 
 def is_library_installed(library_name: str) -> bool:
     return importlib_find_spec(library_name) is not None
+
+
+T = TypeVar("T")
 
 
 class ArgumentHandler:
@@ -26,8 +29,8 @@ class ArgumentHandler:
             self.a = B
 
     def get_argument_by_flag(
-        self, flag: str, delete: bool = False, default: Any = None
-    ) -> Optional[Union[str, Any]]:
+        self, flag: str, delete: bool = False, default: T = None
+    ) -> Union[str, T]:
 
         if not flag in self.a:
             b = -1
@@ -72,7 +75,10 @@ wait_for_reaction = (
 )
 
 
-if is_library_installed("tge"):
+skip_checking_for_tge = argument_handler.has_argument(
+    "-skip_checking_local", delete=True
+)
+if not skip_checking_for_tge and is_library_installed("tge"):
     try:
         import tge
     except:
@@ -104,6 +110,43 @@ if is_library_installed("tge"):
                         break
 
 unify: Callable[[str], str] = lambda x: x.replace("\\", "/")
+
+# Test if user is connected to the internet/has access to github
+read_me_url = (
+    "https://raw.githubusercontent.com/Miner3D-Gamer/TGE/refs/heads/main/README.MD"
+)
+read_me_data = requests.get(read_me_url)
+read_me_data.raise_for_status()
+
+size_line = [x for x in read_me_data.text.split("\n") if x.__contains__("**Size**")][0]
+size_list = size_line.split("|")
+sizes = []
+for i in size_list:
+    if any([i.__contains__(str(x)) for x in range(10)]):
+        sizes.append(i.strip())
+if len(sizes) != 2:
+    full_size = "???"
+    minified_size = "???"
+else:
+    full_size = sizes[0]
+    minified_size = sizes[1]
+
+
+time_line = [
+    x for x in read_me_data.text.split("\n") if x.__contains__("**Import Time**")
+][0]
+time_list = time_line.split("|")
+times = []
+for i in time_list:
+    if any([i.__contains__(str(x)) for x in range(10)]):
+        times.append(i.strip())
+if len(times) != 2:
+    full_import_time = "???"
+    minified_import_time = "???"
+else:
+    full_import_time = times[0]
+    minified_import_time = times[1]
+
 
 default_python_installation = rf"{os.getenv('LOCALAPPDATA')}\Programs\Python"
 while True:
@@ -138,9 +181,7 @@ while True:
 
         break
     elif inp == "2":
-        path = argument_handler.get_argument_by_flag(
-            "-path", delete=True, default=False
-        )
+        path = argument_handler.get_argument_by_flag("-path", delete=True, default="")
         if not path:
 
             if TKINTER_available:
@@ -156,9 +197,7 @@ while True:
                 print("'%s' could not be found\n" % path)
             continue
     elif inp == "3":
-        path = argument_handler.get_argument_by_flag(
-            "-path", delete=True, default=False
-        )
+        path = argument_handler.get_argument_by_flag("-path", delete=True, default="")
         if not path:
             if TKINTER_available:
                 path = filedialog.askdirectory()  # type: ignore
@@ -168,20 +207,32 @@ while True:
             if give_feedback < 1:
                 print("Path not found.")
             continue
-        if is_directory_empty(path) or path.endswith("\\tge"):
+        if (
+            is_directory_empty(path)
+            and argument_handler.has_argument(
+                "-inherit_empty_directory"
+            )
+        ) or unify(path).split("/")[0] == "tge":
             dirs = [path]
             break
         dirs = [path + "/tge"]
         break
     elif inp == "4":
-        path = input("Directory: ")
+        path = argument_handler.get_argument_by_flag("-path", delete=True, default="")
+        if not path:
+            path = input("Directory: ")
         if not os.path.exists(path):
             if give_feedback < 1:
                 print("Directory does not exist, canceling.")
             if wait_for_reaction:
                 input()
             quit()
-        if is_directory_empty(path) or path.endswith("\\tge"):
+        if (
+            is_directory_empty(path)
+            and argument_handler.has_argument(
+                "-inherit_empty_directory",
+            )
+        ) or unify(path).split("/")[0] == "tge":
             dirs = [path]
             break
         dirs = [path + "/tge"]
@@ -190,6 +241,29 @@ while True:
         if wait_for_reaction:
             input()
         quit()
+
+
+def format_table(data: List[List[str]]) -> str:
+    stuff = ""
+    column_widths = [max(len(str(item)) for item in column) for column in zip(*data)]
+
+    header = "+" + "+".join("-" * (width + 2) for width in column_widths) + "+"
+    stuff += header + "\n"
+
+    for row in data:
+        formatted_row = (
+            "| "
+            + (
+                " | ".join(
+                    str(item).ljust(width) for item, width in zip(row, column_widths)
+                )
+            )
+            + " |"
+        )
+        stuff += formatted_row + "\n"
+    stuff += header
+    return stuff
+
 
 if give_feedback < 1:
     print()
@@ -200,14 +274,17 @@ while True:
         "-install_minified", delete=True, default=None
     )
     if inp is None:
-        min_space = "350kb"
-        norm_space = "600kb"
-        min_import_time = "0.01-0.3"
-        norm_import_time = "0.4-0.6"
+        table = format_table(
+            [
+                ["Mode", "Size", "Import time"],
+                ["Normal", full_size, full_import_time],
+                ["Minified", minified_size, minified_import_time],
+            ]
+        )
         inp = (
             input(
-                "Do you want download the minified version of TGE? (Y/N)\nThe minified version will require less space (~%ss instead of ~%ss) and will be faster to import (%s instead of %s) but all docstring and annotations have been removed. Runtime differences are unknown (Default:N)\nYour Input: "
-                % (min_space, norm_space, min_import_time, norm_import_time)
+                "Do you want download the minified version of TGE? (Y/N)\n(All docstrings and annotations have been removed)\n%s\n"
+                % table
             )
             .strip()
             .lower()
@@ -301,7 +378,7 @@ def decompress_file_path_list(data: NestedList, current: str = "") -> List[str]:
 def decompress_file_paths(
     data: Union[NestedList, Dict[str, Any]],
 ) -> Union[List[str], Dict[str, Any]]:
-    if isinstance(data, list):
+    if isinstance(data, list) or type(data) == NestedList:
         return decompress_file_path_list(data)
     else:
         return decompress_file_path_dict(data)
@@ -323,6 +400,11 @@ for dir in dirs:
 if give_feedback < 1:
     print("Directories tge will download into:")
     print(*dirs, sep="\n", end="\n\n")
+
+
+def interpolate(val1, val2, progress):
+    return progress * val2 + (1 - progress) * val1
+
 
 requirements = []
 start = time.time()
@@ -370,8 +452,13 @@ for file_id in range(total_urls):
             continue
         os.makedirs(parent_dir, exist_ok=True)
         if give_feedback < 1:
+            previous = file_id / total_urls * 100
+            current = (file_id + 1) / total_urls * 100
+            percentage = round(
+                interpolate(previous, current, idx / (total_dirs - 1)), 2
+            )
             print(
-                f"Writing to {path} ({file_id+1}/{total_urls}) ({idx+1}/{total_dirs}) ({round((file_id+1)/total_urls*100,2)}%)"
+                f"Writing to {path} ({file_id+1}/{total_urls}) ({idx+1}/{total_dirs}) ({percentage}%)"
             )
         with open(path, "w", encoding="utf8") as f:
             f.write(file.text)

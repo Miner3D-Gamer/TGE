@@ -1,8 +1,8 @@
 #type: ignore
 from random import random,choice
 import os,sys,time
-_D=False
-_C='\n'
+_D='\n'
+_C=False
 _B=True
 _A=None
 from.tbe import determine_affirmative
@@ -21,26 +21,29 @@ def typingInput(text,delay=0):
  C=input('');return C
 def write_sentences_to_console(text,type_delay,line_delay=.7):
  for A in text:typing_print(A,type_delay);time.sleep(line_delay)
-def choose_from_text_menu(menu_list,prompt='',destroy=_D):
- H=destroy;G=prompt;B=menu_list;raise BaseException('This function needs a revamp :/');C='';D=C.count(_C)+G.count(_C)+2
- for(E,F)in enumerate(B):C+=f"{E+1}: {F}\n"
+def choose_from_text_menu(menu_list,prompt='',destroy=_C):
+ I=destroy;C=prompt;A=menu_list
+ if not hasattr(A,'__len__'):return-1
+ D='';J=D.count(_D)+C.count(_D)+2;E=J+len(A)
+ for(F,G)in enumerate(A):D+=f"{F+1}: {G}\n"
+ B=''
  while _B:
-  print(C);A=input(G)
-  if A.isdigit():
-   A=int(A)
-   if A>0 and A<len(B)+1:
-    if H:clear_lines(D)
-    return A-1
+  print(D);print(' '*(len(B)+len(C)));clear_lines(1);B=input(C)
+  if B.isdigit():
+   H=int(B)
+   if H>0 and H<len(A)+1:
+    if I:clear_lines(E)
+    return H-1
   else:
-   for(E,F)in enumerate(B):
-    if A==F:
-     if H:clear_lines(D)
-     return E
-  clear_lines(D)
-def skip_line():print(_C)
-def print_table(data):
- B='+';A='';C=[max(len(str(A))for A in A)for A in zip(*data)];D=B+B.join('-'*(A+2)for A in C)+B;A+=D+_C
- for E in data:F='| '+' | '.join(str(A).ljust(B)for(A,B)in zip(E,C))+' |';A+=F+_C
+   for(F,G)in enumerate(A):
+    if B==G:
+     if I:clear_lines(E)
+     return F
+  clear_lines(E,_C)
+def skip_line():print(_D)
+def format_table(data):
+ B='+';A='';C=[max(len(str(A))for A in A)for A in zip(*data)];D=B+B.join('-'*(A+2)for A in C)+B;A+=D+_D
+ for E in data:F='| '+' | '.join(str(A).ljust(B)for(A,B)in zip(E,C))+' |';A+=F+_D
  A+=D;return A
 def progress_bar(progress_name,current,total,length,show_float=_B,empty_tile='-',full_tile='#'):
  E=length;D=progress_name;B=total;A=current;A+=1
@@ -57,7 +60,7 @@ def visualize_directory(path,prefix='',lines=_A):
  B=prefix;A=lines
  if A is _A:A=[]
  if B=='':I=os.path.basename(path);A.append(f"[{I}]")
- C=_D;F='└──';G='├──';J='│   ';K='   '
+ C=_C;F='└──';G='├──';J='│   ';K='   '
  try:
   with os.scandir(path)as L:
    H=list(L)
@@ -67,10 +70,10 @@ def visualize_directory(path,prefix='',lines=_A):
     else:A.append(f"{B}{E}/{D.name}")
  except PermissionError:E=F if C else G;A.append(f"{B}{E}(Access Denied)")
  return A
-def clear_lines(num_lines,move_front=_D):
- A='\x1b[F';sys.stdout.write(A*num_lines);sys.stdout.write('\x1b[K')
- if move_front:sys.stdout.write(A)
-def prompt_bool(question,allow_undeterminable=_D,tries=0,delete_lines=_B):
+def clear_lines(num_lines,move_front=_C):
+ sys.stdout.write('\x1b[F\x1b[K'*num_lines)
+ if move_front:sys.stdout.write('\x1b[F')
+def prompt_bool(question,allow_undeterminable=_C,tries=0,delete_lines=_B):
  C=tries;D=0
  while _B:
   D+=1;A=str(input(question)).lower();B=determine_affirmative(A)
@@ -93,7 +96,7 @@ def prompt_number(question,min=_A,max=_A,delete_lines=_B,tries=0):
   if not max is _A:
    if A>max:continue
   else:return A
-def matrix_rain(rows,columns,speed=.1,density=.2,duration=_A,symbols=['0','1'],callable_stop_if_return_true=lambda:_D):
+def matrix_rain(rows,columns,speed=.1,density=.2,duration=_A,symbols=['0','1'],callable_stop_if_return_true=lambda:_C):
  E=duration;D=columns;C=rows;H=time.time();A=[[' 'for A in range(D)]for A in range(C)]
  while _B:
   for B in range(D):
@@ -102,7 +105,7 @@ def matrix_rain(rows,columns,speed=.1,density=.2,duration=_A,symbols=['0','1'],c
   for B in range(C-1,0,-1):
    for F in range(D):A[B][F]=A[B-1][F]
   G='';I=0
-  for J in A[1:]:G+=''.join(J)+_C;I+=1
+  for J in A[1:]:G+=''.join(J)+_D;I+=1
   clear_lines(C+1);print(G)
   if E is not _A:
    if time.time()-H>E:break
@@ -111,4 +114,4 @@ def matrix_rain(rows,columns,speed=.1,density=.2,duration=_A,symbols=['0','1'],c
 class SuppressPrint:
  def __enter__(A):A._original_stdout=sys.stdout;sys.stdout=open(os.devnull,'w')
  def __exit__(A,exc_type,exc_value,traceback):sys.stdout.close();sys.stdout=A._original_stdout
-__all__=['typing_print','typingInput','write_sentences_to_console','choose_from_text_menu','skip_line','print_table','progress_bar','colorize_text','visualize_directory','clear_lines','prompt_bool','prompt_number','matrix_rain','SuppressPrint','clear']
+__all__=['typing_print','typingInput','write_sentences_to_console','choose_from_text_menu','skip_line','format_table','progress_bar','colorize_text','visualize_directory','clear_lines','prompt_bool','prompt_number','matrix_rain','SuppressPrint','clear']

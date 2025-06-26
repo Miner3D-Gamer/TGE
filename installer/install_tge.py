@@ -5,6 +5,7 @@ except ImportError:
     TKINTER_available = False
 else:
     TKINTER_available = True
+import platform
 
 from typing import Optional, Union, Any, Callable, List, Dict, TypeVar
 from importlib.util import find_spec as importlib_find_spec
@@ -147,16 +148,29 @@ else:
     full_import_time = times[0]
     minified_import_time = times[1]
 
+system = platform.system()
+if system == "Windows":
+    default_python_installation = [rf"{os.getenv('LOCALAPPDATA')}\Programs\Python"]
+elif system == "Linux":
+    default_python_installation = ["/usr/lib/python3.x/", "/usr/local/lib/python3.x/"]
+else:
+    default_python_installation = []
 
-default_python_installation = rf"{os.getenv('LOCALAPPDATA')}\Programs\Python"
+default_python_installation = [
+    x for x in default_python_installation if os.path.exists(x)
+]
+
+
 while True:
     inp = argument_handler.get_argument_by_flag(
         "-install_option", delete=True, default=False
     )
+    cross_out_start = "\x1b[9m"
+    cross_out_end = "\x1b[0m"
     if not inp:
         inp = input(
             f"""Choose how to install TGE (Enter Number):
-        1. Install TGE for all installed python installations in the default python installation ({default_python_installation})
+        {cross_out_start if len(default_python_installation)==0 else ''} 1. Install TGE for all installed python installations in the default python installation ({' and '.join(default_python_installation)}) {cross_out_end if len(default_python_installation)==0 else ''}
 
         2. Select a file (.exe) in the python folder you wanna install TGE in (Visual Window)
 
@@ -173,11 +187,14 @@ while True:
             quit()
 
     if inp == "1":
-        dirs = [
-            f"{i.path}/Lib/site-packages/tge"
-            for i in os.scandir(default_python_installation)
-            if os.path.exists(f"{i.path}/Lib/site-packages")
-        ]
+        dirs = []
+        for x in default_python_installation:
+            dirs_ = [
+                f"{i.path}/Lib/site-packages/tge"
+                for i in os.scandir(x)
+                if os.path.exists(f"{i.path}/Lib/site-packages")
+            ]
+            dirs.extend(dirs_)
 
         break
     elif inp == "2":
@@ -267,7 +284,8 @@ if give_feedback < 1:
     print()
 base_github_url = "https://raw.githubusercontent.com/Miner3D-Gamer/TGE/main"
 install_minified = argument_handler.has_argument(
-    "-install_minified", delete=True,
+    "-install_minified",
+    delete=True,
 )
 while not install_minified:
 
@@ -519,8 +537,6 @@ if not dont_download_dependencies:
                 if give_feedback < 3:
                     print("Error while installing %s: %s" % (B, info))
                 error += 1
-
-    import platform
 
     install_all_libraries(requirements)
     # install_rate = len(requirements)/error

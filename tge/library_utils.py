@@ -1,7 +1,7 @@
 import importlib.util
 from typing import Tuple, NoReturn, List, Optional
 import subprocess
-from collections.abc import Iterable
+from collections.abc import Sequence
 import os
 
 from .tbe import get_current_pip_path
@@ -126,7 +126,7 @@ def install_library_from_github(github_repo_url: str) -> None:
             print(f"Failed to install for {python}: {e}")
 
 
-def install_all_libraries(libs: "Iterable[str]") -> List[Tuple[bool, str]]:
+def install_all_libraries(libs: "Sequence[str]") -> List[Tuple[bool, str]]:
     """
     Install a list of libraries and return a list of installation results.
 
@@ -134,7 +134,7 @@ def install_all_libraries(libs: "Iterable[str]") -> List[Tuple[bool, str]]:
     and it collects the results of the installation attempts.
 
     Args:
-        libs ("Iterable[str]"): An iterable containing the names of libraries to be installed.
+        libs ("Sequence[str]"): An iterable containing the names of libraries to be installed.
 
     Returns:
         list[tuple[bool, str]]: A list of tuples where each tuple contains:

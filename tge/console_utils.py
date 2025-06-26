@@ -4,7 +4,7 @@ from typing import List, Union, Tuple, Callable, Optional
 from types import TracebackType
 from random import random, choice
 import sys
-from collections.abc import Iterable
+from collections.abc import Sequence
 from typing import Union
 
 
@@ -90,15 +90,15 @@ def write_sentences_to_console(
 
 
 def choose_from_text_menu(
-    menu_list: "Iterable[str]", prompt: str = "", destroy: bool = False
+    menu_list: "Sequence[str]", prompt: str = "", destroy: bool = False
 ) -> int:
     "..."
-    raise BaseException("This function needs a revamp :/")
+    #raise BaseException("This function needs a revamp :/")
     """
     Displays a text menu and prompts the user to choose an option.
 
     Args:
-        text (list): Iterable of options to display in the menu.
+        text (list): Sequence of options to display in the menu.
         prompt (str): Prompt to display before the menu.
         ans_prompt (str): Prompt to display when asking for user input.
 
@@ -109,28 +109,32 @@ def choose_from_text_menu(
         None.
 
     """
+    if not hasattr(menu_list, "__len__"):
+        return -1
     print_string = ""
-    line_count = print_string.count("\n") + prompt.count("\n") + 2
+    prompt_lines = print_string.count("\n") + prompt.count("\n") + 2
+    lines = prompt_lines+len(menu_list)
     for idx, item in enumerate(menu_list):
         print_string += f"{idx+1}: {item}\n"
+    user_input =""
     while True:
-
         print(print_string)
-
+        print(" "*(len(user_input)+len(prompt)))
+        clear_lines(1)
         user_input = input(prompt)
         if user_input.isdigit():
-            user_input = int(user_input)
-            if user_input > 0 and user_input < (len(menu_list) + 1):
+            number_input = int(user_input)
+            if number_input > 0 and number_input < (len(menu_list) + 1):
                 if destroy:
-                    clear_lines(line_count)
-                return user_input - 1
+                    clear_lines(lines)
+                return number_input - 1
         else:
             for idx, item in enumerate(menu_list):
                 if user_input == item:
                     if destroy:
-                        clear_lines(line_count)
+                        clear_lines(lines)
                     return idx
-        clear_lines(line_count)
+        clear_lines(lines, False)
 
 
 def skip_line() -> None:
@@ -138,7 +142,7 @@ def skip_line() -> None:
     print("\n")
 
 
-def print_table(data: List[List[str]]) -> str:
+def format_table(data: List[List[str]]) -> str:
     """
     Prints a table representation of the provided data.
 
@@ -376,10 +380,9 @@ def clear_lines(num_lines: int, move_front: bool = False) -> None:
     clear_lines(3)
     This will move the cursor up 3 lines and clear the current line, effectively clearing 3 lines on the console screen.
     """
-    sys.stdout.write("\033[F" * num_lines)  # Move the cursor up `num_lines` lines
-    sys.stdout.write(
-        "\033[K"
-    )  # Clear the current line and move the cursor to the beginning
+    sys.stdout.write("\033[F\033[K" * num_lines)
+    # "\033[K" # Clear the current line and move the cursor to the beginning
+    # "\033[F" # Move cursor up
     # if move_front is true, the cursor should be moved by 1 character
     if move_front:
         sys.stdout.write("\033[F")
@@ -558,7 +561,7 @@ __all__ = [
     "write_sentences_to_console",
     "choose_from_text_menu",
     "skip_line",
-    "print_table",
+    "format_table",
     "progress_bar",
     "colorize_text",
     "visualize_directory",

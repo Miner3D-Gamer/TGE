@@ -444,7 +444,7 @@ class Vector:
     *components (float): Variable number of components for the vector.
 
     Attributes:
-    components (List[float]): Iterable containing the components of the vector.
+    components (List[float]): List containing the components of the vector.
 
     Methods:
     __init__(*components) -> None: Initializes a vector with the given components.

@@ -58,4 +58,4 @@ If set, skips checking the status of the locally installed TGE if it is installe
 
 ### `-inherit_empty_directory` (Flag)
 
-- If set, tge will copy its files directly into the given provided directory instead of _creating a new_/_replacing an old_ tge folder (When -install_option is 3 or 4)
+- If set, tge will copy its files directly into the given directory instead of _creating a new_/_replacing an old_ tge folder (Only applicable when -install_option is 3 or 4)

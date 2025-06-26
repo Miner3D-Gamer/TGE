@@ -28,15 +28,15 @@ The downloader supports additional inputs to customize the installation without 
 - **2**: Logs errors only
 - **3**: Completely silent
 
-### `-path` (No Default)
+### `-path` (Default: Asks user)
 
-- **{str}**: The directory to a file or folder, based on `-install_option`.
+- The directory to a file (python.exe) or folder used by `-install_option`.
 
 ### `-install_option` (Default: Asks user)
 
 - **1**: Install TGE for all installed Python installations in the default Python directory (`{C:\Users\{Username}\AppData\Local\Programs\Python}`).
-- **2**: Select a `.exe` file in the Python folder or use the path provided by `-path`.
-- **3**: Select a folder to install TGE into or use the path provided by `-path`.
+- **2**: Select a `.exe` file in the Python folder.
+- **3**: Select a folder to install TGE into.
 - **4**: Same as 3 -> Internally when asking the user, 3 allows them to select the folder in a visual window while 4 requests the file to be provided in the console.
 
 ### `-install_minified` (Default: N)
